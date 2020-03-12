@@ -1,0 +1,44 @@
+/* Copyright 2020 Wirepas Ltd. All Rights Reserved.
+*
+* LIMITED WARRANTY - This software and documentation are strictly provided
+* on an  "as is" basis without any warranty as to their performance,
+* merchantability or fitness for any particular purpose.  Subject to the terms
+* and conditions herein, Wirepas Ltd grants the user  a revocable, worldwide,
+* non-exclusive, no-charge, royalty free copyright license to use, copy and
+* modify the software, documentation and application source code or any part
+* thereof. The license has the following limitations:
+*
+*     (i) Results derived from this application source code and host library
+*     may not use the name "Wirepas" without prior written permission of
+*     Wirepas Ltd.
+*
+*     (ii) Any modifications of the software, documentation or application
+*     source code shall include notices that they have been modified.
+*     Furthermore, the user shall ensure that any such modifications shall be
+*     licensed under the same terms and conditions as the software,
+*     documentation and application source code are licensed under.
+*
+* Notwithstanding anything to the contrary herein, in no event shall
+* anything herein be construed or Wirepas Ltd otherwise grant to anyone
+* any explicit or implied license to any patents owned or licensed by
+* Wirepas Ltd. Any licenses to any patents shall be subject to a separate
+* prior written agreement between Wirepas Ltd and the user.
+*
+* Wirepas Ltd. has no obligation to provide maintenance, support, updates,
+* enhancements or modifications. The user assumes the entire risk as to
+* the quality and performance of the software. Wirepas Ltd. warrants that
+* the media on which the software furnished will be free from any defects
+* in materials. Exclusive remedy in the event of a defect is expressly
+* limited to the replacement of said media.
+*
+* In no event shall Wirepas Ltd. or anyone else who has been involved in the
+* creation, development, production, or delivery of this software be liable
+* for any direct, incidental or consequential damages, such as, but not
+* limited to, loss of anticipated profits, benefits, use, or data resulting
+* from the use of this software, or arising out of any breach of warranty.
+*
+* If the user breaches any of the terms and conditions included herein, this
+* license shall be automatically revoked, and the user shall not have any
+* right to use the software or the documentation or any part thereof.
+*
+*/

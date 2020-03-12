@@ -1,0 +1,24 @@
+---
+#Wirepas Oy 2019
+
+version: 1
+commands:
+
+  enable_sensors:
+    type: 1
+    length: 6
+    fields:
+      temperature_enable: 1
+      humidity_enable: 1
+      presure_enable: 1
+      accel_x_enable: 1
+      accel_y_enable: 1
+      accel_z_enable: 1
+    format: '<BBBBBBBB'
+
+  update_rate:
+    type: 2
+    length: 2
+    fields:
+      interval: 60
+    format: '<BBH'
