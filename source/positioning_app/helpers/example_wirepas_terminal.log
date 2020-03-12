@@ -1,0 +1,5 @@
+2018-07-06  12:18:40    info    Logging started
+2018-07-06  12:18:40    rx  Received 8 bytes from address 10338172, from EP 238 to EP 238, travel time: 5.523 s, QoS: important ....{...    0b 00 00 01 7b 00 00 d1
+2018-07-06  12:18:40    rx  Received 8 bytes from address 10338172, from EP 238 to EP 238, travel time: 5.531 s, QoS: important ....{...    0c 00 00 01 7b 00 00 d2
+2018-07-06  12:18:40    rx  Received 8 bytes from address 10338172, from EP 238 to EP 238, travel time: 5.547 s, QoS: important ....{...    0d 00 00 01 7b 00 00 cf
+2018-07-06  12:18:46    info    Logging stopped
