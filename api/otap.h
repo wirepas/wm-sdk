@@ -437,7 +437,7 @@ typedef app_res_e
  * been replaced by Remote API command, see document WP-RM-117 - Wirepas Mesh
  * Remote API Reference Manual, chapter MSAP Scratchpad Status.
  *
- * \return  @ref APP_RES_OK
+ * \return  @ref APP_RES_RESOURCE_UNAVAILABLE
  */
 typedef app_res_e
     (*app_lib_otap_set_remote_status_received_cb_f)(app_lib_otap_remote_status_received_cb_f cb);

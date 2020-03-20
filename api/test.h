@@ -5,7 +5,7 @@
  */
 
 /**
- * \file api/test.h
+ * \file test.h
  *
  * Application library for testing services
  *
@@ -23,7 +23,7 @@
 #define APP_LIB_TEST_NAME 0x0013aa4c //!< "TEST"
 
 /** @brief Maximum supported library version */
-#define APP_LIB_TEST_VERSION 0x202
+#define APP_LIB_TEST_VERSION 0x203
 
 /**
  * @brief Reservation for maximum test data size in radio interface
@@ -296,12 +296,12 @@ typedef app_lib_test_set_radio_channel_res_e
 
 /**
  * @brief   Sets radio power level
- * @param   power_level
- *          Logical power level for transceiver
+ * @param   dbm
+ *          Power level for transceiver
  * @return  Result code
  */
 typedef app_lib_test_set_radio_power_level_res_e
-    (*app_lib_test_set_radio_tx_power_level_f) (const uint8_t power_level);
+    (*app_lib_test_set_radio_tx_power_level_f) (const int8_t dbm);
 
 /**
  * @brief   Sends test data

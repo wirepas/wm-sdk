@@ -132,7 +132,7 @@ typedef struct __attribute__ ((__packed__))
 /**  Frame structure for WAPS_FUNC_TSAP_SET_RADIO_TX_POWER_REQ */
 typedef struct __attribute__ ((__packed__))
 {
-    uint8_t    txpower;
+    int8_t    txpower;
 } tsap_radio_tx_power_req_t;
 
 
