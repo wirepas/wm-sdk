@@ -227,6 +227,7 @@ typedef app_res_e (*app_lib_joining_stop_joining_beacon_tx_f)(void);
  *          Joining beacon reception parameters
  * \return  Result code, \ref APP_RES_OK if successful,
  *          \ref APP_RES_INVALID_STACK_STATE if stack is not running,
+ *          \ref APP_RES_INVALID_CONFIGURATION if the node is a sink,
  *          \ref APP_RES_INVALID_NULL_POINTER if param, cb or beacons is NULL,
  *          \ref APP_RES_INVALID_VALUE if max_exec_time_us, addr, channel,
  *          timeout, beacon_num_bytes or max_num_beacons is invalid or
@@ -260,7 +261,7 @@ typedef app_res_e (*app_lib_joining_stop_joining_beacon_rx_f)(void);
  *          \ref APP_RES_INVALID_STACK_STATE if stack is not running,
  *          \ref APP_RES_INVALID_VALUE if addr or channel is invalid,
  *          \ref APP_RES_INVALID_CONFIGURATION if joining beacon transmission
- *          or reception is ongoing
+ *          or reception is ongoing, or if the node is a sink
  * \note    A network scan is automatically started. After the scan the node
  *          will join one of the cluster heads currently transmitting joining
  *          beacons. The cluster head will not change during the joining
@@ -281,6 +282,8 @@ typedef app_res_e (*app_lib_joining_start_joining_process_f)(
  *          "app_lib_joining_start_joining_process_f"().
  *          again with new parameters, without
  *          calling this function first
+ * \note    A network scan is automatically started. After the scan the node
+ *          will join a network as a regular member, if a network is available
  */
 typedef app_res_e (*app_lib_joining_stop_joining_process_f)(void);
 
