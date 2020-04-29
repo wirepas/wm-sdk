@@ -137,7 +137,7 @@ the board definitions, according to processor architecture:
 "board/nrf52_template/config.mk"</td><td>Board Configuration</td></tr>
 </table>
 
-@subsection DCDC converter configuration
+@subsection DCDC_converter DCDC converter configuration
 
 DCDC converter configuration is very important topic, especially if low energy
 consumption is desired. In following table, the configuration is summarized for
@@ -749,10 +749,20 @@ Example:
 INCLUDES +=
 @endcode
 
+@subsubsection source_makefile_ldflags LDFLAGS
+
+Introducing custom linker flags for ld can be done by extending this list.
+
+Example:
+@code
+#Link standard C math library
+LDFLAGS += -lm
+@endcode
+
 @subsubsection source_makefile_libs LIBS
 
-Introducing of precompiled libraries for compilation can be done by extending
-this list.
+Introducing of precompiled libraries (.a files) for compilation can be done
+by extending this list.
 
 Example:
 @code

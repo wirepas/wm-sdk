@@ -109,8 +109,100 @@ Macros</h2></td></tr>
 <tr class="memitem:a8eefc53de69e1aea7376f76b67c6052a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/df8/efr32__template_2board_8h.html#a8eefc53de69e1aea7376f76b67c6052a">BOARD_LED_PIN_LIST</a>&#160;&#160;&#160;{{GPIOF, 4}, {GPIOF, 5}}</td></tr>
 <tr class="memdesc:a8eefc53de69e1aea7376f76b67c6052a"><td class="mdescLeft">&#160;</td><td class="mdescRight">LED definitions.  <a href="#a8eefc53de69e1aea7376f76b67c6052a">More...</a><br /></td></tr>
 <tr class="separator:a8eefc53de69e1aea7376f76b67c6052a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43341ad5e17bb5d20c1e528bce7d6133"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/df8/efr32__template_2board_8h.html#a43341ad5e17bb5d20c1e528bce7d6133">BOARD_LED_ACTIVE_LOW</a>&#160;&#160;&#160;false</td></tr>
+<tr class="memdesc:a43341ad5e17bb5d20c1e528bce7d6133"><td class="mdescLeft">&#160;</td><td class="mdescRight">LED GPIO polarity.  <a href="#a43341ad5e17bb5d20c1e528bce7d6133">More...</a><br /></td></tr>
+<tr class="separator:a43341ad5e17bb5d20c1e528bce7d6133"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac206a3fdd4723341044664ddbf85f6d3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/df8/efr32__template_2board_8h.html#ac206a3fdd4723341044664ddbf85f6d3">BOARD_BUTTON_PIN_LIST</a>&#160;&#160;&#160;{{4, GPIOF, 6}, {6, GPIOF, 7}}</td></tr>
+<tr class="memdesc:ac206a3fdd4723341044664ddbf85f6d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Button definitions.  <a href="#ac206a3fdd4723341044664ddbf85f6d3">More...</a><br /></td></tr>
+<tr class="separator:ac206a3fdd4723341044664ddbf85f6d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22dc8bf341319e58e0377f0a58770d71"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/df8/efr32__template_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71">BOARD_BUTTON_ACTIVE_LOW</a>&#160;&#160;&#160;true</td></tr>
+<tr class="memdesc:a22dc8bf341319e58e0377f0a58770d71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Button GPIO polarity.  <a href="#a22dc8bf341319e58e0377f0a58770d71">More...</a><br /></td></tr>
+<tr class="separator:a22dc8bf341319e58e0377f0a58770d71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1002840655a30f1b3bef09d00e7d8ba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/df8/efr32__template_2board_8h.html#aa1002840655a30f1b3bef09d00e7d8ba">BOARD_BUTTON_USE_EVEN_INT</a>&#160;&#160;&#160;true</td></tr>
+<tr class="memdesc:aa1002840655a30f1b3bef09d00e7d8ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Button GPIO interrupt even/odd selection.  <a href="#aa1002840655a30f1b3bef09d00e7d8ba">More...</a><br /></td></tr>
+<tr class="separator:aa1002840655a30f1b3bef09d00e7d8ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a22dc8bf341319e58e0377f0a58770d71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22dc8bf341319e58e0377f0a58770d71">&#9670;&nbsp;</a></span>BOARD_BUTTON_ACTIVE_LOW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BOARD_BUTTON_ACTIVE_LOW&#160;&#160;&#160;true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Button GPIO polarity. </p>
+<p>If a button press pulls the GPIO pin low, this setting is true. This is the case for many EFR32 boards, such as the Thunderboard Sense 2 and the BRD4001 Evaluation Board. Otherwise, if a button press pulls the GPIO pin high, this setting should be set to false. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html#l00116">116</a> of file <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html">board.h</a>.</p>
+
+</div>
+</div>
+<a id="ac206a3fdd4723341044664ddbf85f6d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac206a3fdd4723341044664ddbf85f6d3">&#9670;&nbsp;</a></span>BOARD_BUTTON_PIN_LIST</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BOARD_BUTTON_PIN_LIST&#160;&#160;&#160;{{4, GPIOF, 6}, {6, GPIOF, 7}}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Button definitions. </p>
+<p>Any buttons present on the board are defined here. If not defined, a dummy button driver is compiled, so that applications can use the button driver unconditionally.</p>
+<p>For Silabs EFR32 family, the list contains GPIO external interrupt numbers, GPIO ports and pins. See <a class="el" href="../../d3/d8f/tbsense2_2board_8h.html#aa1002840655a30f1b3bef09d00e7d8ba">BOARD_BUTTON_USE_EVEN_INT</a> below for extra considerations when selecting external interrupt numbers.</p>
+<dl class="section note"><dt>Note</dt><dd>in order for application to use buttons, see <a class="el" href="../../d3/d03/sdk_file_structure.html#source_makefile_hal_button">here</a>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html#l00106">106</a> of file <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html">board.h</a>.</p>
+
+</div>
+</div>
+<a id="aa1002840655a30f1b3bef09d00e7d8ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1002840655a30f1b3bef09d00e7d8ba">&#9670;&nbsp;</a></span>BOARD_BUTTON_USE_EVEN_INT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BOARD_BUTTON_USE_EVEN_INT&#160;&#160;&#160;true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Button GPIO interrupt even/odd selection. </p>
+<p>The EFR32 GPIO block has 16 configurable external interrupt sources. Even and odd numbered interrupt sources are routed to separate interrupt vectors in the processor. If this setting is true, the button interrupts use the even interrupt vector GPIO_EVEN_IRQn, otherwise GPIO_ODD_IRQn.</p>
+<p>Not all GPIO pins can be mapped to all even or odd external interrupt sources. Please see the GPIO_EXTIPINSELL and GPIO_EXTIPINSELH register documentation in the EFR32xG12 Wireless Gecko Reference Manual.</p>
+<p>The external interrupt source in <a class="el" href="../../d3/d8f/tbsense2_2board_8h.html#ac206a3fdd4723341044664ddbf85f6d3">BOARD_BUTTON_PIN_LIST</a> above should match this definition, otherwise the buttons won't work. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html#l00133">133</a> of file <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html">board.h</a>.</p>
+
+</div>
+</div>
+<a id="a43341ad5e17bb5d20c1e528bce7d6133"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43341ad5e17bb5d20c1e528bce7d6133">&#9670;&nbsp;</a></span>BOARD_LED_ACTIVE_LOW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BOARD_LED_ACTIVE_LOW&#160;&#160;&#160;false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>LED GPIO polarity. </p>
+<p>If LEDs turn on when the GPIO pin is driven low, this setting is true. Many EFR32 boards, such as the Thunderboard Sense 2 and the BRD4001 Evaluation Board have active high LEDs, so this setting should remain false. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html#l00090">90</a> of file <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html">board.h</a>.</p>
+
+</div>
+</div>
 <a id="a8eefc53de69e1aea7376f76b67c6052a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8eefc53de69e1aea7376f76b67c6052a">&#9670;&nbsp;</a></span>BOARD_LED_PIN_LIST</h2>
 
@@ -124,11 +216,11 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>LED definitions. </p>
-<p>If board contains LEDs, they are defined here. When defined, application using LEDs may use the board.</p>
+<p>If board contains LEDs, they are defined here. If not defined, a dummy LED driver is compiled, so that applications can use the LED driver unconditionally.</p>
 <p>For Silabs EFR32 family, the list contains GPIO port/pin number pairs.</p>
 <dl class="section note"><dt>Note</dt><dd>in order for application to use LEDs, see <a class="el" href="../../d3/d03/sdk_file_structure.html#source_makefile_hal_led">here</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html#l00080">80</a> of file <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html">board.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html#l00081">81</a> of file <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html">board.h</a>.</p>
 
 </div>
 </div>
@@ -287,7 +379,7 @@ Macros</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_7149141a7e3af1ee95dfb0598e371427.html">board</a></li><li class="navelem"><a class="el" href="../../dir_0006c00be31d721fe51aa50d6c40dad2.html">efr32_template</a></li><li class="navelem"><a class="el" href="../../d9/df8/efr32__template_2board_8h.html">board.h</a></li>
-    <li class="footer">Generated on Fri Mar 20 2020 11:53:36 for Wirepas Single-MCU SDK by
+    <li class="footer">Generated on Wed Apr 29 2020 14:18:53 for Wirepas Single-MCU SDK by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

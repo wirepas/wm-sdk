@@ -61,9 +61,9 @@ $(BUILDPREFIX_APP)%.o : %.s
 
 
 $(APP_ELF): $(OBJS) $(LIBS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ \
+	$(CC) $(CFLAGS) -o $@ $^ \
 	      -Wl,-Map=$(BUILDPREFIX_APP)$(APP_NAME).map \
-	      -Wl,-T,$(LDSCRIPT) $(LIBS)
+	      -Wl,-T,$(LDSCRIPT) $(LIBS) $(LDFLAGS)
 
 $(APP_HEX): $(APP_ELF)
 	@echo "Generating $(APP_HEX)"

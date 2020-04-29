@@ -55,7 +55,7 @@
 #define BOARD_USART_RX_PIN              1
 
 /**
- * @brief Interrupt pin for dual mcu app, unread indication
+ * @brief   Interrupt pin for dual mcu app, unread indication
  *
  * This only used in @ref source/dualmcu_app.c "dualmcu_app" application to
  * announce with GPIO pin that there is incoming indication to be read from
@@ -69,14 +69,67 @@
 /**
  * @brief   LED definitions
  *
- * If board contains LEDs, they are defined here. When defined, application
- * using LEDs may use the board.
+ * If board contains LEDs, they are defined here. If not defined, a dummy
+ * LED driver is compiled, so that applications can use the LED driver
+ * unconditionally.
  *
  * For Silabs EFR32 family, the list contains GPIO port/pin number pairs.
  *
  * @note in order for application to use LEDs, see @ref source_makefile_hal_led
  * "here".
  */
-#define BOARD_LED_PIN_LIST {{GPIOF, 4}, {GPIOF, 5}}
+#define BOARD_LED_PIN_LIST              {{GPIOF, 4}, {GPIOF, 5}}
+
+/**
+ * @brief   LED GPIO polarity
+ *
+ * If LEDs turn on when the GPIO pin is driven low, this setting is true. Many
+ * EFR32 boards, such as the Thunderboard Sense 2 and the BRD4001 Evaluation
+ * Board have active high LEDs, so this setting should remain false.
+ */
+#define BOARD_LED_ACTIVE_LOW            false
+
+/**
+ * @brief   Button definitions
+ *
+ * Any buttons present on the board are defined here. If not defined, a dummy
+ * button driver is compiled, so that applications can use the button driver
+ * unconditionally.
+ *
+ * For Silabs EFR32 family, the list contains GPIO external interrupt numbers,
+ * GPIO ports and pins. See \ref BOARD_BUTTON_USE_EVEN_INT below for extra
+ * considerations when selecting external interrupt numbers.
+ *
+ * @note in order for application to use buttons, see @ref
+ * source_makefile_hal_button "here".
+ */
+#define BOARD_BUTTON_PIN_LIST           {{4, GPIOF, 6}, {6, GPIOF, 7}}
+
+/**
+ * @brief   Button GPIO polarity
+ *
+ * If a button press pulls the GPIO pin low, this setting is true. This is the
+ * case for many EFR32 boards, such as the Thunderboard Sense 2 and the BRD4001
+ * Evaluation Board. Otherwise, if a button press pulls the GPIO pin high, this
+ * setting should be set to false.
+ */
+#define BOARD_BUTTON_ACTIVE_LOW         true
+
+/**
+ * @brief   Button GPIO interrupt even/odd selection
+ *
+ * The EFR32 GPIO block has 16 configurable external interrupt sources. Even
+ * and odd numbered interrupt sources are routed to separate interrupt vectors
+ * in the processor. If this setting is true, the button interrupts use the
+ * even interrupt vector GPIO_EVEN_IRQn, otherwise GPIO_ODD_IRQn.
+ *
+ * Not all GPIO pins can be mapped to all even or odd external interrupt
+ * sources. Please see the GPIO_EXTIPINSELL and GPIO_EXTIPINSELH register
+ * documentation in the EFR32xG12 Wireless Gecko Reference Manual.
+ *
+ * The external interrupt source in \ref BOARD_BUTTON_PIN_LIST above should
+ * match this definition, otherwise the buttons won't work.
+ */
+#define BOARD_BUTTON_USE_EVEN_INT       true
 
 #endif /* _BOARD_EFR32_TEMPLATE_BOARD_H_ */

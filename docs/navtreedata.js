@@ -92,7 +92,7 @@ var NAVTREE =
         [ "Application and Library Versioning", "d3/d03/sdk_file_structure.html#application_and_library_versioning", null ]
       ] ],
       [ "board/ Board definitions", "d3/d03/sdk_file_structure.html#board_folder", [
-        [ "converter configuration", "d3/d03/sdk_file_structure.html#DCDC", null ]
+        [ "DCDC converter configuration", "d3/d03/sdk_file_structure.html#DCDC_converter", null ]
       ] ],
       [ "bootloader/ Bootloader configuration", "d3/d03/sdk_file_structure.html#bootloader_folder", null ],
       [ "debug/ Debug printing", "d3/d03/sdk_file_structure.html#debug_folder", null ],
@@ -131,6 +131,7 @@ var NAVTREE =
           [ "HAL_SPI", "d3/d03/sdk_file_structure.html#source_makefile_hal_spi", null ],
           [ "HAL_UART", "d3/d03/sdk_file_structure.html#source_makefile_hal_uart", null ],
           [ "INCLUDES", "d3/d03/sdk_file_structure.html#source_makefile_includes", null ],
+          [ "LDFLAGS", "d3/d03/sdk_file_structure.html#source_makefile_ldflags", null ],
           [ "LIBS", "d3/d03/sdk_file_structure.html#source_makefile_libs", null ],
           [ "SHARED_LIBDATA", "d3/d03/sdk_file_structure.html#source_makefile_shared_libdata", null ],
           [ "SRCS", "d3/d03/sdk_file_structure.html#source_makefile_srcs", null ],
@@ -174,13 +175,13 @@ var NAVTREEINDEX =
 "annotated.html",
 "d2/d9e/cbor_8h.html#a65aa4315fb9e17b2d070d96aa2f30e03",
 "d2/dbd/data_8h.html#acc7ee0a7ec28292d2c1be47c4a23f78d",
-"d5/d29/ublox__b204_2board_8h.html#a0af72e93971553bc01429840dbcede95",
-"d8/d4b/advertiser_8h.html#a35397bf14e1b5c7390cb6cf9ba9c9ec9",
-"da/d90/ruuvi_evk_2app_8c-example.html",
-"db/de4/otap_8h.html#a57696c59349ed7140e3f27834e94dd91",
-"dd/d2c/bl__interface_8h.html#ad44b615021ed3ccb734fcaf583ef4a03",
-"dd/ddd/silabs__brd4254a_2board_8h.html#aca8fcd9d16228b415f8158d08dfa416e",
-"df/d8f/updater_8h.html#aebb70c2aab3407a9f05334c47131a43b"
+"d4/dfa/shared__libdata_8h.html#a9dc8b87efa81ba4aef04e5a37629b85faad0bb28f95b0d642a4774162546e0098",
+"d8/d3c/util_8h.html#a9d62227d72ccd60b335fc119252aedb0",
+"da/d87/spi_8h.html#aa73eafab9cd3df3fac6d8d856c0eea1aaa7cac464a3cc1549a45375a75840a4f2",
+"db/de4/otap_8h.html#a2a9452ad122f9e0eb785ccf3127eb6b9",
+"dd/d2c/bl__interface_8h.html#ab0ca607d89ba3a5caf058d8387fda4a2",
+"dd/ddc/app__scheduler_8h.html#a06b7a823ab31a50859f715de74473a2d",
+"df/d08/memory__area_8h.html#d2/d90/structapp__lib__mem__area__flash__info__t"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

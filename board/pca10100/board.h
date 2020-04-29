@@ -78,12 +78,17 @@ P1.09   41      gpio
 // Pwm output for pwm_driver app
 #define BOARD_PWM_OUTPUT_GPIO           28
 
-// List of GPIOs for the leds on the board (LED1 to LED4)
-#define BOARD_LED_PIN_LIST {13, 14, 15, 16}
+// List of GPIO pins for the LEDs on the board: LED 1 to LED 4
+#define BOARD_LED_PIN_LIST              {13, 14, 15, 16}
 
-// List of GPIOs for the Buttons on the board
-#define BOARD_BUTTON_PIN_LIST {11, 12, 24, 25}
-#define BOARD_BUTTON_ACTIVE_LOW true
+// Active low polarity for LEDs
+#define BOARD_LED_ACTIVE_LOW            true
+
+// List of GPIO pins for buttons on the board: Button 1 to Button 4
+#define BOARD_BUTTON_PIN_LIST           {11, 12, 24, 25}
+
+// Active low polarity for buttons
+#define BOARD_BUTTON_ACTIVE_LOW         true
 
 // The board supports DCDC
 #define BOARD_SUPPORT_DCDC

@@ -77,4 +77,4 @@ led_res_e Led_toggle(uint8_t led_id);
  * \brief   Get number of leds available
  * \return  The number of leds available
  */
-uint8_t Led_getNumber();
+uint8_t Led_getNumber(void);

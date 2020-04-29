@@ -2,16 +2,18 @@
 SRCS +=
 INCLUDES +=
 LIBS +=
-
-# This application use HAL for buttons and leds
-HAL_BUTTON=yes
-HAL_LED=yes
+LDFLAGS +=
 
 # Example:
 # SRCS += $(SRCS_PATH)my_driver.c
+# LIBS += my_lib.a
 # include math.h lib
-# LIBS += -lm
+# LDFLAGS += -lm
 
 # Define default network settings
 CFLAGS += -DNETWORK_ADDRESS=$(default_network_address)
 CFLAGS += -DNETWORK_CHANNEL=$(default_network_channel)
+
+# This application use HAL for buttons and leds
+HAL_BUTTON=yes
+HAL_LED=yes

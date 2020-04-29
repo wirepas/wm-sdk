@@ -22,22 +22,28 @@
 #define BOARD_USART_CTS_PIN             7  /* For USE_USART_HW_FLOW_CONTROL */
 #define BOARD_USART_RTS_PIN             5  /* For USE_USART_HW_FLOW_CONTROL */
 
-// List of GPIOs for the leds on the board (Red, Green, Blue)
-#define BOARD_LED_PIN_LIST {15, 16, 24}
+// List of GPIO pins for the LEDs on the board: LED R, G, B
+#define BOARD_LED_PIN_LIST              {15, 16, 24}
 
-// List of GPIOs for the Buttons on the board
-#define BOARD_BUTTON_PIN_LIST {14}
-#define BOARD_BUTTON_ACTIVE_LOW true
+// Active low polarity for LEDs
+#define BOARD_LED_ACTIVE_LOW            true
+
+// List of GPIO pins for buttons on the board: User switch
+#define BOARD_BUTTON_PIN_LIST           {14}
+
+// Active low polarity for buttons
+#define BOARD_BUTTON_ACTIVE_LOW         true
 
 // Define the SPI instance to use
 #define USE_SPI0
+
 // SPI Port pins
-#define BOARD_SPI_SCK_PIN   19
-#define BOARD_SPI_MOSI_PIN  20
-#define BOARD_SPI_MISO_PIN  21
+#define BOARD_SPI_SCK_PIN               19
+#define BOARD_SPI_MOSI_PIN              20
+#define BOARD_SPI_MISO_PIN              21
 
 // SPI Chip Select pin
-#define BOARD_SPI_CS_PIN   17
+#define BOARD_SPI_CS_PIN                17
 
 // The board supports DCDC
 #define BOARD_SUPPORT_DCDC

@@ -37,10 +37,14 @@ STORAGE_MAGIC = 0x647650fb
 # - NRF52840     : 1036288 (0xFD000)
 # - EFR32 (512k) : 518144  (0x7E800)
 # - EFR32 (1024k): 1042432 (0xFE800)
-STORAGE_AREA_ADDRESS = 0x7D000
 
+def to_int(param):
+    if type(param) is str:
+        return ord(param)
+    else:
+        return param
 
-def convert2bytes(param):
+def to_bytes(param):
     if platform.sys.version_info.major >= 3:
         if type(param) is str:
             if param.upper().startswith("0X"):
@@ -59,6 +63,13 @@ def convert2bytes(param):
                 param = bytes(param)
 
     return param
+
+def parse_address(param):
+    try:
+        address = int(param, 0)
+        return address
+    except ValueError:
+        raise ValueError("invalid address value: '%s'" % param)
 
 def main():
     '''Main program'''
@@ -85,9 +96,10 @@ def main():
                         metavar="OUTFILESPEC",
                         help="output file")
     parser.add_argument("--address", "-a",
+                        type=parse_address,
                         metavar="VALUE",
-                        help="Storage area address",
-                        type=int)
+                        required=True,
+                        help="Storage area address")
 
     try:
         args = parser.parse_args()
@@ -106,21 +118,20 @@ def main():
         return -1
 
     try:
-        uid = convert2bytes(cfg['provisioning']['uid'])
-        method = convert2bytes(cfg['provisioning']['method'])
+        uid = to_bytes(cfg['provisioning']['uid'])
+        method = to_bytes(cfg['provisioning']['method'])
     except KeyError:
         sys.stdout.write("%s: UID and Method are mandatory\n" % (pgmname))
         return -1
     try:
-        key = convert2bytes(cfg['provisioning']['factory_key'])
+        key = to_bytes(cfg['provisioning']['factory_key'])
     except KeyError:
         key = b''
 
     sys.stdout.write("%s - UID: %s (len: %d)\n" % (pgmname, uid, len(uid)))
     sys.stdout.write(
         "%s - KEY: %s (len: %d)\n" % (pgmname,
-                                        ''.join(format(ord(x), '02X') +
-                                        " " for x in key), len(key)))
+                        "".join("{:02X}".format(to_int(x)) for x in key), len(key)))
     sys.stdout.write("%s - Method: %d\n" % (pgmname, method))
 
     data = struct.pack("<I", STORAGE_MAGIC) + \
@@ -131,10 +142,7 @@ def main():
         key
 
     memory = hextool.Memory()
-    if args.address is not None:
-        memory.cursor = args.address
-    else:
-        memory.cursor = STORAGE_AREA_ADDRESS
+    memory.cursor = args.address
     memory += data
 
     # Save output file.

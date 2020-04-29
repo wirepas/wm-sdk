@@ -43,7 +43,7 @@ typedef void (*on_button_event_cb)(uint8_t button_id,
 /**
  * \brief   Initialize Button module
  */
-void Button_init();
+void Button_init(void);
 
 /**
  * \brief   Register for a button event
@@ -74,4 +74,4 @@ button_res_e Button_getState(uint8_t button_id,
 /**
  * \brief   Get number of buttons
  */
-uint8_t Button_get_number();
+uint8_t Button_get_number(void);
