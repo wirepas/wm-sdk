@@ -262,6 +262,11 @@ class BootloaderConfig(object):
             Returns:
                 True if areas overlap, false otherwise
             """
+            if area1.is_internal() != area2.is_internal():
+                # area1 and area2 are not in same area space
+                # so cannot overlap
+                return False
+
             if area1.start < area2.start:
                 # area1 is before area2
                 if area1.end < area2.start:

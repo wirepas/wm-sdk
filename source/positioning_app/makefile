@@ -1,5 +1,4 @@
-# You can add more sources here if needed
-
+# You can add more sources here and libraries if needed
 SRCS +=$(SRCS_PATH)app_settings.c
 SRCS +=$(SRCS_PATH)ble_beacon.c
 SRCS +=$(SRCS_PATH)measurements.c
@@ -7,6 +6,14 @@ SRCS +=$(SRCS_PATH)scheduler.c
 SRCS +=$(SRCS_PATH)overhaul.c
 SRCS +=$(SRCS_PATH)event.c
 INCLUDES +=-I$(SRCS_PATH)
+LIBS +=
+LDFLAGS +=
+
+# Example:
+# SRCS += $(SRCS_PATH)my_driver.c
+# LIBS += my_lib.a
+# include math.h lib
+# LDFLAGS += -lm
 
 # Define default network settings
 CFLAGS += -DCONF_NETWORK_ADDRESS=$(default_network_address)

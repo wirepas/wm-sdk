@@ -78,7 +78,7 @@ def generate_random_key(seed=None):
         random.seed(seed)
     key = random.getrandbits(128)
     # Convert key to bytearray
-    return bytearray.fromhex("%x" % key)
+    return bytearray.fromhex("%032x" % key)
 
 
 def create_bootloader_key_pair():

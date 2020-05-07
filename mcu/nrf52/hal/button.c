@@ -14,29 +14,30 @@
 #include "board.h"
 #include "api.h"
 
-#ifndef BOARD_BUTTON_PIN_LIST
-// Must be defined from board.h
-#error "Please define BOARD_BUTTON_PIN_LIST from your board.h"
-#endif
+#ifdef BOARD_BUTTON_PIN_LIST
+
+/*
+ * The selected board has buttons
+ */
 
 #ifndef BOARD_DEBOUNCE_TIME_MS
 /** \brief  Debounce time of button in ms. It can be overwritten from board.h */
-#define BOARD_DEBOUNCE_TIME_MS        100
+#define BOARD_DEBOUNCE_TIME_MS      100
 #endif
 
 #ifndef BOARD_BUTTON_ACTIVE_LOW
 /** \brief  Is button active low. It can be overwritten from board.h */
-#define BOARD_BUTTON_ACTIVE_LOW        false
+#define BOARD_BUTTON_ACTIVE_LOW     true
 #endif
 
 /** \brief  Each button use a GPIOTE channel Define first one */
-#define GPIOTE_START_CHANNEL    0
+#define GPIOTE_START_CHANNEL        0
 
 /** \brief  Board-dependent Button number to pin mapping */
 static const uint8_t pin_map[] = BOARD_BUTTON_PIN_LIST;
 
 /** \brief  Compute number of button on the board */
-#define BOARD_BUTTON_NUMBER   (sizeof(pin_map) / sizeof(pin_map[0]))
+#define BOARD_BUTTON_NUMBER         (sizeof(pin_map) / sizeof(pin_map[0]))
 
 static void gpiote_interrupt_handler(void);
 
@@ -56,7 +57,7 @@ typedef struct
 /** \brief  Table to manage the button list */
 static button_internal_t m_button_conf[BOARD_BUTTON_NUMBER];
 
-void Button_init()
+void Button_init(void)
 {
     app_lib_time_timestamp_hp_t now = lib_time->getTimestampHp();
 
@@ -137,7 +138,7 @@ button_res_e Button_register_for_event(uint8_t button_id,
     return BUTTON_RES_OK;
 }
 
-uint8_t Button_get_number()
+uint8_t Button_get_number(void)
 {
     return BOARD_BUTTON_NUMBER;
 }
@@ -170,3 +171,46 @@ static void gpiote_interrupt_handler(void)
         }
     }
 }
+
+#else // BOARD_BUTTON_PIN_LIST
+
+/*
+ * The selected board has no buttons
+ *
+ * As some example apps support such boards but also provide extra features
+ * when a board has buttons, the button driver has this dummy implementation
+ * to simplify the build process.
+ */
+
+void Button_init(void)
+{
+    // Do nothing
+}
+
+button_res_e Button_getState(uint8_t button_id, bool * state_p)
+{
+    (void) button_id;
+    *state_p = false;
+
+    // Invalid button number
+    return BUTTON_RES_INVALID_ID;
+}
+
+uint8_t Button_get_number(void)
+{
+    return 0;
+}
+
+button_res_e Button_register_for_event(uint8_t button_id,
+                                       button_event_e event,
+                                       on_button_event_cb cb)
+{
+    (void) button_id;
+    (void) event;
+    (void) cb;
+
+    // Invalid button number
+    return BUTTON_RES_INVALID_ID;
+}
+
+#endif // BOARD_BUTTON_PIN_LIST

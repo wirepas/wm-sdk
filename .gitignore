@@ -1,0 +1,16 @@
+#exclude licensed wirepas binaries
+image/
+
+#but include the README still
+!image/readme.txt
+
+#exclude license acceptance
+.license_accepted
+
+#do not commit the build outputs
+build/
+
+#don't commit sensitive bootoader keys
+custom_bootloader_keys.ini
+
+*.pyc

@@ -96,9 +96,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a06ea59c242323b5e32a567d244c0ea8b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8">led_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da0/led_8h.html#a06ea59c242323b5e32a567d244c0ea8b">Led_toggle</a> (uint8_t led_id)</td></tr>
 <tr class="memdesc:a06ea59c242323b5e32a567d244c0ea8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle the given LED.  <a href="#a06ea59c242323b5e32a567d244c0ea8b">More...</a><br /></td></tr>
 <tr class="separator:a06ea59c242323b5e32a567d244c0ea8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d2d98f997747c5e60c1bea4e8720b34"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da0/led_8h.html#a0d2d98f997747c5e60c1bea4e8720b34">Led_getNumber</a> ()</td></tr>
-<tr class="memdesc:a0d2d98f997747c5e60c1bea4e8720b34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of leds available.  <a href="#a0d2d98f997747c5e60c1bea4e8720b34">More...</a><br /></td></tr>
-<tr class="separator:a0d2d98f997747c5e60c1bea4e8720b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6e8fa2e23d13592b01d12eb62c95a7e"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da0/led_8h.html#ae6e8fa2e23d13592b01d12eb62c95a7e">Led_getNumber</a> (void)</td></tr>
+<tr class="memdesc:ae6e8fa2e23d13592b01d12eb62c95a7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of leds available.  <a href="#ae6e8fa2e23d13592b01d12eb62c95a7e">More...</a><br /></td></tr>
+<tr class="separator:ae6e8fa2e23d13592b01d12eb62c95a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -109,8 +109,8 @@ Enumerations</h2></td></tr>
 <tr class="separator:aa8fb1f4b9ec78bfc448496565e6f91c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a0d2d98f997747c5e60c1bea4e8720b34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d2d98f997747c5e60c1bea4e8720b34">&#9670;&nbsp;</a></span>Led_getNumber()</h2>
+<a id="ae6e8fa2e23d13592b01d12eb62c95a7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6e8fa2e23d13592b01d12eb62c95a7e">&#9670;&nbsp;</a></span>Led_getNumber()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -118,6 +118,7 @@ Enumerations</h2></td></tr>
         <tr>
           <td class="memname">uint8_t Led_getNumber </td>
           <td>(</td>
+          <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -126,7 +127,8 @@ Enumerations</h2></td></tr>
 
 <p>Get number of leds available. </p>
 <dl class="section return"><dt>Returns</dt><dd>The number of leds available </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../d3/d9c/blink_2app_8c-example.html#a0">blink/app.c</a>.</dd>
+</dl>
 </div>
 </div>
 <a id="a040c02c99d35c3ee1fe6ae56bd8a8646"></a>
@@ -146,7 +148,7 @@ Enumerations</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initialize Led module. </p>
-<p>Example on use: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div><div class="line">{</div><div class="line">    ...</div><div class="line">    <span class="comment">// Set up LED GPIO</span></div><div class="line">    <a class="code" href="../../db/da0/led_8h.html#a040c02c99d35c3ee1fe6ae56bd8a8646">Led_init</a>();</div><div class="line">    ...</div><div class="line">}</div></div><!-- fragment --> <dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../d3/d9c/blink_2app_8c-example.html#a5">blink/app.c</a>, <a class="el" href="../../df/dbb/diradv_example_2app_8c-example.html#a29">diradv_example/app.c</a>, and <a class="el" href="../../d5/dc2/scheduler_example_2app_8c-example.html#a10">scheduler_example/app.c</a>.</dd>
+<p>Example on use: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div><div class="line">{</div><div class="line">    ...</div><div class="line">    <span class="comment">// Set up LED GPIO</span></div><div class="line">    <a class="code" href="../../db/da0/led_8h.html#a040c02c99d35c3ee1fe6ae56bd8a8646">Led_init</a>();</div><div class="line">    ...</div><div class="line">}</div></div><!-- fragment --> <dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../d3/d9c/blink_2app_8c-example.html#a6">blink/app.c</a>, <a class="el" href="../../df/dbb/diradv_example_2app_8c-example.html#a29">diradv_example/app.c</a>, and <a class="el" href="../../d5/dc2/scheduler_example_2app_8c-example.html#a10">scheduler_example/app.c</a>.</dd>
 </dl>
 </div>
 </div>
@@ -185,7 +187,7 @@ Enumerations</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if successful, false otherwise </dd></dl>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../d3/d9c/blink_2app_8c-example.html#a0">blink/app.c</a>, and <a class="el" href="../../df/dbb/diradv_example_2app_8c-example.html#a16">diradv_example/app.c</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../d3/d9c/blink_2app_8c-example.html#a1">blink/app.c</a>, and <a class="el" href="../../df/dbb/diradv_example_2app_8c-example.html#a16">diradv_example/app.c</a>.</dd>
 </dl>
 </div>
 </div>
@@ -251,7 +253,7 @@ Enumerations</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_4cee3ed2fe28b98d73407141cfd215dc.html">mcu</a></li><li class="navelem"><a class="el" href="../../dir_6cf55800a80cb7b7dd1fbbea9cea607d.html">hal_api</a></li><li class="navelem"><a class="el" href="../../db/da0/led_8h.html">led.h</a></li>
-    <li class="footer">Generated on Fri Mar 20 2020 11:53:36 for Wirepas Single-MCU SDK by
+    <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

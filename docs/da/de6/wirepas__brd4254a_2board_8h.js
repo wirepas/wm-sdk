@@ -1,5 +1,6 @@
 var wirepas__brd4254a_2board_8h =
 [
+    [ "BOARD_LED_ACTIVE_LOW", "da/de6/wirepas__brd4254a_2board_8h.html#a43341ad5e17bb5d20c1e528bce7d6133", null ],
     [ "BOARD_LED_PIN_LIST", "da/de6/wirepas__brd4254a_2board_8h.html#a8eefc53de69e1aea7376f76b67c6052a", null ],
     [ "BOARD_UART_INT_PIN", "da/de6/wirepas__brd4254a_2board_8h.html#ac311553d1163d408f5e9e0981b21d222", null ],
     [ "BOARD_UART_INT_PORT", "da/de6/wirepas__brd4254a_2board_8h.html#aca8fcd9d16228b415f8158d08dfa416e", null ],

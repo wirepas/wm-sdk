@@ -29,8 +29,11 @@
 #define BOARD_UART_INT_PIN              8
 #define BOARD_UART_INT_PORT             GPIOD
 
-// Led mapping  (LED0 = PF4, LED1 = PF5)
+// List of GPIO ports and pins for the LEDs on the board: LED1, LED2
 #define BOARD_LED_PIN_LIST {{GPIOF, 4}, {GPIOF, 5}}
+
+// Active high polarity for LEDs
+#define BOARD_LED_ACTIVE_LOW false
 
 /**
  *    Connector  +  Pin   +   EFR32_port_pin

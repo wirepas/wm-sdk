@@ -98,14 +98,17 @@ Macros</h2></td></tr>
 <tr class="memitem:a86821c228bc6ae6867d9a724553e8ecc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d6b/nrf52__template_2board_8h.html#a86821c228bc6ae6867d9a724553e8ecc">BOARD_UART_IRQ_PIN</a>&#160;&#160;&#160;11</td></tr>
 <tr class="memdesc:a86821c228bc6ae6867d9a724553e8ecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt pin for dual mcu app, unread indication.  <a href="#a86821c228bc6ae6867d9a724553e8ecc">More...</a><br /></td></tr>
 <tr class="separator:a86821c228bc6ae6867d9a724553e8ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8eefc53de69e1aea7376f76b67c6052a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d6b/nrf52__template_2board_8h.html#a8eefc53de69e1aea7376f76b67c6052a">BOARD_LED_PIN_LIST</a>&#160;&#160;&#160;{17, 18, 19,20}</td></tr>
+<tr class="memitem:a8eefc53de69e1aea7376f76b67c6052a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d6b/nrf52__template_2board_8h.html#a8eefc53de69e1aea7376f76b67c6052a">BOARD_LED_PIN_LIST</a>&#160;&#160;&#160;{17, 18, 19, 20}</td></tr>
 <tr class="memdesc:a8eefc53de69e1aea7376f76b67c6052a"><td class="mdescLeft">&#160;</td><td class="mdescRight">LED definitions.  <a href="#a8eefc53de69e1aea7376f76b67c6052a">More...</a><br /></td></tr>
 <tr class="separator:a8eefc53de69e1aea7376f76b67c6052a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43341ad5e17bb5d20c1e528bce7d6133"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d6b/nrf52__template_2board_8h.html#a43341ad5e17bb5d20c1e528bce7d6133">BOARD_LED_ACTIVE_LOW</a>&#160;&#160;&#160;true</td></tr>
+<tr class="memdesc:a43341ad5e17bb5d20c1e528bce7d6133"><td class="mdescLeft">&#160;</td><td class="mdescRight">LED GPIO polarity.  <a href="#a43341ad5e17bb5d20c1e528bce7d6133">More...</a><br /></td></tr>
+<tr class="separator:a43341ad5e17bb5d20c1e528bce7d6133"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac206a3fdd4723341044664ddbf85f6d3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d6b/nrf52__template_2board_8h.html#ac206a3fdd4723341044664ddbf85f6d3">BOARD_BUTTON_PIN_LIST</a>&#160;&#160;&#160;{13, 14, 15, 16}</td></tr>
 <tr class="memdesc:ac206a3fdd4723341044664ddbf85f6d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Button definitions.  <a href="#ac206a3fdd4723341044664ddbf85f6d3">More...</a><br /></td></tr>
 <tr class="separator:ac206a3fdd4723341044664ddbf85f6d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22dc8bf341319e58e0377f0a58770d71"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d6b/nrf52__template_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71">BOARD_BUTTON_ACTIVE_LOW</a>&#160;&#160;&#160;true</td></tr>
-<tr class="memdesc:a22dc8bf341319e58e0377f0a58770d71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Button polarity.  <a href="#a22dc8bf341319e58e0377f0a58770d71">More...</a><br /></td></tr>
+<tr class="memdesc:a22dc8bf341319e58e0377f0a58770d71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Button GPIO polarity.  <a href="#a22dc8bf341319e58e0377f0a58770d71">More...</a><br /></td></tr>
 <tr class="separator:a22dc8bf341319e58e0377f0a58770d71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fdc2f8cf1af139317a899ae118066f8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d6b/nrf52__template_2board_8h.html#a0fdc2f8cf1af139317a899ae118066f8">BOARD_SUPPORT_DCDC</a></td></tr>
 <tr class="memdesc:a0fdc2f8cf1af139317a899ae118066f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This configuration tells that board contains DCDC converter to be used.  <a href="#a0fdc2f8cf1af139317a899ae118066f8">More...</a><br /></td></tr>
@@ -124,9 +127,10 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Button polarity. </p>
+<p>Button GPIO polarity. </p>
+<p>If a button press pulls the GPIO pin low, this setting is true. This is the case for many nRF52 boards, such as the PCA10040 and PCA10056. Otherwise, if a button press pulls the GPIO pin high, this setting should be set to false. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html#l00074">74</a> of file <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html">board.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html#l00093">93</a> of file <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html">board.h</a>.</p>
 
 </div>
 </div>
@@ -143,8 +147,28 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Button definitions. </p>
-<p>When defined, application using buttons may use the board. For Nordic nRF52 family, buttons are defined simply by the GPIO numbers.</p>
+<p>Any buttons present on the board are defined here. If not defined, a dummy button driver is compiled, so that applications can use the button driver unconditionally.</p>
+<p>For Nordic nRF52 family, buttons are defined simply by the GPIO numbers.</p>
 <dl class="section note"><dt>Note</dt><dd>in order for application to use buttons, see <a class="el" href="../../d3/d03/sdk_file_structure.html#source_makefile_hal_button">here</a>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html#l00084">84</a> of file <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html">board.h</a>.</p>
+
+</div>
+</div>
+<a id="a43341ad5e17bb5d20c1e528bce7d6133"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43341ad5e17bb5d20c1e528bce7d6133">&#9670;&nbsp;</a></span>BOARD_LED_ACTIVE_LOW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BOARD_LED_ACTIVE_LOW&#160;&#160;&#160;true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>LED GPIO polarity. </p>
+<p>If LEDs turn on when the GPIO pin is driven low, this setting is true. This is the case for many nRF52 boards, such as the PCA10040 and PCA10056. Otherwise, if a LED is lit when the the GPIO pin is driven high, this setting should be set to false. </p>
 
 <p class="definition">Definition at line <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html#l00070">70</a> of file <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html">board.h</a>.</p>
 
@@ -157,17 +181,17 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define BOARD_LED_PIN_LIST&#160;&#160;&#160;{17, 18, 19,20}</td>
+          <td class="memname">#define BOARD_LED_PIN_LIST&#160;&#160;&#160;{17, 18, 19, 20}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>LED definitions. </p>
-<p>If board contains LEDs, they are defined here. When defined, application using LEDs may use the board.</p>
+<p>If board contains LEDs, they are defined here. If not defined, a dummy LED driver is compiled, so that applications can use the LED driver unconditionally.</p>
 <p>For Nordic nRF52 family, LEDs are defined as list of GPIO pin numbers</p>
 <dl class="section note"><dt>Note</dt><dd>in order for application to use LEDs, see <a class="el" href="../../d3/d03/sdk_file_structure.html#source_makefile_hal_led">here</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html#l00059">59</a> of file <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html">board.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html#l00060">60</a> of file <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html">board.h</a>.</p>
 
 </div>
 </div>
@@ -185,7 +209,7 @@ Macros</h2></td></tr>
 
 <p>This configuration tells that board contains DCDC converter to be used. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html#l00080">80</a> of file <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html">board.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html#l00099">99</a> of file <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html">board.h</a>.</p>
 
 </div>
 </div>
@@ -288,7 +312,7 @@ Macros</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_7149141a7e3af1ee95dfb0598e371427.html">board</a></li><li class="navelem"><a class="el" href="../../dir_d250184db4365b7023f85e220349d418.html">nrf52_template</a></li><li class="navelem"><a class="el" href="../../db/d6b/nrf52__template_2board_8h.html">board.h</a></li>
-    <li class="footer">Generated on Fri Mar 20 2020 11:53:36 for Wirepas Single-MCU SDK by
+    <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

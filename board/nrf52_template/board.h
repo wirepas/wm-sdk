@@ -48,28 +48,47 @@
 /**
  * @brief   LED definitions
  *
- * If board contains LEDs, they are defined here. When defined, application
- * using LEDs may use the board.
+ * If board contains LEDs, they are defined here. If not defined, a dummy
+ * LED driver is compiled, so that applications can use the LED driver
+ * unconditionally.
  *
  * For Nordic nRF52 family, LEDs are defined as list of GPIO pin numbers
  *
  * @note in order for application to use LEDs, see @ref source_makefile_hal_led
  * "here".
  */
-#define BOARD_LED_PIN_LIST {17, 18, 19,20}
+#define BOARD_LED_PIN_LIST {17, 18, 19, 20}
+
+/**
+ * @brief   LED GPIO polarity
+ *
+ * If LEDs turn on when the GPIO pin is driven low, this setting is true. This
+ * is the case for many nRF52 boards, such as the PCA10040 and PCA10056.
+ * Otherwise, if a LED is lit when the the GPIO pin is driven high, this
+ * setting should be set to false.
+ */
+#define BOARD_LED_ACTIVE_LOW true
 
 /**
  * @brief Button definitions
  *
- * When defined, application using buttons may use the board.
+ * Any buttons present on the board are defined here. If not defined, a dummy
+ * button driver is compiled, so that applications can use the button driver
+ * unconditionally.
+*
  * For Nordic nRF52 family, buttons are defined simply by the GPIO numbers.
  *
  * @note in order for application to use buttons, see @ref
  * source_makefile_hal_button "here".
  */
 #define BOARD_BUTTON_PIN_LIST {13, 14, 15, 16}
+
 /**
- * @brief Button polarity
+ * @brief   Button GPIO polarity
+ *
+ * If a button press pulls the GPIO pin low, this setting is true. This is the
+ * case for many nRF52 boards, such as the PCA10040 and PCA10056. Otherwise, if
+ * a button press pulls the GPIO pin high, this setting should be set to false.
  */
 #define BOARD_BUTTON_ACTIVE_LOW true
 
