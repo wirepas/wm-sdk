@@ -59,6 +59,20 @@
 // For further information about Silicon Labs Kit board pin configuration see:
 // UG265: EFR32FG12 2400/868 MHz 10 dBm Wireless Starter Kit User's Guide
 
+// List of GPIO ports and pins for the LEDs on the board: LED0, LED1
+#define BOARD_LED_PIN_LIST {{GPIOF, 4}, {GPIOF, 5}}
+
+// Active high polarity for LEDs
+#define BOARD_LED_ACTIVE_LOW false
+
+// List of ext. ints, GPIO ports and pins for buttons on the board: PB0, PB1
+#define BOARD_BUTTON_PIN_LIST {{4, GPIOF, 6}, {6, GPIOF, 7}}
+
+// Active low polarity for buttons
+#define BOARD_BUTTON_ACTIVE_LOW true
+
+// Buttons use even external interrupts
+#define BOARD_BUTTON_USE_EVEN_INT true
 
 
 #endif /* BOARD_SILABSEFR32KIT_BOARD_H_ */

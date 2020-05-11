@@ -44,5 +44,20 @@
 #define BOARD_UART_INT_PIN              6
 #define BOARD_UART_INT_PORT             GPIOF
 
+// List of GPIO ports and pins for the LEDs on the board: red LED, green LED
+#define BOARD_LED_PIN_LIST              {{GPIOD, 8}, {GPIOD, 9}}
+
+// Active high polarity for LEDs
+#define BOARD_LED_ACTIVE_LOW            false
+
+// List of ext. ints, GPIO ports and pins for buttons on the board: BTN0, BTN1
+#define BOARD_BUTTON_PIN_LIST           {{12, GPIOD, 14}, {14, GPIOD, 15}}
+
+// Active low polarity for buttons
+#define BOARD_BUTTON_ACTIVE_LOW         true
+
+// Buttons use even external interrupts
+#define BOARD_BUTTON_USE_EVEN_INT       true
+
 
 #endif /* BOARD_TBSENSE2_BOARD_H_ */

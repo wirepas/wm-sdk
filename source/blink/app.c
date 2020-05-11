@@ -14,6 +14,7 @@
 #include "api.h"
 #include "node_configuration.h"
 #include "led.h"
+#include "button.h"
 
 
 /** Duration between timer callbacks */
@@ -23,34 +24,80 @@
 /** Time spent in timer callback */
 #define EXECUTION_TIME_US   100
 
-/** LED number to blink */
-#define LED_NUMBER          0
-
-/** LED state for blinking */
-static bool led_state = false;
+/** Let the blinking of LEDs be held off for a short time */
+static uint32_t blink_holdoff;
 
 /**
  * \brief   Function that is called periodically by the stack
+ *
+ * This function toggles the LEDs once per second.
  *
  * System library function registerPeriodicWork() is used to
  * set up the first call to this function in App_init().
  */
 static uint32_t blink_func(void)
 {
-    // Toggle LED state
-    if (led_state)
+    static uint32_t counter = 0;
+
+    if (blink_holdoff > 0)
     {
-        led_state = false;
+        blink_holdoff--;
     }
     else
     {
-        led_state = true;
+        // Toggle all LEDs
+        uint32_t bits = counter;
+        uint_fast8_t num_leds = Led_getNumber();
+        for (uint_fast8_t led_id = 0; led_id < num_leds; led_id++)
+        {
+            Led_set(led_id, bits & 1);
+            bits >>= 1;
+        }
+
+        counter++;
     }
 
-    // Led_toggle could be used instead (it is just an example)
-    Led_set(LED_NUMBER, led_state);
-
     return CALLBACK_PERIOD_US;
+}
+
+/**
+ * \brief   Callback for button press
+ * \param   button_id
+ *          Number of button that was pressed
+ * \param   event
+ *          Always BUTTON_PRESSED here
+ *
+ * This function is called when a button is pressed down.
+ */
+static void button_press_func(uint8_t button_id, button_event_e event)
+{
+    (void) event;
+
+    // Stop LED blinking for five seconds
+    blink_holdoff = 5;
+
+    // Turn LED on
+    Led_set(button_id, true);
+}
+
+/**
+ * \brief   Callback for button release
+ * \param   button_id
+ *          Number of button that was released
+ * \param   event
+ *          Always BUTTON_RELEASED here
+ *
+ * This function is called when a button is released.
+ */
+static void button_release_func(uint8_t button_id, button_event_e event)
+{
+    (void) event;
+
+    // Stop LED blinking for five seconds
+    blink_holdoff = 5;
+
+    // Turn LED off
+    Led_set(button_id, false);
 }
 
 /**
@@ -72,17 +119,26 @@ void App_init(const app_global_functions_t * functions)
         return;
     }
 
-    // Set up LED GPIO
+    // Set up LEDs
     Led_init();
 
-    // Turn on LED initially
-    blink_func();
+    // Set up buttons
+    Button_init();
+    uint_fast8_t num_buttons = Button_get_number();
+    for (uint_fast8_t button_id = 0; button_id < num_buttons; button_id++)
+    {
+        Button_register_for_event(button_id,
+                                  BUTTON_PRESSED,
+                                  button_press_func);
+        Button_register_for_event(button_id,
+                                  BUTTON_RELEASED,
+                                  button_release_func);
+    }
 
-    // Set the periodic callback to be called by the
-    // stack after CALLBACK_PERIOD_US microseconds
-    lib_system->setPeriodicCb(blink_func,
-                              CALLBACK_PERIOD_US,
-                              EXECUTION_TIME_US);
+    // Set the blink callback to be called
+    // immediately after the stack is started
+    blink_holdoff = 0;
+    lib_system->setPeriodicCb(blink_func, 0, EXECUTION_TIME_US);
 
     // Start the stack
     lib_state->startStack();
