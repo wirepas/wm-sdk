@@ -1,8 +1,8 @@
 #exclude licensed wirepas binaries
-image/
+image/*
 
 #but include the README still
-!image/readme.txt
+!image/readme.md
 
 #exclude license acceptance
 .license_accepted
