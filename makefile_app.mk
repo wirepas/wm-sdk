@@ -41,7 +41,7 @@ INCLUDES += -I$(WP_LIB_PATH)
 #
 SRCS += $(APP_SRCS_PATH)app.c $(MCU_COMMON_SRCS_PATH)start.c
 ASM_SRCS += $(MCU_COMMON_SRCS_PATH)entrypoint.s
-INCLUDES += -I$(API_PATH) -I$(APP_SRCS_PATH)include -I$(UTIL_PATH)
+INCLUDES += -iquote$(API_PATH) -I$(APP_SRCS_PATH)include -I$(UTIL_PATH)
 
 # Objects list
 OBJS_ = $(SRCS:.c=.o) $(ASM_SRCS:.s=.o)
