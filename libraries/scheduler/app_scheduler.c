@@ -9,15 +9,6 @@
 #include <string.h>
 
 /**
- *  Time needed to execute the scheduler in us
- *  It must be set to the longest execution time of tasks
- */
-#ifndef APP_SCHEDULER_MAX_EXEC_TIME_US
-// Must be defined from application
-#error "Please define APP_SCHEDULER_MAX_EXEC_TIME_US from your application makefile"
-#endif
-
-/**
  * Maximum periodic task that can be registered at the same time
  * It is application specific
  */
@@ -26,23 +17,34 @@
 #error "Please define APP_SCHEDULER_MAX_TASKS from your application makefile"
 #endif
 
+#define APP_SCHEDULER_ALL_TASKS (APP_SCHEDULER_LIBRARY_TASKS + APP_SCHEDULER_MAX_TASKS)
+
 /**
  * Maximum time in ms for periodic work  to be scheduled due to internal
  * stack maximum delay comparison (~30 minutes). Computed in init function
  */
 static uint32_t m_max_time_ms;
 
+/** Measured time on nrf52 (13us) */
+#define EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US    20
+
 /** Structure of a task */
 typedef struct
 {
-    task_cb_f                           func;
-    app_lib_time_timestamp_coarse_t     next_ts;
-    bool                                updated;
+    task_cb_f                           func; /* Cb of this task */
+    app_lib_time_timestamp_coarse_t     next_ts; /* When is the next execution */
+    uint32_t                            exec_time_us; /* Time needed for execution */
+    bool                                updated; /* Updated in IRQ context? */
 } task_t;
 
-
 /**  List of tasks */
-static task_t m_tasks[APP_SCHEDULER_MAX_TASKS];
+static task_t m_tasks[APP_SCHEDULER_ALL_TASKS];
+
+/** Next task to be executed */
+static task_t * m_next_task_p;
+
+/** Forward declaration */
+static uint32_t periodic_work(void);
 
 /**
  * \brief   Get a coarse timestamp in future
@@ -90,55 +92,40 @@ static app_lib_time_timestamp_coarse_t get_timestamp(uint32_t ms)
 }
 
 /**
- * \brief   Execute the first ready task
+ * \brief   Execute the selected task if time to do it
  */
-static void perform_single_task()
+static void perform_task(task_t * task)
 {
-    app_lib_time_timestamp_coarse_t now = lib_time->getTimestampCoarse();
-    task_t * task = NULL;
-    task_cb_f current_cb = NULL;
+    task_cb_f task_cb = NULL;
     uint32_t next = APP_SCHEDULER_STOP_TASK;
-
-    Sys_enterCriticalSection();
-    for (uint8_t i = 0; i < APP_SCHEDULER_MAX_TASKS; i++)
-    {
-        if (m_tasks[i].func != NULL &&
-            Util_isGtOrEqUint32(now, m_tasks[i].next_ts))
-        {
-            // We have a task to execute
-            task = &m_tasks[i];
-            break;
-        }
-    }
-
-    if (task != NULL)
-    {
-        task->updated = false;
-        // Save cb to intermediate var to avoid NPE
-        current_cb = task->func;
-    }
-    Sys_exitCriticalSection();
 
     if (task == NULL)
     {
-        // Same test as above but outside of critical section
-        // Nothing to execute
+        // There is an issue, no next task
         return;
     }
 
-    // Execute the task selected
-    next = current_cb();
+    // Needed to know if the task was updated during the cb execution
+    task->updated = false;
 
+    task_cb = task->func;
+    if (task_cb == NULL)
+    {
+        return;
+    }
+    // Execute the task selected
+    next = task_cb();
+
+    // Update its next execution time
     Sys_enterCriticalSection();
     if (!task->updated)
     {
-        // Task was not modified from IRQ during execution
-        // so we can safely update task.
+        // Task was not modified from IRQ or task itself during execution
+        // so we can safely update task
         if (next == APP_SCHEDULER_STOP_TASK)
         {
-            // Task doesn't have to be executed again and
-            // not rescheduled from an IRQ, so safe
-            // to release it
+            // Task doesn't have to be executed again
+            // so safe to release it
             task->func = NULL;
         }
         else
@@ -151,25 +138,64 @@ static void perform_single_task()
 }
 
 /**
- * \brief   Get the next coarse timestamp for execution
- * \return  Next execution timestamp
+ * \brief   Update the next task for execution
  */
-static app_lib_time_timestamp_coarse_t compute_next_execution()
+static task_t * get_next_task()
 {
-    // Initialize next schedule to maximum time without scheduling
-    app_lib_time_timestamp_coarse_t next = get_timestamp(m_max_time_ms);
-
-    for (uint8_t i = 0; i < APP_SCHEDULER_MAX_TASKS; i++)
+    task_t * next = NULL;
+    for (uint8_t i = 0; i < APP_SCHEDULER_ALL_TASKS; i++)
     {
-        if (m_tasks[i].func != NULL &&
-            Util_isLtUint32(m_tasks[i].next_ts, next))
+        if (m_tasks[i].func != NULL)
         {
-            // Update next
-            next = m_tasks[i].next_ts;
+            if (next == NULL
+                || Util_isLtUint32(m_tasks[i].next_ts, next->next_ts))
+            {
+                // First task found or task is before the elected one
+                next = &m_tasks[i];
+            }
         }
     }
 
     return next;
+}
+
+/**
+ * \brief   Schedule the next selected task
+ * \param   task
+ *          Selected task
+ * \note    Handle the case where task is too far in future
+ */
+static void schedule_task(task_t * task)
+{
+    app_lib_time_timestamp_coarse_t now, next;
+    uint32_t delay_ms, exec_time_us;
+
+    // Check if task is not too far in future for periodic work
+    next = get_timestamp(m_max_time_ms);
+    exec_time_us = EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US;
+    if (Util_isLtUint32(task->next_ts, next))
+    {
+        next = task->next_ts;
+        // Add extra time for scheduler itself
+        exec_time_us = task->exec_time_us + EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US;
+    }
+
+    now = lib_time->getTimestampCoarse();
+    // Convert it to ms delay
+    if (Util_isGtUint32(next, now))
+    {
+        delay_ms = ((next - now) * 1000) / 128;
+    }
+    else
+    {
+        // Task is already ready, schedule ASAP
+        delay_ms = 0;
+    }
+
+    // Re-configure periodic task to update next execution/
+    lib_system->setPeriodicCb(periodic_work,
+                              delay_ms * 1000,
+                              exec_time_us);
 }
 
 /**
@@ -178,32 +204,39 @@ static app_lib_time_timestamp_coarse_t compute_next_execution()
  */
 static uint32_t periodic_work(void)
 {
-    app_lib_time_timestamp_coarse_t next, now;
-    uint32_t delay_ms;
+    app_lib_time_timestamp_coarse_t now;
 
     now = lib_time->getTimestampCoarse();
-
-    // Execute one task
-    perform_single_task();
-
-    // Compute next timestamp time in coarse value
-    next = compute_next_execution();
-
-    // Convert it to ms delay
-    if (Util_isGtUint32(next, now))
+    // Is it time to execute selected task?
+    if (m_next_task_p != NULL
+        && Util_isGtOrEqUint32(now, m_next_task_p->next_ts))
     {
-        delay_ms = ((next - now) * 1000) / 128;
-    }
-    else
-    {
-        // Another task is ready, schedule ASAP
-        delay_ms = 0;
+        // A task is ready
+        perform_task(m_next_task_p);
     }
 
-    // Return time in us
-    return delay_ms * 1000;
+    // Update next task
+    m_next_task_p = get_next_task();
+    if (m_next_task_p != NULL)
+    {
+        // Update periodic work according to next task
+        schedule_task(m_next_task_p);
+    }
+
+    // Return time: it is only valid if schedule_task was not called.
+    // schedule_task calls setPeriodicCb that will set the next execution time
+    // instead of this return value per design (if setPeriodicWork is called
+    // from periodic work, or from interrupt while a periodic work is executed
+    // it takes the ownership of periodic work)
+    return APP_LIB_SYSTEM_STOP_PERIODIC;
 }
 
+/**
+ * \brief   Add task to task table
+ * \param   task_p
+ *          task to add
+ * \return  true if task was correctly added
+ */
 static bool add_task_to_table(task_t * task_p)
 {
     bool res = false;
@@ -211,7 +244,7 @@ static bool add_task_to_table(task_t * task_p)
 
     // Under critical section to avoid writing the same task
     Sys_enterCriticalSection();
-    for (uint8_t i = 0; i < APP_SCHEDULER_MAX_TASKS; i++)
+    for (uint8_t i = 0; i < APP_SCHEDULER_ALL_TASKS; i++)
     {
         // First check if task already exist
         if (m_tasks[i].func == task_p->func)
@@ -223,7 +256,7 @@ static bool add_task_to_table(task_t * task_p)
             break;
         }
 
-        // Check for first free room in case task is not founded
+        // Check for first free room in case task is not found
         if (m_tasks[i].func == NULL && first_free == NULL)
         {
             first_free = &m_tasks[i];
@@ -240,63 +273,86 @@ static bool add_task_to_table(task_t * task_p)
     return res;
 }
 
-static bool remove_task_from_table(task_cb_f cb)
+/**
+ * \brief   Remove task to task table
+ * \param   cb
+ *          cb associated to the task
+ * \return  Pointer to the removed task
+ */
+static task_t * remove_task_from_table(task_cb_f cb)
 {
-    bool res = false;
+    task_t * removed_task = NULL;
 
     Sys_enterCriticalSection();
-    for (uint8_t i = 0; i < APP_SCHEDULER_MAX_TASKS; i++)
+    for (uint8_t i = 0; i < APP_SCHEDULER_ALL_TASKS; i++)
     {
         if (m_tasks[i].func == cb)
         {
             m_tasks[i].func = NULL;
             m_tasks[i].updated = true;
-            res = true;
+            removed_task = &m_tasks[i];
             break;
         }
     }
 
     Sys_exitCriticalSection();
 
-    return res;
+    return removed_task;
 }
 
-/**
- * Initialization of scheduler
- */
 void App_Scheduler_init()
 {
     // Maximum time to postpone the periodic work
     m_max_time_ms = lib_time->getMaxHpDelay() / 1000;
+    m_next_task_p = NULL;
 
-    for (uint8_t i = 0; i < APP_SCHEDULER_MAX_TASKS; i++)
+    for (uint8_t i = 0; i < APP_SCHEDULER_ALL_TASKS; i++)
     {
         m_tasks[i].func = NULL;
     }
 }
 
-app_scheduler_res_e App_Scheduler_addTask(task_cb_f cb, uint32_t delay_ms)
+app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb,
+                                                   uint32_t delay_ms,
+                                                   uint32_t exec_time_us)
 {
     task_t new_task;
     new_task.func = cb;
     new_task.next_ts = get_timestamp(delay_ms);
+    new_task.exec_time_us = exec_time_us;
 
     if (!add_task_to_table(&new_task))
     {
         return APP_SCHEDULER_RES_NO_MORE_TASK;
     }
 
-    // Re-Schedule periodic task asap to update next execution
-    lib_system->setPeriodicCb(periodic_work,
-                              0,
-                              APP_SCHEDULER_MAX_EXEC_TIME_US);
+    // Check if next task must be updated
+    if (m_next_task_p == NULL || Util_isLtUint32(new_task.next_ts, m_next_task_p->next_ts))
+    {
+        // Call our periodic work to update the next task ASAP
+        // with short exec time as no task will be executed
+        m_next_task_p = NULL;
+        lib_system->setPeriodicCb(periodic_work,
+                                  0,
+                                  EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US);
+    }
     return APP_SCHEDULER_RES_OK;
 }
 
 app_scheduler_res_e App_Scheduler_cancelTask(task_cb_f cb)
 {
-    if (remove_task_from_table(cb))
+    task_t * removed_task = remove_task_from_table(cb);
+    if (removed_task != NULL)
     {
+        if (removed_task == m_next_task_p)
+        {
+            // Call our periodic work to update the next task ASAP
+            // with short exec time as no task will be executed
+            m_next_task_p = NULL;
+            lib_system->setPeriodicCb(periodic_work,
+                                      0,
+                                      EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US);
+        }
         return APP_SCHEDULER_RES_OK;
     }
     else

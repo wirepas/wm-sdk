@@ -21,4 +21,6 @@ HAL_LED=yes
 # Use App Scheduler and configure it
 APP_SCHEDULER=yes
 CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=4
-CFLAGS += -DAPP_SCHEDULER_MAX_EXEC_TIME_US=100
+
+# Uncomment to enable print
+#APP_PRINTING=no
