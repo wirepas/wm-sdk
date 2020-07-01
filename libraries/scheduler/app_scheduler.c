@@ -28,11 +28,20 @@ static uint32_t m_max_time_ms;
 /** Measured time on nrf52 (13us) */
 #define EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US    20
 
+typedef struct
+{
+    union {
+        app_lib_time_timestamp_coarse_t coarse;
+        app_lib_time_timestamp_hp_t     hp;
+    };
+    bool is_hp;
+} timestamp_t;
+
 /** Structure of a task */
 typedef struct
 {
     task_cb_f                           func; /* Cb of this task */
-    app_lib_time_timestamp_coarse_t     next_ts; /* When is the next execution */
+    timestamp_t                         next_ts;/* When is the next execution */
     uint32_t                            exec_time_us; /* Time needed for execution */
     bool                                updated; /* Updated in IRQ context? */
 } task_t;
@@ -48,47 +57,120 @@ static uint32_t periodic_work(void);
 
 /**
  * \brief   Get a coarse timestamp in future
+ * \param   ts_p
+ *          Pointer to the timstamp to update
  * \param   ms
  *          In how many ms is the timestamp in future
- * \return  The computed coarse timestamp
- * \note    Timestamp is rounded up. Ie, 1 ms is 1 coarse period
- *          in future
  */
-static app_lib_time_timestamp_coarse_t get_timestamp(uint32_t ms)
+static void get_timestamp(timestamp_t * ts_p, uint32_t ms)
 {
-    app_lib_time_timestamp_coarse_t ts;
-
-    // Initialize timestamp to now
-    ts = lib_time->getTimestampCoarse();
-
-    // Handle the case of ms being > 2^25
-    // to avoid overflow when multiplication by 128 (2^7)
-    // Using uint64_t cast was an option also at the cost of
-    // including additional linked library in final image to
-    // handle uin64_t arithmetic
-    if ((ms >> 25) != 0)
+    if (ms < m_max_time_ms)
     {
-        uint32_t delay_high;
-        // Keep only the highest bits
-        delay_high = ms & 0xfe000000;
-
-        // Safe to first divide the delay
-        ts += ((delay_high / 1000) * 128);
-
-        // Remove highest bits
-        ms &= 0x01ffffff;
+        // Delay is short enough to use hp timestamp
+        ts_p->is_hp = true;
+        ts_p->hp = lib_time->addUsToHpTimestamp(
+                            lib_time->getTimestampHp(),
+                            ms * 1000);
     }
-
-    ts += ((ms * 128) / 1000);
-
-    // Ceil the value to upper boundary
-    // (so in 1ms => ~7.8ms)
-    if ((ms * 128) % 1000)
+    else
     {
-        ts +=1;
-    }
+        ts_p->is_hp = false;
 
-    return ts;
+        app_lib_time_timestamp_coarse_t coarse;
+
+        // Initialize timestamp to now
+        coarse = lib_time->getTimestampCoarse();
+
+        // Handle the case of ms being > 2^25
+        // to avoid overflow when multiplication by 128 (2^7)
+        // Using uint64_t cast was an option also at the cost of
+        // including additional linked library in final image to
+        // handle uin64_t arithmetic
+        if ((ms >> 25) != 0)
+        {
+            uint32_t delay_high;
+            // Keep only the highest bits
+            delay_high = ms & 0xfe000000;
+
+            // Safe to first divide the delay
+            coarse += ((delay_high / 1000) * 128);
+
+            // Remove highest bits
+            ms &= 0x01ffffff;
+        }
+
+        coarse += ((ms * 128) / 1000);
+
+        // Ceil the value to upper boundary
+        // (so in 1ms => ~7.8ms)
+        if ((ms * 128) % 1000)
+        {
+            coarse +=1;
+        }
+
+        ts_p->coarse = coarse;
+    }
+}
+
+/**
+ * \brief   Get the delay in us relative to now for a timestamp
+ * \param   ts_p
+ *          Pointer to timestamp to evaluate
+ * \return  Delay from now to the timestamp in us, or 0 if timestamp
+ *          is in the past already
+ */
+static uint32_t get_delay_from_now_us(timestamp_t * ts_p)
+{
+    if (ts_p->is_hp)
+    {
+        app_lib_time_timestamp_hp_t now_hp = lib_time->getTimestampHp();
+        if (lib_time->isHpTimestampBefore(ts_p->hp, now_hp))
+        {
+            //Timestamp is already in the past, so 0 delay
+            return 0;
+        }
+
+        return lib_time->getTimeDiffUs(now_hp, ts_p->hp);
+    }
+    else
+    {
+        app_lib_time_timestamp_coarse_t now_coarse = lib_time->getTimestampCoarse();
+        if (Util_isLtUint32(ts_p->coarse, now_coarse))
+        {
+            // Coarse timestamp is already in the past, so 0 delay
+            return 0;
+        }
+
+        return (((ts_p->coarse - now_coarse) * 1000) / 128) * 1000;
+    }
+}
+
+/**
+ * \brief   Check if a timestamp is before another one
+ * \param   ts1_p
+ *          Pointer to first timestamp
+ * \param   ts2_p
+ *          Pointer to second timestamp
+ * \return  True if ts1 is before ts2
+ */
+static bool is_timestamp_before(timestamp_t * ts1_p, timestamp_t * ts2_p)
+{
+    if (ts1_p->is_hp && ts2_p->is_hp)
+    {
+        // Both timestamps are hp
+        return lib_time->isHpTimestampBefore(ts1_p->hp, ts2_p->hp);
+    }
+    else if (!ts1_p->is_hp && !ts2_p->is_hp)
+    {
+        // Both timestamps are coarse
+        return Util_isLtUint32(ts1_p->coarse, ts2_p->coarse);
+    }
+    else
+    {
+        // To compare a coarse and hp timestamp, we must compute the delay
+        // relative to now for both and compare it
+        return get_delay_from_now_us(ts1_p) < get_delay_from_now_us(ts2_p);
+    }
 }
 
 /**
@@ -131,7 +213,7 @@ static void perform_task(task_t * task)
         else
         {
             // Compute next execution time
-            task->next_ts = get_timestamp(next);
+             get_timestamp(&task->next_ts, next);
         }
     }
     Sys_exitCriticalSection();
@@ -148,7 +230,7 @@ static task_t * get_next_task()
         if (m_tasks[i].func != NULL)
         {
             if (next == NULL
-                || Util_isLtUint32(m_tasks[i].next_ts, next->next_ts))
+                || is_timestamp_before(&m_tasks[i].next_ts, &next->next_ts))
             {
                 // First task found or task is before the elected one
                 next = &m_tasks[i];
@@ -167,34 +249,27 @@ static task_t * get_next_task()
  */
 static void schedule_task(task_t * task)
 {
-    app_lib_time_timestamp_coarse_t now, next;
-    uint32_t delay_ms, exec_time_us;
+    timestamp_t next;
+    uint32_t delay_us;
+    uint32_t exec_time_us = EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US;
 
-    // Check if task is not too far in future for periodic work
-    next = get_timestamp(m_max_time_ms);
-    exec_time_us = EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US;
-    if (Util_isLtUint32(task->next_ts, next))
+    // Initialize next scheduling timestamp to max allowed value by
+    // periodic work
+    get_timestamp(&next, m_max_time_ms);
+
+    if (is_timestamp_before(&task->next_ts, &next))
     {
+        // Next task is in allowed range
         next = task->next_ts;
         // Add extra time for scheduler itself
         exec_time_us = task->exec_time_us + EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US;
     }
 
-    now = lib_time->getTimestampCoarse();
-    // Convert it to ms delay
-    if (Util_isGtUint32(next, now))
-    {
-        delay_ms = ((next - now) * 1000) / 128;
-    }
-    else
-    {
-        // Task is already ready, schedule ASAP
-        delay_ms = 0;
-    }
+    delay_us = get_delay_from_now_us(&next);
 
     // Re-configure periodic task to update next execution/
     lib_system->setPeriodicCb(periodic_work,
-                              delay_ms * 1000,
+                              delay_us,
                               exec_time_us);
 }
 
@@ -204,12 +279,9 @@ static void schedule_task(task_t * task)
  */
 static uint32_t periodic_work(void)
 {
-    app_lib_time_timestamp_coarse_t now;
-
-    now = lib_time->getTimestampCoarse();
     // Is it time to execute selected task?
     if (m_next_task_p != NULL
-        && Util_isGtOrEqUint32(now, m_next_task_p->next_ts))
+        && get_delay_from_now_us(&m_next_task_p->next_ts) == 0)
     {
         // A task is ready
         perform_task(m_next_task_p);
@@ -318,7 +390,7 @@ app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb,
 {
     task_t new_task;
     new_task.func = cb;
-    new_task.next_ts = get_timestamp(delay_ms);
+    get_timestamp(&new_task.next_ts, delay_ms);
     new_task.exec_time_us = exec_time_us;
 
     if (!add_task_to_table(&new_task))
@@ -327,7 +399,8 @@ app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb,
     }
 
     // Check if next task must be updated
-    if (m_next_task_p == NULL || Util_isLtUint32(new_task.next_ts, m_next_task_p->next_ts))
+    if (m_next_task_p == NULL
+        || is_timestamp_before(&new_task.next_ts, &m_next_task_p->next_ts))
     {
         // Call our periodic work to update the next task ASAP
         // with short exec time as no task will be executed
