@@ -14,6 +14,7 @@
 #include "waps.h"
 #include "api.h"
 #include "waps/sap/multicast.h"
+#include "app_scheduler.h"
 
 #if defined(USE_FEM)
 #include "fem_driver.h"
@@ -62,6 +63,8 @@ void App_init(const app_global_functions_t * functions)
     // Open HAL
     HAL_Open();
 
+    // Initialize Scheduler
+    App_Scheduler_init();
 
     // Initialize IO's (enable clock and initialize pins)
     Io_init();

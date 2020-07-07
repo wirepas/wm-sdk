@@ -17,6 +17,7 @@
 #include "waps_uart.h"
 #include "board.h"
 #include "api.h"
+#include "app_scheduler.h"
 
 /**
  * \file    waps_usart_power.c
@@ -36,11 +37,19 @@ typedef enum
     USART_POWER_ON   /**< Usart is powered up */
 }usart_power_state_e;
 
-/** Default shutdown time after no characters received */
-#define USART_SHUTDOWN_TIME         100000
+/** Default shutdown time after no characters received on UART
+ *  It is a failsafe mechanism to be sure the uart doesn't stay
+ *  up forever but in theory, all bytes received should end up with
+ *  a valid frame reception that will shutdown the uart explicitly
+ *  100ms is quite huge but it is only a timeout
+ */
+#define USART_SHUTDOWN_TIMEOUT_MS         100
 
-// State of receiver (receiving / frame done)
-volatile bool                       m_keep_power_on;
+/** Exec time to shutdown uart. 100us is more than enough */
+#define USART_SHUTDOWN_EXEC_TIME_US       100
+
+/** \brief  Is autopower enabled? */
+static bool m_autopower_enabled = false;
 
 // Current state of receiver power-up
 static volatile usart_power_state_e m_power_on = USART_POWER_OFF;
@@ -55,6 +64,11 @@ static void                         uart_gpio_isr(void);
  */
 static void                         power_off(void);
 
+/**
+ * \brief   Task to be executed to disable uart
+ */
+static uint32_t                     shutdown_uart();
+
 void Waps_uart_AutoPowerOn(void)
 {
     Sys_enterCriticalSection();
@@ -65,6 +79,7 @@ void Waps_uart_AutoPowerOn(void)
     // Expecting falling edge
     Wakeup_setEdge(EXTI_IRQ_FALLING_EDGE);
     Wakeup_enableIrq();
+    m_autopower_enabled = true;
     Sys_exitCriticalSection();
 }
 
@@ -75,51 +90,43 @@ void Waps_uart_AutoPowerOff(void)
     Wakeup_disableIrq();
     Wakeup_clearIrq();
     Wakeup_off();
+    m_autopower_enabled = false;
     Sys_exitCriticalSection();
 }
 
 void Waps_uart_keepPowerOn(void)
 {
+    if (!m_autopower_enabled)
+    {
+        // Nothing to do
+        return;
+    }
+
     // Inform us that UART power is to be kept on (receiving frame)
-    m_keep_power_on = true;
+    // Just in case UART was receiving garbage or incomplete frame,
+    // activate (or update) a task to automatically shutdown the uart
+    // later on. But the task should never be executed and uart automatically
+    // stopped once a valid frame is received.
+    App_Scheduler_addTask_execTime(shutdown_uart,
+                                   USART_SHUTDOWN_TIMEOUT_MS,
+                                   USART_SHUTDOWN_EXEC_TIME_US);
 }
 
 void Waps_uart_powerOff(void)
 {
-    // Valid frame received (can shut down UART now)
-    m_keep_power_on = false;
-}
+    if (!m_autopower_enabled)
+    {
+        // Nothing to do
+        return;
+    }
 
-uint32_t Waps_uart_powerExec(void)
-{
-    // Time to keep power on if no activity for a while
-    static uint32_t power_time;
-    uint32_t ret = APP_LIB_SYSTEM_STOP_PERIODIC;
-    Sys_enterCriticalSection();
-    if(m_power_on == USART_POWER_OFF)
-    {
-        // Already off
-        goto _exit;
-    }
-    uint32_t now = lib_time->getTimestampHp();
-    // How much time until shutdown
-    ret = lib_time->getTimeDiffUs(now, power_time);
-    if (m_keep_power_on)
-    {
-        // Start timed shutdown now
-        power_time = now;
-        m_keep_power_on = false;
-        ret = USART_SHUTDOWN_TIME;
-    }
-    else if (ret >= USART_SHUTDOWN_TIME)
-    {
-        // Time to power off
-        power_off();
-        ret = APP_LIB_SYSTEM_STOP_PERIODIC;
-    }
-_exit:
-    Sys_exitCriticalSection();
-    return ret;
+    // Valid frame received (can shut down UART now)
+    // No need to wait for timeout and shutdown uart immediately
+    // Stopping the uart could be done directly but let's schedule
+    // the task asap instead to be more symmetric
+    App_Scheduler_addTask_execTime(shutdown_uart,
+                                   APP_SCHEDULER_SCHEDULE_ASAP,
+                                   USART_SHUTDOWN_EXEC_TIME_US);
 }
 
 /** This function expects three preamble bytes, will not work otherwise */
@@ -132,7 +139,6 @@ static void uart_gpio_isr(void)
         /* Change sense direction and enable rising edge trigger */
         Wakeup_setEdge(EXTI_IRQ_RISING_EDGE);
         m_power_on = USART_POWER_UP;
-        m_keep_power_on = true;
         Sys_exitCriticalSection();
         // Rising edge comes very fast, may not be safe to enter deep sleep
         DS_Disable(DS_SOURCE_USART_POWER);
@@ -153,6 +159,13 @@ static void uart_gpio_isr(void)
         Wakeup_clearIrq();
         Wakeup_setEdge(EXTI_IRQ_FALLING_EDGE);
     }
+}
+
+static uint32_t shutdown_uart(void)
+{
+    // The delay without uart activity has elapsed
+    power_off();
+    return APP_SCHEDULER_STOP_TASK;
 }
 
 static void power_off(void)

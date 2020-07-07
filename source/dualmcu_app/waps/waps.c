@@ -20,9 +20,10 @@
 
 
 #include "api.h"
+#include "app_scheduler.h"
 
 /** Define safety margin for processing WAPS */
-#define WAPS_SAFETY_MARGIN  8000u
+#define WAPS_SAFETY_MARGIN_US  8000u
 
 /**
  * \brief   Waps_exec is the core of WAPS
@@ -62,12 +63,6 @@ static bool process_request(waps_item_t * item);
  *          Id to search for in indications
  */
 static waps_item_t * find_indication(uint8_t id);
-
-/**
- * \brief   Re-schedule WAPS task
- * \return  time (from now) to schedule next Waps_exec
- */
-static uint32_t reschedule_waps(void);
 
 /** WAPS internal message queues */
 sl_list_head_t              waps_ind_queue;
@@ -129,7 +124,15 @@ send_reply:
     // As sending reply might fail, must re-enter WAPS to attempt again
     Waps_prot_sendReply();
     // Re-schedule next
-    return reschedule_waps();
+    if(frames_pending())
+    {
+        // Not all is done wake us up, again
+        return APP_SCHEDULER_SCHEDULE_ASAP;
+    }
+    else
+    {
+        return APP_SCHEDULER_STOP_TASK;
+    }
 }
 
 void Waps_sinkUpdated(uint8_t seq, const uint8_t * config, uint16_t interval)
@@ -251,9 +254,7 @@ void wakeup_task(void)
     if(!signaled)
     {
         // Do this only once
-        lib_system->setPeriodicCb(Waps_exec,
-                                  0,
-                                  WAPS_SAFETY_MARGIN);
+        App_Scheduler_addTask_execTime(Waps_exec, 0, WAPS_SAFETY_MARGIN_US);
     }
 }
 
@@ -331,20 +332,4 @@ static waps_item_t * find_indication(uint8_t id)
         }
     }
     return item;
-}
-
-// Centralized re-scheduling of the next Waps_exec
-static uint32_t reschedule_waps(void)
-{
-    // Multitasking of power manager
-    uint32_t next_time = Waps_prot_powerTask();
-    // See if there is more to do
-    if(frames_pending())
-    {
-        // Not all is done: return 0 (wake us up, again)
-        next_time = 0;
-    }
-
-
-    return next_time;
 }

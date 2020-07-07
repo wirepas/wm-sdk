@@ -26,7 +26,6 @@ typedef struct
     bool                                (*process_response)(waps_item_t *);
     void                                (*update_irq)(bool);
     void                                (*flush_hw)(void);
-    uint32_t                            (*power_task)(void);
 }waps_prot_t;
 
 extern waps_prot_t                      waps_prot;
@@ -38,7 +37,6 @@ extern waps_prot_t                      waps_prot;
 #define Waps_prot_processResponse(x)    waps_prot.process_response(item)
 #define Waps_prot_updateIrq(x)          waps_prot.update_irq(x)
 #define Waps_prot_flush_hw()            waps_prot.flush_hw();
-#define Waps_prot_powerTask()           waps_prot.power_task();
 
 void Waps_force_send_indication();
 

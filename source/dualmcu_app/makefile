@@ -18,3 +18,7 @@ uart_fc ?= false
 
 CFLAGS += -DUART_BAUDRATE=$(uart_br)
 CFLAGS += -DUART_FLOWCONTROL=$(uart_fc)
+
+# Use App Scheduler and configure it
+APP_SCHEDULER=yes
+CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=2

@@ -65,7 +65,6 @@ void Waps_prot_init(waps_request_receive_f cb)
             waps_prot.flush_hw = Waps_uart_flush;
             waps_prot.frame_removed = Waps_protUart_frameRemoved;
             waps_prot.process_response = Waps_protUart_processResponse;
-            waps_prot.power_task = Waps_uart_powerExec;
             break;
         default:
             break;
