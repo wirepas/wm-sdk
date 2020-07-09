@@ -18,7 +18,7 @@
 #define WAPS_MIN_ITEMS          15
 #elif defined NRF52
 // Optimize RAM consumption for test-library.
-#if defined TEST_LIB_SUPPORT || defined USE_SEGGER_RTT
+#ifdef USE_SEGGER_RTT
 #define WAPS_MIN_ITEMS          30
 #else
 #define WAPS_MIN_ITEMS          32

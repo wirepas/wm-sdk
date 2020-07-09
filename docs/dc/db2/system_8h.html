@@ -546,7 +546,7 @@ Macros</h2></td></tr>
 <p>Parameter <code>initial_delay_us</code> is the amount of time to wait, in microseconds, before calling the callback. If set to zero, the callback is called immediately whenever there is enough time. Parameter <code>execution_time_us</code> tells the stack what is the longest amount of time the function call is expected to take, in microseconds. The stack will then schedule the callback to the next available slot that has enough time. If the callback overruns its allocated time slot and returns late, the protocol timing is compromised.</p>
 <p>Returns <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a3003711bc2e65045853433dacc324767">APP_RES_INVALID_VALUE</a> if execution_time_us is greater than 100000 (100 ms). Otherwise, returns <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>.</p>
 <p>Because of limited range of return value (32 bits) and the internal comparison made by the scheduler, the maximum delay before being scheduled cannot be higher than the value returned by the <a class="el" href="../../de/df7/time_8h.html#a4334a4edf34ae798d7029ddab92ba84d">lib_time-&gt;getMaxHpDelay()</a> service (This value is around 30 minutes).</p>
-<p>For more information on scheduling, see <a class="el" href="../../d7/d28/application_operation.html#cooperative_mcu_access">Cooperative MCU Access</a>.</p>
+<p>For more information on scheduling, see <a class="el" href="../../d8/d63/cooperative_mcu_access.html">Cooperative MCU Access</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">work_cb</td><td>The function to be executed, or NULL to unset </td></tr>
@@ -558,7 +558,7 @@ Macros</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if successful, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a3003711bc2e65045853433dacc324767">APP_RES_INVALID_VALUE</a> if <code>execution_time_us</code> is too high </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>When the callback returns <a class="el" href="../../dc/db2/system_8h.html#a0b580da45d85ae46ec76d485ef9bc406">APP_LIB_SYSTEM_STOP_PERIODIC</a>, it will not be called again </dd>
 <dd>
-Unlike most services, this service is safe to be used from <a class="el" href="../../d7/d28/application_operation.html#fast_interrupt">fast interrupt execution context</a> </dd></dl>
+Unlike most services, this service is safe to be used from <a class="el" href="../../dc/de4/fast_interrupt.html">fast interrupt execution context</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../dc/db2/system_8h_source.html#l00269">269</a> of file <a class="el" href="../../dc/db2/system_8h_source.html">system.h</a>.</p>
 
@@ -609,7 +609,7 @@ Unlike most services, this service is safe to be used from <a class="el" href=".
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result code, always <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>The callback will be called once after returning from <a class="el" href="../../de/d7a/how_to_develop.html#app_init">App_init()</a> and then each time after an enabled interrupt handler is run, until the stack is started in the callback </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The callback will be called once after returning from <a class="el" href="../../dc/dc0/app_init.html">App_init()</a> and then each time after an enabled interrupt handler is run, until the stack is started in the callback </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../dc/db2/system_8h_source.html#l00217">217</a> of file <a class="el" href="../../dc/db2/system_8h_source.html">system.h</a>.</p>
 

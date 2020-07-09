@@ -14,7 +14,7 @@
 #include "button.h"
 #include "node_configuration.h"
 #include "app_scheduler.h"
-#include "shared_libdata.h"
+#include "shared_data.h"
 #include "provisioning.h"
 #include "storage.h"
 
@@ -158,7 +158,7 @@ void App_init(const app_global_functions_t * functions)
     LOG(LVL_DEBUG, "  - net ch:    %d", net_channel);
 
     App_Scheduler_init();
-    Shared_LibData_init();
+    Shared_Data_init();
 
     Button_init();
     Button_register_for_event(0, BUTTON_PRESSED, button_0_cb);

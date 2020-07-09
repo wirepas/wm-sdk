@@ -15,7 +15,6 @@ $(STACK_HEX): FORCE
 				--mac_profile=$(mac_profile)\
 				--mac_profileid=$(mac_profileid)\
 				--radio=$(radio)\
-				--support_test=$(test_library)\
 				--version=$(stack_version)
 
 .PHONY: all

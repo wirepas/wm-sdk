@@ -15,14 +15,30 @@ crucial point like the minimal steps to follow in the initialization of
 an application and will give some practical guidance to correctly write
 an application.
 
-@section licensing Pre-requirements
+This page contains following sections:
+- @subpage licensing
+- @subpage development_of_a_new_application
+- @subpage build_application
+- @subpage test_application
+- @subpage flashing_device
+- @subpage using_otap
+- @subpage define_custom_board
+- @subpage app_init
+- @subpage adding_new_source_files_to_the_application
+- @subpage recommendations
+
+@page licensing Pre-requirements
 
 In order to develop the software with SDK, you need to have a license for
 Wirepas Mesh. Then, you have access to the firmware image according to your
 architecture. If you don't have a license,
 <a href="https://wirepas.com/contact/">contact Wirepas sales</a>.
 
-@subsection debugging Debugging
+This page contains following sections:
+- @subpage debugging
+- @subpage firmware_linking
+
+@page debugging Debugging
 
 In order to debug the devices with JTAG debugger, you need to use <I>
 unprotected bootloader</I>. Whereas normal licensed Wirepas Mesh has JTAG
@@ -34,19 +50,25 @@ development. If you don't yet have an access to unlocked bootloader,
 @note It is forbidden to install devices with unprotected bootloader in public
 areas!
 
-@subsection firmware_linking Installing firmware image
+@page firmware_linking Installing firmware image
 
 If you have licensed Wirepas Mesh, you have access to the firmware image. In
 order to link that with the SDK, you have to unzip the firmware delivery to
 <code>@ref image_folder "image/"</code> folder.
 
-@section development_of_a_new_application Create new application
+@page development_of_a_new_application Create new application
 
 In this chapter we will create a new application named <code>new_app</code>.
 
 It describes the initial steps to start writing a new application.
 
-@subsection copy_of_an_application_example Copy of an application example
+This page contains following sections:
+- @subpage copy_of_an_application_example
+- @subpage change_default_network_address_and_channel
+- @subpage change_of_app_area_id
+- @subpage configuration_of_a_node
+
+@page copy_of_an_application_example Copy of an application example
 
 The provided SDK contains several @ref source_folder "example applications".
 They can be used as a starting point (Here, @ref custom_app/app.c "custom_app"
@@ -59,7 +81,7 @@ from <code>source/</code> folder can be used as a starting point.
 To start developing the new application, copy folder <code>custom_app</code> to
 a new folder named <code>new_app</code> in <code>source/</code> directory.
 
-@subsection change_default_network_address_and_channel Change default network
+@page change_default_network_address_and_channel Change default network
 address and channel
 
 To form a network, all nodes must share the same network address and
@@ -88,7 +110,7 @@ respectively:
     CFLAGS += -DNETWORK_CHANNEL=$(default_network_channel)
 @endcode
 
-@subsection change_of_app_area_id Change of app_area_id
+@page change_of_app_area_id Change of app_area_id
 
 It is mandatory to have unique @ref app_specific_area_id "app_area_id" in order
 to update specific application independently on other applications. Thus,
@@ -100,7 +122,7 @@ new arbitrary area id specific for this application:
     app_specific_area_id=0x8054AA
 @endcode
 
-@subsection configuration_of_a_node Configuration of a node
+@page configuration_of_a_node Configuration of a node
 
 The \ref app_init "App_Init()" function is the entry point for the application.
 It is called by the stack after each boot.
@@ -175,7 +197,7 @@ app_init "App_Init()" after the update.
 More general information about node configuration can be found in @ref relmat4
 "[4]".
 
-@section build_application Build application
+@page build_application Build application
 
 Building is done in root of the SDK file structure. It is done by calling the
 <code> @ref makefile "makefile"</code>. There can be many options for building but
@@ -192,7 +214,7 @@ For detailed information on build process, see @ref build "here".
 @note Many times the application must be built on custom hardware, not yet
 having board definition. See documentation @ref define_custom_board "here".
 
-@section test_application Test application
+@page test_application Test application
 
 To practically test the application, a minimum of two boards is needed. One of
 them must be configured as a @ref APP_LIB_SETTINGS_ROLE_SINK "sink" and the
@@ -208,7 +230,7 @@ is assumed that it is not the case.
 To program the sink, application <code>@ref dualmcu_app/app.c "dualmcu_app"
 </code> can be flashed and then configured by using Wirepas Terminal.
 
-@section flashing_device Flashing device
+@page flashing_device Flashing device
 
 Now when application has been compiled, next step is to program that to the
 device. The generated binary is located in following path (based on the <code>
@@ -223,7 +245,7 @@ build/pca10040/new_app/final_image_new_app.hex
 
 To flash the image to the device, see @ref flashing_guideline "here".
 
-@section using_otap Using OTAP
+@page using_otap Using OTAP
 
 When network is established, it is no longer feasible to flash every device.
 Instead, OTAP (over-the-air-programming) operation can be used. For a detailed
@@ -246,7 +268,7 @@ build/pca10040/new_app/new_app.otap
 build/pca10040/new_app/new_app_wpc_stack.otap
 @endcode
 
-@section define_custom_board Define custom board definition
+@page define_custom_board Define custom board definition
 
 Many times application requires custom board definition when application is
 intended to be executed on board not defined in existing board definitions.
@@ -262,7 +284,7 @@ To implement new board, check out the documentation of @ref board_folder
 "board definitions" and modify existing board template (according to processor
 architecture).
 
-@section app_init Application startup
+@page app_init Application startup
 
 The Wirepas Mesh Single-MCU SDK low-level initialization code sets up the
 application environment to run C code. The low-level setup is outside the scope
@@ -287,7 +309,7 @@ The stack is not yet running when <code>App_init()</code> is called.
 Depending on the stored settings and stack state, the stack may start right
 after returning from <code>App_init()</code>.
 
-@section adding_new_source_files_to_the_application Adding new source files
+@page adding_new_source_files_to_the_application Adding new source files
 
 For better code readability and organization, the application can be
 split in to multiple source files. Adding a new source file is as simple
@@ -308,18 +330,25 @@ paths to check for header files. Any additional folders can be added to
 the <code>@ref source_makefile_includes "INCLUDES"</code> variable in the
 application <code>@ref source_makefile "makefile"</code>.
 
-@section recommendations Recommendations
+@page recommendations Recommendations
 
 This chapter contains various recommendations and best practices to use
 with application development.
 
-@subsection security_for_scratchpad_images Security for scratchpad images
+This page contains following sections:
+- @subpage security_for_scratchpad_images
+- @subpage optimization_of_network_throughput
+- @subpage free_resources
+- @subpage power_consumption
+- @subpage persistent_memory
+
+@page security_for_scratchpad_images Security for scratchpad images
 
 All released SDK have the same default scratchpad encryption keys (known by all
 users), so these keys cannot be considered secure. Therefore, it is recommended
 to change them. See documentation @ref config_mk_ini_file "here".
 
-@subsection optimization_of_network_throughput Optimization of throughput
+@page optimization_of_network_throughput Optimization of throughput
 
 The throughput of a Wirepas Connectivity network is expressed in packet
 per seconds. To optimize this throughput, it is important to fill the
@@ -329,7 +358,7 @@ It is even more important when operating in time-slotted mode. The network
 will handle the same number of packets independently of its payload
 size.
 
-@subsection free_resources Free resources
+@page free_resources Free resources
 
 All hardware resources that are not used by the Wirepas Connectivity
 stack can be used freely by the application.
@@ -341,7 +370,7 @@ For example, unused GPIOs must be properly configured by the
 application, to avoid unnecessary power consumption due to pull-up or
 pull-down resistors.
 
-@subsection power_consumption Power consumption
+@page power_consumption Power consumption
 
 The Wirepas Connectivity stack will try to enter the deepest possible
 sleep state of the platform, to optimize power consumption.
@@ -353,14 +382,19 @@ the stack to prevent entering the deep sleep state.
 Please see the \ref app_lib_system_disable_deep_sleep
 "lib_system->disableDeepSleep()" function in the \ref system.h "System library".
 
-@subsection persistent_memory How to store data in persistent memory
+@page persistent_memory How to store data in persistent memory
 
 It is often necessary to store data from an application to persistent memory
 in order to still have access to it across reboots of the node.
 The different methods to achieve it and their pros and cons are described in this
 section.
 
-@subsubsection storage_library Using storage library
+This page contains following sections:
+- @subpage storage_library
+- @subpage platform_specific_storage
+- @subpage dedicated_area
+
+@page storage_library Using storage library
 
 Wirepas Mesh Stack uses reserved areas for its own usage in internal flash.
 To avoid reserving too much flash, this area is kept as small as possible.
@@ -379,7 +413,7 @@ handle.
      -# It cannot be pre-flashed before first execution
      -# Application must manage validity of the content (with magic number for example)
 
-@subsubsection platform_specific_storage Using platform specific storage
+@page platform_specific_storage Using platform specific storage
 
 Most of the platforms supported by Wirepas have their own specific persistent area to
 store persistent data.
@@ -401,7 +435,7 @@ For NRF52 users, Wirepas developed a wrapper to use it. You can find it @ref per
      @note It is done with the Wirepas wrapper for NRF52.
 
 
-@subsubsection dedicated_area Using a dedicated area in flash
+@page dedicated_area Using a dedicated area in flash
 
 The internal flash is partitioned in multiple areas. Some of these areas are used for Wirepas usage
 like the bootloader or the firmware that cannot be moved.

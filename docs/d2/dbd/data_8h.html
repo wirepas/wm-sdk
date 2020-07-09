@@ -109,7 +109,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:a602aad54057eaa2a5afb26888e9b1298"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data sent tracking callback.  <a href="#a602aad54057eaa2a5afb26888e9b1298">More...</a><br /></td></tr>
 <tr class="separator:a602aad54057eaa2a5afb26888e9b1298"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcc8bb343266f3fc98d25590ed9a66a6"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80">app_res_e</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dbd/data_8h.html#abcc8bb343266f3fc98d25590ed9a66a6">app_lib_data_set_new_app_config_cb_f</a>) (<a class="el" href="../../d2/dbd/data_8h.html#aca1298154f7a3d7be77c64ca602639ed">app_lib_data_new_app_config_cb_f</a> cb)</td></tr>
-<tr class="memdesc:abcc8bb343266f3fc98d25590ed9a66a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the callback function to be called when new <a class="el" href="../../d5/df0/concepts.html#appconfig">app config data</a> is received.  <a href="#abcc8bb343266f3fc98d25590ed9a66a6">More...</a><br /></td></tr>
+<tr class="memdesc:abcc8bb343266f3fc98d25590ed9a66a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the callback function to be called when new <a class="el" href="../../d5/dd5/appconfig.html">app config data</a> is received.  <a href="#abcc8bb343266f3fc98d25590ed9a66a6">More...</a><br /></td></tr>
 <tr class="separator:abcc8bb343266f3fc98d25590ed9a66a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cefa4eedd71e2cce843f12f96881c51"><td class="memItemLeft" align="right" valign="top">typedef size_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dbd/data_8h.html#a2cefa4eedd71e2cce843f12f96881c51">app_lib_data_get_data_max_num_bytes_f</a>) (void)</td></tr>
 <tr class="memdesc:a2cefa4eedd71e2cce843f12f96881c51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the maximum number of bytes per data packet.  <a href="#a2cefa4eedd71e2cce843f12f96881c51">More...</a><br /></td></tr>
@@ -127,13 +127,13 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:abb2289fea975f61fe189f4310578c0df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow or block reception The application may temporarily tell the stack to not call the reception data reception callbacks (set with services <a class="el" href="../../d2/dbd/data_8h.html#a108548eef01aa6b4e3db667ef3c1c780">lib_data-&gt;setDataReceivedCb()</a> and <a class="el" href="../../d2/dbd/data_8h.html#a108548eef01aa6b4e3db667ef3c1c780">lib_data-&gt;setBcastDataReceivedCb()</a>), if an external interface is not responding, for example. The stack will then keep the received packets in its internal buffers until reception is allowed again.  <a href="#abb2289fea975f61fe189f4310578c0df">More...</a><br /></td></tr>
 <tr class="separator:abb2289fea975f61fe189f4310578c0df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96f7b21d1f7992439c9526b3a4d27530"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="../../d2/dbd/data_8h.html#af4e3fdf65e16c2dc9ae1aa415d541bb5">app_lib_data_app_config_res_e</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dbd/data_8h.html#a96f7b21d1f7992439c9526b3a4d27530">app_lib_data_read_app_config_f</a>) (uint8_t *bytes, uint8_t *seq, uint16_t *interval)</td></tr>
-<tr class="memdesc:a96f7b21d1f7992439c9526b3a4d27530"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read <a class="el" href="../../d5/df0/concepts.html#appconfig">app config</a>.  <a href="#a96f7b21d1f7992439c9526b3a4d27530">More...</a><br /></td></tr>
+<tr class="memdesc:a96f7b21d1f7992439c9526b3a4d27530"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read <a class="el" href="../../d5/dd5/appconfig.html">app config</a>.  <a href="#a96f7b21d1f7992439c9526b3a4d27530">More...</a><br /></td></tr>
 <tr class="separator:a96f7b21d1f7992439c9526b3a4d27530"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bf5c1ad44fb5c03ed5ed2625371e5f9"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="../../d2/dbd/data_8h.html#af4e3fdf65e16c2dc9ae1aa415d541bb5">app_lib_data_app_config_res_e</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dbd/data_8h.html#a9bf5c1ad44fb5c03ed5ed2625371e5f9">app_lib_data_write_app_config_f</a>) (const uint8_t *bytes, uint8_t seq, uint16_t interval)</td></tr>
-<tr class="memdesc:a9bf5c1ad44fb5c03ed5ed2625371e5f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write <a class="el" href="../../d5/df0/concepts.html#appconfig">app config</a>.  <a href="#a9bf5c1ad44fb5c03ed5ed2625371e5f9">More...</a><br /></td></tr>
+<tr class="memdesc:a9bf5c1ad44fb5c03ed5ed2625371e5f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write <a class="el" href="../../d5/dd5/appconfig.html">app config</a>.  <a href="#a9bf5c1ad44fb5c03ed5ed2625371e5f9">More...</a><br /></td></tr>
 <tr class="separator:a9bf5c1ad44fb5c03ed5ed2625371e5f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37af27daa2e4777b89b13f2f8440b8b9"><td class="memItemLeft" align="right" valign="top">typedef size_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dbd/data_8h.html#a37af27daa2e4777b89b13f2f8440b8b9">app_lib_data_get_app_config_num_bytes_f</a>) (void)</td></tr>
-<tr class="memdesc:a37af27daa2e4777b89b13f2f8440b8b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get size of <a class="el" href="../../d5/df0/concepts.html#appconfig">app config</a>.  <a href="#a37af27daa2e4777b89b13f2f8440b8b9">More...</a><br /></td></tr>
+<tr class="memdesc:a37af27daa2e4777b89b13f2f8440b8b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get size of <a class="el" href="../../d5/dd5/appconfig.html">app config</a>.  <a href="#a37af27daa2e4777b89b13f2f8440b8b9">More...</a><br /></td></tr>
 <tr class="separator:a37af27daa2e4777b89b13f2f8440b8b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c836eac2cb4cfc2df204f3c5dd51e81"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80">app_res_e</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dbd/data_8h.html#a3c836eac2cb4cfc2df204f3c5dd51e81">app_lib_data_set_max_msg_queuing_time_f</a>) (<a class="el" href="../../d2/dbd/data_8h.html#aa03fbf2cdb28616e79aca69710c8b134">app_lib_data_qos_e</a> priority, uint16_t time)</td></tr>
 <tr class="memdesc:a3c836eac2cb4cfc2df204f3c5dd51e81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set maximum queuing time for messages.  <a href="#a3c836eac2cb4cfc2df204f3c5dd51e81">More...</a><br /></td></tr>
@@ -341,7 +341,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get size of <a class="el" href="../../d5/df0/concepts.html#appconfig">app config</a>. </p>
+<p>Get size of <a class="el" href="../../d5/dd5/appconfig.html">app config</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>App config size in bytes</dd></dl>
 <p>Example of use: </p><div class="fragment"><div class="line"><span class="keywordtype">size_t</span> app_config_size = lib_data-&gt;getAppConfigNumBytes();</div></div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="../../d2/dbd/data_8h_source.html#l00701">701</a> of file <a class="el" href="../../d2/dbd/data_8h_source.html">data.h</a>.</p>
@@ -482,7 +482,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Read <a class="el" href="../../d5/df0/concepts.html#appconfig">app config</a>. </p>
+<p>Read <a class="el" href="../../d5/dd5/appconfig.html">app config</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bytes</td><td>Pointer to a buffer for app config data </td></tr>
@@ -538,7 +538,7 @@ Macros</h2></td></tr>
 
 <p>Set data reception callback. </p>
 <p>Set the callback function to be called when new data is received. There are two distinct callbacks: one for receiving unicast data is data that is addressed directly to a specific node (calling <a class="el" href="../../d2/dbd/data_8h.html#a108548eef01aa6b4e3db667ef3c1c780">lib_data-&gt;setDataReceivedCb()</a>) and another one for receiving multicast and broadcasts (calling <a class="el" href="../../d2/dbd/data_8h.html#a108548eef01aa6b4e3db667ef3c1c780">lib_data-&gt;setBcastDataReceivedCb()</a>). If NULL is passed, the callback is disabled.</p>
-<p>Example on use. Application handles destination <a class="el" href="../../d5/df0/concepts.html#endpoint">endpoint</a> of 12 as incoming data and triggers temperature measurement. </p><div class="fragment"><div class="line"><span class="preprocessor">#define GET_TEMPERATURE_EP  12</span></div><div class="line"></div><div class="line"><span class="keyword">static</span> <a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554b">app_lib_data_receive_res_e</a> dataReceivedCb(</div><div class="line">    <span class="keyword">const</span> <a class="code" href="../../d2/dbd/data_8h.html#d7/df3/structapp__lib__data__received__t">app_lib_data_received_t</a> * data)</div><div class="line">{</div><div class="line">    <span class="keywordflow">if</span> (data-&gt;<a class="code" href="../../d2/dbd/data_8h.html#a0992896b3999455a300e8ba25c368ae8">dest_endpoint</a> == GET_TEMPERATURE_EP)</div><div class="line">    {</div><div class="line">        <span class="comment">//start_temperature_measurement();</span></div><div class="line">        <span class="keywordflow">return</span> <a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba5eb2a589b49f72b477f0cbf5deba552a">APP_LIB_DATA_RECEIVE_RES_HANDLED</a>;</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="keywordflow">return</span> <a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba982c231319cbb17347b7a0964988b855">APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP</a>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div><div class="line">{</div><div class="line">    <span class="comment">// Register for unicast, multicast &amp; broadcast messages</span></div><div class="line">    lib_data-&gt;setDataReceivedCb(dataReceivedCb);</div><div class="line">    lib_data-&gt;setBcastDataReceivedCb(dataReceivedCb);</div><div class="line"></div><div class="line">    <span class="comment">// Start the stack</span></div><div class="line">    lib_state-&gt;startStack();</div><div class="line">}</div></div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+<p>Example on use. Application handles destination <a class="el" href="../../d8/d3b/endpoint.html">endpoint</a> of 12 as incoming data and triggers temperature measurement. </p><div class="fragment"><div class="line"><span class="preprocessor">#define GET_TEMPERATURE_EP  12</span></div><div class="line"></div><div class="line"><span class="keyword">static</span> <a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554b">app_lib_data_receive_res_e</a> dataReceivedCb(</div><div class="line">    <span class="keyword">const</span> <a class="code" href="../../d2/dbd/data_8h.html#d7/df3/structapp__lib__data__received__t">app_lib_data_received_t</a> * data)</div><div class="line">{</div><div class="line">    <span class="keywordflow">if</span> (data-&gt;<a class="code" href="../../d2/dbd/data_8h.html#a0992896b3999455a300e8ba25c368ae8">dest_endpoint</a> == GET_TEMPERATURE_EP)</div><div class="line">    {</div><div class="line">        <span class="comment">//start_temperature_measurement();</span></div><div class="line">        <span class="keywordflow">return</span> <a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba5eb2a589b49f72b477f0cbf5deba552a">APP_LIB_DATA_RECEIVE_RES_HANDLED</a>;</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="keywordflow">return</span> <a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba982c231319cbb17347b7a0964988b855">APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP</a>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div><div class="line">{</div><div class="line">    <span class="comment">// Register for unicast, multicast &amp; broadcast messages</span></div><div class="line">    lib_data-&gt;setDataReceivedCb(dataReceivedCb);</div><div class="line">    lib_data-&gt;setBcastDataReceivedCb(dataReceivedCb);</div><div class="line"></div><div class="line">    <span class="comment">// Start the stack</span></div><div class="line">    lib_state-&gt;startStack();</div><div class="line">}</div></div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cb</td><td>The function to be executed, or NULL to unset </td></tr>
   </table>
@@ -615,7 +615,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set the callback function to be called when new <a class="el" href="../../d5/df0/concepts.html#appconfig">app config data</a> is received. </p>
+<p>Set the callback function to be called when new <a class="el" href="../../d5/dd5/appconfig.html">app config data</a> is received. </p>
 <p>Example: see example application <a class="el" href="../../dc/dfe/appconfig_app_2app_8c-example.html">appconfig_app</a></p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -663,7 +663,7 @@ In order for this to be activate, flag <a class="el" href="../../d2/dbd/data_8h.
       </table>
 </div><div class="memdoc">
 
-<p>Write <a class="el" href="../../d5/df0/concepts.html#appconfig">app config</a>. </p>
+<p>Write <a class="el" href="../../d5/dd5/appconfig.html">app config</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bytes</td><td>Pointer to app config data to write. The format can be decided by the application. </td></tr>
@@ -693,7 +693,7 @@ In order for this to be activate, flag <a class="el" href="../../d2/dbd/data_8h.
 </div><div class="memdoc">
 <div class="textblock"><p>Struct passed to data reception callback functions. </p>
 <p>This struct is passed to the data reception callback functions set with services <a class="el" href="../../d2/dbd/data_8h.html#a108548eef01aa6b4e3db667ef3c1c780">lib_data-&gt;setDataReceivedCb()</a> and <a class="el" href="../../d2/dbd/data_8h.html#a108548eef01aa6b4e3db667ef3c1c780">lib_data-&gt;setBcastDataReceivedCb()</a>. </p>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../d1/dac/basic_interrupt_2app_8c-example.html#_a16">basic_interrupt/app.c</a>, <a class="el" href="../../dc/d0e/ble_app_2app_8c-example.html#_a24">ble_app/app.c</a>, <a class="el" href="../../de/dc5/ble_beacon_2app_8c-example.html#_a2">ble_beacon/app.c</a>, <a class="el" href="../../db/d83/custom_app_2app_8c-example.html#_a14">custom_app/app.c</a>, <a class="el" href="../../df/d91/inventory_app_router_2app_8c-example.html#_a5">inventory_app_router/app.c</a>, <a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#_a12">inventory_app_tag/app.c</a>, <a class="el" href="../../d3/d31/pwm_driver_2app_8c-example.html#_a15">pwm_driver/app.c</a>, and <a class="el" href="../../d1/d47/shared_libdata_example_2app_8c-example.html#_a0">shared_libdata_example/app.c</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../d1/dac/basic_interrupt_2app_8c-example.html#_a16">basic_interrupt/app.c</a>, <a class="el" href="../../dc/d0e/ble_app_2app_8c-example.html#_a24">ble_app/app.c</a>, <a class="el" href="../../de/dc5/ble_beacon_2app_8c-example.html#_a2">ble_beacon/app.c</a>, <a class="el" href="../../db/d83/custom_app_2app_8c-example.html#_a14">custom_app/app.c</a>, <a class="el" href="../../df/d91/inventory_app_router_2app_8c-example.html#_a5">inventory_app_router/app.c</a>, <a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#_a12">inventory_app_tag/app.c</a>, <a class="el" href="../../d3/d31/pwm_driver_2app_8c-example.html#_a15">pwm_driver/app.c</a>, and <a class="el" href="../../d8/d03/shared_data_example_2app_8c-example.html#_a0">shared_data_example/app.c</a>.</dd>
 </dl>
 <p class="definition">Definition at line <a class="el" href="../../d2/dbd/data_8h_source.html#l00246">246</a> of file <a class="el" href="../../d2/dbd/data_8h_source.html">data.h</a>.</p>
 </div><table class="fieldtable">
@@ -724,7 +724,7 @@ dest_address</td>
 <td class="fieldname">
 dest_endpoint</td>
 <td class="fielddoc">
-<p>Destination <a class="el" href="../../d5/df0/concepts.html#endpoint">endpoint</a> of packet </p>
+<p>Destination <a class="el" href="../../d8/d3b/endpoint.html">endpoint</a> of packet </p>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="a2719bad26c6e7de2bc08439cea7111ce"></a>uint8_t</td>
@@ -773,7 +773,7 @@ src_address</td>
 <td class="fieldname">
 src_endpoint</td>
 <td class="fielddoc">
-<p>Source <a class="el" href="../../d5/df0/concepts.html#endpoint">endpoint</a> of packet </p>
+<p>Source <a class="el" href="../../d8/d3b/endpoint.html">endpoint</a> of packet </p>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="a72a96ade6a01c9bd107a0977b6a3059c"></a>int8_t</td>
@@ -798,7 +798,7 @@ tx_power</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock"><p>A struct for <a class="el" href="../../d2/dbd/data_8h.html#a9ae6095889898db72257eeca385eee7b">lib_data-&gt;sendData()</a>. </p>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../dc/dfe/appconfig_app_2app_8c-example.html#_a1">appconfig_app/app.c</a>, <a class="el" href="../../d1/dac/basic_interrupt_2app_8c-example.html#_a0">basic_interrupt/app.c</a>, <a class="el" href="../../dc/d0e/ble_app_2app_8c-example.html#_a2">ble_app/app.c</a>, <a class="el" href="../../de/dc5/ble_beacon_2app_8c-example.html#_a3">ble_beacon/app.c</a>, <a class="el" href="../../db/d1b/bme280_example_2app_8c-example.html#_a1">bme280_example/app.c</a>, <a class="el" href="../../db/d83/custom_app_2app_8c-example.html#_a0">custom_app/app.c</a>, <a class="el" href="../../df/dbb/diradv_example_2app_8c-example.html#_a0">diradv_example/app.c</a>, <a class="el" href="../../df/d91/inventory_app_router_2app_8c-example.html#_a15">inventory_app_router/app.c</a>, <a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#_a1">inventory_app_tag/app.c</a>, <a class="el" href="../../d3/d31/pwm_driver_2app_8c-example.html#_a0">pwm_driver/app.c</a>, <a class="el" href="../../da/d90/ruuvi_evk_2app_8c-example.html#_a12">ruuvi_evk/app.c</a>, and <a class="el" href="../../d1/d47/shared_libdata_example_2app_8c-example.html#_a11">shared_libdata_example/app.c</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../dc/dfe/appconfig_app_2app_8c-example.html#_a1">appconfig_app/app.c</a>, <a class="el" href="../../d1/dac/basic_interrupt_2app_8c-example.html#_a0">basic_interrupt/app.c</a>, <a class="el" href="../../dc/d0e/ble_app_2app_8c-example.html#_a2">ble_app/app.c</a>, <a class="el" href="../../de/dc5/ble_beacon_2app_8c-example.html#_a3">ble_beacon/app.c</a>, <a class="el" href="../../db/d1b/bme280_example_2app_8c-example.html#_a1">bme280_example/app.c</a>, <a class="el" href="../../db/d83/custom_app_2app_8c-example.html#_a0">custom_app/app.c</a>, <a class="el" href="../../df/dbb/diradv_example_2app_8c-example.html#_a0">diradv_example/app.c</a>, <a class="el" href="../../df/d91/inventory_app_router_2app_8c-example.html#_a15">inventory_app_router/app.c</a>, <a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#_a1">inventory_app_tag/app.c</a>, <a class="el" href="../../d3/d31/pwm_driver_2app_8c-example.html#_a0">pwm_driver/app.c</a>, <a class="el" href="../../da/d90/ruuvi_evk_2app_8c-example.html#_a12">ruuvi_evk/app.c</a>, and <a class="el" href="../../d8/d03/shared_data_example_2app_8c-example.html#_a14">shared_data_example/app.c</a>.</dd>
 </dl>
 <p class="definition">Definition at line <a class="el" href="../../d2/dbd/data_8h_source.html#l00286">286</a> of file <a class="el" href="../../d2/dbd/data_8h_source.html">data.h</a>.</p>
 </div><table class="fieldtable">
@@ -829,7 +829,7 @@ dest_address</td>
 <td class="fieldname">
 dest_endpoint</td>
 <td class="fielddoc">
-<p>Destination <a class="el" href="../../d5/df0/concepts.html#endpoint">endpoint</a> of packet </p>
+<p>Destination <a class="el" href="../../d8/d3b/endpoint.html">endpoint</a> of packet </p>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="aa2585d779da0ab21273a8d92de9a0ebe"></a>uint8_t</td>
@@ -864,7 +864,7 @@ qos</td>
 <td class="fieldname">
 src_endpoint</td>
 <td class="fielddoc">
-<p>Source <a class="el" href="../../d5/df0/concepts.html#endpoint">endpoint</a> of packet </p>
+<p>Source <a class="el" href="../../d8/d3b/endpoint.html">endpoint</a> of packet </p>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="a7f43082a8111a69a9189426ea4fb9987"></a><a class="el" href="../../d2/dbd/data_8h.html#a3a8535cade8b081cfee20f0f4b9b0e65">app_lib_data_tracking_id_t</a></td>
@@ -890,7 +890,7 @@ tracking_id</td>
 </div><div class="memdoc">
 <div class="textblock"><p>Struct to tracking callback function. </p>
 <p>This struct is passed to the tracking callback function (set with service <a class="el" href="../../d2/dbd/data_8h.html#ad4532c2af19fb5161fd44dd3d806be38">lib_data-&gt;setDataSentCb()</a>) when a packet is either sent or discarded. </p>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../df/dbb/diradv_example_2app_8c-example.html#_a17">diradv_example/app.c</a>, <a class="el" href="../../da/d1e/dualmcu_app_2app_8c-example.html#_a1">dualmcu_app/app.c</a>, <a class="el" href="../../df/d91/inventory_app_router_2app_8c-example.html#_a31">inventory_app_router/app.c</a>, <a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#_a7">inventory_app_tag/app.c</a>, <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#_a1">positioning_app/app.c</a>, and <a class="el" href="../../d1/d47/shared_libdata_example_2app_8c-example.html#_a3">shared_libdata_example/app.c</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../df/dbb/diradv_example_2app_8c-example.html#_a17">diradv_example/app.c</a>, <a class="el" href="../../da/d1e/dualmcu_app_2app_8c-example.html#_a0">dualmcu_app/app.c</a>, <a class="el" href="../../df/d91/inventory_app_router_2app_8c-example.html#_a31">inventory_app_router/app.c</a>, <a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#_a7">inventory_app_tag/app.c</a>, <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#_a1">positioning_app/app.c</a>, and <a class="el" href="../../d8/d03/shared_data_example_2app_8c-example.html#_a5">shared_data_example/app.c</a>.</dd>
 </dl>
 <p class="definition">Definition at line <a class="el" href="../../d2/dbd/data_8h_source.html#l00323">323</a> of file <a class="el" href="../../d2/dbd/data_8h_source.html">data.h</a>.</p>
 </div><table class="fieldtable">
@@ -907,7 +907,7 @@ dest_address</td>
 <td class="fieldname">
 dest_endpoint</td>
 <td class="fielddoc">
-<p>Destination <a class="el" href="../../d5/df0/concepts.html#endpoint">endpoint</a> of packet </p>
+<p>Destination <a class="el" href="../../d8/d3b/endpoint.html">endpoint</a> of packet </p>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="a39f101eb4be9d5ac0ec9ad59778252bf"></a>uint32_t</td>
@@ -921,7 +921,7 @@ queue_time</td>
 <td class="fieldname">
 src_endpoint</td>
 <td class="fielddoc">
-<p>Source <a class="el" href="../../d5/df0/concepts.html#endpoint">endpoint</a> of packet </p>
+<p>Source <a class="el" href="../../d8/d3b/endpoint.html">endpoint</a> of packet </p>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="a7960f9c558f9ee2c3d4a8fdea096fb56"></a>bool</td>
@@ -1220,7 +1220,7 @@ writeAppConfig</td>
 </td></tr>
 <tr><td class="fieldname"><a id="ab53b6510f8ecb4a1621c905c15855164ae41182cc2dfd9f1a9ebeb455665c2efb"></a>APP_LIB_DATA_SEND_RES_INVALID_TRACKING_ID&#160;</td><td class="fielddoc"><p>Tracking ID already in use or invalid ID </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ab53b6510f8ecb4a1621c905c15855164a16ff7dbaabef087694510f484c88d725"></a>APP_LIB_DATA_SEND_RES_RESERVED_ENDPOINT&#160;</td><td class="fielddoc"><p>Error: one of the <a class="el" href="../../d5/df0/concepts.html#endpoint">endpoints</a> is invalid, reserved for stack internal use </p>
+<tr><td class="fieldname"><a id="ab53b6510f8ecb4a1621c905c15855164a16ff7dbaabef087694510f484c88d725"></a>APP_LIB_DATA_SEND_RES_RESERVED_ENDPOINT&#160;</td><td class="fielddoc"><p>Error: one of the <a class="el" href="../../d8/d3b/endpoint.html">endpoints</a> is invalid, reserved for stack internal use </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ab53b6510f8ecb4a1621c905c15855164ad596c53ca64be97c5a4ea740c27cd2e8"></a>APP_LIB_DATA_SEND_RES_ACCESS_DENIED&#160;</td><td class="fielddoc"><p>Error: data sending is forbidden, either:</p><ul>
 <li>Disabled by feature lock bits</li>

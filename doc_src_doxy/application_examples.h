@@ -70,7 +70,7 @@ Application examples can be found @ref source_folder "here".
 /** @example scheduler_example/app.c
  */
 
-/** @example shared_libdata_example/app.c
+/** @example shared_data_example/app.c
  */
 
 /** @example test_app/app.c

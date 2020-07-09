@@ -26,8 +26,13 @@ static volatile ringbuffer_t            m_usart_tx_buffer;
 static volatile uint32_t                m_enabled;
 static volatile bool                    m_tx_active;
 
+#if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
 /** Enable or disable HW flow control */
 static void                             set_flow_control(bool hw);
+#endif
+
+/** Set uarte baudrate */
+static void                             set_baud(uint32_t baudrate);
 
 /** Declare the interrupt handler */
 void __attribute__((__interrupt__))     UART0_IRQHandler(void);
@@ -42,6 +47,20 @@ void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     nrf_gpio_cfg_default(BOARD_USART_RX_PIN);
     nrf_gpio_pin_set(BOARD_USART_RX_PIN);
 
+    /* Module variables */
+    m_enabled = false;
+    Ringbuffer_reset(m_usart_tx_buffer);
+    m_rx_callback = NULL;
+    m_tx_active = false;
+
+    /* GPIO init */
+    NRF_UART0->PSELTXD = BOARD_USART_TX_PIN;
+    NRF_UART0->PSELRXD = BOARD_USART_RX_PIN;
+    NRF_UART0->TASKS_STOPTX = 1;
+    NRF_UART0->TASKS_STOPRX = 1;
+    NRF_UART0->ENABLE = UART_ENABLE_ENABLE_Disabled;
+
+#if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
     //uart_cts_pin
     nrf_gpio_cfg_default(BOARD_USART_CTS_PIN);
     nrf_gpio_pin_set(BOARD_USART_CTS_PIN);
@@ -50,43 +69,12 @@ void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     nrf_gpio_cfg_default(BOARD_USART_RTS_PIN);
     nrf_gpio_pin_set(BOARD_USART_RTS_PIN);
 
-    m_enabled = false;
-    /* Module variables */
-    Ringbuffer_reset(m_usart_tx_buffer);
-    m_rx_callback = NULL;
-    m_tx_active = false;
-    /* GPIO init */
-    NRF_UART0->PSELTXD = BOARD_USART_TX_PIN;
-    NRF_UART0->PSELRXD = BOARD_USART_RX_PIN;
-    NRF_UART0->TASKS_STOPTX = 1;
-    NRF_UART0->TASKS_STOPRX = 1;
-    NRF_UART0->ENABLE = UART_ENABLE_ENABLE_Disabled;
-
     // Set flow control
     set_flow_control(flow_control == UART_FLOW_CONTROL_HW);
+#endif
 
-    /* Serial port init */
-    switch (baudrate)
-    {
-    case 115200:
-        NRF_UART0->BAUDRATE = (uint32_t)UART_BAUDRATE_BAUDRATE_Baud115200;
-        break;
-    case 125000:
-        /* UART_BAUDRATE_BAUDRATE_Baud125000 is not defined by Nordic */
-        NRF_UART0->BAUDRATE = (uint32_t) (0x02000000UL);
-        break;
-    case 250000:
-        NRF_UART0->BAUDRATE = (uint32_t)UART_BAUDRATE_BAUDRATE_Baud250000;
-        break;
-    case 460800:
-        NRF_UART0->BAUDRATE = (uint32_t)UART_BAUDRATE_BAUDRATE_Baud460800;
-        break;
-    case 1000000:
-        NRF_UART0->BAUDRATE = (uint32_t)UART_BAUDRATE_BAUDRATE_Baud1M;
-        break;
-    default:
-        break;
-    }
+    /* Uart speed */
+    set_baud(baudrate);
 
     NRF_UART0->EVENTS_RXDRDY = 0;
     NRF_UART0->EVENTS_TXDRDY = 0;
@@ -156,6 +144,8 @@ void Usart_receiverOff(void)
 bool Usart_setFlowControl(uart_flow_control_e flow)
 {
     bool ret = false;
+
+#if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
     Sys_enterCriticalSection();
     if (m_enabled == 0)
     {
@@ -174,6 +164,8 @@ bool Usart_setFlowControl(uart_flow_control_e flow)
         }
     }
     Sys_exitCriticalSection();
+#endif
+
     return ret;
 }
 
@@ -300,6 +292,7 @@ void __attribute__((__interrupt__)) UART0_IRQHandler(void)
     EVENT_READBACK = NRF_UART0->EVENTS_RXDRDY;
 }
 
+#if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
 static void set_flow_control(bool hw)
 {
     if (hw)
@@ -330,3 +323,30 @@ static void set_flow_control(bool hw)
         nrf_gpio_cfg_default(BOARD_USART_RTS_PIN);
     }
 }
+#endif
+
+static void set_baud(uint32_t baudrate)
+{
+    switch (baudrate)
+    {
+    case 115200:
+        NRF_UARTE0->BAUDRATE = (uint32_t)UARTE_BAUDRATE_BAUDRATE_Baud115200;
+        break;
+    case 125000:
+        // This value is not from official nrf52_bitfields.h
+        NRF_UARTE0->BAUDRATE = (uint32_t)(0x02000000UL);
+        break;
+    case 250000:
+        NRF_UART0->BAUDRATE = (uint32_t)UART_BAUDRATE_BAUDRATE_Baud250000;
+        break;
+    case 460800:
+        NRF_UART0->BAUDRATE = (uint32_t)UART_BAUDRATE_BAUDRATE_Baud460800;
+        break;
+    case 1000000:
+        NRF_UARTE0->BAUDRATE = (uint32_t)UARTE_BAUDRATE_BAUDRATE_Baud1M;
+        break;
+    default:
+        break;
+    }
+}
+

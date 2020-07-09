@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # firmware_selector.py - A tool to select the right Wirepas firmware depending on app/board config
@@ -157,12 +157,10 @@ def print_unprotected_bootloader():
     print(stars_line)
 
 
-def print_no_firmware_found(target_config, support_test):
+def print_no_firmware_found(target_config):
     print(stars_line)
     print(error_no_firmware_found)
     print("*        {}".format(target_config))
-    if support_test:
-        print("*        Firmware needs test library")
     print(stars_line)
 
 
@@ -230,10 +228,6 @@ def main():
     parser.add_argument("--mac_profileid", "-pid",
         help = "Target profile id (if relevant)",
         default = None)
-    parser.add_argument("--support_test", "-t",
-        help = "Target firmware need test lib",
-        type=str2bool,
-        default = False)
     parser.add_argument("--unlocked", "-u",
         help = "Unlocked version (only valid if type is wp_bootloader)",
         type=str2bool,
@@ -245,9 +239,6 @@ def main():
         # Do some sanity check on parameters and impossible combinations
         if args.unlocked and args.firmware_type == "wp_stack":
             raise ValueError("wp_stack cannot be unlocked only apply to wp_bootloader")
-
-        if args.support_test and args.firmware_type == "wp_bootloader":
-            raise ValueError("wp_bootloader cannot support test only apply to wp_bootloader")
 
         # Select right deliverable format
         if args.firmware_type == "wp_stack":
@@ -299,16 +290,6 @@ def main():
                 # Un-compatible with target config
                 continue
 
-            # Be sure app lib is present if needed
-            if args.support_test and not config.has_lib("test"):
-                # Require test but binary doesn't have it
-                continue
-
-            # Be sure test lib is not here if not needed
-            if not args.support_test and config.has_lib("test"):
-                # Do not require test but binary have it
-                continue
-
             possible_firmwares.append((conf, config))
 
         # Check result of the check
@@ -330,7 +311,7 @@ def main():
                 print_unprotected_bootloader()
 
         elif len(possible_firmwares) == 0:
-            print_no_firmware_found(target_config, args.support_test)
+            print_no_firmware_found(target_config)
             raise RuntimeError("No firmware found")
         else:
             print_multiple_firmware_found(target_config, possible_firmwares)

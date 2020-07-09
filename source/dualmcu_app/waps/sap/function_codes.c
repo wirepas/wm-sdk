@@ -21,12 +21,7 @@ static const uint8_t m_rsp[] = WAPS_RESPONSES;
 #define CNF_COUNT       (sizeof(m_cnf)/sizeof(m_cnf[0]))
 #define IND_COUNT       (sizeof(m_ind)/sizeof(m_ind[0]))
 #define RSP_COUNT       (sizeof(m_rsp)/sizeof(m_rsp[0]))
-// TEST_REG_SDK_ONLY_BEGIN
-#ifdef TEST_LIB_SUPPORT
-static const uint8_t m_tsap_req[] = TSAP_REQUESTS;
-#define TSAP_REQ_COUNT  (sizeof(m_tsap_req)/sizeof(m_tsap_req[0]))
-#endif
-// TEST_REG_SDK_ONLY_END
+
 /**
  * \brief   Helper function for finding an entry in an array
  * \param   array
@@ -64,24 +59,12 @@ bool WapsFunc_isCsapRequest(uint8_t func)
 {
     return find(m_csap_req, CSAP_REQ_COUNT, func);
 }
-// TEST_REG_SDK_ONLY_BEGIN
-#ifdef TEST_LIB_SUPPORT
-bool WapsFunc_isTsapRequest(uint8_t func)
-{
-    return find(m_tsap_req, TSAP_REQ_COUNT, func);
-}
-#endif
-// TEST_REG_SDK_ONLY_END
+
 bool WapsFunc_isRequest(const uint8_t func)
 {
 
     return WapsFunc_isDsapRequest(func) ||
            WapsFunc_isMsapRequest(func) ||
-// TEST_REG_SDK_ONLY_BEGIN
-#ifdef TEST_LIB_SUPPORT
-           WapsFunc_isTsapRequest(func) ||
-#endif
-// TEST_REG_SDK_ONLY_END
            WapsFunc_isCsapRequest(func);
 }
 

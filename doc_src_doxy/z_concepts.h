@@ -10,7 +10,13 @@ This page describes various <I>concepts</I> used in Wirepas Mesh networks. The
 concept itself is described. The link to the services are also part of the
 concept description.
 
-@section appconfig Application Configuration Data
+This page contains following sections:
+- @subpage appconfig
+- @subpage addressing
+- @subpage endpoint
+- @subpage direction
+
+@page appconfig Application Configuration Data
 
 The application configuration service (commonly referred as <I>app config</I>)
 can be used for two things:
@@ -53,7 +59,7 @@ use application configuration.
       configuration is way lighter mechanism and guaranteed to be disseminated
       to every node that appear in the network.
 
-@section addressing Node addressing
+@page addressing Node addressing
 
 Node addressing is done on type @ref app_addr_t. When allocating addresses,
 some special addresses have been reserved and nodes are <B>not</B> allowed to
@@ -121,7 +127,7 @@ sends data to nodes (green and yellow):
 
 </table>
 
-@section endpoint Source and Destination Endpoints
+@page endpoint Source and Destination Endpoints
 
 There are two endpoints, <I>source</I> and <I>destination</I> endpoints. When
 transmitting data (service @ref app_lib_data_send_data_f "lib_data->sendData"),
@@ -132,7 +138,7 @@ applications with different functionality.
 
 \note Endpoints 240 - 255 are reserved for Wirepas Mesh stack internal use.
 
-@section direction Communication Directions
+@page direction Communication Directions
 
 There are three _directions_ that can be used for transmitting data.
 

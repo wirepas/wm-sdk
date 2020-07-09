@@ -22,3 +22,9 @@ arm_toolchain=
 # Sequence 0xFF = Will accept any valid OTAP sequence
 otap_seq_number=1
 
+# Only set this value if python interpreter is not found. Python3 is preferred.
+# Python2 is end of life and support will be removed in the future.
+# Leaving value empty uses the shebang value of the script, which is #!/usr/bin/env python3
+# and fallback to "python" cmd
+python_interpreter=
+

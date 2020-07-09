@@ -23,9 +23,6 @@
 #include "storage.h"
 #include "system.h"
 #include "time.h"
-#ifdef TEST_LIB_SUPPORT
-#include "test.h"
-#endif
 #include "hardware.h"
 // BLE beacons
 #include "beacon_tx.h"
@@ -46,9 +43,7 @@ extern const app_lib_storage_t *        lib_storage     __attribute((weak));
 extern const app_lib_system_t *         lib_system      __attribute((weak));
 extern const app_lib_time_t *           lib_time        __attribute((weak));
 extern const app_lib_hardware_t *       lib_hw          __attribute((weak));
-#ifdef TEST_LIB_SUPPORT
-extern const app_lib_test_t *           lib_test        __attribute((weak));
-#endif
+
 // BLE beacons
 extern const app_lib_beacon_tx_t *      lib_beacon_tx   __attribute((weak));
 extern const app_lib_beacon_rx_t *      lib_beacon_rx   __attribute((weak));

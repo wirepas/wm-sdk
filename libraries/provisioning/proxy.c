@@ -8,7 +8,7 @@
 
 #include "provisioning.h"
 #include "provisioning_int.h"
-#include "shared_libdata.h"
+#include "shared_data.h"
 #include "random.h"
 #include "node_configuration.h"
 #include "time.h"
@@ -28,7 +28,7 @@ static bool m_started;
 /** Joining proxy library is initialized. */
 static bool m_init = false;
 /** Provisioning packet received filter and callback. */
-static shared_libdata_item_t m_ptk_received_item;
+static shared_data_item_t m_ptk_received_item;
 /** The counter used in AES encryption. */
 static uint16_t m_counter;
 
@@ -67,7 +67,7 @@ void send_nack(prov_nack_type_e type, const app_lib_data_received_t * data)
 
     LOG(LVL_INFO, "Send NACK packet (type:%d).", type);
 
-    res = Shared_LibData_sendData(&data_to_send, NULL);
+    res = Shared_Data_sendData(&data_to_send, NULL);
     if (res != APP_LIB_DATA_SEND_RES_SUCCESS)
     {
         LOG(LVL_WARNING, "Error sending NACK (res:%d).", res);
@@ -230,7 +230,7 @@ void encrypt_data(pdu_prov_data_t * data_pdu, uint8_t data_len, uint8_t * iv)
  * \return  Result code, @ref app_lib_data_receive_res_e
  */
 static app_lib_data_receive_res_e pkt_received_cb(
-                                        const shared_libdata_item_t * item,
+                                        const shared_data_item_t * item,
                                         const app_lib_data_received_t * data)
 {
     int8_t uid_len;
@@ -350,7 +350,7 @@ static app_lib_data_receive_res_e pkt_received_cb(
     LOG(LVL_INFO, "Send DATA packet.");
     LOG_BUFFER(LVL_DEBUG, data_buffer, PROV_DATA_OFFSET + data_len);
 
-    res = Shared_LibData_sendData(&data_to_send, NULL);
+    res = Shared_Data_sendData(&data_to_send, NULL);
     if (res != APP_LIB_DATA_SEND_RES_SUCCESS)
     {
         LOG(LVL_WARNING, "Error sending DATA (res:%d).", res);
@@ -405,7 +405,7 @@ provisioning_ret_e Provisioning_Proxy_init(provisioning_proxy_conf_t * conf)
             return PROV_RET_INVALID_PARAM;
         }
 
-        m_ptk_received_item.filter.mode = SHARED_LIBDATA_NET_MODE_UNICAST;
+        m_ptk_received_item.filter.mode = SHARED_DATA_NET_MODE_UNICAST;
         m_ptk_received_item.filter.src_endpoint = PROV_UPLINK_EP;
         m_ptk_received_item.filter.dest_endpoint = PROV_DOWNLINK_EP;
         m_ptk_received_item.cb = pkt_received_cb;
@@ -416,7 +416,7 @@ provisioning_ret_e Provisioning_Proxy_init(provisioning_proxy_conf_t * conf)
     if (is_local_provisioning)
     {
         lib_joining->enableProxy(false);
-        Shared_LibData_addDataReceivedCb(&m_ptk_received_item);
+        Shared_Data_addDataReceivedCb(&m_ptk_received_item);
         Random_init(getUniqueId() ^
                     lib_time->getTimestampHp() ^
                     lib_hw->readSupplyVoltage());
@@ -459,7 +459,7 @@ provisioning_ret_e Provisioning_Proxy_start(void)
     if (m_conf.is_local_sec_allowed || m_conf.is_local_unsec_allowed)
     {
         lib_joining->enableProxy(false);
-        Shared_LibData_addDataReceivedCb(&m_ptk_received_item);
+        Shared_Data_addDataReceivedCb(&m_ptk_received_item);
     }
 
     m_started = true;
@@ -480,7 +480,7 @@ provisioning_ret_e Provisioning_Proxy_stop(void)
     if (m_conf.is_local_sec_allowed || m_conf.is_local_unsec_allowed)
     {
         lib_joining->enableProxy(true);
-        Shared_LibData_removeDataReceivedCb(&m_ptk_received_item);
+        Shared_Data_removeDataReceivedCb(&m_ptk_received_item);
     }
 
     if (lib_joining->stopJoiningBeaconTx() != APP_RES_OK)

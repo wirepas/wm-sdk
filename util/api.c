@@ -25,9 +25,6 @@ const app_lib_sleep_t *         lib_sleep;
 const app_lib_memory_area_t *   lib_memory_area;
 const app_lib_radio_fem_t *     lib_radio_fem;
 const app_lib_joining_t *       lib_joining;
-#ifdef TEST_LIB_SUPPORT
-const app_lib_test_t *          lib_test;
-#endif
 
 bool API_Open(const app_global_functions_t * functions)
 {
@@ -80,10 +77,7 @@ bool API_Open(const app_global_functions_t * functions)
     lib_joining = functions->openLibrary(APP_LIB_JOINING_NAME,
                                          APP_LIB_JOINING_VERSION);
 
-#ifdef TEST_LIB_SUPPORT
-    lib_test = functions->openLibrary(APP_LIB_TEST_NAME,
-                                         APP_LIB_TEST_VERSION);
-#endif
+
     // Currently the status is a success if libs present on all platform are opened
     // TODO: add an api.mk / config file that tells which libraries are to be
     // opened and if a library fails to open if it should be handled as an
@@ -96,9 +90,6 @@ bool API_Open(const app_global_functions_t * functions)
             lib_hw &&
             lib_storage &&
             lib_otap &&
-#ifdef TEST_LIB_SUPPORT
-            lib_test &&
-#endif
             lib_sleep &&
             lib_radio_fem &&
             lib_memory_area);

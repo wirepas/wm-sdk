@@ -26,11 +26,7 @@ typedef uint16_t pduid_t;
 #include "sap/dsap_frames.h"
 #include "sap/msap_frames.h"
 #include "sap/csap_frames.h"
-// TEST_REG_SDK_ONLY_BEGIN
-#ifdef TEST_LIB_SUPPORT
-#include "sap/tsap_frames.h"
-#endif
-// TEST_REG_SDK_ONLY_END
+
 /** Length of frame header */
 #define WAPS_MIN_FRAME_LENGTH   (uint16_t)(sizeof(frame_header_t))
 
@@ -61,11 +57,6 @@ typedef union
     frame_dsap      dsap;
     frame_msap      msap;
     frame_csap      csap;
-// TEST_REG_SDK_ONLY_BEGIN
-#ifdef TEST_LIB_SUPPORT
-    frame_tsap      tsap;
-#endif
-// TEST_REG_SDK_ONLY_END
     frame_attr      attr;
     simple_cnf_t    simple_cnf;
 } waps_frame_payload_t;
@@ -84,11 +75,6 @@ typedef struct __attribute__ ((__packed__))
         frame_dsap      dsap;
         frame_msap      msap;
         frame_csap      csap;
-// TEST_REG_SDK_ONLY_BEGIN
-#ifdef TEST_LIB_SUPPORT
-        frame_tsap      tsap;
-#endif
-// TEST_REG_SDK_ONLY_END
         frame_attr      attr;
         simple_cnf_t    simple_cnf;
         uint8_t         spld[WAPS_MAX_FRAME_PAYLOAD];

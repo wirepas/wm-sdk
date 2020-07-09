@@ -43,8 +43,10 @@ static volatile uint32_t                m_enabled;
 /** Indicate if RX is enabled */
 static bool                             m_rx_enabled;
 
+#if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
 /** Enable or disable HW flow control */
 static void                             set_flow_control(bool hw);
+#endif
 
 /** Set uarte baudrate */
 static void                             set_baud(uint32_t baudrate);
@@ -73,14 +75,6 @@ void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     nrf_gpio_cfg_default(BOARD_USART_RX_PIN);
     nrf_gpio_pin_set(BOARD_USART_RX_PIN);
 
-    //uart_cts_pin
-    nrf_gpio_cfg_default(BOARD_USART_CTS_PIN);
-    nrf_gpio_pin_set(BOARD_USART_CTS_PIN);
-
-    //uart_rts_pin
-    nrf_gpio_cfg_default(BOARD_USART_RTS_PIN);
-    nrf_gpio_pin_set(BOARD_USART_RTS_PIN);
-
     /* Module variables */
     m_enabled = 0;
     m_rx_enabled = false;
@@ -93,8 +87,18 @@ void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     NRF_UARTE0->TASKS_STOPRX = 1;
     NRF_UARTE0->ENABLE = UARTE_ENABLE_ENABLE_Disabled;
 
+#if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
+    //uart_cts_pin
+    nrf_gpio_cfg_default(BOARD_USART_CTS_PIN);
+    nrf_gpio_pin_set(BOARD_USART_CTS_PIN);
+
+    //uart_rts_pin
+    nrf_gpio_cfg_default(BOARD_USART_RTS_PIN);
+    nrf_gpio_pin_set(BOARD_USART_RTS_PIN);
+
     /* Set flow control */
     set_flow_control(flow_control == UART_FLOW_CONTROL_HW);
+#endif
 
     /* Uart speed */
     set_baud(baudrate);
@@ -202,6 +206,13 @@ void Usart_receiverOff(void)
     // Stop Timer2 that count the RX bytes
     NRF_TIMER2->TASKS_STOP = 1;
 
+    // Stop Timer1 that is used for timeout and started
+    // once RX is started to reduce power consumption.
+    // It may be improved even further by stopping it when
+    // there is no byte received yet, but not important as
+    // we already have auto-power mechanism when needed.
+    NRF_TIMER1->TASKS_STOP = 1;
+
     m_rx_enabled = false;
     Sys_exitCriticalSection();
 }
@@ -209,6 +220,8 @@ void Usart_receiverOff(void)
 bool Usart_setFlowControl(uart_flow_control_e flow)
 {
     bool ret = false;
+
+#if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
     Sys_enterCriticalSection();
     if (m_enabled == 0)
     {
@@ -227,6 +240,8 @@ bool Usart_setFlowControl(uart_flow_control_e flow)
         }
     }
     Sys_exitCriticalSection();
+#endif
+
     return ret;
 }
 
@@ -392,7 +407,7 @@ static void start_tx_lock(void)
     DoubleBuffer_swipe(m_tx_buffers);
 }
 
-
+#if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
 static void set_flow_control(bool hw)
 {
     if (hw)
@@ -423,6 +438,7 @@ static void set_flow_control(bool hw)
         nrf_gpio_cfg_default(BOARD_USART_RTS_PIN);
     }
 }
+#endif
 
 static void set_baud(uint32_t baudrate)
 {

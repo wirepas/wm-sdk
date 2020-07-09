@@ -7,7 +7,7 @@
 #include "provisioning.h"
 #include "provisioning_int.h"
 #include "app_scheduler.h"
-#include "shared_libdata.h"
+#include "shared_data.h"
 #include "node_configuration.h"
 #include "random.h"
 #include "time.h"
@@ -51,7 +51,7 @@ static uint8_t m_session_id;
 /** The state of the provisioning state machine. */
 static provisioning_state_e m_state = PROV_STATE_UNINIT;
 /** Provisioning packet received filter and callback. */
-static shared_libdata_item_t m_ptk_received_item;
+static shared_data_item_t m_ptk_received_item;
 /** Copy of the configuration passed to provisioning library. */
 static provisioning_conf_t m_conf;
 /** AES initialization vector. */
@@ -104,7 +104,7 @@ static app_addr_t get_node_address(void)
  * \return  Result code, @ref app_lib_data_receive_res_e
  */
 static app_lib_data_receive_res_e pkt_received_cb(
-                                        const shared_libdata_item_t * item,
+                                        const shared_data_item_t * item,
                                         const app_lib_data_received_t * data)
 {
     LOG(LVL_INFO, "Event : RXD PACKET.");
@@ -226,7 +226,7 @@ static uint32_t send_ack_packet(void)
     /* ACK is optional and sent only to avoid a timeout on the server side.
      * So if it fails move to next state.
      */
-    res = Shared_LibData_sendData(&data_to_send, packet_sent_cb);
+    res = Shared_Data_sendData(&data_to_send, packet_sent_cb);
     if (res != APP_LIB_DATA_SEND_RES_SUCCESS)
     {
         LOG(LVL_WARNING, "State WAIT_DATA : Error sending ACK (res:%d).", res);
@@ -382,7 +382,7 @@ provisioning_res_e process_data_packet(void)
 
 static void reset_provisioning(void)
 {
-    Shared_LibData_removeDataReceivedCb(&m_ptk_received_item);
+    Shared_Data_removeDataReceivedCb(&m_ptk_received_item);
     App_Scheduler_cancelTask(timeout_task);
     App_Scheduler_cancelTask(run_state_machine);
     m_state = PROV_STATE_IDLE;
@@ -425,7 +425,7 @@ static uint32_t state_idle(void)
         }
     }
 
-    Shared_LibData_removeDataReceivedCb(&m_ptk_received_item);
+    Shared_Data_removeDataReceivedCb(&m_ptk_received_item);
     App_Scheduler_cancelTask(timeout_task);
     memset(&m_events,0,sizeof(m_events));
 
@@ -509,7 +509,7 @@ static uint32_t state_start(void)
     LOG(LVL_INFO, "State START : Send START packet (method: %d, timeout: %d).",
                     m_conf.method, m_conf.timeout_s);
 
-    res = Shared_LibData_sendData(&data_to_send, NULL);
+    res = Shared_Data_sendData(&data_to_send, NULL);
     if (res != APP_LIB_DATA_SEND_RES_SUCCESS)
     {
         LOG(LVL_WARNING, "State START : Error sending packet (res:%d).", res);
@@ -530,7 +530,7 @@ static uint32_t state_start(void)
     }
     else
     {
-        Shared_LibData_addDataReceivedCb(&m_ptk_received_item);
+        Shared_Data_addDataReceivedCb(&m_ptk_received_item);
         m_timeout_ms = m_conf.timeout_s * 1000;
         if (App_Scheduler_addTask(timeout_task, m_timeout_ms) !=
                                                 APP_SCHEDULER_RES_OK)
@@ -591,7 +591,7 @@ static uint32_t state_wait_data(void)
         if (res == PROV_RES_SUCCESS)
         {
             m_state = PROV_STATE_WAIT_ACK_SENT;
-            Shared_LibData_removeDataReceivedCb(&m_ptk_received_item);
+            Shared_Data_removeDataReceivedCb(&m_ptk_received_item);
             App_Scheduler_cancelTask(timeout_task);
 
             LOG(LVL_INFO, "WAIT_DATA : Valid data packet; Send ACK.");
@@ -625,7 +625,7 @@ static uint32_t state_wait_data(void)
                              m_retry, m_conf.nb_retry);
             m_state = PROV_STATE_START;
 
-            Shared_LibData_removeDataReceivedCb(&m_ptk_received_item);
+            Shared_Data_removeDataReceivedCb(&m_ptk_received_item);
             App_Scheduler_cancelTask(timeout_task);
             new_delay_ms = APP_SCHEDULER_SCHEDULE_ASAP;
         }
@@ -780,7 +780,7 @@ provisioning_ret_e Provisioning_init(provisioning_conf_t * conf)
 
     memcpy(&m_conf,conf,sizeof(provisioning_conf_t));
 
-    m_ptk_received_item.filter.mode = SHARED_LIBDATA_NET_MODE_UNICAST;
+    m_ptk_received_item.filter.mode = SHARED_DATA_NET_MODE_UNICAST;
     m_ptk_received_item.filter.src_endpoint = PROV_DOWNLINK_EP;
     m_ptk_received_item.filter.dest_endpoint = PROV_UPLINK_EP;
     m_ptk_received_item.cb = pkt_received_cb;
