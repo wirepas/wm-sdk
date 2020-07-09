@@ -18,9 +18,3 @@ uart_fc ?= false
 
 CFLAGS += -DUART_BAUDRATE=$(uart_br)
 CFLAGS += -DUART_FLOWCONTROL=$(uart_fc)
-
-# TEST_REG_SDK_ONLY_BEGIN
-ifeq ($(test_library),yes)
-    CFLAGS += -DTEST_LIB_SUPPORT
-endif
-# TEST_REG_SDK_ONLY_END

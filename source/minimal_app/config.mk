@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := pca10040 pca10056 pca10059 pca10100 promistel_rpi_hat ruuvitag silabs_brd4254a tbsense2 ublox_b204 wirepas_brd4254a 
+TARGET_BOARDS := pca10040 pca10056 pca10059 pca10100 promistel_rpi_hat ruuvitag silabs_brd4254a tbsense2 ublox_b204 wirepas_brd4254a nrf52832_mdk_v2 
 # Define default network settings
 default_network_address ?= 0x567DEF
 default_network_channel ?= 2

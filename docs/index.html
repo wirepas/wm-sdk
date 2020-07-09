@@ -73,57 +73,19 @@ $(document).ready(function(){initNavTree('index.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>The Single-MCU operation allows an application to run on the same chip with Wirepas Mesh stack.</p>
-<p> 
-<img src="main_components.png" usemap="#main_components_map">
-<map name="main_components_map">
-<area shape="rect" coords="0,0,691,77" href="#application"></area>
-<area shape="rect" coords="102,131,319,205" href="#sdk_hal"></area>
-<area shape="rect" coords="351,133,522,209" href="#sdk_libraries"></area>
-<area shape="rect" coords="193,291,691,336" href="#single_mcu_api"></area>
-<area shape="rect" coords="193,337,692,414" href="#wirepas_firmware"></area>
-<area shape="rect" coords="372,447,560,524" href="#bootloader"></area>
-<area shape="rect" coords="562,456,673,509" href="#bootloader_extension"></area>
-<area shape="rect" coords="0,560,692,637" href="#hardware"></area>
-</map>
-</p>
-<p>Main components are following:</p>
-<h1><a class="anchor" id="application"></a>
-Application</h1>
-<p>Application firmware includes the application logic. There can be multiple applications (i.e. different <em>kind of devices</em>) in the same network. For example lighting network may contain lighting control switches and LED drivers.</p>
-<p>With the provided SDK, a customer can write its own application, build it, and update a Wirepas Mesh network.</p>
-<p><a class="el" href="d7/d28/application_operation.html">Single-MCU API Operation Principle</a> describes the operation principle of the interface between the application and Wirepas Mesh stack. Memory partitioning and different regions are explained. The different ways the application is scheduled is also described.</p>
-<p><a class="el" href="dd/d6a/sdk_environment.html">SDK Environment</a> describes the SDK package contents and available free processor resources for application.</p>
-<p><a class="el" href="de/d7a/how_to_develop.html">How to develop applications with Single-MCU SDK</a> describes guidance to write first application and various tips and recommendations for application development.</p>
-<h1><a class="anchor" id="sdk_hal"></a>
-Application-specific Hardware Abstraction Layer (HAL)</h1>
-<p>This is commonly various software components for peripheral usage, such as sensors/actuators and communication interfaces. Some of those are delivered as part of the SDK. This also contains drivers made by user of the SDKs, commonly shared between different _applications.</p>
-<p>For HAL services offered by the SDK, see <a class="el" href="d3/d03/sdk_file_structure.html#api_folder">API services by SDK</a>.</p>
-<h1><a class="anchor" id="single_mcu_api"></a>
-Wirepas Mesh Single MCU API</h1>
-<p>Wirepas Mesh stack provides Wirepas Mesh Single-MCU API for application to use <em>stack services</em> and run tasks on the MCU.</p>
-<p><a class="el" href="dd/d9c/programming_interface.html">Application API</a> describes the programming interface.</p>
-<h1><a class="anchor" id="sdk_libraries"></a>
-Wirepas Mesh Single MCU libraries wrapper</h1>
-<p>These libraries are wrappers on top of the <a class="el" href="index.html#single_mcu_api">single MCU api</a>. Some services offered by the stack are quite low level and these wrapper libraries offer a higher abstraction level. Main example is the app_scheduler abstracting the single periodic work offered by stack.</p>
-<h1><a class="anchor" id="wirepas_firmware"></a>
-Wirepas Mesh Stack</h1>
-<p>Stack includes the Wirepas Mesh communication stack and Wirepas scheduler for enabling the application operation in the same MCU. Wirepas Mesh HAL includes all hardware abstractions and drivers <em>needed by the stack</em>, such as a radio driver. Note that drivers for peripherals that are not needed by the stack itself, are not implemented in stack.</p>
-<p>Wirepas Mesh scheduler provides priority-based cooperative scheduling, i.e. all the tasks are run to completion. The tasks are scheduled based on their priorities and their execution times. The Wirepas Mesh stack has strict real-time requirements (accurate synchronization of messaging) and has the highest priority. Thus, it is not recommended to do processing intensive (time consuming) tasks on the application side. Real-time guarantees are not provided to the application.</p>
-<h1><a class="anchor" id="bootloader"></a>
-Wirepas Mesh Bootloader</h1>
-<p>Wirepas provides a bootloader binary. Its main purpose is to do the basic basic initialization of the hardware but also handle the processing of stored scratchpad in the flash received by the stack during an otap. Bootloader is in charge of the flash management and contains the flash partitioning that is configured through an <a class="el" href="d3/d03/sdk_file_structure.html#config_mk_ini_file">.ini file</a>.</p>
-<h1><a class="anchor" id="bootloader_extension"></a>
-Custom bootloader extension</h1>
-<p>Bootloader can be extended from the SDK. Main usage is to support an external flash. How to use it is described in a separated application note that will be available soon from here.</p>
-<h1><a class="anchor" id="hardware"></a>
-The physical Hardware</h1>
-<p>This includes all the hardware of the device including the processor core, radio for wireless communication and application-specific peripherals.</p>
-<p>Peripherals can be grouped into three categories:</p><ol type="1">
-<li>Peripherals used solely by the Wirepas Mesh Stack</li>
-<li>Peripherals used solely by the application and</li>
-<li>Peripherals shared between Wirepas Mesh Stack and application.</li>
-</ol>
-<p>For details on this, check <a class="el" href="dd/d6a/sdk_environment.html#efr32xg12">EFR32 resources</a> or <a class="el" href="dd/d6a/sdk_environment.html#nordic_nrf52832_nrf52840">Nordic nRF52XXX resources</a> according to your architecture. </p>
+<div class="image">
+<img src="main_components.png" alt="main_components.png"/>
+</div>
+<p>Main components are following:</p><ul>
+<li><a class="el" href="d2/dfc/application.html">Application</a></li>
+<li><a class="el" href="d3/d35/sdk_hal.html">Application-specific Hardware Abstraction Layer (HAL)</a></li>
+<li><a class="el" href="d9/ddd/single_mcu_api.html">Wirepas Mesh Single MCU API</a></li>
+<li><a class="el" href="da/d91/sdk_libraries.html">Wirepas Mesh Single MCU libraries wrapper</a></li>
+<li><a class="el" href="d8/d2a/wirepas_firmware.html">Wirepas Mesh Stack</a></li>
+<li><a class="el" href="db/d62/bootloader.html">Wirepas Mesh Bootloader</a></li>
+<li><a class="el" href="df/d38/bootloader_extension.html">Custom bootloader extension</a></li>
+<li><a class="el" href="dd/d7f/hardware.html">The physical Hardware</a> </li>
+</ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

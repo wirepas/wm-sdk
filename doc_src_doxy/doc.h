@@ -8,23 +8,19 @@
 The Single-MCU operation allows an application to run on the same
 chip with Wirepas Mesh stack.
 
-@htmlonly
-<img src="main_components.png" usemap="#main_components_map">
-<map name="main_components_map">
-<area shape="rect" coords="0,0,691,77" href="#application"></area>
-<area shape="rect" coords="102,131,319,205" href="#sdk_hal"></area>
-<area shape="rect" coords="351,133,522,209" href="#sdk_libraries"></area>
-<area shape="rect" coords="193,291,691,336" href="#single_mcu_api"></area>
-<area shape="rect" coords="193,337,692,414" href="#wirepas_firmware"></area>
-<area shape="rect" coords="372,447,560,524" href="#bootloader"></area>
-<area shape="rect" coords="562,456,673,509" href="#bootloader_extension"></area>
-<area shape="rect" coords="0,560,692,637" href="#hardware"></area>
-</map>
-@endhtmlonly
+@image html main_components.png
 
 Main components are following:
+- @subpage application
+- @subpage sdk_hal
+- @subpage single_mcu_api
+- @subpage sdk_libraries
+- @subpage wirepas_firmware
+- @subpage bootloader
+- @subpage bootloader_extension
+- @subpage hardware
 
-@section application Application
+@page application Application
 
 Application firmware includes the application logic. There can be multiple
 applications (i.e. different <I>kind of devices</I>) in the same network. For
@@ -46,7 +42,7 @@ and update a Wirepas Mesh network.
   recommendations for application development.
 
 
-@section sdk_hal Application-specific Hardware Abstraction Layer (HAL)
+@page sdk_hal Application-specific Hardware Abstraction Layer (HAL)
 
 This is commonly various software components for peripheral usage, such as
 sensors/actuators and communication interfaces. Some of those are delivered as
@@ -56,7 +52,7 @@ shared between different _applications.
 For HAL services offered by the SDK, see @ref api_folder "API services by SDK".
 
 
-@section single_mcu_api Wirepas Mesh Single MCU API
+@page single_mcu_api Wirepas Mesh Single MCU API
 
 Wirepas Mesh stack provides Wirepas Mesh Single-MCU API for application to
 use <I>stack services</I> and run tasks on the MCU.
@@ -64,7 +60,7 @@ use <I>stack services</I> and run tasks on the MCU.
 @ref programming_interface "Application API" describes the programming
   interface.
 
-@section sdk_libraries Wirepas Mesh Single MCU libraries wrapper
+@page sdk_libraries Wirepas Mesh Single MCU libraries wrapper
 
 These libraries are wrappers on top of the @ref single_mcu_api "single MCU api".
 Some services offered by the stack are quite low level and these wrapper
@@ -73,7 +69,7 @@ Main example is the app_scheduler abstracting the single periodic work offered
 by stack.
 
 
-@section wirepas_firmware Wirepas Mesh Stack
+@page wirepas_firmware Wirepas Mesh Stack
 Stack includes the Wirepas Mesh communication
 stack and Wirepas scheduler for enabling the application operation in the same
 MCU. Wirepas Mesh HAL includes all hardware abstractions and drivers <I>needed by
@@ -88,7 +84,7 @@ messaging) and has the highest priority. Thus, it is not recommended to
 do processing intensive (time consuming) tasks on the application side.
 Real-time guarantees are not provided to the application.
 
-@section bootloader Wirepas Mesh Bootloader
+@page bootloader Wirepas Mesh Bootloader
 
 Wirepas provides a bootloader binary. Its main purpose is to do the basic
 basic initialization of the hardware but also handle the processing of stored
@@ -97,14 +93,14 @@ Bootloader is in charge of the flash management and contains the flash
 partitioning that is configured through an @ref config_mk_ini_file ".ini file".
 
 
-@section bootloader_extension Custom bootloader extension
+@page bootloader_extension Custom bootloader extension
 
 Bootloader can be extended from the SDK. Main usage is to support an external
 flash.
 How to use it is described in a separated application note that will be
 available soon from here.
 
-@section hardware The physical Hardware
+@page hardware The physical Hardware
 
 This includes all the hardware of the device including the processor core,
 radio for wireless communication and application-specific peripherals.

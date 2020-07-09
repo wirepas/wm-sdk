@@ -188,7 +188,7 @@ typedef struct
 
 /**
  * \brief   Initialize the provisioning process.
- * \note    If Provisioning is used, App_scheduler and Shared_libdata MUST BE
+ * \note    If Provisioning is used, App_scheduler and Shared_data MUST BE
  *          initialized in App_Init of the application. Also
  *          @ref app_lib_system_set_shutdown_cb_f "lib_system->setShutdownCb"()
  *          function offered by system library MUST NOT be used outside of
@@ -198,7 +198,7 @@ typedef struct
  *          offered by Joining library and @ref app_lib_state_set_route_cb_f
  *          "lib_state->setRouteCb"() function offered by
  *          State library MUST NOT be used outside of this module.
- * \note    When using provisioning application must use Shared_libdata
+ * \note    When using provisioning application must use Shared_data
  *          instead of data library for sending and receiving packets.
  * \note    Provisioning module needs 2 tasks from App_scheduler. Maximum
  *          execution time of provisioning tasks is 250µS excluding user
@@ -229,7 +229,7 @@ provisioning_ret_e Provisioning_stop(void);
 
 /**
  * \brief   Initialize the provisioning proxy.
- * \note    If Provisioning Proxy is used, Shared_libdata MUST BE initialized
+ * \note    If Provisioning Proxy is used, Shared_data MUST BE initialized
  *          in App_Init of the application.
  * \note    If local provisioing is enabled, provisioning request sent by new
  *          node will be treated locally by this library instead of being

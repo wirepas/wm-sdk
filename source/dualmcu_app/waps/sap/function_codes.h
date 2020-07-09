@@ -314,15 +314,7 @@ bool WapsFunc_isMsapRequest(uint8_t func);
  *          Function code to check
  */
 bool WapsFunc_isCsapRequest(uint8_t func);
-// TEST_REG_SDK_ONLY_BEGIN
-#ifdef TEST_LIB_SUPPORT
-/** \brief  Check if given func code is a TSAP request
- *  \param  func
- *          Function code to check
- */
-bool WapsFunc_isTsapRequest(uint8_t func);
-#endif
-// TEST_REG_SDK_ONLY_END
+
 /** \brief  Check if given func code is a confirmation
  *  \param  func
  *          Function code to check

@@ -14,7 +14,7 @@
 #include "button.h"
 #include "node_configuration.h"
 #include "provisioning.h"
-#include "shared_libdata.h"
+#include "shared_data.h"
 
 #define DEBUG_LOG_MODULE_NAME "PROXY APP"
 #define DEBUG_LOG_MAX_LEVEL LVL_INFO
@@ -158,7 +158,7 @@ void App_init(const app_global_functions_t * functions)
     lib_settings->setAuthenticationKey(authentication_key);
     lib_settings->setEncryptionKey(encryption_key);
 
-    Shared_LibData_init();
+    Shared_Data_init();
     Provisioning_Proxy_init(&conf);
 
     Button_init();

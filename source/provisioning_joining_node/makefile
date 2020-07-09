@@ -20,8 +20,8 @@ APP_SCHEDULER=yes
 CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=2
 CFLAGS += -DAPP_SCHEDULER_MAX_EXEC_TIME_US=500
 
-# Enable shared libdata library (needed by provisioning library)
-SHARED_LIBDATA=yes
+# Enable shared data library (needed by provisioning library)
+SHARED_DATA=yes
 
 # Enable CBOR library (needed by provisioning library)
 TINY_CBOR=yes

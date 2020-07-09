@@ -21,6 +21,32 @@ LDFLAGS := -Wl,--gc-sections
 # include global config file
 -include config.mk
 
+# Check that a correct version of python is installed by trying to launch check_python
+# This script has python3 shebang so try it without specifying interpreter
+PYTHON_STATUS := $(shell tools/check_python.py > /dev/null 2>&1; echo $$?)
+ifneq ($(PYTHON_STATUS),0)
+ifeq ($(python_interpreter),)
+python=python
+else
+python=$(python_interpreter)
+endif
+# It looks like python3 cannot be found or does not exist as a cmd (windows)
+# Force the launch with python cmd
+PYTHON_STATUS := $(shell $(python) tools/check_python.py > /dev/null; echo $$?)
+ifneq ($(PYTHON_STATUS),0)
+$(error Cannot find a suitable python version. You can force the python interpreter from config.mk)
+endif
+# Display a message if python version is 2.
+VERSION := $(shell $(python) tools/check_python.py)
+ifeq ($(VERSION),2)
+$(warning ***********************************************************************)
+$(warning "SDK supports python3 and python2 but uses python3 by default.)
+$(warning "It looks like python3 is not installed on your system.)
+$(warning "Using the python2 fallback for now but python2 support will be removed in a future release.)
+$(warning ***********************************************************************)
+endif
+endif
+
 #
 # Tools
 #
@@ -35,11 +61,11 @@ RM        := rm
 MV        := mv
 CP        := cp
 MKDIR     := mkdir -p
-SCRAT_GEN := python tools/genscratchpad.py
-HEXTOOL   := python tools/hextool.py
-FMW_SEL   := python tools/firmware_selector.py
-BOOT_CONF := python tools/bootloader_config.py
-WIZARD    := python tools/sdk_wizard.py
+SCRAT_GEN := $(python) tools/genscratchpad.py
+HEXTOOL   := $(python) tools/hextool.py
+FMW_SEL   := $(python) tools/firmware_selector.py
+BOOT_CONF := $(python) tools/bootloader_config.py
+WIZARD    := $(python) tools/sdk_wizard.py
 MAKE      := make
 
 # Check the toolchain version with GCC

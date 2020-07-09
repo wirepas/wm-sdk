@@ -158,12 +158,12 @@ Macros</h2></td></tr>
 <p>Example on using this function. After opening, the <a class="el" href="../../dc/db2/system_8h.html">system library</a> can be used by using <code> lib_system </code> handle.</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div><div class="line">{</div><div class="line">    <span class="comment">// Open Wirepas public API</span></div><div class="line">    <a class="code" href="../../dc/d65/api_8h.html#abea8e1483d9fe0c251a2027a34422031">API_Open</a>(functions);</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="comment">// Enable interrupt</span></div><div class="line">    lib_system-&gt;enableAppIrq(<span class="keyword">false</span>, TEMP_IRQn, <a class="code" href="../../dc/db2/system_8h.html#a5aed22308c8c4fe915119ec9d5e67b76">APP_LIB_SYSTEM_IRQ_PRIO_LO</a>, temp_interrupt_handler);</div><div class="line"></div><div class="line">    ...</div><div class="line">}</div></div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">functions</td><td>The root library address passed to <a class="el" href="../../de/d7a/how_to_develop.html#app_init">Application startup</a> App_init() </td></tr>
+    <tr><td class="paramname">functions</td><td>The root library address passed to <a class="el" href="../../dc/dc0/app_init.html">Application startup</a> App_init() </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>status of operation </dd></dl>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../d1/d47/shared_libdata_example_2app_8c-example.html#a29">shared_libdata_example/app.c</a>, and <a class="el" href="../../d8/d5d/tinycbor_example_2app_8c-example.html#a30">tinycbor_example/app.c</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="../../d8/d03/shared_data_example_2app_8c-example.html#a33">shared_data_example/app.c</a>, and <a class="el" href="../../d8/d5d/tinycbor_example_2app_8c-example.html#a30">tinycbor_example/app.c</a>.</dd>
 </dl>
 </div>
 </div>
@@ -183,7 +183,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00129">129</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00124">124</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
 
 </div>
 </div>
@@ -203,7 +203,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00120">120</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00115">115</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
 
 </div>
 </div>
@@ -223,7 +223,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00123">123</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00118">118</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
 
 </div>
 </div>
@@ -242,7 +242,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00126">126</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00121">121</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
 
 </div>
 </div>
@@ -258,7 +258,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00095">95</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00090">90</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
 
 </div>
 </div>
@@ -278,7 +278,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00116">116</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00111">111</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
 
 </div>
 </div>
@@ -298,7 +298,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00110">110</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00105">105</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
 
 </div>
 </div>
@@ -318,7 +318,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00104">104</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00099">99</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
 
 </div>
 </div>
@@ -348,7 +348,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00107">107</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00102">102</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
 
 </div>
 </div>
@@ -384,7 +384,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00113">113</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00108">108</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
 
 </div>
 </div>
@@ -403,7 +403,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00098">98</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00093">93</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
 
 </div>
 </div>
@@ -422,7 +422,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00101">101</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dc/d65/api_8h_source.html#l00096">96</a> of file <a class="el" href="../../dc/d65/api_8h_source.html">api.h</a>.</p>
 
 </div>
 </div>

@@ -5,8 +5,6 @@
 /**
 @page application_operation Single-MCU API Operation Principle
 
-@section operation_principle Single-MCU API Operation Principle
-
 The Wirepas Mesh stack and the application can communicate via a
 Single-MCU API. The application is designed to have a @ref app_init
 "single-entry point". This entry point is called by the Wirepas Mesh stack at
@@ -18,7 +16,13 @@ stack provides a list of services to the application. These services are
 implemented as a list of C callback functions. Most importantly, these services
 includes opening libraries (used by \ref API_Open "API_Open()" function).
 
-@section build Build process
+This page contains following sections:
+- @subpage build
+- @subpage memory_partitioning
+- @subpage application_detection
+- @subpage cooperative_mcu_access
+
+@page build Build process
 
 The build can be divided in three steps:
 
@@ -35,7 +39,7 @@ The build can be divided in three steps:
 
 @image html image8.png
 
-@section memory_partitioning Memory Partitioning
+@page memory_partitioning Memory Partitioning
 
 The application entry point and different callback functions are
 visualized in following picture:
@@ -69,7 +73,7 @@ to be able to know the application entry point location at run time.
 
 @image html image4.png
 
-@section application_detection Application Detection
+@page application_detection Application Detection
 
 Device requires application to be working properly. Without application, the
 stack itself is not started and radio communication is thus disabled. Wirepas
@@ -82,7 +86,7 @@ address. It is up to the customer to have positioned the function entry point
 here with the correct prototype. All the code needed to correctly position the
 right function at the right position is provided in the SDK.
 
-@section cooperative_mcu_access Cooperative MCU Access
+@page cooperative_mcu_access Cooperative MCU Access
 
 Wirepas Mesh stack is a real-time system and is based on a cooperative
 scheduler. Tasks are scheduled based on their priorities and their
@@ -105,8 +109,14 @@ An application task can get run-time in basically three different ways:
    of interrupts: @ref fast_interrupt "fast" and @ref deferred_interrupt
    "deferred interrupts".
 
-@subsection periodic_application Periodic Application \
-Callback Function
+This page contains following sections:
+- @subpage periodic_application
+- @subpage asynchronous_application_callback_functions
+- @subpage application_interrupt
+- @subpage which_kind_of_interrupt_for_which_purpose
+- @subpage execution_time_limits
+
+@page periodic_application Periodic Application Callback Function
 
 The application can register one of its callback functions to be called
 at a given time and for a given period. At the end of its execution, the
@@ -147,8 +157,7 @@ Check out service for @ref app_lib_system_set_periodic_cb_f
 
 \image html image5.png
 
-@subsection asynchronous_application_callback_functions Asynchronous \
-Application Callback Functions
+@page asynchronous_application_callback_functions Asynchronous Application Callback Functions
 
 The application can also be executed asynchronously if the Wirepas Mesh
 stack has something to communicate to it, e.g. a message received from
@@ -182,7 +191,7 @@ There are plenty of various
 
 \image html image6.png
 
-@subsection application_interrupt Application Interrupt
+@page application_interrupt Application Interrupt
 
 The application can register to hardware interrupts. It must provide its
 own interrupt handler table (same format as the platform one) to Wirepas
@@ -196,7 +205,11 @@ app_lib_system_disable_app_irq_f "lib_system->disableAppIrq" </code> service.
 There are two kinds of interrupts. Deferred interrupt and fast
 interrupt.
 
-@subsubsection deferred_interrupt Deferred interrupt
+This page contains following sections:
+- @subpage deferred_interrupt
+- @subpage fast_interrupt
+
+@page deferred_interrupt Deferred interrupt
 
 The interrupts are handled in two levels: Wirepas Mesh stack
 implements the first-level interrupt handler which handles minimal
@@ -238,7 +251,7 @@ Below, there are 4 different scenarios for interrupts described:
 
 @image html image7.png
 
-@subsubsection fast_interrupt Fast interrupt
+@page fast_interrupt Fast interrupt
 
 The interrupts are handled directly by the application. So it can
 preempt the stack execution. For this reason, the handling must be
@@ -262,8 +275,7 @@ app_scheduler.h "app scheduler" library) and call services from there. Services
 that are known safe to be used from fast interrupt context are explicitly
 described in service documentation.
 
-@subsection which_kind_of_interrupt_for_which_purpose Which kind of interrupt \
-for which purpose
+@page which_kind_of_interrupt_for_which_purpose Which kind of interrupt for which purpose
 
 Fast interrupt must be used only when latency to serve the interrupt
 is crucial. For example, in case of a UART driver with a small FIFO
@@ -280,7 +292,7 @@ currently limited to 100 micro seconds). As handler is executed as a
 task, it cannot preempt the app periodic task so no data protection
 mechanism is needed.
 
-@subsection execution_time_limits Execution time limits
+@page execution_time_limits Execution time limits
 
 In the following table, the various types of methods on how application requests
 run-time and their maximum execution time are summarized:

@@ -291,9 +291,9 @@ Enumerations</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initialize the provisioning process. </p>
-<dl class="section note"><dt>Note</dt><dd>If Provisioning is used, App_scheduler and Shared_libdata MUST BE initialized in App_Init of the application. Also <a class="el" href="../../dc/db2/system_8h.html#a0bd4d808fdb1ae364a59b30330d19a70">lib_system-&gt;setShutdownCb</a>() function offered by system library MUST NOT be used outside of this module. If Joining is used, <a class="el" href="../../dd/dc6/joining_8h.html#a8b9363f464604cbe35d7b3fd55517efb">lib_joining-&gt;startJoiningBeaconRx()</a> function offered by Joining library and <a class="el" href="../../db/d3b/state_8h.html#a828287002dce7a99dca31ac61093db3c">lib_state-&gt;setRouteCb</a>() function offered by State library MUST NOT be used outside of this module. </dd>
+<dl class="section note"><dt>Note</dt><dd>If Provisioning is used, App_scheduler and Shared_data MUST BE initialized in App_Init of the application. Also <a class="el" href="../../dc/db2/system_8h.html#a0bd4d808fdb1ae364a59b30330d19a70">lib_system-&gt;setShutdownCb</a>() function offered by system library MUST NOT be used outside of this module. If Joining is used, <a class="el" href="../../dd/dc6/joining_8h.html#a8b9363f464604cbe35d7b3fd55517efb">lib_joining-&gt;startJoiningBeaconRx()</a> function offered by Joining library and <a class="el" href="../../db/d3b/state_8h.html#a828287002dce7a99dca31ac61093db3c">lib_state-&gt;setRouteCb</a>() function offered by State library MUST NOT be used outside of this module. </dd>
 <dd>
-When using provisioning application must use Shared_libdata instead of data library for sending and receiving packets. </dd>
+When using provisioning application must use Shared_data instead of data library for sending and receiving packets. </dd>
 <dd>
 Provisioning module needs 2 tasks from App_scheduler. Maximum execution time of provisioning tasks is 250µS excluding user callback. This must be taken in consideration when setting APP_SCHEDULER_MAX_EXEC_TIME_US. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -324,7 +324,7 @@ Provisioning module needs 2 tasks from App_scheduler. Maximum execution time of 
 </div><div class="memdoc">
 
 <p>Initialize the provisioning proxy. </p>
-<dl class="section note"><dt>Note</dt><dd>If Provisioning Proxy is used, Shared_libdata MUST BE initialized in App_Init of the application. </dd>
+<dl class="section note"><dt>Note</dt><dd>If Provisioning Proxy is used, Shared_data MUST BE initialized in App_Init of the application. </dd>
 <dd>
 If local provisioing is enabled, provisioning request sent by new node will be treated locally by this library instead of being forwarded to the provisioning server. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>

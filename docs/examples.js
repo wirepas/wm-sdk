@@ -21,7 +21,7 @@ var examples =
     [ "pwm_driver/app.c", "d3/d31/pwm_driver_2app_8c-example.html", null ],
     [ "ruuvi_evk/app.c", "da/d90/ruuvi_evk_2app_8c-example.html", null ],
     [ "scheduler_example/app.c", "d5/dc2/scheduler_example_2app_8c-example.html", null ],
-    [ "shared_libdata_example/app.c", "d1/d47/shared_libdata_example_2app_8c-example.html", null ],
+    [ "shared_data_example/app.c", "d8/d03/shared_data_example_2app_8c-example.html", null ],
     [ "test_app/app.c", "d7/de5/test_app_2app_8c-example.html", null ],
     [ "tinycbor_example/app.c", "d8/d5d/tinycbor_example_2app_8c-example.html", null ]
 ];

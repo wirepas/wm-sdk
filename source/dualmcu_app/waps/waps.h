@@ -122,18 +122,5 @@ Waps_receiveBcast(const app_lib_data_received_t * data);
  * \brief   Received a SDU indication msg
  */
 void Waps_rcvSduInd(void);
-// TEST_REG_SDK_ONLY_BEGIN
-#ifdef TEST_LIB_SUPPORT
-/**
- * \brief   Test library has received test data package from radio in test mode
- *          and it has forwarded it to app/WAPS
- * \param   testData
- *          Payload of packet
- * \return  Result code, \ref app_lib_test_radio_reception_res_e
- */
-app_lib_test_radio_reception_res_e Waps_receiveTestData(
-                                const app_lib_test_data_received_t * testData);
 
-#endif
-// TEST_REG_SDK_ONLY_END
 #endif // WAPS_H_

@@ -8,7 +8,22 @@
 This page describes the file structure of the SDK. Here, you can find the
 purpose of directories and files.
 
-@section api_folder api/ Libraries offered by stack
+This page contains following sections:
+- @subpage api_folder
+- @subpage board_folder
+- @subpage bootloader_folder
+- @subpage debug_folder
+- @subpage doc_folder
+- @subpage image_folder
+- @subpage libraries_folder
+- @subpage makefile
+- @subpage mcu_folder
+- @subpage project_folder
+- @subpage source_folder
+- @subpage tools_folder
+- @subpage util_folder
+
+@page api_folder api/ Libraries offered by stack
 
 The Wirepas Mesh stack (hereafter referred to as the *stack*) runs on ARM Cortex
 M based microcontrollers. Hence, the stack and the application both follow the
@@ -74,7 +89,10 @@ of time and comparing timestamps</td></tr>
 <!-- The following subsubsection is intentionally violating 80 character limit
 due to Doxygen inability to have multiline titles. Do not fix it! -->
 
-@subsection application_and_library_versioning Application and Library Versioning
+This page contains following sections:
+- @subpage application_and_library_versioning
+
+@page application_and_library_versioning Application and Library Versioning
 
 To keep features in logically separate units and allow each unit to be updated
 in a *backward- and forward-compatible* manner, stack functions are collected
@@ -103,7 +121,7 @@ there to indicate which version of the low-level application API the application
 supports. If there is a mismatch between the low-level API versions of the stack
 and the application, the stack may choose to not run the application.
 
-@section board_folder board/ Board definitions
+@page board_folder board/ Board definitions
 
 This folder contains definitions for various boards. Board approach allows
 executing same application in different radio boards. Mainly, board definition
@@ -137,7 +155,10 @@ the board definitions, according to processor architecture:
 "board/nrf52_template/config.mk"</td><td>Board Configuration</td></tr>
 </table>
 
-@subsection DCDC_converter DCDC converter configuration
+This page contains following sections:
+- @subpage DCDC_converter
+
+@page DCDC_converter DCDC converter configuration
 
 DCDC converter configuration is very important topic, especially if low energy
 consumption is desired. In following table, the configuration is summarized for
@@ -171,7 +192,7 @@ early_init_efr32.c</code>:
 
 </table>
 
-@section bootloader_folder bootloader/ Bootloader configuration
+@page bootloader_folder bootloader/ Bootloader configuration
 
 This folder contains configuration mechanisms for bootloader operations. By
 default, they are weak symbols implementing stub functions. THey can be
@@ -187,22 +208,22 @@ Following files are present:
 <td>External flash operation</td></tr>
 </table>
 
-@section debug_folder debug/ Debug printing
+@page debug_folder debug/ Debug printing
 
 This folder contains implementation of debugs.
 
-@section doc_folder doc/ Doxygen documentation
+@page doc_folder doc/ Doxygen documentation
 
 This folder contains files for generating doxygen documentation not present
 in source codes itself, such as this page.
 
-@section image_folder image/ Firmware images folder
+@page image_folder image/ Firmware images folder
 
 This folder contains Wirepas firmware images. Originally folder does not contain
 any images but when you have @ref licensing "licensed" Wirepas Mesh, you will
 get an access to firmware images which should be unpacked here.
 
-@section libraries_folder libraries/ SDK Internal API
+@page libraries_folder libraries/ SDK Internal API
 
 There are numerous services that are given as a source code as part of the SDK.
 They are for various purposes, like easier access for low level hardware (HAL)
@@ -220,7 +241,7 @@ Following table, summarize these services and files by:
 <tr><th>Name</th><th>Description</th></tr>
 <tr><td>@ref app_scheduler.h "app_scheduler.h"</td><td>Scheduling of
 multiple application tasks</td></tr>
-<tr><td>@ref shared_libdata.h "shared_libdata.h"</td><td>Handling of data
+<tr><td>@ref shared_data.h "shared_data.h"</td><td>Handling of data
 packets</td></tr>
 <tr><td>@ref uart_print.h "uart_print.h"</td><td>UART print module
 </td></tr>
@@ -228,7 +249,7 @@ packets</td></tr>
 </td><td>Provisioning</td></tr>
 </table>
 
-@section makefile makefile
+@page makefile makefile
 
 The makefile is used to build an application and produce images to be
 flashed or used with OTAP mechanism.
@@ -247,15 +268,24 @@ All built files for a given app and target_board are stored under
    and the Wirepas Mesh stack and can be used to update the application
    and the stack at the same time with the OTAP mechanism.
 
-@section mcu_folder mcu/ Low level hardware services (HAL)
+@page mcu_folder mcu/ Low level hardware services (HAL)
 
 This folder contain hardware-specific services.
 
-@subsection mcu_common mcu/common Common MCU files
+This page contains following sections:
+- @subpage mcu_common
+- @subpage mcu_hal_api
+- @subpage mcu_specific_files
+- @subpage linker_file
+
+@page mcu_common mcu/common Common MCU files
 
 This folder contains common files for all hardware platforms.
 
-@subsubsection mcu_common_start_c start.c
+This page contains following sections:
+- @subpage mcu_common_start_c
+
+@page mcu_common_start_c start.c
 
 @ref start.c "This file" is present in all applications. It positions the application
 entry point at the correct place in memory and do basic initialization:
@@ -268,7 +298,7 @@ running an application built for an old stack to a newer stack. Running
 an application built with a SDK newer than the stack version is not
 allowed.
 
-@subsection mcu_hal_api mcu/hal_api Low level hardware API
+@page mcu_hal_api mcu/hal_api Low level hardware API
 
 Second group of services is low level (HAL) hardware services. They contain the
 implementations of various hardware peripherals for various hardware platforms
@@ -298,13 +328,13 @@ memory area</td></tr>
 </tr>
 </table>
 
-@subsection mcu_specific_files mcu/<hardware>
+@page mcu_specific_files mcu/<hardware>
 
 @ref mcu "These folders" contain mcu specific files to ease and factorize
 application development. Header files (<code>.h</code>) from this folder can be
 included in applications directly.
 
-@subsection linker_file Linker file
+@page linker_file Linker file
 
 Linker files are located in <code>mcu/\<processor\>/linker</code> folder. Linker
 file is linker script. It ensures that the application is loadable in its
@@ -314,7 +344,11 @@ the beginning of the area.
 @note Linker files named <code>gcc_bl_*.ld</code> are for bootloader and they
 should never be modified!
 
-@subsubsection flash_memory Flash Memory
+This page contains following sections:
+- @subpage flash_memory
+- @subpage ram_memory
+
+@page flash_memory Flash Memory
 
 To be correctly detected by the Wirepas Mesh stack, the entry point of
 the application code must be position at address <code>0x40000</code> (256KB
@@ -337,16 +371,16 @@ MEMORY
 }
 @endcode
 
-@subsubsection ram_memory RAM memory
+@page ram_memory RAM memory
 
 RAM memory is configured in linker file. Value is fixed and should not be
 modified.
 
-@section project_folder projects/ Doxygen files
+@page project_folder projects/ Doxygen files
 
 This folder contains necessary files to recreate this documentation.
 
-@section source_folder source/ Application examples
+@page source_folder source/ Application examples
 
 This folder contains applications.
 
@@ -425,8 +459,8 @@ Example applications are following:
 <tr><td>@ref scheduler_example/app.c "scheduler_example"</td>
 <td>How to use @ref app_scheduler.h "Application scheduler"</td><td></td></tr>
 
-<tr><td>@ref shared_libdata_example/app.c "shared_libdata_example"</td>
-<td>How to use @ref shared_libdata.h</td><td></td></tr>
+<tr><td>@ref shared_data_example/app.c "shared_data_example"</td>
+<td>How to use @ref shared_data.h</td><td></td></tr>
 
 <tr><td>@ref test_app/app.c "test_app"</td>
 <td>using @ref api/test.h "test library" services</td><td></td></tr>
@@ -458,13 +492,18 @@ Demos and production apps are following:
 
 </table>
 
-@subsection source_app_c app.c
+This page contains following sections:
+- @subpage source_app_c
+- @subpage source_config_mk
+- @subpage source_makefile
+
+@page source_app_c app.c
 
 This file is present in all applications. Application init function and
 its application callback functions should be implemented here as defined
 in the <code>app.h</code> file.
 
-@subsection source_config_mk config.mk
+@page source_config_mk config.mk
 
 <code>config.mk</code> file is used to configure application compilation. Here,
 the contents of that file have been described. Only fields that are common to
@@ -483,9 +522,12 @@ app_maintenance=0
 app_development=0
 @endcode
 
+This page contains following sections:
+- @subpage app_specific_area_id
+- @subpage app_version
+- @subpage app_target_boards
 
-
-@subsubsection app_specific_area_id app_specific_area_id
+@page app_specific_area_id app_specific_area_id
 
 Wirepas network supports <I>Over The Air</I> (OTAP) updates of devices on the
 network.
@@ -565,7 +607,7 @@ disinguish the images from others.
 its own set of <code>app_area_id</code> to avoid mismatch between its
 applications.
 
-@subsubsection app_version Application version
+@page app_version Application version
 
 Following definitions:
 
@@ -581,7 +623,7 @@ define the version of the application software. It is different from stack
 software and is application- specific. This information can be used to pinpoint
 which version of the application is running on the device.
 
-@subsubsection app_target_boards TARGET_BOARDS
+@page app_target_boards TARGET_BOARDS
 
 This configuration defines the @ref board_folder "boards" which application
 supports. Configuration is optional.
@@ -596,12 +638,32 @@ Example:
 TARGET_BOARDS := pca10056 pca10059 pca10040 wirepas_brd4254a silabs_brd4254a tbsense2 ublox_b204 promistel_rpi_hat
 @endcode
 
-@subsection source_makefile makefile
+@page source_makefile makefile
 
 Application specific makefile contains application-specific build recipes. Here,
 the common features are documented:
 
-@subsubsection source_makefile_app_printing APP_PRINTING
+This page contains following sections:
+- @subpage source_makefile_app_printing
+- @subpage source_makefile_app_scheduler
+- @subpage source_makefile_cflags
+- @subpage source_makefile_hal_button
+- @subpage source_makefile_hal_hw_delay
+- @subpage source_makefile_hal_i2c
+- @subpage source_makefile_hal_led
+- @subpage source_makefile_hal_persistent_memory
+- @subpage source_makefile_hal_spi
+- @subpage source_makefile_hal_uart
+- @subpage source_makefile_includes
+- @subpage source_makefile_ldflags
+- @subpage source_makefile_libs
+- @subpage source_makefile_shared_data
+- @subpage source_makefile_provisioning
+- @subpage source_makefile_provisioning_proxy
+- @subpage source_makefile_srcs
+- @subpage source_makefile_sw_aes
+
+@page source_makefile_app_printing APP_PRINTING
 
 Enabling of @ref uart_print.h app debug prints can be done with this
 configuration.
@@ -612,7 +674,7 @@ Example:
 APP_PRINTING=yes
 @endcode
 
-@subsubsection source_makefile_app_scheduler APP_SCHEDULER
+@page source_makefile_app_scheduler APP_SCHEDULER
 
 Using of @ref app_scheduler.h "app scheduler" can be done by using this flag.
 
@@ -627,7 +689,7 @@ CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=4
 CFLAGS += -DAPP_SCHEDULER_MAX_EXEC_TIME_US=100
 @endcode
 
-@subsubsection source_makefile_cflags CFLAGS
+@page source_makefile_cflags CFLAGS
 
 Introducing custom compilation flags for compilation can be done by extending
 this list.
@@ -646,7 +708,7 @@ CFLAGS += -DNETWORK_ADDRESS=$(default_network_address)
 CFLAGS += -DNETWORK_CHANNEL=$(default_network_channel)
 @endcode
 
-@subsubsection source_makefile_hal_button HAL_BUTTON
+@page source_makefile_hal_button HAL_BUTTON
 
 Using of @ref button.h "HAL for buttons" can be done by this flag.
 
@@ -660,7 +722,7 @@ HAL_BUTTON=yes
 defined in specific @ref board_folder "board".
 @note This option is supported only on nRF52 architectures.
 
-@subsubsection source_makefile_hal_hw_delay HAL_HW_DELAY
+@page source_makefile_hal_hw_delay HAL_HW_DELAY
 
 Using of @ref hw_delay.h "HAL for hardware delay" can be done by this flag.
 
@@ -669,7 +731,7 @@ Example:
 HAL_HW_DELAY=yes
 @endcode
 
-@subsubsection source_makefile_hal_i2c HAL_I2C
+@page source_makefile_hal_i2c HAL_I2C
 
 Using of @ref i2c.h "HAL for I2C interface" can be done by this flag.
 
@@ -680,7 +742,7 @@ HAL_I2C=yes
 
 @note This option is supported only on nRF52 architectures.
 
-@subsubsection source_makefile_hal_led HAL_LED
+@page source_makefile_hal_led HAL_LED
 
 Using of @ref led.h "HAL for led driving" can be done by this flag.
 
@@ -693,7 +755,7 @@ HAL_LED=yes
 @note: in order for application to be able to drive LEDs, they must be defined
 in specific @ref board_folder "board".
 
-@subsubsection source_makefile_hal_persistent_memory HAL_PERSISTENT_MEMORY
+@page source_makefile_hal_persistent_memory HAL_PERSISTENT_MEMORY
 
 Using of @ref persistent.h "HAL for persistent memory" can be done by this flag.
 
@@ -707,7 +769,7 @@ HAL_PERSISTENT_MEMORY=yes
 CFLAGS += -DUSE_PERSISTENT_MEMORY
 @endcode
 
-@subsubsection source_makefile_hal_spi HAL_SPI
+@page source_makefile_hal_spi HAL_SPI
 
 Using of @ref spi.h "HAL for SPI interface" can be done by this flag.
 
@@ -718,7 +780,7 @@ HAL_SPI=yes
 
 @note This option is supported only on nRF52 architectures.
 
-@subsubsection source_makefile_hal_uart HAL_UART
+@page source_makefile_hal_uart HAL_UART
 
 Using of @ref usart.h "HAL for UART interface" can be done by this flag.
 
@@ -739,7 +801,7 @@ HAL_UART=yes
 UART_USE_DMA=yes
 @endcode
 
-@subsubsection source_makefile_includes INCLUDES
+@page source_makefile_includes INCLUDES
 
 Extending to to include folders for include search paths can be done by
 extending this list.
@@ -749,7 +811,7 @@ Example:
 INCLUDES +=
 @endcode
 
-@subsubsection source_makefile_ldflags LDFLAGS
+@page source_makefile_ldflags LDFLAGS
 
 Introducing custom linker flags for ld can be done by extending this list.
 
@@ -759,7 +821,7 @@ Example:
 LDFLAGS += -lm
 @endcode
 
-@subsubsection source_makefile_libs LIBS
+@page source_makefile_libs LIBS
 
 Introducing of precompiled libraries (.a files) for compilation can be done
 by extending this list.
@@ -769,18 +831,40 @@ Example:
 LIBS +=
 @endcode
 
-@subsubsection source_makefile_shared_libdata SHARED_LIBDATA
+@page source_makefile_provisioning PROVISIONING
 
-Using of @ref shared_libdata.h "shared libdata library" can be done by using
+Using of @ref provisioning.h "provisioning library" can be done by using
 this flag.
 
 Example:
 @code
-# Use Shared LibData
-SHARED_LIBDATA=yes
+# Use Provisioning
+PROVISIONING=yes
 @endcode
 
-@subsubsection source_makefile_srcs SRCS
+@page source_makefile_provisioning_proxy PROVISIONING_PROXY
+
+Using of @ref provisioning.h "provisioning library (for the existing node)"
+can be done by using this flag.
+
+Example:
+@code
+# Use Provisioning Proxy
+PROVISIONING_PROXY=yes
+@endcode
+
+@page source_makefile_shared_data SHARED_DATA
+
+Using of @ref shared_data.h "shared data library" can be done by using
+this flag.
+
+Example:
+@code
+# Use Shared Data
+SHARED_DATA=yes
+@endcode
+
+@page source_makefile_srcs SRCS
 
 Introducing of new source files can be done by extending this list.
 
@@ -789,7 +873,7 @@ Example:
 SRCS +=
 @endcode
 
-@subsubsection source_makefile_sw_aes SW_AES
+@page source_makefile_sw_aes SW_AES
 
 @ref aes.h "Software AES library" can be enabled by using this configuration.
 
@@ -799,18 +883,22 @@ Example:
 SW_AES=yes
 @endcode
 
-@section tools_folder tools/ Various tools used in build process
+@page tools_folder tools/ Various tools used in build process
 
 This folder contains various tools, mainly implemented in Python, used during
 build process of the application.
 
-@subsection genscratchpad_py genscratchpad.py
+This page contains following sections:
+- @subpage genscratchpad_py
+- @subpage config_mk_ini_file
+
+@page genscratchpad_py genscratchpad.py
 
 @ref genscratchpad.py "This tool", used by the @ref makefile "Makefile", allows
 the scratchpad binary generation for the OTAP update. It uses the
 <code>ini</code> file in the same directory
 
-@subsection config_mk_ini_file INI_FILE
+@page config_mk_ini_file INI_FILE
 
 All scratchpad images received <I>Over The Air</I> are compressed and
 encrypted.
@@ -845,7 +933,7 @@ keys cannot be considered secure.
 @note It is highly recommended to modify these keys before any deployment, to
 reduce the risk of malicious network access.
 
-@section util_folder utils/ Utility and helper services
+@page util_folder utils/ Utility and helper services
 
 Thirs group of services is utility and helper functions. They are various,
 hardware-independent, functions solely to ease the implementation. They are

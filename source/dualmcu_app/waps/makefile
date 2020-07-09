@@ -19,8 +19,3 @@ SRCS +=  $(WAPS_PREFIX)waps.c                   \
          $(WAPS_PREFIX)sap/lock_bits.c          \
          $(WAPS_PREFIX)sap/persistent.c         \
          $(WAPS_PREFIX)sap/multicast.c
-# TEST_REG_SDK_ONLY_BEGIN
-ifeq ($(test_library),yes)
-SRCS +=  $(WAPS_PREFIX)sap/tsap.c
-endif
-# TEST_REG_SDK_ONLY_END

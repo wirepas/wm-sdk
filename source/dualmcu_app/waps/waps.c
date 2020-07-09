@@ -14,11 +14,6 @@
 #include "sap/dsap.h"
 #include "sap/csap.h"
 #include "sap/msap.h"
-// TEST_REG_SDK_ONLY_BEGIN
-#ifdef TEST_LIB_SUPPORT
-#include "sap/tsap.h"
-#endif
-// TEST_REG_SDK_ONLY_END
 #include "sap/function_codes.h"
 #include "waps.h"
 #include "waps_private.h"
@@ -317,14 +312,6 @@ static bool process_request(waps_item_t * item)
     {
         return Csap_handleFrame(item);
     }
-// TEST_REG_SDK_ONLY_BEGIN
-#ifdef TEST_LIB_SUPPORT
-    else if (WapsFunc_isTsapRequest(item->frame.sfunc))
-    {
-        return Tsap_handleFrame(item);
-    }
-#endif
-// TEST_REG_SDK_ONLY_END
     return false;
 }
 
@@ -361,29 +348,3 @@ static uint32_t reschedule_waps(void)
 
     return next_time;
 }
-
-// TEST_REG_SDK_ONLY_BEGIN
-#ifdef TEST_LIB_SUPPORT
-
-app_lib_test_radio_reception_res_e Waps_receiveTestData(
-                                const app_lib_test_data_received_t * testData)
-{
-    waps_item_t * item = Waps_itemReserve(WAPS_ITEM_TYPE_INDICATION);
-    if(item)
-    {
-        Tsap_testPacketReceived(testData->data,
-                                testData->hdr.len,
-                                testData->hdr.seq,
-                                testData->rxCntrs.dup,
-                                testData->rxCntrs.cntr,
-                                testData->rssi,
-                                item);
-        add_indication(item);
-
-        return APP_LIB_DATA_RECEIVE_RES_HANDLED;
-    }
-    return APP_LIB_DATA_RECEIVE_RES_NO_SPACE;
-}
-
-#endif
-// TEST_REG_SDK_ONLY_END

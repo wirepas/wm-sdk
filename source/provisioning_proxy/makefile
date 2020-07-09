@@ -17,17 +17,17 @@ CFLAGS += -DNETWORK_CHANNEL=$(default_network_channel)
 # Generic util functions are needed by joining test app
 include $(UTIL_PATH)makefile
 
-# Enable shared libdata library (needed by provisioning library)
-SHARED_LIBDATA=yes
+# Enable shared data library (needed by provisioning proxy library)
+SHARED_DATA=yes
 
-# Enable CBOR library (needed by provisioning library)
+# Enable CBOR library (needed by provisioning proxy library)
 TINY_CBOR=yes
 
-# Enable software AES (needed by provisioning library)
+# Enable software AES (needed by provisioning proxy library)
 SW_AES=yes
 
-# Enable Provisioning library
-PROVISIONING=yes
+# Enable Provisioning Proxy library
+PROVISIONING_PROXY=yes
 
 # HAL button functions
 HAL_BUTTON=yes

@@ -101,10 +101,10 @@ define BUILD_BOOTLOADER_TEST_APP
 	@$(MV) $(BUILDPREFIX_TEST_BOOTLOADER)temp_file_without_scratchpad.hex $(1)
 endef
 
-.PHONY: all flashable otap
+.PHONY: all app_only otap
 all: $(TARGETS)
 
-flashable: $(APP_HEX)
+app_only: $(APP_HEX)
 
 otap: $(FULL_SCRATCHPAD_BIN) $(APP_SCRATCHPAD_BIN) $(STACK_SCRATCHPAD_BIN)
 
@@ -124,9 +124,10 @@ need_board:
 initial_setup: $(LICENSE_ACCEPTED) $(KEY_FILE)
 	@ # Rule to ensure initial setup is done
 
-$(KEY_FILE): $(LICENSE_ACCEPTED)
+$(KEY_FILE): | $(LICENSE_ACCEPTED)
 	@	# Run the wizard to create key file
 	@	# It depends on LICENSE to avoid error when building with -j option
+	@	# | (pipe) is intentional to avoid regenerating key file if license is newer
 	$(WIZARD) --gen_keys -o $@
 
 $(LICENSE_ACCEPTED):
