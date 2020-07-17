@@ -51,7 +51,7 @@ OBJS = $(addprefix $(BUILDPREFIX_APP), $(OBJS_))
 CLEAN := $(OBJS) $(APP_ELF) $(APP_HEX)
 
 
-$(BUILDPREFIX_APP)%.o : %.c
+$(BUILDPREFIX_APP)%.o : %.c $(APP_SRCS_PATH)makefile $(APP_SRCS_PATH)config.mk
 	$(MKDIR) $(@D)
 	$(CC) $(INCLUDES) $(CFLAGS) -c $< -o $@
 
