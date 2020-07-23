@@ -80,4 +80,5 @@ void App_init(const app_global_functions_t * functions)
     lib_settings->registerGroupQuery(Multicast_isGroupCb);
     lib_state->setOnScanNborsCb(onScannedNborsCb,
                                 APP_LIB_STATE_SCAN_NBORS_ONLY_REQUESTED);
+
 }

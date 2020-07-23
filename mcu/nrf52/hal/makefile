@@ -1,8 +1,17 @@
 NRF52_HAL_PREFIX := $(MCU_PREFIX)hal/
 
 ifeq ($(HAL_UART), yes)
+# Check version
 ifeq ($(UART_USE_DMA), yes)
 SRCS += $(NRF52_HAL_PREFIX)usart_dma.c
+else ifeq ($(UART_USE_USB), yes)
+ifeq ($(filter 833 840,$(MCU_SUB)),)
+$(error Board $(target_board) doesn't support USB (only nrf52833 or nrf52840))
+else
+$(info Uart used with USB)
+endif
+include $(NRF52_HAL_PREFIX)usb_uart/makefile
+SRCS += $(NRF52_HAL_PREFIX)usart_usb.c
 else
 SRCS += $(NRF52_HAL_PREFIX)usart.c
 endif

@@ -12,6 +12,7 @@
 #include "api.h"
 #include "board.h"
 
+#ifndef UART_USE_USB
 // Callback for wake-up pin
 static wakeup_cb_f                  m_callback;
 
@@ -80,3 +81,30 @@ void __attribute__((__interrupt__)) GPIOTE_IRQHandler(void)
         }
     }
 }
+#else
+// With USB connection, no wakeup mechanism (not needed)
+void Wakeup_pinInit(wakeup_cb_f cb)
+{
+    (void) cb;
+}
+
+void Wakeup_off(void)
+{
+}
+
+void Wakeup_enableIrq(void)
+{
+}
+
+void Wakeup_disableIrq(void)
+{
+}
+
+void Wakeup_clearIrq(void)
+{
+}
+
+void Wakeup_setEdge(uint8_t flags)
+{
+}
+#endif

@@ -1,14 +1,17 @@
-# You can add more sources here if needed
-include $(SRCS_PATH)waps/makefile
-include $(SRCS_PATH)drivers/makefile
-
-# dma uart is used by default (if it exists on platform)
-uart_use_dma ?= yes
-
-# HAL API is needed by WAPS for UART
+# Dual MCU app needs UART
 HAL_UART=yes
-UART_USE_DMA=$(uart_use_dma)
-
+ifeq ($(uart_use_usb),yes)
+UART_USE_DMA=no
+UART_USE_USB=yes
+CFLAGS += -DUART_USE_USB
+else ifeq ($(uart_use_dma),no)
+UART_USE_DMA=no
+UART_USE_USB=no
+else
+# dma uart is used by default if not explicitly set to no
+UART_USE_DMA=yes
+UART_USE_USB=no
+endif
 
 INCLUDES += -I$(SRCS_PATH)
 
@@ -21,4 +24,7 @@ CFLAGS += -DUART_FLOWCONTROL=$(uart_fc)
 
 # Use App Scheduler and configure it
 APP_SCHEDULER=yes
-CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=2
+CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=3
+
+include $(SRCS_PATH)waps/makefile
+include $(SRCS_PATH)drivers/makefile
