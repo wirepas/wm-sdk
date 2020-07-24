@@ -20,5 +20,5 @@ jobs:
     - name: Build all apps
       uses: docker://wirepas/sdk-builder:latest
       with:
-        entrypoint: ./tools/sdk_builder.py
+        entrypoint: sudo ./tools/sdk_builder.py
         args: --app_only
