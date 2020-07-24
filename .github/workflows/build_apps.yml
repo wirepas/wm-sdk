@@ -10,6 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    container:
+      image: wirepas/sdk-builder:latest
 
     steps:
     - uses: actions/checkout@v2
@@ -18,7 +20,4 @@ jobs:
     - name: Create dummy key file
       run: touch custom_bootloader_keys.ini
     - name: Build all apps
-      uses: docker://wirepas/sdk-builder:latest
-      with:
-        entrypoint: sudo ./tools/sdk_builder.py
-        args: --app_only
+      run: ./tools/sdk_builder.py --app_only
