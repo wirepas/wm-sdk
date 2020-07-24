@@ -1,0 +1,24 @@
+name: Build all apps
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Accept license 
+      run: touch .license_accepted
+    - name: Create dummy key file
+      run: touch custom_bootloader_keys.ini
+    - name: Build all apps
+      uses: docker://wirepas/sdk-builder:latest
+      with:
+        entrypoint: ./tools/sdk_bulder.py
+        args: --app_only
