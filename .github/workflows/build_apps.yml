@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: wirepas/sdk-builder:latest
-      options: --user 1000
+      options: --user 0
 
     steps:
     - uses: actions/checkout@v2
