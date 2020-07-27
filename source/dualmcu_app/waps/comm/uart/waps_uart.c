@@ -71,12 +71,13 @@ static uint32_t         m_baudrate;
 #define MAX_BAUDRATE_FOR_AUTOPOWER  125000
 
 /** Waps uart init */
-void Waps_uart_init(new_frame_cb_f frame_cb,
+bool Waps_uart_init(new_frame_cb_f frame_cb,
                     uint32_t baud,
                     bool flow_ctrl,
                     void * tx_buffer,
                     void * rx_buffer)
 {
+    bool res = false;
     uart_flow_control_e flow;
     m_escaped = false;
     m_frame_cb = frame_cb;
@@ -90,10 +91,12 @@ void Waps_uart_init(new_frame_cb_f frame_cb,
 #if defined WAPS_DIAGNOSTICS
     memset((void *)&m_waps_diagnostics, 0x00, sizeof(m_waps_diagnostics));
 #endif /* WAPS_DIAGNOSTICS */
-    Usart_init(baud, flow);
+    res = Usart_init(baud, flow);
     Usart_enableReceiver(waps_uart_receive);
 
     Waps_uart_powerReset();
+
+    return res;
 }
 
 void Waps_uart_powerReset(void)

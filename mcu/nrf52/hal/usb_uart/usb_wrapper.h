@@ -29,6 +29,7 @@ uint32_t Usb_wrapper_sendBuffer(const void * buffer, uint32_t length);
  * \brief   Initialize the tiny usb wrapper
  * \param   cb
  *          Callback to be called when bytes are received
+ * \return  True if successful, false otherwise
  */
-int Usb_wrapper_init(Usb_wrapper_rx_callback_f cb);
+bool Usb_wrapper_init(Usb_wrapper_rx_callback_f cb);
 

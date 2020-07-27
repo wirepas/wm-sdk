@@ -47,18 +47,19 @@ waps_request_receive_f              m_upper_cb;
  */
 static bool                         frame_receive(void * data, uint32_t size);
 
-void Waps_prot_init(waps_request_receive_f cb)
+bool Waps_prot_init(waps_request_receive_f cb)
 {
+    bool res = false;
     m_upper_cb = cb;
 
     switch(m_interface_config.interface)
     {
         case APP_UART_INT:
-            Waps_uart_init(frame_receive,
-                           m_interface_config.baudrate,
-                           m_interface_config.flow_ctrl,
-                           m_waps_tx_buffer,
-                           m_waps_rx_buffer);
+            res = Waps_uart_init(frame_receive,
+                                 m_interface_config.baudrate,
+                                 m_interface_config.flow_ctrl,
+                                 m_waps_tx_buffer,
+                                 m_waps_rx_buffer);
             waps_prot.send_reply = Waps_protUart_sendReply;
             waps_prot.write_hw = Waps_uart_send;
             waps_prot.update_irq = Waps_uart_setIrq;
@@ -69,6 +70,8 @@ void Waps_prot_init(waps_request_receive_f cb)
         default:
             break;
     }
+
+    return res;
 }
 
 bool Waps_prot_hasIndication(void)

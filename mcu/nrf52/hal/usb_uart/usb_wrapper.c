@@ -84,7 +84,7 @@ void USBD_IRQHandler(void)
                                    USB_TASK_EXEC_TIME_US);
 }
 
-static int tiny_usb_board_init(void)
+static bool tiny_usb_board_init(void)
 {
     volatile uint32_t usb_reg;
     app_lib_time_timestamp_hp_t timeout;
@@ -98,7 +98,7 @@ static int tiny_usb_board_init(void)
     if (!(usb_reg & POWER_USBREGSTATUS_VBUSDETECT_Msk))
     {
         // We are not powered through USB
-        return -1;
+        return false;
     }
     // Plugged event
     tusb_hal_nrf_power_event(0);
@@ -118,12 +118,12 @@ static int tiny_usb_board_init(void)
     if (!(usb_reg & POWER_USBREGSTATUS_OUTPUTRDY_Msk))
     {
         // USB power is not ready after MAX_DELAY_VBUS_READY_MS
-        return -1;
+        return false;
     }
 
     // VBUS ready event
     tusb_hal_nrf_power_event(2);
-    return 0;
+    return true;
 }
 
 uint32_t Usb_wrapper_sendBuffer(const void * buffer, uint32_t length)
@@ -143,25 +143,21 @@ uint32_t Usb_wrapper_sendBuffer(const void * buffer, uint32_t length)
 /**
  * \brief   Initialize the tiny usb wrapper
  */
-int Usb_wrapper_init(Usb_wrapper_rx_callback_f cb)
+bool Usb_wrapper_init(Usb_wrapper_rx_callback_f cb)
 {
-    int ret;
     m_rx_cb = cb;
 
     // Initialize hardware resources
-    ret = tiny_usb_board_init();
-    if (ret < 0)
+    if (!tiny_usb_board_init())
     {
-        return ret;
+        return false;
     }
 
     // initialize tinyusb stack
-    ret = tusb_init();
-    if (ret != 0)
-    {
-        return -1;
-    }
+    // Do not check return code as API said bool but
+    // on first init, it returns error_code 0.
+    tusb_init();
 
-    return 0;
+    return true;
 }
 

@@ -42,8 +42,9 @@ void Waps_force_send_indication();
 
 /**
  * \brief   Initialize WAPS protocol layer and low level layer
+ * \return  True if successful, false otherwise
  */
-void Waps_prot_init(waps_request_receive_f cb);
+bool Waps_prot_init(waps_request_receive_f cb);
 
 /**
  * \brief   Check if protocol layer has indication stashed

@@ -22,11 +22,12 @@ static void usb_cb(uint8_t * ch, size_t n)
         m_cb(ch, n);
     }
 }
-void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
+
+bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 {
     (void) baudrate;
     (void) flow_control;
-    Usb_wrapper_init(usb_cb);
+    return Usb_wrapper_init(usb_cb);
 }
 
 void Usart_setEnabled(bool enabled)

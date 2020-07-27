@@ -72,26 +72,31 @@ sl_list_head_t              waps_request_queue;
 // Signal from protocol (keep as u32 to prevent compiler from packing)
 static uint32_t             m_signal;
 
-void Waps_init(void)
+bool Waps_init(void)
 {
     sl_list_init(&waps_request_queue);
     sl_list_init(&waps_ind_queue);
     sl_list_init(&waps_reply_queue);
-    Waps_itemInit();
-    Waps_prot_init(receive_request);
-    // Check autostart
-    app_lib_state_stack_state_e state = lib_state->getStackState();
-    uint32_t autostart;
-    lib_storage->readPersistent(&autostart, sizeof(autostart));
-    if((state == APP_LIB_STATE_STOPPED) && (autostart & MSAP_AUTOSTART))
+    if (Waps_prot_init(receive_request))
     {
-        // Start the stack
-        lib_state->startStack();
+        Waps_itemInit();
+        // Check autostart
+        app_lib_state_stack_state_e state = lib_state->getStackState();
+        uint32_t autostart;
+        lib_storage->readPersistent(&autostart, sizeof(autostart));
+        if((state == APP_LIB_STATE_STOPPED) && (autostart & MSAP_AUTOSTART))
+        {
+            // Start the stack
+            lib_state->startStack();
+        }
+        // Queue indication to show that stack has started (or waiting to start)
+        add_indication(Msap_getStackStatusIndication());
+        // Clear the signal here (can be set after Waps_prot_init())
+        m_signal = 0;
+        return true;
     }
-    // Queue indication to show that stack has started (or waiting to start)
-    add_indication(Msap_getStackStatusIndication());
-    // Clear the signal here (can be set after Waps_prot_init())
-    m_signal = 0;
+
+    return false;
 }
 
 
