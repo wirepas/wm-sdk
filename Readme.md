@@ -90,7 +90,7 @@ For more information, please refer to [Documentation](#documentation)
 See [LICENSE][here_license] for full license details.
 
 [here_license]: LICENSE.txt
-[here_main_components]: docs/main_components.png
+[here_main_components]: projects/doxygen/media/main_components.png
 [here_board]: board/
 [here_source]: source/
 [here_image]: image/
