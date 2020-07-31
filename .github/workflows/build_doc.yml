@@ -3,6 +3,7 @@ name: Build and deploy doc
 on:
   push:
     branches: [ master ]
+  pull_request:
 
 jobs:
   build:
@@ -15,8 +16,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Generate doc
+      # Build the doc always
       run: make doxygen
     - name: Deploy doc
+      # Only push the doc when pushed to master
+      if: ${{ github.event_name == 'push' }}
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
