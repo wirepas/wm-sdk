@@ -1,0 +1,23 @@
+name: Build and deploy doc
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    container:
+      image: wirepas/sdk-builder:latest
+      options: --user 0
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Generate doc
+      run: make doxygen
+    - name: Deploy doc
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build/html
