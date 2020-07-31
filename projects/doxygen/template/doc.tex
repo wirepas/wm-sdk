@@ -1,0 +1,62 @@
+%  WIREPAS_LATEX.TEX
+%
+%  Based on REFMAN.CLS (LaTeX2e)
+%
+%  Author
+%  Pedro Silva
+
+\documentclass[a4paper]{article}
+
+%%% Set Author, Version Number and Title
+\newcommand{\myauthor}{Tobias}
+\newcommand{\docclass}{Reference Manual}
+\newcommand{\docstatus}{Confidential}
+\newcommand{\vnum}{#DOCUMENT_VERSION}
+\newcommand{\mytitle}{#DOCUMENT_TITLE - \vnum}
+
+\newcommand{\mycustomref}[1]{\textbf{Fig. \ref{#1}}}
+
+%% Generic packages
+\input{preamble}
+
+\begin{document}
+\thispagestyle{empty}
+
+\vspace*{2cm}
+\includegraphics[width=\linewidth]{wm-logo.png}
+
+\vspace*{2.5cm}
+
+\begin{LARGE}
+\mytitle
+\end{LARGE}
+
+\vspace*{2.5cm}
+
+\begin{Large}
+\docclass
+\end{Large}
+
+\vspace*{1cm}
+
+Version: \vnum
+
+#DOCUMENT_DESCRIPTION
+
+\vspace*{2.5cm}
+
+\begin{Huge}
+\docstatus
+\end{Huge}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+%%% Sections and end of file to be appended
+
+
+
+
