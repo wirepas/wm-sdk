@@ -37,7 +37,7 @@ The documentation for this SDK is written with Doxygen and generated in HTML for
 In order to access it, please clone the repository locally and open the SDK_documentation.html
 link available at the root of the SDK with your favorite web browser.
 
-The documentation from top of master branch is also hosted [here](https://wirepas.github.io/wm-sdk/).
+The documentation from top of master branch is also hosted at [wirepas.github.io](https://wirepas.github.io/wm-sdk/).
 It may not reflect the code you have if you are working on a tag.
 
 Some information is available on this page too, but it is just a subset of what the html documentation
@@ -59,7 +59,7 @@ This SDK relies on GNU Arm toolchain. To use the SDK you will need to fulfill th
 
 In order to validate that your environment is correctly configured, you should be able to build the custom_app application.
 
-For more information, please refer to [Documentation](#documentation)
+For more information, please refer to [Documentation](https://wirepas.github.io/wm-sdk)
 
 ## How to build an application
 
@@ -83,7 +83,7 @@ To build the _custom_app_ application for _pca10040_ board, please execute follo
 
 After execution of this command, you should find the _final_image_custom_app.hex_ under _build/pca10040/custom_app_ folder.
 
-For more information, please refer to [Documentation](#documentation)
+For more information, please refer to [Documentation](https://wirepas.github.io/wm-sdk)
 
 ## License
 
