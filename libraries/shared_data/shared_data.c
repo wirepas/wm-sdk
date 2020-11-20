@@ -326,6 +326,8 @@ app_lib_data_send_res_e Shared_Data_sendData(
                                         app_lib_data_to_send_t * data,
                                         app_lib_data_data_sent_cb_f sent_cb)
 {
+    app_lib_data_send_res_e res;
+
     data->tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 
     if (sent_cb == NULL)
@@ -358,5 +360,12 @@ app_lib_data_send_res_e Shared_Data_sendData(
                    data->flags);
 
     /* Send the data packet. */
-    return lib_data->sendData(data);
+    res = lib_data->sendData(data);
+
+    /* Free resources if packet is tracked. */
+    if (res != APP_LIB_DATA_SEND_RES_SUCCESS && sent_cb != NULL)
+    {
+        m_tracked_packets[data->tracking_id] = NULL;
+    }
+    return res;
 }

@@ -87,11 +87,17 @@ address and channel
 To form a network, all nodes must share the same network address and
 network channel.
 
+These information can come from multiple sources like NFC, provisioned in
+persistent memory during production,...
+In order to ease the setup, build system allows to set those settings at build
+time of an application from the application config.mk file.
+
 In <code>@ref custom_app/app.c "custom_app"</code> application example, this
-information can be changed in file <code>@ref source_config_mk "config.mk"
-</code> in the new application folder created, by setting the variables <code>
-default_network_address</code> and <code>default_network_channel</code> to
-arbitrary values. For example:
+information can be seen in file <code>@ref source_config_mk "config.mk"
+</code>
+In the new application folder created, you can modified these variables
+<code>default_network_address</code> and <code>default_network_channel</code> to
+arbitrary values that feat your needs. For example:
 
 @code
     # Define default network settings
@@ -99,16 +105,21 @@ arbitrary values. For example:
     default_network_channel ?= 12
 @endcode
 
-These variables are then defined in application <code>@ref source_makefile
-"makefile"</code> that can also be found inside the application folder, as
-constants <code> NETWORK_ADDRESS</code> and <code>NETWORK_CHANNEL</code>,
-respectively:
+These variables are then automatically assigned to constants
+<code> NETWORK_ADDRESS</code> and <code>NETWORK_CHANNEL</code> and accessible
+from the code.
+
+Additionally, you can define network keys the same way.
+Those keys are 16 bytes long and must be kept secret. It is very important to
+set them to protect your network.
 
 @code
-    # Define default network settings
-    CFLAGS += -DNETWORK_ADDRESS=$(default_network_address)
-    CFLAGS += -DNETWORK_CHANNEL=$(default_network_channel)
+default_network_cipher_key ?= 0x??,..,0x?? // Must be 16 bytes long
+default_network_authen_key ?= 0x??,..,0x?? // Must be 16 bytes long
 @endcode
+
+Those settings are used with @ref configureNodeFromBuildParameters utility
+function.
 
 @page change_of_app_area_id Change of app_area_id
 

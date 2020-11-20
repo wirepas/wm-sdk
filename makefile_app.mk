@@ -19,6 +19,20 @@ APP_ELF := $(BUILDPREFIX_APP)$(APP_NAME).elf
 # For backward compatibility as app makefile except SRCS_PATH variable
 SRCS_PATH := $(APP_SRCS_PATH)
 
+# Convert default network settings to CFLAGS to be used in code
+ifneq ($(default_network_address),)
+CFLAGS += -DNETWORK_ADDRESS=$(default_network_address)
+endif
+ifneq ($(default_network_channel),)
+CFLAGS += -DNETWORK_CHANNEL=$(default_network_channel)
+endif
+ifneq ($(default_network_cipher_key),)
+CFLAGS += -DNET_CIPHER_KEY=$(default_network_cipher_key)
+endif
+ifneq ($(default_network_authen_key),)
+CFLAGS += -DNET_AUTHEN_KEY=$(default_network_authen_key)
+endif
+
 # Include board init part
 -include board/makefile
 
@@ -51,7 +65,7 @@ OBJS = $(addprefix $(BUILDPREFIX_APP), $(OBJS_))
 CLEAN := $(OBJS) $(APP_ELF) $(APP_HEX)
 
 
-$(BUILDPREFIX_APP)%.o : %.c
+$(BUILDPREFIX_APP)%.o : %.c $(APP_SRCS_PATH)makefile $(APP_SRCS_PATH)config.mk
 	$(MKDIR) $(@D)
 	$(CC) $(INCLUDES) $(CFLAGS) -c $< -o $@
 

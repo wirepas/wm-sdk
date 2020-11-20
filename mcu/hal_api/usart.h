@@ -34,9 +34,9 @@ typedef enum
  *          Baudrate to be used
  * \param   flow_control
  *          Flow control to be used
- * \return none
+ * \return  True if successful, false otherwise
  */
-void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control);
+bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control);
 
 /**
  * \brief   Enable or disable USART

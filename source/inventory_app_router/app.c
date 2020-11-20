@@ -358,8 +358,7 @@ static bool node_init(void)
         ret = false;
     }
 
-    if (configureNode(getUniqueAddress(), NETWORK_ADDRESS,
-        NETWORK_CHANNEL) != APP_RES_OK)
+    if (configureNodeFromBuildParameters() != APP_RES_OK)
     {
         ret = false;
     }

@@ -636,8 +636,6 @@ static void callbacks_init(void)
 static bool node_init(void)
 {
    app_addr_t node_addr = getUniqueAddress();
-   app_lib_settings_net_addr_t network_addr = NETWORK_ADDRESS;
-   app_lib_settings_net_channel_t network_ch = NETWORK_CHANNEL;
    bool ret = true;
 
 #define USE_UICR_CONFIG
@@ -656,7 +654,7 @@ static bool node_init(void)
             node_addr = getUniqueAddress();
         }
         // Network ID : CUSTOMER[1]
-        network_addr = (app_lib_settings_net_addr_t) (NRF_UICR->CUSTOMER[1] & 0xFFFFFF);
+        app_lib_settings_net_addr_t network_addr = (app_lib_settings_net_addr_t) (NRF_UICR->CUSTOMER[1] & 0xFFFFFF);
         if (network_addr == 0xFFFFFF)
         {
             network_addr = NETWORK_ADDRESS;
@@ -691,17 +689,14 @@ static bool node_init(void)
         ret = false;
     }
 
-    (void) network_ch;
-       if (lib_settings->setNetworkChannel(NETWORK_CHANNEL) != APP_RES_OK)
+    if (lib_settings->setNetworkChannel(NETWORK_CHANNEL) != APP_RES_OK)
     {
         ret = false;
     }
 
 #else
     // Settings are applied only when do not exist
-    if (configureNode(node_addr,
-                      network_addr,
-                      network_ch) != APP_RES_OK)
+    if (configureNodeFromBuildParameters() != APP_RES_OK)
     {
         ret = false;
     }

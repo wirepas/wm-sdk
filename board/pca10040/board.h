@@ -40,5 +40,8 @@
 // The board supports DCDC
 #define BOARD_SUPPORT_DCDC
 
+// Active internal pull-up for buttons
+#define BOARD_BUTTON_INTERNAL_PULL      true
+
 
 #endif /* BOARD_PCA10040_BOARD_H_ */

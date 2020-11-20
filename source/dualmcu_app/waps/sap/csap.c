@@ -475,6 +475,7 @@ static attribute_result_e writeAttr(attr_t attr_id,
                     app_role |= APP_LIB_SETTINGS_ROLE_FLAG_AUTOROLE;
                 }
                 result = lib_settings->setNodeRole(app_role);
+
                 if (result == APP_RES_OK)
                 {
                     Waps_uart_powerReset();

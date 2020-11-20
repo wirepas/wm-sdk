@@ -32,8 +32,9 @@
  *          Memory block for transmissions
  * \param   rx_buffer
  *          Memory block for receptions
+ * \return  True if successful, false otherwise
  */
-void Waps_uart_init(new_frame_cb_f frame_cb,
+bool Waps_uart_init(new_frame_cb_f frame_cb,
                     uint32_t baud,
                     bool flow_ctrl,
                     void * tx_buffer,

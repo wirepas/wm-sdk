@@ -116,6 +116,16 @@
 #define BOARD_BUTTON_ACTIVE_LOW         true
 
 /**
+ * @brief   Button GPIO internal pull up/down
+ *
+ * Some buttons don't have any pull-up or pull-down resistor installed on the
+ * board. They need it to be setup in software. Set
+ * \ref BOARD_BUTTON_INTERNAL_PULL to true to enable internal pull-up(down).
+ * Pull-up(down) is enabled when \ref BOARD_BUTTON_ACTIVE_LOW is true(false).
+ */
+#define BOARD_BUTTON_INTERNAL_PULL true
+
+/**
  * @brief   Button GPIO interrupt even/odd selection
  *
  * The EFR32 GPIO block has 16 configurable external interrupt sources. Even

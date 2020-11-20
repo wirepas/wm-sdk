@@ -1,0 +1,10 @@
+.table-title {
+  width:auto;
+}
+.table-title td:not(last-child) {
+  white-space:nowrap;
+}
+
+.table-title td:last-child {
+    width: 100%;
+}

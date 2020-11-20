@@ -122,7 +122,9 @@ static bool read_persistent_memory()
             {
                 if (configureNode(m_app_settings.node_address,
                                   m_app_settings.network_address,
-                                  m_app_settings.network_channel) == APP_RES_OK)
+                                  m_app_settings.network_channel,
+                                  NULL,
+                                  NULL) == APP_RES_OK)
                 {
                     return true;
                 }

@@ -218,9 +218,6 @@ void App_init(const app_global_functions_t * functions)
     CborValue value;
     CborError err;
 
-    // Open Wirepas public API
-    API_Open(functions);
-
     // Initialize uart for application debug prints
     UartPrint_init(115200);
     UartPrint_printf("App started\n");
