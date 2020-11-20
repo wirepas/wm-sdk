@@ -1,10 +1,19 @@
 # Boards compatible with this app 
 TARGET_BOARDS := pca10040 pca10056 pca10059 pca10100 
+#
+# Network default settings configuration
+#
 
-# Define default network settings
-app_specific_area_id=0x8010A0
+# If this section is removed, node has to be configured in
+# a different way
 default_network_address ?= 0x2BBBA2
 default_network_channel ?= 10
+# !HIGHLY RECOMMENDED! : To enable security keys please un-comment the lines below and fill with a
+#                        randomly generated authentication & encryption keys (exactly 16 bytes)
+#default_network_cipher_key ?= 0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??
+#default_network_authen_key ?= 0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??
+
+app_specific_area_id=0x8010A0
 default_device_class = 0xFA
 default_device_mode ?= 2 #nrls tag: 1, autoscan_tag: 2, autoscan anchor: 3, opp. anchor: 4
 default_role ?= 2 #headnode: 1, subnode: 2

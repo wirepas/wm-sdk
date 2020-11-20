@@ -14,6 +14,7 @@
 #include "board.h"
 #include "api.h"
 
+
 #ifdef BOARD_BUTTON_PIN_LIST
 
 /*
@@ -28,6 +29,14 @@
 #ifndef BOARD_BUTTON_ACTIVE_LOW
 /** \brief  Is button active low. It can be overwritten from board.h */
 #define BOARD_BUTTON_ACTIVE_LOW     true
+#endif
+
+#ifndef BOARD_BUTTON_INTERNAL_PULL
+/** \brief  Does the driver needs to activate internal pull-up/down.
+ *          If true; pull-up (down) is enabled if BOARD_BUTTON_ACTIVE_LOW is
+ *          true (false). It can be overwritten from board.h
+ */
+#define BOARD_BUTTON_INTERNAL_PULL     true
 #endif
 
 #ifndef BOARD_BUTTON_USE_EVEN_INT
@@ -132,17 +141,30 @@ void Button_init(void)
         m_button_conf[i].last_button_event = now;
         m_button_conf[i].active_low = BOARD_BUTTON_ACTIVE_LOW;
 
-        // Set pin mode: input enabled with filter, DOUT determines pull dir.
-        hal_gpio_set_mode(m_pin_map[i].port, m_pin_map[i].pin, GPIO_MODE_IN_PP);
-
-        // Enable the Pull-Up on Buttons . Otherwise when the button is not pressed the pin is not connected (undefined value)
-        if (m_button_conf[i].active_low)
+        // Enable the Pull-Up/Down on Buttons.
+        if (BOARD_BUTTON_INTERNAL_PULL)
         {
-            hal_gpio_set(m_pin_map[i].port, m_pin_map[i].pin);
+            // Set pin mode: input enabled with filter, DOUT sets pull dir.
+            hal_gpio_set_mode(m_pin_map[i].port,
+                              m_pin_map[i].pin,
+                              GPIO_MODE_IN_PP);
+
+            if (m_button_conf[i].active_low)
+            {
+                hal_gpio_set(m_pin_map[i].port, m_pin_map[i].pin);
+            }
+            else
+            {
+                hal_gpio_clear(m_pin_map[i].port, m_pin_map[i].pin);
+            }
         }
         else
         {
-            hal_gpio_clear(m_pin_map[i].port, m_pin_map[i].pin);
+            // Default config: Input No Pull, DOUT enables filter.
+            hal_gpio_set_mode(m_pin_map[i].port,
+                              m_pin_map[i].pin,
+                              GPIO_MODE_IN_OD_NOPULL);
+            hal_gpio_set(m_pin_map[i].port, m_pin_map[i].pin);
         }
     }
 

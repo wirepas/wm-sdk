@@ -93,5 +93,8 @@ P1.09   41      gpio
 // The board supports DCDC
 #define BOARD_SUPPORT_DCDC
 
+// Active internal pull-up for buttons
+#define BOARD_BUTTON_INTERNAL_PULL      true
+
 
 #endif /* BOARD_PCA10100_BOARD_H_ */

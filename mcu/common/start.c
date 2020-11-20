@@ -53,6 +53,24 @@ const app_header_t app_header __attribute__ ((section (".app_header"))) =
     }
 };
 
+/** Keys declared from config.mk files must be stored in flash somewhere
+ * to be used by the application */
+#ifdef NET_CIPHER_KEY
+static const uint8_t cipher_key[] = {NET_CIPHER_KEY};
+_Static_assert((sizeof(cipher_key) == 16), "Cipher key must be 16 bytes");
+const uint8_t * cipher_key_p = cipher_key;
+#else
+const uint8_t * cipher_key_p = NULL;
+#endif
+#ifdef NET_AUTHEN_KEY
+static const uint8_t authen_key[] = {NET_AUTHEN_KEY};
+_Static_assert((sizeof(authen_key) == 16), "Authentication key must be 16 bytes");
+const uint8_t * authen_key_p = authen_key;
+#else
+const uint8_t * authen_key_p = NULL;
+#endif
+
+
 /**
  * \brief   Application entrypoint, called from entrypoint.s
  */

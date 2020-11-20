@@ -111,9 +111,30 @@ void App_Scheduler_init(void);
  *          registered cb will update the next scheduled time.
  * \param   delay_ms
  *          delay in ms to be scheduled (0 to be scheduled asap)
+ * \param   exec_time_us
+ *          Maximum execution time required for the task to be executed
  * \return  True if able to add, false otherwise
  */
-app_scheduler_res_e App_Scheduler_addTask(task_cb_f cb, uint32_t delay_ms);
+app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_ms, uint32_t exec_time_us);
+
+/**
+ * \brief   Add a task without execution time (deprecated)
+ * \param   cb
+ *          Callback to be called from main periodic task.
+ *          Same cb can only be added once. Calling this function with an already
+ *          registered cb will update the next scheduled time.
+ * \param   delay_ms
+ *          delay in ms to be scheduled (0 to be scheduled asap)
+ * \return  True if able to add, false otherwise
+ *
+ * \note    This call is deprecated and you should use @ref App_Scheduler_addTask_execTime instead
+ */
+#ifdef APP_SCHEDULER_MAX_EXEC_TIME_US
+static inline app_scheduler_res_e App_Scheduler_addTask(task_cb_f cb, uint32_t delay_ms)
+{
+    return App_Scheduler_addTask_execTime(cb, delay_ms, APP_SCHEDULER_MAX_EXEC_TIME_US);
+}
+#endif
 
 /**
  * \brief   Cancel a task

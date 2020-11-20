@@ -21,6 +21,10 @@
 #include "button.h"
 #include "app_scheduler.h"
 
+#define DEBUG_LOG_MODULE_NAME "SCHED_EX"
+#define DEBUG_LOG_MAX_LEVEL LVL_INFO
+#include "debug_log.h"
+
 /*
  * \brief   This task is a periodic task running ~every 50ms
  *          Toggle the led 0
@@ -86,7 +90,7 @@ static uint32_t state_machine_task()
  */
 static void button_handler(uint8_t button_id, button_event_e event)
 {
-    App_Scheduler_addTask(single_shot_task, APP_SCHEDULER_SCHEDULE_ASAP);
+    App_Scheduler_addTask_execTime(single_shot_task, APP_SCHEDULER_SCHEDULE_ASAP, 20);
     (void) button_id;
     (void) event;
 }
@@ -104,8 +108,9 @@ static void button_handler_state_machine(uint8_t button_id, button_event_e event
 
     if (!started)
     {
-        res = App_Scheduler_addTask(state_machine_task,
-                                    APP_SCHEDULER_SCHEDULE_ASAP);
+        res = App_Scheduler_addTask_execTime(state_machine_task,
+                                             APP_SCHEDULER_SCHEDULE_ASAP,
+                                             10);
 
         started = (res == APP_SCHEDULER_RES_OK);
     }
@@ -127,14 +132,14 @@ static void button_handler_state_machine(uint8_t button_id, button_event_e event
 void App_init(const app_global_functions_t * functions)
 {
     // Basic configuration of the node with a unique node address
-    if (configureNode(getUniqueAddress(),
-                      NETWORK_ADDRESS,
-                      NETWORK_CHANNEL) != APP_RES_OK)
+    if (configureNodeFromBuildParameters() != APP_RES_OK)
     {
         // Could not configure the node
         // It should not happen except if one of the config value is invalid
         return;
     }
+
+    LOG_INIT();
 
     // Initialize peripherals
     Led_init();
@@ -143,8 +148,9 @@ void App_init(const app_global_functions_t * functions)
     App_Scheduler_init();
 
     // Launch two periodic task with different period
-    App_Scheduler_addTask(periodic_task_50ms, APP_SCHEDULER_SCHEDULE_ASAP);
-    App_Scheduler_addTask(periodic_task_500ms, APP_SCHEDULER_SCHEDULE_ASAP);
+    App_Scheduler_addTask_execTime(periodic_task_50ms, APP_SCHEDULER_SCHEDULE_ASAP, 5);
+    App_Scheduler_addTask_execTime(periodic_task_500ms, APP_SCHEDULER_SCHEDULE_ASAP, 5);
+
 
     // Register to button 0 event that will triger a single shot task
     // Will work only if target board support buttons
@@ -154,7 +160,8 @@ void App_init(const app_global_functions_t * functions)
     // Will work only if target board support buttons
     Button_register_for_event(1, BUTTON_PRESSED, button_handler_state_machine);
 
-
     // Start the stack
     lib_state->startStack();
+
+    LOG(LVL_INFO, "Scheduler example app started");
 }

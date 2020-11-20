@@ -57,9 +57,7 @@ void App_init(const app_global_functions_t * functions)
     UartPrint_printf("App started\n");
 
     // Basic configuration of the node with a unique node address
-    if (configureNode(getUniqueAddress(),
-                      NETWORK_ADDRESS,
-                      NETWORK_CHANNEL) != APP_RES_OK)
+    if (configureNodeFromBuildParameters() != APP_RES_OK)
     {
         // Could not configure the node
         // It should not happen except if one of the config value is invalid

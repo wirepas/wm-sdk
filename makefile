@@ -157,7 +157,7 @@ $(BOOTLOADER_HEX): initial_setup need_board
 	+$(MAKE) -f makefile_bootloader.mk
 
 .PHONY: $(BOOTLOADER_TEST_HEX)
-$(BOOTLOADER_TEST_HEX): initial_setup need_board
+$(BOOTLOADER_TEST_HEX): initial_setup need_board $(BOOTLOADER_CONFIG_INI)
 	@	# Call bootloader test makefile to get the test application hex file
 	+$(MAKE) -f makefile_bootloader_test.mk
 

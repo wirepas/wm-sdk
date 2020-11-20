@@ -132,7 +132,7 @@ static void enableGPIOCLK(bool enable)
     }
 }
 
-void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
+bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 {
 #ifdef BOARD_USART_FORCE_BAUDRATE
     // Some hardware only support a given speed, so override the chosen baudrate
@@ -220,6 +220,8 @@ void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 
     // Prepare RX buffer
     DoubleBuffer_init(m_rx_buffers);
+
+    return true;
 }
 
 void Usart_setEnabled(bool enabled)

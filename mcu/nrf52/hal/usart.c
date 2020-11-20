@@ -32,13 +32,14 @@ static void                             set_flow_control(bool hw);
 #endif
 
 /** Set uarte baudrate */
-static void                             set_baud(uint32_t baudrate);
+static bool                             set_baud(uint32_t baudrate);
 
 /** Declare the interrupt handler */
 void __attribute__((__interrupt__))     UART0_IRQHandler(void);
 
-void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
+bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 {
+    bool ret;
     //uart_tx_pin
     nrf_gpio_cfg_default(BOARD_USART_TX_PIN);
     nrf_gpio_pin_set(BOARD_USART_TX_PIN);
@@ -74,7 +75,8 @@ void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 #endif
 
     /* Uart speed */
-    set_baud(baudrate);
+    ret = set_baud(baudrate);
+    // Even if ret is False, do the end of init to have a uart at default baudrate
 
     NRF_UART0->EVENTS_RXDRDY = 0;
     NRF_UART0->EVENTS_TXDRDY = 0;
@@ -91,6 +93,8 @@ void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     /* APP IRQ */
     Sys_clearFastAppIrq(UART0_IRQn);
     Sys_enableFastAppIrq(UART0_IRQn, APP_LIB_SYSTEM_IRQ_PRIO_HI, UART0_IRQHandler);
+
+    return ret;
 }
 
 void Usart_setEnabled(bool enabled)
@@ -325,8 +329,9 @@ static void set_flow_control(bool hw)
 }
 #endif
 
-static void set_baud(uint32_t baudrate)
+static bool set_baud(uint32_t baudrate)
 {
+    bool ret = true;
     switch (baudrate)
     {
     case 115200:
@@ -346,7 +351,11 @@ static void set_baud(uint32_t baudrate)
         NRF_UARTE0->BAUDRATE = (uint32_t)UARTE_BAUDRATE_BAUDRATE_Baud1M;
         break;
     default:
+        // Intended baudrate is not in the list, default baudrate from chip will be used
+        ret = false;
         break;
     }
+
+    return ret;
 }
 

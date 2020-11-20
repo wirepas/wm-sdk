@@ -14,6 +14,7 @@
 #include "board.h"
 #include "api.h"
 
+
 #ifdef BOARD_BUTTON_PIN_LIST
 
 /*
@@ -30,6 +31,14 @@
 #define BOARD_BUTTON_ACTIVE_LOW     true
 #endif
 
+#ifndef BOARD_BUTTON_INTERNAL_PULL
+/** \brief  Does the driver needs to activate internal pull-up/down.
+ *          If true; pull-up (down) is enabled if BOARD_BUTTON_ACTIVE_LOW is
+ *          true (false). It can be overwritten from board.h
+ */
+#define BOARD_BUTTON_INTERNAL_PULL     true
+#endif
+
 /** \brief  Each button use a GPIOTE channel Define first one */
 #define GPIOTE_START_CHANNEL        0
 
@@ -40,6 +49,14 @@ static const uint8_t pin_map[] = BOARD_BUTTON_PIN_LIST;
 #define BOARD_BUTTON_NUMBER         (sizeof(pin_map) / sizeof(pin_map[0]))
 
 static void gpiote_interrupt_handler(void);
+
+typedef enum
+{
+    NO_INTERRUPT,
+    ON_PRESSED_ONLY,
+    ON_RELEASED_ONLY,
+    ON_PRESSED_AND_RELEASED
+} button_interrupt_type_e;
 
 typedef struct
 {
@@ -57,6 +74,93 @@ typedef struct
 /** \brief  Table to manage the button list */
 static button_internal_t m_button_conf[BOARD_BUTTON_NUMBER];
 
+/* Button events and sense truth table
+ *
+ * Type : interrupt type see button_interrupt_type_e
+ *        N:No_it, P:pressed_only, R:released_only, PR:pressed&released
+ * act_low: Button is active low
+ * Pin:     IO state (Low or High)
+ * Sense:   Value to configure in sense register
+ *
+ *  Type | act_low | Pin | Sense
+ *    N  |    X    |  X  | Disabled
+ *
+ *    P  |    Y    |  X  | Low
+ *    P  |    N    |  X  | High
+ *
+ *    R  |    Y    |  X  | High
+ *    R  |    N    |  X  | Low
+ *
+ *   PR  |    X    |  H  | Low
+ *   PR  |    X    |  L  | Low
+ *
+ */
+static void button_enable_interrupt(uint8_t button_id,
+                                    button_interrupt_type_e type)
+{
+    bool is_sense_low = false;
+
+    switch(type)
+    {
+        case NO_INTERRUPT:
+        {
+            //Disable SENSE
+            NRF_GPIO->PIN_CNF[m_button_conf[button_id].gpio] = 0;
+            NRF_GPIO->LATCH = 1 << m_button_conf[button_id].gpio;
+
+            // Check if port IRQ must be masked
+            for (uint8_t i = 0; i < BOARD_BUTTON_NUMBER; i++)
+            {
+                if (m_button_conf[i].on_pressed ||
+                    m_button_conf[i].on_released)
+                {
+                    // At least one line still enabled
+                    return;
+                }
+            }
+            NRF_GPIOTE->INTENCLR = GPIOTE_INTENSET_PORT_Msk;
+            return;
+        }
+        case ON_PRESSED_ONLY:
+        {
+            is_sense_low = m_button_conf[button_id].active_low;
+            break;
+        }
+        case ON_RELEASED_ONLY:
+        {
+            is_sense_low = !m_button_conf[button_id].active_low;
+            break;
+        }
+        case ON_PRESSED_AND_RELEASED:
+        {
+            is_sense_low =
+                nrf_gpio_pin_read(m_button_conf[button_id].gpio) == 0 ?
+                                                                false : true;
+            break;
+        }
+    }
+
+    // Configure interrupt (type != NO_INTERRUPT)
+
+    //Disable IRQ
+    NRF_GPIO->PIN_CNF[m_button_conf[button_id].gpio] &=
+                                                ~(GPIO_PIN_CNF_SENSE_Msk);
+
+    if(is_sense_low)
+    {
+        NRF_GPIO->PIN_CNF[m_button_conf[button_id].gpio] |=
+                        (GPIO_PIN_CNF_SENSE_Low << GPIO_PIN_CNF_SENSE_Pos);
+    }
+    else
+    {
+        NRF_GPIO->PIN_CNF[m_button_conf[button_id].gpio] |=
+                    (GPIO_PIN_CNF_SENSE_High << GPIO_PIN_CNF_SENSE_Pos);
+    }
+    // Clear the line before enabling IRQ
+    NRF_GPIO->LATCH = 1 << m_button_conf[button_id].gpio;
+    NRF_GPIOTE->INTENSET = GPIOTE_INTENSET_PORT_Msk;
+}
+
 void Button_init(void)
 {
     app_lib_time_timestamp_hp_t now = lib_time->getTimestampHp();
@@ -70,20 +174,37 @@ void Button_init(void)
         m_button_conf[i].last_button_event = now;
         m_button_conf[i].active_low = BOARD_BUTTON_ACTIVE_LOW;
 
-        // Enable the Pull-Up on Buttons . Otherwise when the button is not pressed the pin is not connected (undefined value)
-        NRF_GPIO->PIN_CNF[m_button_conf[i].gpio] =
-            NRF_GPIO->PIN_CNF[m_button_conf[i].gpio] | (NRF_GPIO_PIN_PULLUP << 2);
+        // Enable the Pull-Up/Down on Buttons (Input; Pull; SENSE:Disabled)
+        if (BOARD_BUTTON_INTERNAL_PULL)
+        {
+            uint32_t pull;
 
-        NRF_GPIOTE->CONFIG[m_button_conf[i].channel] =
-                    ((GPIOTE_CONFIG_MODE_Event << GPIOTE_CONFIG_MODE_Pos) & GPIOTE_CONFIG_MODE_Msk)
-                    |((GPIOTE_CONFIG_POLARITY_Toggle << GPIOTE_CONFIG_POLARITY_Pos) & GPIOTE_CONFIG_POLARITY_Msk)
-                    |((m_button_conf[i].gpio  << GPIOTE_CONFIG_PSEL_Pos) & GPIOTE_CONFIG_PSEL_Msk);
+            if (BOARD_BUTTON_ACTIVE_LOW)
+            {
+                pull = (GPIO_PIN_CNF_PULL_Pullup << GPIO_PIN_CNF_PULL_Pos);
+            }
+            else
+            {
+                pull = (GPIO_PIN_CNF_PULL_Pulldown << GPIO_PIN_CNF_PULL_Pos);
+            }
+            NRF_GPIO->PIN_CNF[m_button_conf[i].gpio] = pull;
+        }
+        else
+        {
+            // Default config (Input; No Pull; SENSE:Disabled).
+            NRF_GPIO->PIN_CNF[m_button_conf[i].gpio] = 0;
+        }
     }
 
-    NRF_GPIOTE->INTENCLR = 0xFFFFFFFF;
+    NRF_GPIOTE->INTENCLR = GPIOTE_INTENSET_PORT_Msk;
+    NRF_GPIOTE->EVENTS_PORT = 0;
 
     // Enable interrupt
-    lib_system->enableAppIrq(true, GPIOTE_IRQn, APP_LIB_SYSTEM_IRQ_PRIO_LO, gpiote_interrupt_handler);
+    lib_system->clearPendingFastAppIrq(GPIOTE_IRQn);
+    lib_system->enableAppIrq(true,
+                             GPIOTE_IRQn,
+                             APP_LIB_SYSTEM_IRQ_PRIO_LO,
+                             gpiote_interrupt_handler);
 }
 
 button_res_e Button_getState(uint8_t button_id, bool * state_p)
@@ -104,6 +225,8 @@ button_res_e Button_register_for_event(uint8_t button_id,
                                        button_event_e event,
                                        on_button_event_cb cb)
 {
+    button_interrupt_type_e type;
+
     if ((button_id >= BOARD_BUTTON_NUMBER)
         || (event != BUTTON_PRESSED && event != BUTTON_RELEASED ))
     {
@@ -122,17 +245,26 @@ button_res_e Button_register_for_event(uint8_t button_id,
         m_button_conf[button_id].on_released = cb;
     }
 
-    if (m_button_conf[button_id].on_pressed || m_button_conf[button_id].on_released)
+    if (m_button_conf[button_id].on_pressed &&
+        m_button_conf[button_id].on_released)
     {
-        // At least one event registered, enable interrupt on given channel
-        NRF_GPIOTE->INTENSET = NRF_GPIOTE->INTENSET | (1 << m_button_conf[button_id].channel);
-        NRF_GPIOTE->EVENTS_IN[m_button_conf[button_id].channel] = 0;
+        type = ON_PRESSED_AND_RELEASED;
+    }
+    else if (m_button_conf[button_id].on_pressed)
+    {
+        type = ON_PRESSED_ONLY;
+    }
+    else if (m_button_conf[button_id].on_released)
+    {
+        type = ON_RELEASED_ONLY;
     }
     else
     {
-        // Disable interrupt
-        NRF_GPIOTE->INTENSET = NRF_GPIOTE->INTENSET & ~(1 << m_button_conf[button_id].channel);
+        type = NO_INTERRUPT;
     }
+
+    button_enable_interrupt(button_id, type);
+
     Sys_exitCriticalSection();
 
     return BUTTON_RES_OK;
@@ -147,27 +279,58 @@ static void gpiote_interrupt_handler(void)
 {
     app_lib_time_timestamp_hp_t now = lib_time->getTimestampHp();
 
+    if (NRF_GPIOTE->EVENTS_PORT == 0)
+    {
+        return;
+    }
+
+    NRF_GPIOTE->EVENTS_PORT = 0;
+    // read any event from peripheral to flush the write buffer:
+    EVENT_READBACK = NRF_GPIOTE->EVENTS_PORT;
+
     // Check all possible sources
     for (uint8_t i = 0; i < BOARD_BUTTON_NUMBER; i ++)
     {
-        if (NRF_GPIOTE->EVENTS_IN[m_button_conf[i].channel] != 0)
+        uint8_t pin = m_button_conf[i].gpio;
+        if (NRF_GPIO->LATCH & (1 << pin))
         {
-            if (lib_time->getTimeDiffUs(now, m_button_conf[i].last_button_event) > (BOARD_DEBOUNCE_TIME_MS * 1000))
+            if (lib_time->getTimeDiffUs(now,
+                                        m_button_conf[i].last_button_event)
+                > (BOARD_DEBOUNCE_TIME_MS * 1000))
             {
-                // Button is pressed if gpio is in active state
-                bool pressed = ((nrf_gpio_pin_read(m_button_conf[i].gpio) != 0) != m_button_conf[i].active_low);
-                m_button_conf[i].last_button_event = now;
+                bool pressed;
+                Button_getState(i, &pressed);
 
                 if (m_button_conf[i].on_pressed && pressed)
                 {
+                    // Call callback
                     m_button_conf[i].on_pressed(i, BUTTON_PRESSED);
                 }
                 else if (m_button_conf[i].on_released && !pressed)
                 {
+                    //Call callback
                     m_button_conf[i].on_released(i, BUTTON_RELEASED);
                 }
-             }
-             NRF_GPIOTE->EVENTS_IN[m_button_conf[i].channel] = 0;
+
+                // Change SENSE polarity
+                if (m_button_conf[i].on_pressed &&
+                    m_button_conf[i].on_released)
+                {
+                    NRF_GPIO->PIN_CNF[pin] &= ~(GPIO_PIN_CNF_SENSE_Msk);
+                    if (nrf_gpio_pin_read(pin) == 0)
+                    {
+                        NRF_GPIO->PIN_CNF[pin] |=
+                            (GPIO_PIN_CNF_SENSE_High << GPIO_PIN_CNF_SENSE_Pos);
+                    }
+                    else
+                    {
+                        NRF_GPIO->PIN_CNF[pin] |=
+                            (GPIO_PIN_CNF_SENSE_Low << GPIO_PIN_CNF_SENSE_Pos);
+                    }
+                }
+            }
+            // Clear the line
+            NRF_GPIO->LATCH = 1 << pin;
         }
     }
 }

@@ -54,9 +54,9 @@ void wakeup_task(void);
  * \brief   Initializes waps and modules it requires.
  *          Currently waps relies on waps_uart as sole communication module.
  *          It is initialized first. Finally, attribute manager is initialized.
- * \post    WAPS uart is ready run. Run Waps_process.
+ * \return  True if successful, false otherwise
  */
-void Waps_init(void);
+bool Waps_init(void);
 
 /**
  * \brief   cb to informed app when scanning neighbors is done

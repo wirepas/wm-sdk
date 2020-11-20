@@ -10,10 +10,6 @@ LDFLAGS +=
 # include math.h lib
 # LDFLAGS += -lm
 
-# Define default network settings
-CFLAGS += -DNETWORK_ADDRESS=$(default_network_address)
-CFLAGS += -DNETWORK_CHANNEL=$(default_network_channel)
-
 # Enable CBOR library
 TINY_CBOR=yes
 

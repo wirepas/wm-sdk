@@ -56,6 +56,9 @@
 // Active low polarity for buttons
 #define BOARD_BUTTON_ACTIVE_LOW         true
 
+// Board has external pull-up for buttons
+#define BOARD_BUTTON_INTERNAL_PULL false
+
 // Buttons use even external interrupts
 #define BOARD_BUTTON_USE_EVEN_INT       true
 

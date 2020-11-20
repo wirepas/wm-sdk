@@ -34,6 +34,9 @@
 // Active low polarity for buttons
 #define BOARD_BUTTON_ACTIVE_LOW         true
 
+// Active internal pull-up for buttons
+#define BOARD_BUTTON_INTERNAL_PULL      true
+
 // Define the SPI instance to use
 #define USE_SPI0
 

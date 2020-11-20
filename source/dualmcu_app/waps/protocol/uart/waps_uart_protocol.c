@@ -66,7 +66,6 @@ void Waps_protUart_frameRemoved(void)
     // Do nothing (atm)
 }
 
-
 static void send_indication(waps_frame_t * rx_frame)
 {
     /* Two cases when sending indications is allowed:
@@ -99,6 +98,7 @@ static void send_indication(waps_frame_t * rx_frame)
             prot_indication = NULL;
         }
     }
+
 dont_send_ind:
     Waps_prot_updateIrqPin();
 }

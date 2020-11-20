@@ -59,7 +59,7 @@ static void set_baud(uint32_t baud);
 void __attribute__((__interrupt__))     USART_RX_IRQHandler(void);
 void __attribute__((__interrupt__))     USART_TX_IRQHandler(void);
 
-void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
+bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 {
 #ifdef BOARD_USART_FORCE_BAUDRATE
     // Some hardware only support a given speed, so override the chosen baudrate
@@ -132,6 +132,8 @@ void Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 
     // Configuration done: disable clock
     enableHFPERCLK(false);
+
+    return true;
 }
 
 void Usart_setEnabled(bool enabled)

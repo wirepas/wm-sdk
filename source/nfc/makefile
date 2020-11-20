@@ -13,10 +13,6 @@ LDFLAGS +=
 # include math.h lib
 # LDFLAGS += -lm
 
-# Define default network settings
-CFLAGS += -DNETWORK_ADDRESS=$(default_network_address)
-CFLAGS += -DNETWORK_CHANNEL=$(default_network_channel)
-
 HAL_HW_DELAY=yes
 
 # Use App Scheduler and configure it

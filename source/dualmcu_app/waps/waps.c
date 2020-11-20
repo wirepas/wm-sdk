@@ -20,9 +20,10 @@
 
 
 #include "api.h"
+#include "app_scheduler.h"
 
 /** Define safety margin for processing WAPS */
-#define WAPS_SAFETY_MARGIN  8000u
+#define WAPS_SAFETY_MARGIN_US  8000u
 
 /**
  * \brief   Waps_exec is the core of WAPS
@@ -63,12 +64,6 @@ static bool process_request(waps_item_t * item);
  */
 static waps_item_t * find_indication(uint8_t id);
 
-/**
- * \brief   Re-schedule WAPS task
- * \return  time (from now) to schedule next Waps_exec
- */
-static uint32_t reschedule_waps(void);
-
 /** WAPS internal message queues */
 sl_list_head_t              waps_ind_queue;
 sl_list_head_t              waps_reply_queue;
@@ -77,28 +72,32 @@ sl_list_head_t              waps_request_queue;
 // Signal from protocol (keep as u32 to prevent compiler from packing)
 static uint32_t             m_signal;
 
-void Waps_init(void)
+bool Waps_init(void)
 {
     sl_list_init(&waps_request_queue);
     sl_list_init(&waps_ind_queue);
     sl_list_init(&waps_reply_queue);
-    Waps_itemInit();
-    Waps_prot_init(receive_request);
-    // Check autostart
-    app_lib_state_stack_state_e state = lib_state->getStackState();
-    uint32_t autostart;
-    lib_storage->readPersistent(&autostart, sizeof(autostart));
-    if((state == APP_LIB_STATE_STOPPED) && (autostart & MSAP_AUTOSTART))
+    if (Waps_prot_init(receive_request))
     {
-        // Start the stack
-        lib_state->startStack();
+        Waps_itemInit();
+        // Check autostart
+        app_lib_state_stack_state_e state = lib_state->getStackState();
+        uint32_t autostart;
+        lib_storage->readPersistent(&autostart, sizeof(autostart));
+        if((state == APP_LIB_STATE_STOPPED) && (autostart & MSAP_AUTOSTART))
+        {
+            // Start the stack
+            lib_state->startStack();
+        }
+        // Queue indication to show that stack has started (or waiting to start)
+        add_indication(Msap_getStackStatusIndication());
+        // Clear the signal here (can be set after Waps_prot_init())
+        m_signal = 0;
+        return true;
     }
-    // Queue indication to show that stack has started (or waiting to start)
-    add_indication(Msap_getStackStatusIndication());
-    // Clear the signal here (can be set after Waps_prot_init())
-    m_signal = 0;
-}
 
+    return false;
+}
 
 uint32_t Waps_exec(void)
 {
@@ -128,8 +127,17 @@ uint32_t Waps_exec(void)
 send_reply:
     // As sending reply might fail, must re-enter WAPS to attempt again
     Waps_prot_sendReply();
+
     // Re-schedule next
-    return reschedule_waps();
+    if(frames_pending())
+    {
+        // Not all is done wake us up, again
+        return APP_SCHEDULER_SCHEDULE_ASAP;
+    }
+    else
+    {
+        return APP_SCHEDULER_STOP_TASK;
+    }
 }
 
 void Waps_sinkUpdated(uint8_t seq, const uint8_t * config, uint16_t interval)
@@ -251,9 +259,7 @@ void wakeup_task(void)
     if(!signaled)
     {
         // Do this only once
-        lib_system->setPeriodicCb(Waps_exec,
-                                  0,
-                                  WAPS_SAFETY_MARGIN);
+        App_Scheduler_addTask_execTime(Waps_exec, 0, WAPS_SAFETY_MARGIN_US);
     }
 }
 
@@ -331,20 +337,4 @@ static waps_item_t * find_indication(uint8_t id)
         }
     }
     return item;
-}
-
-// Centralized re-scheduling of the next Waps_exec
-static uint32_t reschedule_waps(void)
-{
-    // Multitasking of power manager
-    uint32_t next_time = Waps_prot_powerTask();
-    // See if there is more to do
-    if(frames_pending())
-    {
-        // Not all is done: return 0 (wake us up, again)
-        next_time = 0;
-    }
-
-
-    return next_time;
 }
