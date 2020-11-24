@@ -3,7 +3,8 @@ name: Build and deploy doc
 on:
   push:
     branches: [ master ]
-  pull_request:
+  release:
+    types: [created]
 
 jobs:
   build:
@@ -16,12 +17,39 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Generate doc
-      # Build the doc always
       run: make doxygen
-    - name: Deploy doc
-      # Only push the doc when pushed to master
+    - name: Set folder for master
       if: ${{ github.event_name == 'push' }}
+      run: echo "FOLDER=master" >> $GITHUB_ENV
+    - name: Set folder for release
+      if: ${{ github.event_name == 'release' }}
+      run: echo "FOLDER=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+    - name: Deploy doc
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build/html
+        destination_dir: ${{ env.FOLDER }}
+    - name: Checkout gh-pages branch
+      if: ${{ github.event_name == 'release' }}
+      uses: actions/checkout@v2
+      with:
+        ref: 'gh-pages'
+        path: 'gh-pages'
+    - name: Add new verson
+      if: ${{ github.event_name == 'release' }}
+      run: sed -i "/^'latest'/i '${{ github.event.release.tag_name }}'," gh-pages/select_version.js
+    - name: Test
+      if: ${{ github.event_name == 'release' }}
+      run: cat gh-pages/select_version.js
+    - name: Publish change
+      if: ${{ github.event_name == 'release' }}
+      uses: EndBug/add-and-commit@v5
+      with:
+        add: select_version.js
+        author_name: GH Action build_doc
+        author_email: invalid@invalid.com
+        branch: gh-pages
+        cwd: 'gh-pages'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
