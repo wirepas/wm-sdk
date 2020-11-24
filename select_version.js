@@ -1,5 +1,6 @@
 const versions = [
 'master',
+'v1.1.0',
 'latest'
 ];
 
