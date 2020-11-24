@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,29 +6,35 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Wirepas Single-MCU SDK: inventory_app_tag/app.c</title>
+<title>Wirepas Mesh SDK: inventory_app_tag/app.c</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../../select_version.js"></script>
 <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../resize.js"></script>
 <script type="text/javascript" src="../../navtreedata.js"></script>
 <script type="text/javascript" src="../../navtree.js"></script>
 <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../search/search.js"></script>
-<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Single-MCU SDK"/>
+<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Mesh SDK"/>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../wirepas_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table class="table-title" cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="../../small_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Wirepas Single-MCU SDK
+   <div id="projectname">Wirepas Mesh SDK
    </div>
+  </td>
+  <td id="selectversion" style="padding-right: 0.5em;" align="right">
+     <div id="selectversion_legend" style="display: none;">Select version: </div>
+     <select id="selectversion_list" style="display: none;" onchange="javascript:handleVersionSelect(this)"></select>
   </td>
  </tr>
  </tbody>
@@ -205,28 +212,28 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="line">    m_state.data[SEND_CONFIRM].done = <span class="keyword">true</span>;</div>
 <div class="line">    m_state.data[SEND_CONFIRM].success = status-&gt;<a name="a9"></a><a class="code" href="../../d2/dbd/data_8h.html#a7960f9c558f9ee2c3d4a8fdea096fb56">success</a>;</div>
 <div class="line">    <span class="comment">// notify the main task</span></div>
-<div class="line">    <a name="a10"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#ab4edf0927cbbbf8e09ba6f59698b98f2">App_Scheduler_addTask</a>(advertiser_task, <a name="a11"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
+<div class="line">    App_Scheduler_addTask(advertiser_task, <a name="a10"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
 <div class="line">  }</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> <a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554b">app_lib_data_receive_res_e</a> dataReceivedCb(</div>
-<div class="line">    <span class="keyword">const</span> <a name="_a12"></a><a class="code" href="../../d2/dbd/data_8h.html#d7/df3/structapp__lib__data__received__t">app_lib_data_received_t</a> * data)</div>
+<div class="line">    <span class="keyword">const</span> <a name="_a11"></a><a class="code" href="../../d2/dbd/data_8h.html#d7/df3/structapp__lib__data__received__t">app_lib_data_received_t</a> * data)</div>
 <div class="line">{</div>
 <div class="line">    uint8_t len = <span class="keyword">sizeof</span>(m_ack_data);</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (len &gt; data-&gt;<a name="a13"></a><a class="code" href="../../d2/dbd/data_8h.html#af7dcc80b7a3cab03843f5bdff120f452">num_bytes</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (len &gt; data-&gt;<a name="a12"></a><a class="code" href="../../d2/dbd/data_8h.html#af7dcc80b7a3cab03843f5bdff120f452">num_bytes</a>)</div>
 <div class="line">    {</div>
 <div class="line">        memset(m_ack_data, 0, len);</div>
 <div class="line">        len = data-&gt;<a class="code" href="../../d2/dbd/data_8h.html#af7dcc80b7a3cab03843f5bdff120f452">num_bytes</a>;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    memcpy(m_ack_data, data-&gt;<a name="a14"></a><a class="code" href="../../d2/dbd/data_8h.html#acc7ee0a7ec28292d2c1be47c4a23f78d">bytes</a>, len);</div>
+<div class="line">    memcpy(m_ack_data, data-&gt;<a name="a13"></a><a class="code" href="../../d2/dbd/data_8h.html#acc7ee0a7ec28292d2c1be47c4a23f78d">bytes</a>, len);</div>
 <div class="line">    m_state.data[ACK].done = <span class="keyword">true</span>;</div>
 <div class="line">    m_state.data[ACK].end_hp = (uint32_t) lib_time-&gt;getTimestampHp();</div>
 <div class="line"> </div>
-<div class="line">    <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ab4edf0927cbbbf8e09ba6f59698b98f2">App_Scheduler_addTask</a>(advertiser_task, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
-<div class="line">    <span class="keywordflow">return</span> <a name="a15"></a><a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba5eb2a589b49f72b477f0cbf5deba552a">APP_LIB_DATA_RECEIVE_RES_HANDLED</a>;</div>
+<div class="line">    App_Scheduler_addTask(advertiser_task, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
+<div class="line">    <span class="keywordflow">return</span> <a name="a14"></a><a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba5eb2a589b49f72b477f0cbf5deba552a">APP_LIB_DATA_RECEIVE_RES_HANDLED</a>;</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"> </div>
@@ -278,7 +285,7 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="line">        }</div>
 <div class="line">        <span class="keywordflow">else</span>  <span class="comment">/* Iteration completed */</span></div>
 <div class="line">        {</div>
-<div class="line">           state_data-&gt;timeout_ms = <a name="a16"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#a52e39bcd9fb750ac5001e4e6b8de21c4">APP_SCHEDULER_STOP_TASK</a>;</div>
+<div class="line">           state_data-&gt;timeout_ms = <a name="a15"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#a52e39bcd9fb750ac5001e4e6b8de21c4">APP_SCHEDULER_STOP_TASK</a>;</div>
 <div class="line">        }</div>
 <div class="line"> </div>
 <div class="line">        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
@@ -318,7 +325,7 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="line"> </div>
 <div class="line">        <span class="keywordflow">if</span> (period_ms != m_settings.period_ms)</div>
 <div class="line">        {</div>
-<div class="line">            m_settings.period_phase_ms = <a name="a17"></a><a class="code" href="../../d1/d79/random_8h.html#af0ea379997d2ca169c89369620f788aa">Random_jitter</a>(period_ms);</div>
+<div class="line">            m_settings.period_phase_ms = <a name="a16"></a><a class="code" href="../../d1/d79/random_8h.html#af0ea379997d2ca169c89369620f788aa">Random_jitter</a>(period_ms);</div>
 <div class="line">        }</div>
 <div class="line">        m_settings.period_ms = period_ms;</div>
 <div class="line">    }</div>
@@ -394,7 +401,7 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="line">                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; m_beacons.count; i++)</div>
 <div class="line">                {</div>
 <div class="line">                    bp = &amp;m_beacons.data[i];</div>
-<div class="line">                    <span class="keywordflow">if</span> (bp-&gt;<a name="a18"></a><a class="code" href="../../db/d3b/state_8h.html#a6149885080d7e0559447dcbccedcfe3b">is_sink</a>)</div>
+<div class="line">                    <span class="keywordflow">if</span> (bp-&gt;<a name="a17"></a><a class="code" href="../../db/d3b/state_8h.html#a6149885080d7e0559447dcbccedcfe3b">is_sink</a>)</div>
 <div class="line">                    {</div>
 <div class="line">                    }</div>
 <div class="line">                    <span class="keywordflow">else</span></div>
@@ -441,8 +448,8 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="line">                adv_tag_data_t data;</div>
 <div class="line"> </div>
 <div class="line">                m_state.send_count = m_state.send_count &lt; 255 ? (m_state.send_count + 1) : 255;</div>
-<div class="line">                data.<a name="a19"></a><a class="code" href="../../db/d3b/state_8h.html#a1d127017fb298b889f4ba24752d08b8e">type</a> = ADV_TYPE0;</div>
-<div class="line">                data.rssi = bp-&gt;<a name="a20"></a><a class="code" href="../../db/d3b/state_8h.html#ac4ea00add191a3290e428c5fdc838d1f">rssi</a>;</div>
+<div class="line">                data.<a name="a18"></a><a class="code" href="../../db/d3b/state_8h.html#a1d127017fb298b889f4ba24752d08b8e">type</a> = ADV_TYPE0;</div>
+<div class="line">                data.rssi = bp-&gt;<a name="a19"></a><a class="code" href="../../db/d3b/state_8h.html#ac4ea00add191a3290e428c5fdc838d1f">rssi</a>;</div>
 <div class="line">                data.seq = m_state.tracking_id;</div>
 <div class="line">                data.voltage = lib_hw-&gt;readSupplyVoltage();</div>
 <div class="line">                data.proc_otap_seq = (uint8_t) lib_otap-&gt;getProcessedSeq();</div>
@@ -450,14 +457,14 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="line">                data.scan_count = m_state.scan_count;</div>
 <div class="line">                data.send_count = m_state.send_count;</div>
 <div class="line"> </div>
-<div class="line">                m_adv_to_send.<a name="a21"></a><a class="code" href="../../d2/dbd/data_8h.html#acc7ee0a7ec28292d2c1be47c4a23f78d">bytes</a> = (uint8_t*) &amp;data;</div>
-<div class="line">                m_adv_to_send.<a class="code" href="../../d2/dbd/data_8h.html#abe388560a25c7690c48b6f3e20a32278">dest_address</a> = bp-&gt;<a name="a22"></a><a class="code" href="../../db/d3b/state_8h.html#adeb8e3ced78abf9ec8931cd0d7a2d2c0">address</a>;</div>
-<div class="line">                m_adv_to_send.<a name="a23"></a><a class="code" href="../../d2/dbd/data_8h.html#af7dcc80b7a3cab03843f5bdff120f452">num_bytes</a> = <span class="keyword">sizeof</span>(data);</div>
-<div class="line">                m_adv_to_send.<a name="a24"></a><a class="code" href="../../d2/dbd/data_8h.html#a7f43082a8111a69a9189426ea4fb9987">tracking_id</a> = m_state.tracking_id;</div>
+<div class="line">                m_adv_to_send.<a name="a20"></a><a class="code" href="../../d2/dbd/data_8h.html#acc7ee0a7ec28292d2c1be47c4a23f78d">bytes</a> = (uint8_t*) &amp;data;</div>
+<div class="line">                m_adv_to_send.<a class="code" href="../../d2/dbd/data_8h.html#abe388560a25c7690c48b6f3e20a32278">dest_address</a> = bp-&gt;<a name="a21"></a><a class="code" href="../../db/d3b/state_8h.html#adeb8e3ced78abf9ec8931cd0d7a2d2c0">address</a>;</div>
+<div class="line">                m_adv_to_send.<a name="a22"></a><a class="code" href="../../d2/dbd/data_8h.html#af7dcc80b7a3cab03843f5bdff120f452">num_bytes</a> = <span class="keyword">sizeof</span>(data);</div>
+<div class="line">                m_adv_to_send.<a name="a23"></a><a class="code" href="../../d2/dbd/data_8h.html#a7f43082a8111a69a9189426ea4fb9987">tracking_id</a> = m_state.tracking_id;</div>
 <div class="line"> </div>
 <div class="line">                res = lib_data-&gt;sendData(&amp;m_adv_to_send);</div>
 <div class="line"> </div>
-<div class="line">                <span class="keywordflow">if</span> (res == <a name="a25"></a><a class="code" href="../../d2/dbd/data_8h.html#ab53b6510f8ecb4a1621c905c15855164acf63322bd1c34794b230e2120116cfbb">APP_LIB_DATA_SEND_RES_SUCCESS</a>)</div>
+<div class="line">                <span class="keywordflow">if</span> (res == <a name="a24"></a><a class="code" href="../../d2/dbd/data_8h.html#ab53b6510f8ecb4a1621c905c15855164acf63322bd1c34794b230e2120116cfbb">APP_LIB_DATA_SEND_RES_SUCCESS</a>)</div>
 <div class="line">                {</div>
 <div class="line">                    next_state(SEND_CONFIRM, TIMEOUT_SEND_CONFIRM_MS);</div>
 <div class="line">                    <span class="keywordflow">return</span> state_timeout();</div>
@@ -541,7 +548,7 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> scanEndCb(<span class="keywordtype">void</span>)</div>
 <div class="line">{</div>
 <div class="line">    m_state.data[SCAN_END].done = <span class="keyword">true</span>;</div>
-<div class="line">    <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ab4edf0927cbbbf8e09ba6f59698b98f2">App_Scheduler_addTask</a>(advertiser_task, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
+<div class="line">    App_Scheduler_addTask(advertiser_task, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> uint32_t main_task(<span class="keywordtype">void</span>)</div>
@@ -553,11 +560,11 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (m_state.current == IDLE)</div>
 <div class="line">    {</div>
-<div class="line">      <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ab4edf0927cbbbf8e09ba6f59698b98f2">App_Scheduler_addTask</a>(advertiser_task, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
+<div class="line">      App_Scheduler_addTask(advertiser_task, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
 <div class="line">    }</div>
 <div class="line">    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (m_state.run &gt; 10)  <span class="comment">/*advertiser task run missed too many times*/</span></div>
 <div class="line">    {</div>
-<div class="line">       <a name="a26"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#acd03212a86359f0f62d4953785087fd2">App_Scheduler_cancelTask</a>(advertiser_task);</div>
+<div class="line">       <a name="a25"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#acd03212a86359f0f62d4953785087fd2">App_Scheduler_cancelTask</a>(advertiser_task);</div>
 <div class="line">       next_state(IDLE, 0);  <span class="comment">//task will be started automatically next time</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
@@ -591,9 +598,7 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> <span class="keywordtype">bool</span> node_init(<span class="keywordtype">void</span>)</div>
 <div class="line">{</div>
-<div class="line">   <a class="code" href="../../d2/d39/app_8h.html#ad019ddac3feea21ca0548bced1c9e501">app_addr_t</a> node_addr = <a name="a27"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a445f5127c4f9e8f7e3ffd4694fedaf30">getUniqueAddress</a>();</div>
-<div class="line">   <a class="code" href="../../de/d60/settings_8h.html#a69db270642a7b444986c801131fcbd66">app_lib_settings_net_addr_t</a> network_addr = NETWORK_ADDRESS;</div>
-<div class="line">   <a class="code" href="../../de/d60/settings_8h.html#af0559e67154ec6b6dc9c34ccad540861">app_lib_settings_net_channel_t</a> network_ch = NETWORK_CHANNEL;</div>
+<div class="line">   <a class="code" href="../../d2/d39/app_8h.html#ad019ddac3feea21ca0548bced1c9e501">app_addr_t</a> node_addr = <a name="a26"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a445f5127c4f9e8f7e3ffd4694fedaf30">getUniqueAddress</a>();</div>
 <div class="line">   <span class="keywordtype">bool</span> ret = <span class="keyword">true</span>;</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define USE_UICR_CONFIG</span></div>
@@ -603,22 +608,22 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="line"><span class="comment">        UICR register are read</span></div>
 <div class="line"><span class="comment">    */</span></div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (lib_settings-&gt;getNodeAddress(&amp;node_addr) != <a name="a28"></a><a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (lib_settings-&gt;getNodeAddress(&amp;node_addr) != <a name="a27"></a><a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="comment">// Node ID : CUSTOMER[0]</span></div>
-<div class="line">        node_addr = (<a name="a29"></a><a class="code" href="../../d2/d39/app_8h.html#ad019ddac3feea21ca0548bced1c9e501">app_addr_t</a>) (NRF_UICR-&gt;CUSTOMER[0] &amp; 0xFFFFFF);</div>
+<div class="line">        node_addr = (<a name="a28"></a><a class="code" href="../../d2/d39/app_8h.html#ad019ddac3feea21ca0548bced1c9e501">app_addr_t</a>) (NRF_UICR-&gt;CUSTOMER[0] &amp; 0xFFFFFF);</div>
 <div class="line">        <span class="keywordflow">if</span> (node_addr == 0xFFFFFF)</div>
 <div class="line">        {</div>
 <div class="line">            node_addr = <a class="code" href="../../df/d2e/node__configuration_8h.html#a445f5127c4f9e8f7e3ffd4694fedaf30">getUniqueAddress</a>();</div>
 <div class="line">        }</div>
 <div class="line">        <span class="comment">// Network ID : CUSTOMER[1]</span></div>
-<div class="line">        network_addr = (<a name="a30"></a><a class="code" href="../../de/d60/settings_8h.html#a69db270642a7b444986c801131fcbd66">app_lib_settings_net_addr_t</a>) (NRF_UICR-&gt;CUSTOMER[1] &amp; 0xFFFFFF);</div>
+<div class="line">        <a class="code" href="../../de/d60/settings_8h.html#a69db270642a7b444986c801131fcbd66">app_lib_settings_net_addr_t</a> network_addr = (<a name="a29"></a><a class="code" href="../../de/d60/settings_8h.html#a69db270642a7b444986c801131fcbd66">app_lib_settings_net_addr_t</a>) (NRF_UICR-&gt;CUSTOMER[1] &amp; 0xFFFFFF);</div>
 <div class="line">        <span class="keywordflow">if</span> (network_addr == 0xFFFFFF)</div>
 <div class="line">        {</div>
 <div class="line">            network_addr = NETWORK_ADDRESS;</div>
 <div class="line">        }</div>
 <div class="line">        <span class="comment">//Network channel : CUSTOMER[2]</span></div>
-<div class="line">        <a class="code" href="../../de/d60/settings_8h.html#af0559e67154ec6b6dc9c34ccad540861">app_lib_settings_net_channel_t</a> network_ch = (<a name="a31"></a><a class="code" href="../../de/d60/settings_8h.html#af0559e67154ec6b6dc9c34ccad540861">app_lib_settings_net_channel_t</a>) (NRF_UICR-&gt;CUSTOMER[2] &amp; 0xFF);</div>
+<div class="line">        <a class="code" href="../../de/d60/settings_8h.html#af0559e67154ec6b6dc9c34ccad540861">app_lib_settings_net_channel_t</a> network_ch = (<a name="a30"></a><a class="code" href="../../de/d60/settings_8h.html#af0559e67154ec6b6dc9c34ccad540861">app_lib_settings_net_channel_t</a>) (NRF_UICR-&gt;CUSTOMER[2] &amp; 0xFF);</div>
 <div class="line">        <span class="keywordflow">if</span> (network_ch == 0xFF)</div>
 <div class="line">        {</div>
 <div class="line">            network_ch = NETWORK_CHANNEL;</div>
@@ -647,17 +652,14 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="line">        ret = <span class="keyword">false</span>;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    (void) network_ch;</div>
-<div class="line">       <span class="keywordflow">if</span> (lib_settings-&gt;setNetworkChannel(NETWORK_CHANNEL) != <a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (lib_settings-&gt;setNetworkChannel(NETWORK_CHANNEL) != <a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        ret = <span class="keyword">false</span>;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#else</span></div>
 <div class="line">    <span class="comment">// Settings are applied only when do not exist</span></div>
-<div class="line">    <span class="keywordflow">if</span> (<a name="a32"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a1814777eb4e2f9906b0bed022de9e966">configureNode</a>(node_addr,</div>
-<div class="line">                      network_addr,</div>
-<div class="line">                      network_ch) != <a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (<a name="a31"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        ret = <span class="keyword">false</span>;</div>
 <div class="line">    }</div>
@@ -685,15 +687,15 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a33"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
+<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a32"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
 <div class="line">{</div>
 <div class="line"> </div>
 <div class="line">    adv_init();</div>
 <div class="line">    next_state(IDLE, 0);</div>
-<div class="line">    <a name="a34"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a>();</div>
-<div class="line">    <a name="a35"></a><a class="code" href="../../d1/d79/random_8h.html#ad1037d691a7e03c5ed05b601a01faffa">Random_init</a>(<a class="code" href="../../df/d2e/node__configuration_8h.html#a445f5127c4f9e8f7e3ffd4694fedaf30">getUniqueAddress</a>());</div>
+<div class="line">    <a name="a33"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a>();</div>
+<div class="line">    <a name="a34"></a><a class="code" href="../../d1/d79/random_8h.html#ad1037d691a7e03c5ed05b601a01faffa">Random_init</a>(<a class="code" href="../../df/d2e/node__configuration_8h.html#a445f5127c4f9e8f7e3ffd4694fedaf30">getUniqueAddress</a>());</div>
 <div class="line">    uint32_t delay = m_settings.period_ms + <a class="code" href="../../d1/d79/random_8h.html#af0ea379997d2ca169c89369620f788aa">Random_jitter</a>(m_settings.period_ms);</div>
-<div class="line">    <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ab4edf0927cbbbf8e09ba6f59698b98f2">App_Scheduler_addTask</a>(main_task, delay) ;</div>
+<div class="line">    App_Scheduler_addTask(main_task, delay) ;</div>
 <div class="line">    callbacks_init();</div>
 <div class="line"> </div>
 <div class="line"> </div>
@@ -716,7 +718,6 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="ttc" id="astate_8h_html_d7/dc8/structapp__lib__state__beacon__rx__t"><div class="ttname"><a href="../../db/d3b/state_8h.html#d7/dc8/structapp__lib__state__beacon__rx__t">app_lib_state_beacon_rx_t</a></div><div class="ttdoc">Structure to hold the information about received beacons.</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d3b/state_8h_source.html#l00169">state.h:169</a></div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_aadb275bc1de9c05d677ab56117535802"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a></div><div class="ttdeci">void App_Scheduler_init(void)</div><div class="ttdoc">Initialize scheduler.</div></div>
 <div class="ttc" id="apower_8h_html"><div class="ttname"><a href="../../d3/d6a/power_8h.html">power.h</a></div></div>
-<div class="ttc" id="aapp__scheduler_8h_html_ab4edf0927cbbbf8e09ba6f59698b98f2"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#ab4edf0927cbbbf8e09ba6f59698b98f2">App_Scheduler_addTask</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_addTask(task_cb_f cb, uint32_t delay_ms)</div><div class="ttdoc">Add a task.</div></div>
 <div class="ttc" id="anode__configuration_8h_html"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a></div></div>
 <div class="ttc" id="adata_8h_html_ab53b6510f8ecb4a1621c905c15855164"><div class="ttname"><a href="../../d2/dbd/data_8h.html#ab53b6510f8ecb4a1621c905c15855164">app_lib_data_send_res_e</a></div><div class="ttdeci">app_lib_data_send_res_e</div><div class="ttdoc">A result code returned from lib_data-&gt;sendData().</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00142">data.h:142</a></div></div>
 <div class="ttc" id="aapp_8h_html_ad019ddac3feea21ca0548bced1c9e501"><div class="ttname"><a href="../../d2/d39/app_8h.html#ad019ddac3feea21ca0548bced1c9e501">app_addr_t</a></div><div class="ttdeci">uint32_t app_addr_t</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00228">app.h:228</a></div></div>
@@ -732,10 +733,11 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="ttc" id="aapp__scheduler_8h_html"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a></div></div>
 <div class="ttc" id="astate_8h_html_a6149885080d7e0559447dcbccedcfe3b"><div class="ttname"><a href="../../db/d3b/state_8h.html#a6149885080d7e0559447dcbccedcfe3b">app_lib_state_beacon_rx_t::is_sink</a></div><div class="ttdeci">bool is_sink</div><div class="ttdoc">Device is sink.</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d3b/state_8h_source.html#l00174">state.h:174</a></div></div>
 <div class="ttc" id="adata_8h_html_ad3aa19c96da7da312cd8fe99ea34554ba5eb2a589b49f72b477f0cbf5deba552a"><div class="ttname"><a href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba5eb2a589b49f72b477f0cbf5deba552a">APP_LIB_DATA_RECEIVE_RES_HANDLED</a></div><div class="ttdeci">@ APP_LIB_DATA_RECEIVE_RES_HANDLED</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00190">data.h:190</a></div></div>
+<div class="ttc" id="anode__configuration_8h_html_a2560821c66e34240aa698da5affba7c7"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a></div><div class="ttdeci">__STATIC_INLINE app_res_e configureNodeFromBuildParameters()</div><div class="ttdoc">Wrapper on top of configureNode to get parameters from build system and hardcoded values from chip (f...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d2e/node__configuration_8h_source.html#l00233">node_configuration.h:233</a></div></div>
 <div class="ttc" id="adata_8h_html_ab53b6510f8ecb4a1621c905c15855164acf63322bd1c34794b230e2120116cfbb"><div class="ttname"><a href="../../d2/dbd/data_8h.html#ab53b6510f8ecb4a1621c905c15855164acf63322bd1c34794b230e2120116cfbb">APP_LIB_DATA_SEND_RES_SUCCESS</a></div><div class="ttdeci">@ APP_LIB_DATA_SEND_RES_SUCCESS</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00145">data.h:145</a></div></div>
 <div class="ttc" id="adata_8h_html_ad3aa19c96da7da312cd8fe99ea34554b"><div class="ttname"><a href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554b">app_lib_data_receive_res_e</a></div><div class="ttdeci">app_lib_data_receive_res_e</div><div class="ttdoc">Return value of data reception callback.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00186">data.h:186</a></div></div>
-<div class="ttc" id="aapp__scheduler_8h_html_acd03212a86359f0f62d4953785087fd2"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#acd03212a86359f0f62d4953785087fd2">App_Scheduler_cancelTask</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_cancelTask(task_cb_f cb)</div><div class="ttdoc">Cancel a task.</div></div>
-<div class="ttc" id="anode__configuration_8h_html_a445f5127c4f9e8f7e3ffd4694fedaf30"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html#a445f5127c4f9e8f7e3ffd4694fedaf30">getUniqueAddress</a></div><div class="ttdeci">__STATIC_INLINE app_addr_t getUniqueAddress()</div><div class="ttdoc">Helper function to generate a unique unicast address.</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d2e/node__configuration_8h_source.html#l00104">node_configuration.h:104</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_acd03212a86359f0f62d4953785087fd2"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#acd03212a86359f0f62d4953785087fd2">App_Scheduler_cancelTask</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_cancelTask(task_cb_f cb)</div><div class="ttdoc">Add a task without execution time (deprecated)</div></div>
+<div class="ttc" id="anode__configuration_8h_html_a445f5127c4f9e8f7e3ffd4694fedaf30"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html#a445f5127c4f9e8f7e3ffd4694fedaf30">getUniqueAddress</a></div><div class="ttdeci">__STATIC_INLINE app_addr_t getUniqueAddress()</div><div class="ttdoc">Helper function to generate a unique unicast address.</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d2e/node__configuration_8h_source.html#l00139">node_configuration.h:139</a></div></div>
 <div class="ttc" id="adata_8h_html_a7960f9c558f9ee2c3d4a8fdea096fb56"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a7960f9c558f9ee2c3d4a8fdea096fb56">app_lib_data_sent_status_t::success</a></div><div class="ttdeci">bool success</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00340">data.h:340</a></div></div>
 <div class="ttc" id="arandom_8h_html_af0ea379997d2ca169c89369620f788aa"><div class="ttname"><a href="../../d1/d79/random_8h.html#af0ea379997d2ca169c89369620f788aa">Random_jitter</a></div><div class="ttdeci">#define Random_jitter(x)</div><div class="ttdoc">Generate random jitter.</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d79/random_8h_source.html#l00046">random.h:46</a></div></div>
 <div class="ttc" id="adata_8h_html_acc7ee0a7ec28292d2c1be47c4a23f78d"><div class="ttname"><a href="../../d2/dbd/data_8h.html#acc7ee0a7ec28292d2c1be47c4a23f78d">app_lib_data_received_t::bytes</a></div><div class="ttdeci">const uint8_t * bytes</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00249">data.h:249</a></div></div>
@@ -749,15 +751,10 @@ $(document).ready(function(){initNavTree('d3/d2f/inventory_app_tag_2app_8c-examp
 <div class="ttc" id="astate_8h_html_ac4ea00add191a3290e428c5fdc838d1f"><div class="ttname"><a href="../../db/d3b/state_8h.html#ac4ea00add191a3290e428c5fdc838d1f">app_lib_state_beacon_rx_t::rssi</a></div><div class="ttdeci">int16_t rssi</div><div class="ttdoc">rssi in dBm</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d3b/state_8h_source.html#l00172">state.h:172</a></div></div>
 <div class="ttc" id="asettings_8h_html_a69db270642a7b444986c801131fcbd66"><div class="ttname"><a href="../../de/d60/settings_8h.html#a69db270642a7b444986c801131fcbd66">app_lib_settings_net_addr_t</a></div><div class="ttdeci">uint32_t app_lib_settings_net_addr_t</div><div class="ttdoc">Network address type definition.</div><div class="ttdef"><b>Definition:</b> <a href="../../de/d60/settings_8h_source.html#l00053">settings.h:53</a></div></div>
 <div class="ttc" id="asettings_8h_html_af0559e67154ec6b6dc9c34ccad540861"><div class="ttname"><a href="../../de/d60/settings_8h.html#af0559e67154ec6b6dc9c34ccad540861">app_lib_settings_net_channel_t</a></div><div class="ttdeci">uint8_t app_lib_settings_net_channel_t</div><div class="ttdoc">Network channel type definition.</div><div class="ttdef"><b>Definition:</b> <a href="../../de/d60/settings_8h_source.html#l00060">settings.h:60</a></div></div>
-<div class="ttc" id="anode__configuration_8h_html_a1814777eb4e2f9906b0bed022de9e966"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html#a1814777eb4e2f9906b0bed022de9e966">configureNode</a></div><div class="ttdeci">__STATIC_INLINE app_res_e configureNode(app_addr_t my_addr, app_lib_settings_net_addr_t my_network_addr, app_lib_settings_net_channel_t my_network_ch)</div><div class="ttdoc">Helper function to initially setup a node if not already configured. This configuration can be modifi...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d2e/node__configuration_8h_source.html#l00055">node_configuration.h:55</a></div></div>
 <div class="ttc" id="aapi_8h_html"><div class="ttname"><a href="../../dc/d65/api_8h.html">api.h</a></div></div>
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
-  </ul>
 </div>
 </body>
 </html>

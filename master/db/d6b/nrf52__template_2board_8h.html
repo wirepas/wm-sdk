@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,29 +6,35 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Wirepas Single-MCU SDK: board/nrf52_template/board.h File Reference</title>
+<title>Wirepas Mesh SDK: board/nrf52_template/board.h File Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../../select_version.js"></script>
 <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../resize.js"></script>
 <script type="text/javascript" src="../../navtreedata.js"></script>
 <script type="text/javascript" src="../../navtree.js"></script>
 <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../search/search.js"></script>
-<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Single-MCU SDK"/>
+<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Mesh SDK"/>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../wirepas_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table class="table-title" cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="../../small_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Wirepas Single-MCU SDK
+   <div id="projectname">Wirepas Mesh SDK
    </div>
+  </td>
+  <td id="selectversion" style="padding-right: 0.5em;" align="right">
+     <div id="selectversion_legend" style="display: none;">Select version: </div>
+     <select id="selectversion_list" style="display: none;" onchange="javascript:handleVersionSelect(this)"></select>
   </td>
  </tr>
  </tbody>
@@ -116,6 +123,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a0fdc2f8cf1af139317a899ae118066f8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d6b/nrf52__template_2board_8h.html#a0fdc2f8cf1af139317a899ae118066f8">BOARD_SUPPORT_DCDC</a></td></tr>
 <tr class="memdesc:a0fdc2f8cf1af139317a899ae118066f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This configuration tells that board contains DCDC converter to be used.  <a href="../../db/d6b/nrf52__template_2board_8h.html#a0fdc2f8cf1af139317a899ae118066f8">More...</a><br /></td></tr>
 <tr class="separator:a0fdc2f8cf1af139317a899ae118066f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f91fc44ad1f0b5ab77c76564145318a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d6b/nrf52__template_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a">BOARD_BUTTON_INTERNAL_PULL</a>&#160;&#160;&#160;true</td></tr>
+<tr class="memdesc:a8f91fc44ad1f0b5ab77c76564145318a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Button GPIO internal pull up/down.  <a href="../../db/d6b/nrf52__template_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a">More...</a><br /></td></tr>
+<tr class="separator:a8f91fc44ad1f0b5ab77c76564145318a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a22dc8bf341319e58e0377f0a58770d71"></a>
@@ -134,6 +144,25 @@ Macros</h2></td></tr>
 <p>If a button press pulls the GPIO pin low, this setting is true. This is the case for many nRF52 boards, such as the PCA10040 and PCA10056. Otherwise, if a button press pulls the GPIO pin high, this setting should be set to false. </p>
 
 <p class="definition">Definition at line <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html#l00093">93</a> of file <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html">board.h</a>.</p>
+
+</div>
+</div>
+<a id="a8f91fc44ad1f0b5ab77c76564145318a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f91fc44ad1f0b5ab77c76564145318a">&#9670;&nbsp;</a></span>BOARD_BUTTON_INTERNAL_PULL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BOARD_BUTTON_INTERNAL_PULL&#160;&#160;&#160;true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Button GPIO internal pull up/down. </p>
+<p>Some buttons don't have any pull-up or pull-down resistor installed on the board. They need it to be setup in software. Set <a class="el" href="../../d3/d8f/tbsense2_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a">BOARD_BUTTON_INTERNAL_PULL</a> to true to enable internal pull-up(down). Pull-up(down) is enabled when <a class="el" href="../../d3/d8f/tbsense2_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71">BOARD_BUTTON_ACTIVE_LOW</a> is true(false). </p>
+
+<p class="definition">Definition at line <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html#l00109">109</a> of file <a class="el" href="../../db/d6b/nrf52__template_2board_8h_source.html">board.h</a>.</p>
 
 </div>
 </div>
@@ -311,14 +340,9 @@ Macros</h2></td></tr>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="../../dir_7149141a7e3af1ee95dfb0598e371427.html">board</a></li><li class="navelem"><a class="el" href="../../dir_d250184db4365b7023f85e220349d418.html">nrf52_template</a></li><li class="navelem"><a class="el" href="../../db/d6b/nrf52__template_2board_8h.html">board.h</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
-  </ul>
 </div>
 </body>
 </html>

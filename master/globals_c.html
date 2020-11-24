@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,29 +6,35 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Wirepas Single-MCU SDK: Globals</title>
+<title>Wirepas Mesh SDK: Globals</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="../select_version.js"></script>
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="resize.js"></script>
 <script type="text/javascript" src="navtreedata.js"></script>
 <script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
-<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Single-MCU SDK"/>
+<link rel="search" href="search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Mesh SDK"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="wirepas_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table class="table-title" cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="small_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Wirepas Single-MCU SDK
+   <div id="projectname">Wirepas Mesh SDK
    </div>
+  </td>
+  <td id="selectversion" style="padding-right: 0.5em;" align="right">
+     <div id="selectversion_legend" style="display: none;">Select version: </div>
+     <select id="selectversion_list" style="display: none;" onchange="javascript:handleVersionSelect(this)"></select>
   </td>
  </tr>
  </tbody>
@@ -579,10 +586,10 @@ $(document).ready(function(){initNavTree('globals_c.html',''); initResizable(); 
 : <a class="el" href="d2/d9e/cbor_8h.html#a38f51ceba8bc8a9b1cf7dd31e3f9c178a14dca50c5dee0a6cb2c74eb0608cc30c">cbor.h</a>
 </li>
 <li>CborMimeMessageTag
-: <a class="el" href="d2/d9e/cbor_8h.html#a65aa4315fb9e17b2d070d96aa2f30e03">cbor.h</a>
+: <a class="el" href="d2/d9e/cbor_8h.html#ade6fa23a8fb3df9db434c69ca05d5ec1a44c21020712bb7dc72678eea0593462c">cbor.h</a>
 </li>
 <li>CborNegativeBignumTag
-: <a class="el" href="d2/d9e/cbor_8h.html#ade6fa23a8fb3df9db434c69ca05d5ec1a0cad1a47349e4206f7f885561a1829f1">cbor.h</a>
+: <a class="el" href="d2/d9e/cbor_8h.html#a360fd15454fca3839aacec0895f0c410">cbor.h</a>
 </li>
 <li>CborNoError
 : <a class="el" href="d2/d9e/cbor_8h.html#a76e9c9acc63dd940da4ab7e91309f7b5add85c52a3e4e6cd2095c819d61a5c123">cbor.h</a>
@@ -657,7 +664,7 @@ $(document).ready(function(){initNavTree('globals_c.html',''); initResizable(); 
 : <a class="el" href="d2/d9e/cbor_8h.html#a38f51ceba8bc8a9b1cf7dd31e3f9c178a129aaabaaddafbd62f18e46c09e99949">cbor.h</a>
 </li>
 <li>CborUnixTime_tTag
-: <a class="el" href="d2/d9e/cbor_8h.html#a3ca19aca502f1901d2875007b58b37b7">cbor.h</a>
+: <a class="el" href="d2/d9e/cbor_8h.html#ade6fa23a8fb3df9db434c69ca05d5ec1a41fd6d243e17be74a7de436fb8d84bc9">cbor.h</a>
 </li>
 <li>CborUnknownError
 : <a class="el" href="d2/d9e/cbor_8h.html#a76e9c9acc63dd940da4ab7e91309f7b5acb578ce1fd4a8ee68c2f2bd59cf681b8">cbor.h</a>
@@ -734,8 +741,14 @@ $(document).ready(function(){initNavTree('globals_c.html',''); initResizable(); 
 <li>CborValidationFlags
 : <a class="el" href="d2/d9e/cbor_8h.html#ac7df91cad1cba43d5d0103284fc390fc">cbor.h</a>
 </li>
+<li>cipher_key_p
+: <a class="el" href="df/d2e/node__configuration_8h.html#a5fbcd0ba523daf6b4b3ffbf402f5e0f9">node_configuration.h</a>
+</li>
 <li>configureNode()
-: <a class="el" href="df/d2e/node__configuration_8h.html#a1814777eb4e2f9906b0bed022de9e966">node_configuration.h</a>
+: <a class="el" href="df/d2e/node__configuration_8h.html#a0d716b25bf54d5ac6a553135cd6a44a7">node_configuration.h</a>
+</li>
+<li>configureNodeFromBuildParameters()
+: <a class="el" href="df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">node_configuration.h</a>
 </li>
 <li>CONST_CAST
 : <a class="el" href="d2/d43/compilersupport__p_8h.html#a6f18d4a2bd6c4c867208cd90be1db72c">compilersupport_p.h</a>
@@ -761,13 +774,9 @@ $(document).ready(function(){initNavTree('globals_c.html',''); initResizable(); 
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
-  </ul>
 </div>
 </body>
 </html>

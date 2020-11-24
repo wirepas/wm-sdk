@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,29 +6,35 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Wirepas Single-MCU SDK: Change default network</title>
+<title>Wirepas Mesh SDK: Change default network</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../../select_version.js"></script>
 <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../resize.js"></script>
 <script type="text/javascript" src="../../navtreedata.js"></script>
 <script type="text/javascript" src="../../navtree.js"></script>
 <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../search/search.js"></script>
-<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Single-MCU SDK"/>
+<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Mesh SDK"/>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../wirepas_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table class="table-title" cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="../../small_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Wirepas Single-MCU SDK
+   <div id="projectname">Wirepas Mesh SDK
    </div>
+  </td>
+  <td id="selectversion" style="padding-right: 0.5em;" align="right">
+     <div id="selectversion_legend" style="display: none;">Select version: </div>
+     <select id="selectversion_list" style="display: none;" onchange="javascript:handleVersionSelect(this)"></select>
   </td>
  </tr>
  </tbody>
@@ -77,25 +84,22 @@ $(document).ready(function(){initNavTree('db/de6/change_default_network_address_
 <div class="contents">
 <div class="textblock"><p>address and channel</p>
 <p>To form a network, all nodes must share the same network address and network channel.</p>
-<p>In <code><a class="el" href="../../db/d83/custom_app_2app_8c-example.html">custom_app</a></code> application example, this information can be changed in file <code><a class="el" href="../../d3/d8c/source_config_mk.html">config.mk</a> </code> in the new application folder created, by setting the variables <code> default_network_address</code> and <code>default_network_channel</code> to arbitrary values. For example:</p>
+<p>These information can come from multiple sources like NFC, provisioned in persistent memory during production,... In order to ease the setup, build system allows to set those settings at build time of an application from the application config.mk file.</p>
+<p>In <code><a class="el" href="../../db/d83/custom_app_2app_8c-example.html">custom_app</a></code> application example, this information can be seen in file <code><a class="el" href="../../d3/d8c/source_config_mk.html">config.mk</a> </code> In the new application folder created, you can modified these variables <code>default_network_address</code> and <code>default_network_channel</code> to arbitrary values that feat your needs. For example:</p>
 <div class="fragment"><div class="line"><span class="preprocessor"># Define default network settings</span></div>
 <div class="line">default_network_address ?= 0x67EB4A</div>
 <div class="line">default_network_channel ?= 12</div>
-</div><!-- fragment --><p>These variables are then defined in application <code><a class="el" href="../../d1/dbc/source_makefile.html">makefile</a></code> that can also be found inside the application folder, as constants <code> NETWORK_ADDRESS</code> and <code>NETWORK_CHANNEL</code>, respectively:</p>
-<div class="fragment"><div class="line"><span class="preprocessor"># Define default network settings</span></div>
-<div class="line">CFLAGS += -DNETWORK_ADDRESS=$(default_network_address)</div>
-<div class="line">CFLAGS += -DNETWORK_CHANNEL=$(default_network_channel)</div>
-</div><!-- fragment --> </div></div><!-- contents -->
+</div><!-- fragment --><p>These variables are then automatically assigned to constants <code> NETWORK_ADDRESS</code> and <code>NETWORK_CHANNEL</code> and accessible from the code.</p>
+<p>Additionally, you can define network keys the same way. Those keys are 16 bytes long and must be kept secret. It is very important to set them to protect your network.</p>
+<div class="fragment"><div class="line">default_network_cipher_key ?= 0x??,..,0x?? <span class="comment">// Must be 16 bytes long</span></div>
+<div class="line">default_network_authen_key ?= 0x??,..,0x?? <span class="comment">// Must be 16 bytes long</span></div>
+</div><!-- fragment --><p>Those settings are used with <a class="el" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a> utility function. </p>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="../../de/d7a/how_to_develop.html">How to Develop Application with SDK</a></li><li class="navelem"><a class="el" href="../../d4/d87/development_of_a_new_application.html">Create new application</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
-  </ul>
 </div>
 </body>
 </html>

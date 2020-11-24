@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,29 +6,35 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Wirepas Single-MCU SDK: dualmcu_app/app.c</title>
+<title>Wirepas Mesh SDK: dualmcu_app/app.c</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../../select_version.js"></script>
 <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../resize.js"></script>
 <script type="text/javascript" src="../../navtreedata.js"></script>
 <script type="text/javascript" src="../../navtree.js"></script>
 <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../search/search.js"></script>
-<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Single-MCU SDK"/>
+<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Mesh SDK"/>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../wirepas_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table class="table-title" cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="../../small_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Wirepas Single-MCU SDK
+   <div id="projectname">Wirepas Mesh SDK
    </div>
+  </td>
+  <td id="selectversion" style="padding-right: 0.5em;" align="right">
+     <div id="selectversion_legend" style="display: none;">Select version: </div>
+     <select id="selectversion_list" style="display: none;" onchange="javascript:handleVersionSelect(this)"></select>
   </td>
  </tr>
  </tbody>
@@ -91,6 +98,7 @@ $(document).ready(function(){initNavTree('da/d1e/dualmcu_app_2app_8c-example.htm
 <div class="line"><span class="preprocessor">#include &quot;waps.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d65/api_8h.html">api.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;waps/sap/multicast.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#if defined(USE_FEM)</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d9/db1/fem__driver_8h.html">fem_driver.h</a>&quot;</span></div>
@@ -132,6 +140,9 @@ $(document).ready(function(){initNavTree('da/d1e/dualmcu_app_2app_8c-example.htm
 <div class="line">    <span class="comment">// Open HAL</span></div>
 <div class="line">    <a name="a8"></a><a class="code" href="../../d1/da4/hal__api_8h.html#a82f4c21a5d6be4bbd993534316ca779c">HAL_Open</a>();</div>
 <div class="line"> </div>
+<div class="line">    <span class="comment">// Initialize Scheduler</span></div>
+<div class="line">    <a name="a9"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a>();</div>
+<div class="line"> </div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Initialize IO&#39;s (enable clock and initialize pins)</span></div>
 <div class="line">    Io_init();</div>
@@ -146,14 +157,17 @@ $(document).ready(function(){initNavTree('da/d1e/dualmcu_app_2app_8c-example.htm
 <div class="line">    lib_data-&gt;setNewAppConfigCb(newAppConfigCb);</div>
 <div class="line">    lib_settings-&gt;registerGroupQuery(Multicast_isGroupCb);</div>
 <div class="line">    lib_state-&gt;setOnScanNborsCb(onScannedNborsCb,</div>
-<div class="line">                                <a name="a9"></a><a class="code" href="../../db/d3b/state_8h.html#ae829d4242b3afe89f01822fe660b62b7a8bad4deb7660820ff7dbfdd36a87e675">APP_LIB_STATE_SCAN_NBORS_ONLY_REQUESTED</a>);</div>
+<div class="line">                                <a name="a10"></a><a class="code" href="../../db/d3b/state_8h.html#ae829d4242b3afe89f01822fe660b62b7a8bad4deb7660820ff7dbfdd36a87e675">APP_LIB_STATE_SCAN_NBORS_ONLY_REQUESTED</a>);</div>
+<div class="line"> </div>
 <div class="line">}</div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="aapp__scheduler_8h_html_aadb275bc1de9c05d677ab56117535802"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a></div><div class="ttdeci">void App_Scheduler_init(void)</div><div class="ttdoc">Initialize scheduler.</div></div>
 <div class="ttc" id="astate_8h_html_ae829d4242b3afe89f01822fe660b62b7a8bad4deb7660820ff7dbfdd36a87e675"><div class="ttname"><a href="../../db/d3b/state_8h.html#ae829d4242b3afe89f01822fe660b62b7a8bad4deb7660820ff7dbfdd36a87e675">APP_LIB_STATE_SCAN_NBORS_ONLY_REQUESTED</a></div><div class="ttdeci">@ APP_LIB_STATE_SCAN_NBORS_ONLY_REQUESTED</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d3b/state_8h_source.html#l00077">state.h:77</a></div></div>
 <div class="ttc" id="adata_8h_html_abe388560a25c7690c48b6f3e20a32278"><div class="ttname"><a href="../../d2/dbd/data_8h.html#abe388560a25c7690c48b6f3e20a32278">app_lib_data_sent_status_t::dest_address</a></div><div class="ttdeci">app_addr_t dest_address</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00326">data.h:326</a></div></div>
 <div class="ttc" id="adata_8h_html_a39f101eb4be9d5ac0ec9ad59778252bf"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a39f101eb4be9d5ac0ec9ad59778252bf">app_lib_data_sent_status_t::queue_time</a></div><div class="ttdeci">uint32_t queue_time</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00331">data.h:331</a></div></div>
 <div class="ttc" id="adata_8h_html_a7f43082a8111a69a9189426ea4fb9987"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a7f43082a8111a69a9189426ea4fb9987">app_lib_data_sent_status_t::tracking_id</a></div><div class="ttdeci">app_lib_data_tracking_id_t tracking_id</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00334">data.h:334</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a></div></div>
 <div class="ttc" id="ahal__api_8h_html"><div class="ttname"><a href="../../d1/da4/hal__api_8h.html">hal_api.h</a></div><div class="ttdoc">Collection of common interfaces that Wirepas HAL implements.</div></div>
 <div class="ttc" id="ahal__api_8h_html_a82f4c21a5d6be4bbd993534316ca779c"><div class="ttname"><a href="../../d1/da4/hal__api_8h.html#a82f4c21a5d6be4bbd993534316ca779c">HAL_Open</a></div><div class="ttdeci">bool HAL_Open(void)</div><div class="ttdoc">Initialize HAL.</div></div>
 <div class="ttc" id="adata_8h_html_a2f980290790d1fecb3764ef797c03335"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a2f980290790d1fecb3764ef797c03335">app_lib_data_sent_status_t::src_endpoint</a></div><div class="ttdeci">uint8_t src_endpoint</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00336">data.h:336</a></div></div>
@@ -163,13 +177,9 @@ $(document).ready(function(){initNavTree('da/d1e/dualmcu_app_2app_8c-example.htm
 <div class="ttc" id="adata_8h_html_d6/de0/structapp__lib__data__sent__status__t"><div class="ttname"><a href="../../d2/dbd/data_8h.html#d6/de0/structapp__lib__data__sent__status__t">app_lib_data_sent_status_t</a></div><div class="ttdoc">Struct to tracking callback function.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00323">data.h:323</a></div></div>
 <div class="ttc" id="afem__driver_8h_html"><div class="ttname"><a href="../../d9/db1/fem__driver_8h.html">fem_driver.h</a></div></div>
 <div class="ttc" id="aapi_8h_html"><div class="ttname"><a href="../../dc/d65/api_8h.html">api.h</a></div></div>
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
-  </ul>
 </div>
 </body>
 </html>

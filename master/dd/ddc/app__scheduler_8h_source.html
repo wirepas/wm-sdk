@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,29 +6,35 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Wirepas Single-MCU SDK: libraries/app_scheduler.h Source File</title>
+<title>Wirepas Mesh SDK: libraries/scheduler/app_scheduler.h Source File</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../../select_version.js"></script>
 <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../resize.js"></script>
 <script type="text/javascript" src="../../navtreedata.js"></script>
 <script type="text/javascript" src="../../navtree.js"></script>
 <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../search/search.js"></script>
-<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Single-MCU SDK"/>
+<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Mesh SDK"/>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../wirepas_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table class="table-title" cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="../../small_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Wirepas Single-MCU SDK
+   <div id="projectname">Wirepas Mesh SDK
    </div>
+  </td>
+  <td id="selectversion" style="padding-right: 0.5em;" align="right">
+     <div id="selectversion_legend" style="display: none;">Select version: </div>
+     <select id="selectversion_list" style="display: none;" onchange="javascript:handleVersionSelect(this)"></select>
   </td>
  </tr>
  </tbody>
@@ -103,30 +110,32 @@ $(document).ready(function(){initNavTree('dd/ddc/app__scheduler_8h_source.html',
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<a class="code" href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3">app_scheduler_res_e</a> <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ab4edf0927cbbbf8e09ba6f59698b98f2">App_Scheduler_addTask</a>(<a class="code" href="../../dd/ddc/app__scheduler_8h.html#a06b7a823ab31a50859f715de74473a2d">task_cb_f</a> cb, uint32_t delay_ms);</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<a class="code" href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3">app_scheduler_res_e</a> <a class="code" href="../../dd/ddc/app__scheduler_8h.html#acd03212a86359f0f62d4953785087fd2">App_Scheduler_cancelTask</a>(<a class="code" href="../../dd/ddc/app__scheduler_8h.html#a06b7a823ab31a50859f715de74473a2d">task_cb_f</a> cb);</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif //_APP_SCHEDULER_H_</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<a class="code" href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3">app_scheduler_res_e</a> <a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(<a class="code" href="../../dd/ddc/app__scheduler_8h.html#a06b7a823ab31a50859f715de74473a2d">task_cb_f</a> cb, uint32_t delay_ms, uint32_t exec_time_us);</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="preprocessor">#ifdef APP_SCHEDULER_MAX_EXEC_TIME_US</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="keyword">static</span> <span class="keyword">inline</span> <a class="code" href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3">app_scheduler_res_e</a> App_Scheduler_addTask(<a class="code" href="../../dd/ddc/app__scheduler_8h.html#a06b7a823ab31a50859f715de74473a2d">task_cb_f</a> cb, uint32_t delay_ms)</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;{</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(cb, delay_ms, APP_SCHEDULER_MAX_EXEC_TIME_US);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;}</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<a class="code" href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3">app_scheduler_res_e</a> <a class="code" href="../../dd/ddc/app__scheduler_8h.html#acd03212a86359f0f62d4953785087fd2">App_Scheduler_cancelTask</a>(<a class="code" href="../../dd/ddc/app__scheduler_8h.html#a06b7a823ab31a50859f715de74473a2d">task_cb_f</a> cb);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">#endif //_APP_SCHEDULER_H_</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aapp__scheduler_8h_html_a245a7f2a478b72e2d4a43b3c18676ab3a52e992fd53f13b7a664b47e8884b936b"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3a52e992fd53f13b7a664b47e8884b936b">APP_SCHEDULER_RES_OK</a></div><div class="ttdeci">@ APP_SCHEDULER_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00050">app_scheduler.h:50</a></div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_aadb275bc1de9c05d677ab56117535802"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a></div><div class="ttdeci">void App_Scheduler_init(void)</div><div class="ttdoc">Initialize scheduler.</div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_a245a7f2a478b72e2d4a43b3c18676ab3a2379eda407c46922cc110cb05f4c93c7"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3a2379eda407c46922cc110cb05f4c93c7">APP_SCHEDULER_RES_NO_MORE_TASK</a></div><div class="ttdeci">@ APP_SCHEDULER_RES_NO_MORE_TASK</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00052">app_scheduler.h:52</a></div></div>
-<div class="ttc" id="aapp__scheduler_8h_html_ab4edf0927cbbbf8e09ba6f59698b98f2"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#ab4edf0927cbbbf8e09ba6f59698b98f2">App_Scheduler_addTask</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_addTask(task_cb_f cb, uint32_t delay_ms)</div><div class="ttdoc">Add a task.</div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_a71e4c4c0dfd5649947194df11af4fe17"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_ms, uint32_t exec_time_us)</div><div class="ttdoc">Add a task.</div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_a245a7f2a478b72e2d4a43b3c18676ab3a1f4e0e040fb54d5088d0b57570eebcb0"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3a1f4e0e040fb54d5088d0b57570eebcb0">APP_SCHEDULER_RES_UNKNOWN_TASK</a></div><div class="ttdeci">@ APP_SCHEDULER_RES_UNKNOWN_TASK</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00054">app_scheduler.h:54</a></div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_a245a7f2a478b72e2d4a43b3c18676ab3"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3">app_scheduler_res_e</a></div><div class="ttdeci">app_scheduler_res_e</div><div class="ttdoc">List of return code.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00047">app_scheduler.h:47</a></div></div>
-<div class="ttc" id="aapp__scheduler_8h_html_acd03212a86359f0f62d4953785087fd2"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#acd03212a86359f0f62d4953785087fd2">App_Scheduler_cancelTask</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_cancelTask(task_cb_f cb)</div><div class="ttdoc">Cancel a task.</div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_acd03212a86359f0f62d4953785087fd2"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#acd03212a86359f0f62d4953785087fd2">App_Scheduler_cancelTask</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_cancelTask(task_cb_f cb)</div><div class="ttdoc">Add a task without execution time (deprecated)</div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_a06b7a823ab31a50859f715de74473a2d"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a06b7a823ab31a50859f715de74473a2d">task_cb_f</a></div><div class="ttdeci">uint32_t(* task_cb_f)()</div><div class="ttdoc">Task callback to be registered.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00032">app_scheduler.h:32</a></div></div>
 <div class="ttc" id="aapi_8h_html"><div class="ttname"><a href="../../dc/d65/api_8h.html">api.h</a></div></div>
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="../../dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
-  </ul>
 </div>
 </body>
 </html>

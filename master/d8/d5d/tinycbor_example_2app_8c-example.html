@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,29 +6,35 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Wirepas Single-MCU SDK: tinycbor_example/app.c</title>
+<title>Wirepas Mesh SDK: tinycbor_example/app.c</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../../select_version.js"></script>
 <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../resize.js"></script>
 <script type="text/javascript" src="../../navtreedata.js"></script>
 <script type="text/javascript" src="../../navtree.js"></script>
 <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../search/search.js"></script>
-<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Single-MCU SDK"/>
+<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Mesh SDK"/>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../wirepas_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table class="table-title" cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="../../small_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Wirepas Single-MCU SDK
+   <div id="projectname">Wirepas Mesh SDK
    </div>
+  </td>
+  <td id="selectversion" style="padding-right: 0.5em;" align="right">
+     <div id="selectversion_legend" style="display: none;">Select version: </div>
+     <select id="selectversion_list" style="display: none;" onchange="javascript:handleVersionSelect(this)"></select>
   </td>
  </tr>
  </tbody>
@@ -295,18 +302,15 @@ $(document).ready(function(){initNavTree('d8/d5d/tinycbor_example_2app_8c-exampl
 <div class="line">    <a class="code" href="../../d2/d9e/cbor_8h.html#dd/d56/struct_cbor_value">CborValue</a> value;</div>
 <div class="line">    <a class="code" href="../../d2/d9e/cbor_8h.html#a76e9c9acc63dd940da4ab7e91309f7b5">CborError</a> err;</div>
 <div class="line"> </div>
-<div class="line">    <span class="comment">// Open Wirepas public API</span></div>
-<div class="line">    <a name="a30"></a><a class="code" href="../../dc/d65/api_8h.html#abea8e1483d9fe0c251a2027a34422031">API_Open</a>(functions);</div>
-<div class="line"> </div>
 <div class="line">    <span class="comment">// Initialize uart for application debug prints</span></div>
-<div class="line">    <a name="a31"></a><a class="code" href="../../d9/d2a/uart__print_8h.html#aa88fbf7897625d2091449bbf0cd9b37b">UartPrint_init</a>(115200);</div>
+<div class="line">    <a name="a30"></a><a class="code" href="../../d9/d2a/uart__print_8h.html#aa88fbf7897625d2091449bbf0cd9b37b">UartPrint_init</a>(115200);</div>
 <div class="line">    <a class="code" href="../../d9/d2a/uart__print_8h.html#ad97927b02dfab0301302d721d52aaffc">UartPrint_printf</a>(<span class="stringliteral">&quot;App started\n&quot;</span>);</div>
 <div class="line"> </div>
-<div class="line">    err = <a name="a32"></a><a class="code" href="../../d2/d9e/cbor_8h.html#a9f993df65c984cbed3985fc7c144aaca">cbor_parser_init</a>(m_cbor_buffer, len, 0, &amp;parser, &amp;value);</div>
+<div class="line">    err = <a name="a31"></a><a class="code" href="../../d2/d9e/cbor_8h.html#a9f993df65c984cbed3985fc7c144aaca">cbor_parser_init</a>(m_cbor_buffer, len, 0, &amp;parser, &amp;value);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (err == <a class="code" href="../../d2/d9e/cbor_8h.html#a76e9c9acc63dd940da4ab7e91309f7b5add85c52a3e4e6cd2095c819d61a5c123">CborNoError</a>)</div>
 <div class="line">    {</div>
-<div class="line">        err = <a name="a33"></a><a class="code" href="../../d2/d9e/cbor_8h.html#a4b92ae4992e404478f68722592fb7454">cbor_value_validate</a>(&amp;value,<a name="a34"></a><a class="code" href="../../d2/d9e/cbor_8h.html#ac7df91cad1cba43d5d0103284fc390fcaca0e8dca46c4050e122fd51cc8a0f346">CborValidateStrictMode</a>);</div>
+<div class="line">        err = <a name="a32"></a><a class="code" href="../../d2/d9e/cbor_8h.html#a4b92ae4992e404478f68722592fb7454">cbor_value_validate</a>(&amp;value,<a name="a33"></a><a class="code" href="../../d2/d9e/cbor_8h.html#ac7df91cad1cba43d5d0103284fc390fcaca0e8dca46c4050e122fd51cc8a0f346">CborValidateStrictMode</a>);</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (err == <a class="code" href="../../d2/d9e/cbor_8h.html#a76e9c9acc63dd940da4ab7e91309f7b5add85c52a3e4e6cd2095c819d61a5c123">CborNoError</a>)</div>
@@ -317,8 +321,8 @@ $(document).ready(function(){initNavTree('d8/d5d/tinycbor_example_2app_8c-exampl
 <div class="line">    <span class="keywordflow">if</span> (err != <a class="code" href="../../d2/d9e/cbor_8h.html#a76e9c9acc63dd940da4ab7e91309f7b5add85c52a3e4e6cd2095c819d61a5c123">CborNoError</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <a class="code" href="../../d9/d2a/uart__print_8h.html#ad97927b02dfab0301302d721d52aaffc">UartPrint_printf</a>(<span class="stringliteral">&quot;CBOR parsing failure at offset %ld: %s\n&quot;</span>,</div>
-<div class="line">                         value.<a name="a35"></a><a class="code" href="../../d2/d9e/cbor_8h.html#ac1ea447b2e5efcf4118c47e8e2f9d961">ptr</a> - m_cbor_buffer,</div>
-<div class="line">                         <a name="a36"></a><a class="code" href="../../d2/d9e/cbor_8h.html#a7a3260ddcc5231a020640779c415757d">cbor_error_string</a>(err));</div>
+<div class="line">                         value.<a name="a34"></a><a class="code" href="../../d2/d9e/cbor_8h.html#ac1ea447b2e5efcf4118c47e8e2f9d961">ptr</a> - m_cbor_buffer,</div>
+<div class="line">                         <a name="a35"></a><a class="code" href="../../d2/d9e/cbor_8h.html#a7a3260ddcc5231a020640779c415757d">cbor_error_string</a>(err));</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 </div><!-- fragment --> </div><!-- contents -->
@@ -337,7 +341,6 @@ $(document).ready(function(){initNavTree('d8/d5d/tinycbor_example_2app_8c-exampl
 <div class="ttc" id="anode__configuration_8h_html"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a></div></div>
 <div class="ttc" id="acbor_8h_html_ac7df91cad1cba43d5d0103284fc390fcaca0e8dca46c4050e122fd51cc8a0f346"><div class="ttname"><a href="../../d2/d9e/cbor_8h.html#ac7df91cad1cba43d5d0103284fc390fcaca0e8dca46c4050e122fd51cc8a0f346">CborValidateStrictMode</a></div><div class="ttdeci">@ CborValidateStrictMode</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d9e/cbor_8h_source.html#l00543">cbor.h:543</a></div></div>
 <div class="ttc" id="acbor_8h_html_a40ee2487737caa76404a3298c14cc17c"><div class="ttname"><a href="../../d2/d9e/cbor_8h.html#a40ee2487737caa76404a3298c14cc17c">cbor_value_enter_container</a></div><div class="ttdeci">CBOR_API CborError cbor_value_enter_container(const CborValue *it, CborValue *recursed)</div></div>
-<div class="ttc" id="aapi_8h_html_abea8e1483d9fe0c251a2027a34422031"><div class="ttname"><a href="../../dc/d65/api_8h.html#abea8e1483d9fe0c251a2027a34422031">API_Open</a></div><div class="ttdeci">bool API_Open(const app_global_functions_t *functions)</div><div class="ttdoc">Open API (open all libraries)</div></div>
 <div class="ttc" id="acbor_8h_html_a38f51ceba8bc8a9b1cf7dd31e3f9c178ab96dd0b384e891b39255f8936c379e73"><div class="ttname"><a href="../../d2/d9e/cbor_8h.html#a38f51ceba8bc8a9b1cf7dd31e3f9c178ab96dd0b384e891b39255f8936c379e73">CborArrayType</a></div><div class="ttdeci">@ CborArrayType</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d9e/cbor_8h_source.html#l00086">cbor.h:86</a></div></div>
 <div class="ttc" id="acbor_8h_html_acb2faaa081e0835891b3fc3932a989a5"><div class="ttname"><a href="../../d2/d9e/cbor_8h.html#acb2faaa081e0835891b3fc3932a989a5">cbor_value_copy_byte_string</a></div><div class="ttdeci">static CborError cbor_value_copy_byte_string(const CborValue *value, uint8_t *buffer, size_t *buflen, CborValue *next)</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d9e/cbor_8h_source.html#l00436">cbor.h:436</a></div></div>
 <div class="ttc" id="acbor_8h_html_a76e9c9acc63dd940da4ab7e91309f7b5"><div class="ttname"><a href="../../d2/d9e/cbor_8h.html#a76e9c9acc63dd940da4ab7e91309f7b5">CborError</a></div><div class="ttdeci">CborError</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d9e/cbor_8h_source.html#l00152">cbor.h:152</a></div></div>
@@ -367,13 +370,9 @@ $(document).ready(function(){initNavTree('d8/d5d/tinycbor_example_2app_8c-exampl
 <div class="ttc" id="acbor_8h_html_a38f51ceba8bc8a9b1cf7dd31e3f9c178a959e9111a04cb3bf4fe0d296a1fe94d2"><div class="ttname"><a href="../../d2/d9e/cbor_8h.html#a38f51ceba8bc8a9b1cf7dd31e3f9c178a959e9111a04cb3bf4fe0d296a1fe94d2">CborDoubleType</a></div><div class="ttdeci">@ CborDoubleType</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d9e/cbor_8h_source.html#l00095">cbor.h:95</a></div></div>
 <div class="ttc" id="aapi_8h_html"><div class="ttname"><a href="../../dc/d65/api_8h.html">api.h</a></div></div>
 <div class="ttc" id="acbor_8h_html_a38f51ceba8bc8a9b1cf7dd31e3f9c178a129aaabaaddafbd62f18e46c09e99949"><div class="ttname"><a href="../../d2/d9e/cbor_8h.html#a38f51ceba8bc8a9b1cf7dd31e3f9c178a129aaabaaddafbd62f18e46c09e99949">CborUndefinedType</a></div><div class="ttdeci">@ CborUndefinedType</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d9e/cbor_8h_source.html#l00092">cbor.h:92</a></div></div>
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
-  </ul>
 </div>
 </body>
 </html>

@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,29 +6,35 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Wirepas Single-MCU SDK: mcu/hal_api/usart.h File Reference</title>
+<title>Wirepas Mesh SDK: mcu/hal_api/usart.h File Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../../select_version.js"></script>
 <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../resize.js"></script>
 <script type="text/javascript" src="../../navtreedata.js"></script>
 <script type="text/javascript" src="../../navtree.js"></script>
 <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../search/search.js"></script>
-<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Single-MCU SDK"/>
+<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Mesh SDK"/>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../wirepas_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table class="table-title" cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="../../small_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Wirepas Single-MCU SDK
+   <div id="projectname">Wirepas Mesh SDK
    </div>
+  </td>
+  <td id="selectversion" style="padding-right: 0.5em;" align="right">
+     <div id="selectversion_legend" style="display: none;">Select version: </div>
+     <select id="selectversion_list" style="display: none;" onchange="javascript:handleVersionSelect(this)"></select>
   </td>
  </tr>
  </tbody>
@@ -89,9 +96,9 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a01f5748b2e5b7cef268da03ee91ac10c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#a01f5748b2e5b7cef268da03ee91ac10c">Usart_init</a> (uint32_t baudrate, <a class="el" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#ae67775eb2b1a82ad5b8821efc06ddf79">uart_flow_control_e</a> flow_control)</td></tr>
-<tr class="memdesc:a01f5748b2e5b7cef268da03ee91ac10c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all USART blocks Enables peripheral clocks and disables peripherals for the duration of the initialization procedure. Clears all internal variables: Callback handlers Transfer busy flags After the initialization procedure is complete, it enables all peripherals, but leaves peripheral clocks disabled.  <a href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#a01f5748b2e5b7cef268da03ee91ac10c">More...</a><br /></td></tr>
-<tr class="separator:a01f5748b2e5b7cef268da03ee91ac10c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14b7fb11b87d3040893ec0286bc12cf3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#a14b7fb11b87d3040893ec0286bc12cf3">Usart_init</a> (uint32_t baudrate, <a class="el" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#ae67775eb2b1a82ad5b8821efc06ddf79">uart_flow_control_e</a> flow_control)</td></tr>
+<tr class="memdesc:a14b7fb11b87d3040893ec0286bc12cf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all USART blocks Enables peripheral clocks and disables peripherals for the duration of the initialization procedure. Clears all internal variables: Callback handlers Transfer busy flags After the initialization procedure is complete, it enables all peripherals, but leaves peripheral clocks disabled.  <a href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#a14b7fb11b87d3040893ec0286bc12cf3">More...</a><br /></td></tr>
+<tr class="separator:a14b7fb11b87d3040893ec0286bc12cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dc813ca33189c1c6d0766442690e9c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#a8dc813ca33189c1c6d0766442690e9c3">Usart_setEnabled</a> (bool enabled)</td></tr>
 <tr class="memdesc:a8dc813ca33189c1c6d0766442690e9c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable USART.  <a href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#a8dc813ca33189c1c6d0766442690e9c3">More...</a><br /></td></tr>
 <tr class="separator:a8dc813ca33189c1c6d0766442690e9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,14 +217,14 @@ Enumerations</h2></td></tr>
 
 </div>
 </div>
-<a id="a01f5748b2e5b7cef268da03ee91ac10c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01f5748b2e5b7cef268da03ee91ac10c">&#9670;&nbsp;</a></span>Usart_init()</h2>
+<a id="a14b7fb11b87d3040893ec0286bc12cf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14b7fb11b87d3040893ec0286bc12cf3">&#9670;&nbsp;</a></span>Usart_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Usart_init </td>
+          <td class="memname">bool Usart_init </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>baudrate</em>, </td>
@@ -244,7 +251,7 @@ Enumerations</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>none </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if successful, false otherwise </dd></dl>
 
 </div>
 </div>
@@ -411,14 +418,9 @@ Enumerations</h2></td></tr>
 <div class="ttc" id="amcu_2hal__api_2usart_8h_html_ae67775eb2b1a82ad5b8821efc06ddf79a3cbaba8e169cd2bfeebd0b63de84558a"><div class="ttname"><a href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#ae67775eb2b1a82ad5b8821efc06ddf79a3cbaba8e169cd2bfeebd0b63de84558a">UART_FLOW_CONTROL_HW</a></div><div class="ttdeci">@ UART_FLOW_CONTROL_HW</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dfa/mcu_2hal__api_2usart_8h_source.html#l00021">usart.h:21</a></div></div>
 <div class="ttc" id="amcu_2hal__api_2usart_8h_html_ae67775eb2b1a82ad5b8821efc06ddf79aa32b32f489672ac0fecac58bd918c11c"><div class="ttname"><a href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#ae67775eb2b1a82ad5b8821efc06ddf79aa32b32f489672ac0fecac58bd918c11c">UART_FLOW_CONTROL_NONE</a></div><div class="ttdeci">@ UART_FLOW_CONTROL_NONE</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dfa/mcu_2hal__api_2usart_8h_source.html#l00020">usart.h:20</a></div></div>
 <div class="ttc" id="amcu_2hal__api_2usart_8h_html_ae67775eb2b1a82ad5b8821efc06ddf79"><div class="ttname"><a href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#ae67775eb2b1a82ad5b8821efc06ddf79">uart_flow_control_e</a></div><div class="ttdeci">uart_flow_control_e</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dfa/mcu_2hal__api_2usart_8h_source.html#l00018">usart.h:18</a></div></div>
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="../../dir_4cee3ed2fe28b98d73407141cfd215dc.html">mcu</a></li><li class="navelem"><a class="el" href="../../dir_6cf55800a80cb7b7dd1fbbea9cea607d.html">hal_api</a></li><li class="navelem"><a class="el" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html">usart.h</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
-  </ul>
 </div>
 </body>
 </html>

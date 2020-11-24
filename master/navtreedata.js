@@ -22,7 +22,7 @@ for the JavaScript code in this file
 */
 var NAVTREE =
 [
-  [ "Wirepas Single-MCU SDK", "index.html", [
+  [ "Wirepas Mesh SDK", "index.html", [
     [ "Single-MCU Operation Overview", "index.html", "index" ],
     [ "API", "dd/d9c/programming_interface.html", null ],
     [ "Application Examples", "d5/d7b/application_examples.html", null ],
@@ -54,15 +54,16 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d2/d9e/cbor_8h.html#a3f260fd0119117052d4a44a631786622",
-"d2/dbd/data_8h.html#aa3560c49111becdd8f83b0250bb3fb6b",
-"d5/d74/shared__data_8h.html#a41119aab5a4419f907e41a3f9f681d9b",
-"d8/d3c/util_8h.html#a5315fea1224de28edba64a57c86be3f1",
-"da/d87/spi_8h.html",
-"db/dcb/aes_8h.html#aeb96994c394c4e81aafcf55ff1e14f7d",
-"dd/d2c/bl__interface_8h.html#a76d7d81cba0b73beced4b1c6f56c7ef6",
-"dd/dd9/debug__log_8h.html#a07bbbacdf6d418593fce18a22fc31fee",
-"df/d08/memory__area_8h.html#a8fb09e00542be47a78c14dfa208e4c1e"
+"d2/d9e/cbor_8h.html#a38f51ceba8bc8a9b1cf7dd31e3f9c178ad2eb846ce721d2a49a0eca7c8ed58530",
+"d2/dbd/data_8h.html#a96f7b21d1f7992439c9526b3a4d27530",
+"d5/d4c/recommendations.html",
+"d8/d23/radio__fem_8h.html#d1/d41/structapp__lib__radio__fem__t",
+"d9/df8/efr32__template_2board_8h_source.html",
+"db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8",
+"dd/d2c/bl__interface_8h.html#a46785bd9106188b60252c64f7613f419",
+"dd/dc6/joining_8h.html#adad428839435f050bc75f07ca4339971",
+"df/d08/memory__area_8h.html#a2f56c8dbbd4e7697da7c19610ca65948",
+"globals_type_p.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

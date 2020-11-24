@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.8.17-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -5,29 +6,35 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Wirepas Single-MCU SDK: mcu/hal_api/usart.h Source File</title>
+<title>Wirepas Mesh SDK: mcu/hal_api/usart.h Source File</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
+<script type="text/javascript" src="../../../select_version.js"></script>
 <link href="../../navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../resize.js"></script>
 <script type="text/javascript" src="../../navtreedata.js"></script>
 <script type="text/javascript" src="../../navtree.js"></script>
 <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../search/search.js"></script>
-<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Single-MCU SDK"/>
+<link rel="search" href="../../search_opensearch.php?v=opensearch.xml" type="application/opensearchdescription+xml" title="Wirepas Mesh SDK"/>
 <link href="../../doxygen.css" rel="stylesheet" type="text/css" />
+<link href="../../wirepas_custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
-<table cellspacing="0" cellpadding="0">
+<table class="table-title" cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="../../small_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Wirepas Single-MCU SDK
+   <div id="projectname">Wirepas Mesh SDK
    </div>
+  </td>
+  <td id="selectversion" style="padding-right: 0.5em;" align="right">
+     <div id="selectversion_legend" style="display: none;">Select version: </div>
+     <select id="selectversion_list" style="display: none;" onchange="javascript:handleVersionSelect(this)"></select>
   </td>
  </tr>
  </tbody>
@@ -97,7 +104,7 @@ $(document).ready(function(){initNavTree('d3/dfa/mcu_2hal__api_2usart_8h_source.
 <div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#ae67775eb2b1a82ad5b8821efc06ddf79a3cbaba8e169cd2bfeebd0b63de84558a">   21</a></span>&#160;    <a class="code" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#ae67775eb2b1a82ad5b8821efc06ddf79a3cbaba8e169cd2bfeebd0b63de84558a">UART_FLOW_CONTROL_HW</a>,</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;} <a class="code" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#ae67775eb2b1a82ad5b8821efc06ddf79">uart_flow_control_e</a>;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../df/deb/bootloader__test_2drivers_2usart_8h.html#af9f3dc0862828c0e55c8417061e894d2">Usart_init</a>(uint32_t baudrate, <a class="code" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#ae67775eb2b1a82ad5b8821efc06ddf79">uart_flow_control_e</a> flow_control);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="../../df/deb/bootloader__test_2drivers_2usart_8h.html#af9f3dc0862828c0e55c8417061e894d2">Usart_init</a>(uint32_t baudrate, <a class="code" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#ae67775eb2b1a82ad5b8821efc06ddf79">uart_flow_control_e</a> flow_control);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#a8dc813ca33189c1c6d0766442690e9c3">Usart_setEnabled</a>(<span class="keywordtype">bool</span> enabled);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
@@ -131,14 +138,9 @@ $(document).ready(function(){initNavTree('d3/dfa/mcu_2hal__api_2usart_8h_source.
 <div class="ttc" id="abootloader__test_2drivers_2usart_8h_html_af9f3dc0862828c0e55c8417061e894d2"><div class="ttname"><a href="../../df/deb/bootloader__test_2drivers_2usart_8h.html#af9f3dc0862828c0e55c8417061e894d2">Usart_init</a></div><div class="ttdeci">void Usart_init(uint32_t baudrate)</div><div class="ttdoc">Initialize all USART blocks Enables peripheral clocks and disables peripherals for the duration of th...</div></div>
 <div class="ttc" id="abootloader__test_2drivers_2usart_8h_html_aa606d5d6bcf4809457649469636d4d7f"><div class="ttname"><a href="../../df/deb/bootloader__test_2drivers_2usart_8h.html#aa606d5d6bcf4809457649469636d4d7f">Usart_sendBuffer</a></div><div class="ttdeci">uint32_t Usart_sendBuffer(const void *buf, uint32_t len)</div><div class="ttdoc">Send a buffer to USART.</div></div>
 <div class="ttc" id="amcu_2hal__api_2usart_8h_html_ae09c6e0da85cc67c6dc6a9310ca50bdf"><div class="ttname"><a href="../../d3/dfa/mcu_2hal__api_2usart_8h.html#ae09c6e0da85cc67c6dc6a9310ca50bdf">serial_rx_callback_f</a></div><div class="ttdeci">void(* serial_rx_callback_f)(uint8_t *ch, size_t n)</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dfa/mcu_2hal__api_2usart_8h_source.html#l00016">usart.h:16</a></div></div>
+<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="../../dir_4cee3ed2fe28b98d73407141cfd215dc.html">mcu</a></li><li class="navelem"><a class="el" href="../../dir_6cf55800a80cb7b7dd1fbbea9cea607d.html">hal_api</a></li><li class="navelem"><a class="el" href="../../d3/dfa/mcu_2hal__api_2usart_8h.html">usart.h</a></li>
-    <li class="footer">Generated by
-    <a href="http://www.doxygen.org/index.html">
-    <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
-  </ul>
 </div>
 </body>
 </html>
