@@ -34,11 +34,9 @@ The following diagram, describes the main components of the SDK.
 ## Documentation
 
 The documentation for this SDK is written with Doxygen and generated in HTML format.
-In order to access it, please clone the repository locally and open the SDK_documentation.html
-link available at the root of the SDK with your favorite web browser.
 
-The documentation from top of master branch is also hosted [here](https://wirepas.github.io/wm-sdk/).
-It may not reflect the code you have if you are working on a tag.
+It is hosted [here](https://wirepas.github.io/wm-sdk/).
+You can select the desired version depending on the SDK version you are working on.
 
 Some information is available on this page too, but it is just a subset of what the html documentation
 contains.
