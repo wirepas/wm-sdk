@@ -5,15 +5,24 @@
  */
 
 #include "early_init.h"
+#include "power.h"
 
-/* This is the default implementation of early_init and first_boot functions.
- * They are defined as weak symbol and can be redifined in the application.
+
+/* Declaration of a weak custom early init that can be overwritten for each
+ * board under board/<board_name>/bootloader/custom_early_init.c
  */
+void custom_early_init(void) __attribute__((weak));
 
-void __attribute((weak)) early_init(void)
+void early_init()
 {
+    Power_enableDCDC();
+
+    custom_early_init();
 }
 
+/* This is the default implementation of the first_boot function. It is defined
+ * as weak symbol and can be redifined in the application.
+ */
 void __attribute((weak)) first_boot(void)
 {
 }

@@ -54,14 +54,14 @@ SECTIONS
     .datastatic :
     {
         __datastatic_start__ = .;
-        *memoryarea.o(.data* .data)
-        *scratchpad.o(.data* .data)
-        *internal_flash*.o(.data* .data)
-        *external_flash*.o(.data* .data)
+        *memoryarea.*o*(.data* .data)
+        *scratchpad.*o*(.data* .data)
+        *internal_flash*.*o*(.data* .data)
+        *external_flash*.*o*(.data* .data)
         /* Customer specific external flash driver must be located in
          * board/board_name/bootloader folder.
          */
-        *board/*/bootloader/*.o(.data* .data)
+        *board/*/bootloader/*.*o*(.data* .data)
         . = ALIGN(8);
         __datastatic_end__ = .;
     } >BL_STATIC AT >BOOTLOADER
@@ -69,14 +69,14 @@ SECTIONS
     .bssstatic :
     {
         __bssstatic_start__ = .;
-        *memoryarea.o(.bss.* .bss)
-        *scratchpad.o(.bss.* .bss)
-        *internal_flash*.o(.bss* .bss)
-        *external_flash*.o(.bss* .bss)
+        *memoryarea.*o*(.bss.* .bss)
+        *scratchpad.*o*(.bss.* .bss)
+        *internal_flash*.*o*(.bss* .bss)
+        *external_flash*.*o*(.bss* .bss)
         /* Customer specific external flash driver must be located in
          * board/board_name/bootloader folder
          */
-        *board/*/bootloader/*.o(.bss* .bss)
+        *board/*/bootloader/*.*o*(.bss* .bss)
         /* COMMON symbols here as well */
         *(COMMON)
         . = ALIGN(8);

@@ -2,5 +2,8 @@
 MCU=nrf52
 MCU_SUB=840
 
-# Use the 8dbm max power profile (can be changed to 4dbm with 0x0000000D)
-mac_profileid=0x0000000E
+# Hardware capabilities of the board
+## Is 32kHz crystal mounted on the board.
+board_hw_crystal_32k=yes
+## Is DCDC used on this board.
+board_hw_dcdc=yes

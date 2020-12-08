@@ -10,8 +10,7 @@
 
 void Power_enableDCDC()
 {
-#if defined(BOARD_SUPPORT_DCDC)
+#if BOARD_HW_DCDC
     NRF_POWER->DCDCEN = POWER_DCDCEN_DCDCEN_Enabled << POWER_DCDCEN_DCDCEN_Pos;
 #endif
 }
-

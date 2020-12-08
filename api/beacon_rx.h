@@ -55,7 +55,7 @@ typedef struct
     /** Number of bytes of data payload */
     uint8_t     length;
     /** RSSI from packet received */
-    uint8_t     rssi;
+    int8_t      rssi;
     /** Data payload */
     uint8_t     * payload;
 } app_lib_beacon_rx_received_t;

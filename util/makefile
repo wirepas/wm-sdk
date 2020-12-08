@@ -7,6 +7,13 @@ SRCS += $(UTIL_PATH)crc.c     \
         $(UTIL_PATH)random.c \
         $(UTIL_PATH)tlv.c
 
+ifeq ($(APP_PRINTING), yes)
+CFLAGS += -DAPP_PRINTING
+HAL_UART=yes
+SRCS += $(UTIL_PATH)syscalls.c
+SRCS += $(UTIL_PATH)uart_print.c
+endif
+
 ifeq ($(TINY_CBOR), yes)
 CBOR_PATH = $(UTIL_PATH)tinycbor/src/
 SRCS += $(CBOR_PATH)cborencoder.c \
@@ -27,6 +34,4 @@ AES_PATH = $(UTIL_PATH)tinyaes/
 SRCS += $(AES_PATH)aes.c \
         $(UTIL_PATH)aessw.c
 INCLUDES += -I$(AES_PATH)
-CFLAGS += -DCBC=0
-CFLAGS += -DCTR=0
 endif

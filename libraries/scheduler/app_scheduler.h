@@ -51,7 +51,9 @@ typedef enum
     /** No more tasks available */
     APP_SCHEDULER_RES_NO_MORE_TASK = 1,
     /** Trying to cancel a task that doesn't exist */
-    APP_SCHEDULER_RES_UNKNOWN_TASK = 2
+    APP_SCHEDULER_RES_UNKNOWN_TASK = 2,
+    /** Using the library without previous initialization */
+    APP_SCHEDULER_RES_UNINITIALIZED = 3
 } app_scheduler_res_e;
 
 /**

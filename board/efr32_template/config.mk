@@ -1,4 +1,4 @@
-# This definition describes processor architecture. 
+# This definition describes processor architecture.
 # Valid value: efr32 for EFR32 based boards
 MCU=efr32
 
@@ -13,7 +13,10 @@ MCU_SUB=xg12
 # - <code>pxxxf1024</code> For 1024 kB flash memory variant
 MCU_MEM_VAR=pxxxf1024
 
-# This describes the radio profiles to choose
-# Allowed values are 0x00000009 (max power to 8dm), 0x0000000C (max power to 19dbm)
-# See @ref app_lib_system_protocol_profile_e "Radio profile" for full list
-# mac_profileid=0x00000009
+# This describes the hardware capabilities of the board
+# (this is used to customize the hardware service of the bootloader).
+## Is 32kHz crystal mounted on the board? default:yes, possible values:yes, no
+board_hw_crystal_32k=yes
+## Is DCDC to be enabled on the board? default:yes, possible values:yes, no
+## (it replaces MCU_NO_DCDC define in ./board/bootlaoder/early_init_efr32.c)
+board_hw_dcdc=yes

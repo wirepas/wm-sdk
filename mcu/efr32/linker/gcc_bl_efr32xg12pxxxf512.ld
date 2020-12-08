@@ -59,14 +59,14 @@ SECTIONS
         __datastatic_start__ = .;
         /* ramtext is needed by the internal flash driver */
         *(.ramtext)
-        *memoryarea.o(.data* .data)
-        *scratchpad.o(.data* .data)
-        *internal_flash*.o(.data* .data)
-        *external_flash*.o(.data* .data)
+        *memoryarea.*o*(.data* .data)
+        *scratchpad.*o*(.data* .data)
+        *internal_flash*.*o*(.data* .data)
+        *external_flash*.*o*(.data* .data)
         /* Customer specific external flash driver must be located in
          * board/board_name/bootloader folder.
          */
-        *board/*/bootloader/*.o(.data* .data)
+        *board/*/bootloader/*.*o*(.data* .data)
         . = ALIGN(8);
         __datastatic_end__ = .;
     } >BL_STATIC AT >BOOTLOADER
@@ -74,14 +74,14 @@ SECTIONS
     .bssstatic :
     {
         __bssstatic_start__ = .;
-        *memoryarea.o(.bss.* .bss)
-        *scratchpad.o(.bss.* .bss)
-        *internal_flash*.o(.bss* .bss)
-        *external_flash*.o(.bss* .bss)
+        *memoryarea.*o*(.bss.* .bss)
+        *scratchpad.*o*(.bss.* .bss)
+        *internal_flash*.*o*(.bss* .bss)
+        *external_flash*.*o*(.bss* .bss)
         /* Customer specific external flash driver must be located in
          * board/board_name/bootloader folder
          */
-        *board/*/bootloader/*.o(.bss* .bss)
+        *board/*/bootloader/*.*o*(.bss* .bss)
         /* COMMON symbols here as well */
         *(COMMON)
         . = ALIGN(8);
@@ -131,6 +131,10 @@ SECTIONS
     /* Set stack top to end of RAM, and stack limit move down by
      * size of stack_dummy section */
     __stack_top__ = ORIGIN(RAM) + LENGTH(RAM);
+
+    /* dummy definition to meet the linker dependency in SystemInit() */
+    /* Warning: do not use this to anything! */
+    __Vectors = 0;
 
     .invalid :
     {

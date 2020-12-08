@@ -18,18 +18,17 @@
 #ifndef APP_LIB_ADVERTISER_H_
 #define APP_LIB_ADVERTISER_H_
 
+#include <stdint.h>
+#include <stdbool.h>
+
+#include "app/app.h"
+
 /** \brief Library symbolic name  */
 #define APP_LIB_ADVERTISER_NAME 0x06cc5e24 //!< "ADVERT"
 
 /** \brief Maximum supported library version */
-#define APP_LIB_ADVERTISER_VERSION 0x201
+#define APP_LIB_ADVERTISER_VERSION 0x205
 
-/**
- * \brief  Advertiser sends data packet to headnode by using this src endpoint.
- *
- * Used with service @ref app_lib_data_send_data_f "lib_data->sendData()"
- */
-#define DIRADV_EP_SRC_DATA 248
 /**
  * \brief Headnode acknowledges the packet by using this source endpoint
  *
@@ -40,55 +39,23 @@
  */
 #define DIRADV_EP_SRC_ACK  249
 /**
- * \brief  Destination endpoint, used always in advertiser
+ * \brief  Headnode acknowledges the packet by using this destination endpoint
  *
- * Used when advertiser is sending data using service @ref
- * app_lib_data_send_data_f "lib_data->sendData()" as well as when
- * acknowledgement is handled, i.e. in callback function set with @ref
+ * Used in headnode callback function set with  @ref
  * app_lib_advertiser_ackdatacb_f "lib_advertiser->setBeaconDataAckListenCb()"
- * and receiving packet in advertiser callback function set with @ref
- * app_lib_data_set_data_received_cb_f "lib_data->setDataReceivedCb".
- *
- * Summary of endpoints:
- *
- * <table>
- * <tr><th>Direction</th><th>Source endpoint</th><th>Destination endpoint</th>
- * </tr>
- * <tr><td>Advertiser --> headnode</td><td>@ref DIRADV_EP_SRC_DATA "248"</td>
- * <td>@ref DIRADV_EP_DEST "248"</td></tr>
- * <tr><td>Headnode --> advertiser</td><td>@ref DIRADV_EP_SRC_ACK "249"</td>
- * <td>@ref DIRADV_EP_DEST "248"</td></tr>
- * </table>
+ * and receiving packet in advertiser in callback function set with @ref
+ * app_lib_data_set_data_received_cb_f "lib_data->setDataReceivedCb()"
  */
 #define DIRADV_EP_DEST     248
 
 /**
- * \brief  Maximum length of the ACK message
+ * \brief  Absolute maximum size of the ACK message
  *
- * Used with callback function set with @ref
- * app_lib_advertiser_ackdatacb_f "lib_advertiser->setBeaconDataAckListenCb()".
+ * This can be used for allocating memory structures for callback function set
+ * with @ref app_lib_advertiser_ackdatacb_f
+ * "lib_advertiser->setBeaconDataAckListenCb()".
  */
-#define DIRADV_MAX_ACK_LEN  13
-
-/**
- * \brief       Scan operation to find directed advertiser network head nodes
- *              network beacons. \param max_scan_time is used to end scan even
- *              if application has not aborted scan (by using @ref
- *              app_lib_advertiser_scan_stop_f
- *              "lib_advertiser->scanOffAdvertiserBeacons()"). Beacon
- *              information is acquired by using to @ref
- *              app_lib_state_set_on_beacon_cb_f "lib_state->setOnBeaconCb()"
- *              service.
- * \param       max_scan_time
- *              Maximum scan time in ms used for scanning.
- */
-typedef void (*app_lib_advertiser_scan_f) (uint32_t max_scan_time);
-
-/**
- * \brief       Stops active directed advertiser scan operation.
- *
- */
-typedef void (*app_lib_advertiser_scan_stop_f)(void);
+#define DIRADV_MAX_ACK_LEN  102
 
 /**
  * \brief       Input data structure for callback function set by @ref
@@ -99,6 +66,21 @@ typedef struct
 {
     /** Address of the sender (advertiser) */
     app_addr_t sender;
+    /** Max len of the ack payload supported by transmitter whom the ack is sent
+     */
+    uint8_t ack_length;
+    /** Source endpoint of packet. Used to distinguish different applications
+     * sending advertiser packets.
+     */
+    uint8_t src_endpoint;
+    /** Destination endpoint of packet. Used to distinguish different
+     * applications sending advertiser packets.
+     */
+    uint8_t dest_endpoint;
+    /** Pointer to data payload sent by advertiser */
+    void * data;
+    /** Amount of data */
+    size_t num_bytes;
 } ack_gen_input_t;
 
 /**
@@ -108,10 +90,11 @@ typedef struct
  */
 typedef struct
 {
-    /** Acknowledgement payload */
+    /** Acknowledgement payload. Payload can be allocated by @ref
+     * DIRADV_MAX_ACK_LEN definition. */
     void * data;
     /** length of the acknowledgement (maximum size is limited to @ref
-     * DIRADV_MAX_ACK_LEN bytes) */
+     * ack_gen_input_t.ack_length "supported ack length" bytes) */
     uint8_t length;
 } ack_gen_output_t;
 
@@ -140,29 +123,13 @@ typedef void (*app_lib_advertiser_ackdatacb_f)
     (app_llhead_acklistener_f callback);
 
 /**
- * \brief       Callback function type used with @ref
- *              app_lib_advertiser_scanendcb_f "lib_advertiser->setScanEndCb()".
- */
-typedef void (*app_mac_scanendlistener_f)(void);
-
-/**
- * \brief       This callback is used to set callback to be call when scan has
- *              ended. Scan can end either when application has called
- *              @ref app_lib_advertiser_scan_stop_f
- *              "lib_advertiser->scanOffAdvertiserBeacons()" or scan timeout
- *              set in @ref app_lib_advertiser_scan_f
- *              "lib_advertiser->scanOnAdvertiserBeacons()" has been reached.
- *
- * \param       Callback function type of @ref app_mac_scanendlistener_f.
- */
-typedef void (*app_lib_advertiser_scanendcb_f)(app_mac_scanendlistener_f);
-
-/**
  * \brief   Set maximum queueing time for advertiser data packets
  * \param   time_ms
  *          Time in milliseconds how soon packet should be transmitted
  *          0 to disable the feature (default value)
- * \return  Result code, always @ref APP_RES_OK
+ * \return  Result code, always @ref APP_RES_OK or @ref
+ *          APP_RES_INVALID_CONFIGURATION if device is not configured as
+ *          @ref APP_LIB_SETTINGS_ROLE_ADVERTISER
  *
  * Operation @ref app_lib_data_set_max_msg_queuing_time_f
  * "lib_data->setMaxMsgQueuingTime()" only allows setting the TTL value
@@ -178,7 +145,30 @@ typedef void (*app_lib_advertiser_scanendcb_f)(app_mac_scanendlistener_f);
 typedef app_res_e
     (*app_lib_advertiser_set_queuing_time_f)(uint16_t time_ms);
 
+/**
+ * @brief   Option flags to be used with advertiser
+ */
+typedef struct
+{
+    // If true, advertiser will follow the network in order to have valid target
+    // to send data to. If false, advertiser does not follow the network and
+    // should perform scan (service @ref app_lib_state_start_scan_nbors_f
+    // "lib_state->startScanNbors()") before sending data packets.
+    // Default value for this is false.
+    bool follow_network;
+} adv_option_t;
 
+/**
+ * @brief   Set options for advertiser
+ * @param   option
+ *          Options to set
+ * @return  Result code, normally @ref APP_RES_OK. If @p option==NULL, @ref
+ *          APP_RES_INVALID_NULL_POINTER. If role is not @ref
+ *          APP_LIB_SETTINGS_ROLE_ADVERTISER , @ref
+ *          APP_RES_INVALID_CONFIGURATION
+ */
+typedef app_res_e
+    (*app_lib_advertiser_set_options_f)(adv_option_t * option);
 
 /**
  * \brief       List of library functions
@@ -186,11 +176,9 @@ typedef app_res_e
 
 typedef struct
 {
-    app_lib_advertiser_scan_f                         scanOnAdvertiserBeacons;
-    app_lib_advertiser_scan_stop_f                    scanOffAdvertiserBeacons;
     app_lib_advertiser_ackdatacb_f                    setRouterAckGenCb;
-    app_lib_advertiser_scanendcb_f                    setScanEndCb;
     app_lib_advertiser_set_queuing_time_f             setQueuingTimeHp;
+    app_lib_advertiser_set_options_f                  setOptions;
 } app_lib_advertiser_t;
 
 #endif /* APP_LIB_ADVERTISER_H_ */

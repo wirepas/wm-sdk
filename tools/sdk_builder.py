@@ -38,6 +38,7 @@ def build_single_app(root_folder, app_name, board, app_only=False, extra_build_a
                                 cwd=root_folder)
     assert(_process.wait() == 0)
 
+
 def build_all_apps(root_folder, boards_subset=None, apps_subset=None, app_only=False, extra_build_args=None):
     """Build all possible apps for all boards within the defined subsets
 

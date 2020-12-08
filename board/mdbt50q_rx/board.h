@@ -30,10 +30,14 @@
 // Active low polarity for buttons
 #define BOARD_BUTTON_ACTIVE_LOW         true
 
-// The board supports DCDC
-#define BOARD_SUPPORT_DCDC
-
 // Active internal pull-up for buttons
 #define BOARD_BUTTON_INTERNAL_PULL      true
+
+// The board supports DCDC (#define BOARD_SUPPORT_DCDC)
+// Since SDK v1.1 (stack v5.1.x) this option has been move to
+// board/<board_name>/config.mk. Set board_hw_dcdc to yes to enable DCDC.
+#ifdef BOARD_SUPPORT_DCDC
+#error This option has been moved to board/<board_name>/config.mk
+#endif
 
 #endif /* BOARD_MDBT50Q_RX_H_ */

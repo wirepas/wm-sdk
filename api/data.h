@@ -29,7 +29,7 @@
 #define APP_LIB_DATA_NAME 0x0003f161 //!< "DATA"
 
 /** \brief Maximum supported library version */
-#define APP_LIB_DATA_VERSION    0x207
+#define APP_LIB_DATA_VERSION    0x208
 
 /**
  * @brief Type of tracking ID for data packets
@@ -278,6 +278,10 @@ typedef struct
      * (transmission to itself), this is meaningless because packet is not sent
      * via radio at all.*/
     int8_t rssi;
+    /** End-to-end transmission delay, in 1 / 1024 of seconds. This also
+     *  includes the value set in the delay field for @ref
+     *  app_lib_data_send_data_f "lib_data->sendData"*/
+    uint32_t delay_hp;
 } app_lib_data_received_t;
 
 /**

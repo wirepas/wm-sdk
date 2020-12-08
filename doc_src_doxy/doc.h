@@ -92,11 +92,10 @@ scratchpad in the flash received by the stack during an otap.
 Bootloader is in charge of the flash management and contains the flash
 partitioning that is configured through an @ref config_mk_ini_file ".ini file".
 
-
 @page bootloader_extension Custom bootloader extension
 
 Bootloader can be extended from the SDK. Main usage is to support an external
-flash.
+flash and advertise harware capabilities of the board.
 How to use it is described in a separated application note that will be
 available soon from here.
 
