@@ -5,6 +5,11 @@ on:
     branches: [ master ]
   release:
     types: [created]
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'Version that will be used in version selector'
+        required: true
 
 jobs:
   build:
@@ -24,6 +29,9 @@ jobs:
     - name: Set folder for release
       if: ${{ github.event_name == 'release' }}
       run: echo "FOLDER=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+    - name: Set folder for manual triggering
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: echo "FOLDER=${{ github.event.inputs.version_name }}" >> $GITHUB_ENV
     - name: Deploy doc
       uses: peaceiris/actions-gh-pages@v3
       with:
@@ -31,19 +39,19 @@ jobs:
         publish_dir: ./build/html
         destination_dir: ${{ env.FOLDER }}
     - name: Checkout gh-pages branch
-      if: ${{ github.event_name == 'release' }}
+      if: ${{ github.event_name != 'push' }}
       uses: actions/checkout@v2
       with:
         ref: 'gh-pages'
         path: 'gh-pages'
-    - name: Add new verson
-      if: ${{ github.event_name == 'release' }}
-      run: sed -i "/^'latest'/i '${{ github.event.release.tag_name }}'," gh-pages/select_version.js
+    - name: Add new version
+      if: ${{ github.event_name != 'push' }}
+      run: sed -i "/^'latest'/i '${{ env.FOLDER }}'," gh-pages/select_version.js
     - name: Test
-      if: ${{ github.event_name == 'release' }}
+      if: ${{ github.event_name != 'push' }}
       run: cat gh-pages/select_version.js
     - name: Publish change
-      if: ${{ github.event_name == 'release' }}
+      if: ${{ github.event_name != 'push' }}
       uses: EndBug/add-and-commit@v5
       with:
         add: select_version.js
