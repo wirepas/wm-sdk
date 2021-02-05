@@ -19,6 +19,10 @@ jobs:
     - name: Accept license 
       run: touch .license_accepted
     - name: Create dummy key file
-      run: touch custom_bootloader_keys.ini
+      run: |
+        touch custom_bootloader_keys.ini
+        echo "[key:default]" >> custom_bootloader_keys.ini
+        echo "auth = 01 02 03 04 05 06 07 08 01 02 03 04 05 06 07 08" >> custom_bootloader_keys.ini
+        echo "encrypt = 01 02 03 04 05 06 07 08 01 02 03 04 05 06 07 08" >> custom_bootloader_keys.ini
     - name: Build all apps
       run: ./tools/sdk_builder.py --app_only
