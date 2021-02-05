@@ -12,6 +12,9 @@
 #include "hal_api.h"
 #include "api.h"
 
+
+#if defined(BOARD_USART_TX_PIN) && defined (BOARD_USART_RX_PIN)
+
 /* Only one USART, this is easy */
 static volatile serial_rx_callback_f    m_rx_callback;
 
@@ -359,3 +362,57 @@ static bool set_baud(uint32_t baudrate)
     return ret;
 }
 
+#else
+
+bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
+{
+    (void) baudrate;
+    (void) flow_control;
+
+    return false;
+}
+
+
+void Usart_setEnabled(bool enabled)
+{
+    (void) enabled;
+}
+
+void Usart_receiverOn(void)
+{
+}
+
+void Usart_receiverOff(void)
+{
+}
+
+bool Usart_setFlowControl(uart_flow_control_e flow)
+{
+    (void) flow;
+
+    return false;
+}
+
+uint32_t Usart_sendBuffer(const void * buf, uint32_t len)
+{
+    (void) buf;
+    (void) len;
+
+    return 0;
+}
+
+void Usart_enableReceiver(serial_rx_callback_f callback)
+{
+    (void) callback;
+}
+
+uint32_t Usart_getMTUSize(void)
+{
+    return 0;
+}
+
+void Usart_flush(void)
+{
+}
+
+#endif

@@ -12,16 +12,12 @@ This application is often referred as a _Single-MCU application_.
 > a SLA licensee, please contact sales@wirepas.com_
 >
 
-<!-- MarkdownTOC levels="1,2" autolink="true"  -->
-
 - [Overview](#overview)
 - [Documentation](#documentation)
 - [Wirepas binaries](#wirepas-binaries)
 - [Environment](#environment)
 - [How to build an application](#how-to-build-an-application)
 - [License](#license)
-
-<!-- /MarkdownTOC -->
 
 
 ## Overview

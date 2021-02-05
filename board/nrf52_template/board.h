@@ -93,12 +93,6 @@
 #define BOARD_BUTTON_ACTIVE_LOW true
 
 /**
- * @brief This configuration tells that board contains DCDC converter to be
- *        used.
- */
-#define BOARD_SUPPORT_DCDC
-
-/**
  * @brief   Button GPIO internal pull up/down
  *
  * Some buttons don't have any pull-up or pull-down resistor installed on the
@@ -107,6 +101,5 @@
  * Pull-up(down) is enabled when \ref BOARD_BUTTON_ACTIVE_LOW is true(false).
  */
 #define BOARD_BUTTON_INTERNAL_PULL true
-
 
 #endif /* _BOARD_NRF52_TEMPLATE_BOARD_H_ */

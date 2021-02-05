@@ -108,6 +108,7 @@ intptr_t _start(const app_global_functions_t * functions,
     /* Open Wirepas public API (it loads all libs pointer to global variables) */
     API_Open(functions);
 
+
     /* Call any board specific initialization */
     Board_init();
 

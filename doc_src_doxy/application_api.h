@@ -14,7 +14,7 @@ API is split into following areas:
 - @ref board_folder "Board definitions", i.e. pinout mappings
   for various boards
 - @ref bootloader_folder "Bootloader configuration", i.e.
-  early initialization functionality
+  early initialization and harware functionalities.
 - @ref mcu_folder "Low level hardware services (HAL)", i.e.
   low level routines, such as access to peripherals
 - @ref util_folder "Utility and helper services", i.e.

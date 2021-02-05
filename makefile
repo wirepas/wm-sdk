@@ -54,25 +54,34 @@ INI_FILE ?= ./tools/scratchpad_$(MCU)$(MCU_SUB)$(MCU_MEM_VAR).ini
 # But it can be overwritten by any app (it will be generated at first execution if needed)
 KEY_FILE ?= ./custom_bootloader_keys.ini
 
+# Default values used by bootloader updater app. They can overwritten through command line.
+UPDATER_INI_FILE ?= $(INI_FILE)
+UPDATER_KEY_FILE ?= $(KEY_FILE)
+updater_app_specific_area_id?=$(app_specific_area_id)
+updater_app_area_id=$(updater_app_specific_area_id)$(HW_MAGIC)
+
 #
 # Functions
-#
 define BUILD_FULL_SCRATCHPAD
-	@echo "  Creating Full Scratchpad: $(3) + $(4) + $(5) -> $(1) + $(2)"
-	$(SCRAT_GEN)    --bootloader=$(3) \
-	                --genprog=$(1) \
-	                --configfile=$(BOOTLOADER_CONFIG_INI) \
-	                --otapseq=$(otap_seq_number) \
-	                $(2) \
-	                $(patsubst %.hex,%.conf,$(4)):$(firmware_area_id):$(4) \
-	                $(app_major).$(app_minor).$(app_maintenance).$(app_development):$(app_area_id):$(5)
+	@echo "  Creating Full Scratchpad: $(2) + $(3) -> $(1)"
+	$(SCRAT_GEN)    --configfile=$(BOOTLOADER_CONFIG_INI) \
+	                $(1) \
+	                $(patsubst %.hex,%.conf,$(2)):$(firmware_area_id):$(2) \
+	                $(app_major).$(app_minor).$(app_maintenance).$(app_development):$(app_area_id):$(3)
+endef
+
+define BUILD_HEX
+	@echo "  Creating Flashable Hex: $(2) + $(3) + $(4) -> $(1)"
+	$(HEX_GEN)      --configfile=$(BOOTLOADER_CONFIG_INI) \
+					--bootloader=$(2) \
+	                $(1) \
+	                $(patsubst %.hex,%.conf,$(3)):$(firmware_area_id):$(3) \
+	                $(app_major).$(app_minor).$(app_maintenance).$(app_development):$(app_area_id):$(4)
 endef
 
 define BUILD_APP_SCRATCHPAD
 	@echo "  Creating App Scratchpad: $(2) -> $(1)"
 	$(SCRAT_GEN)    --configfile=$(BOOTLOADER_CONFIG_INI) \
-	                --otapseq=$(otap_seq_number) \
-	                --set=APP_AREA_ID=$(app_area_id) \
 	                $(1) \
 	                $(app_major).$(app_minor).$(app_maintenance).$(app_development):$(app_area_id):$(2)
 endef
@@ -80,7 +89,6 @@ endef
 define BUILD_STACK_SCRATCHPAD
 	@echo "  Creating Stack Scratchpad: $(2) -> $(1)"
 	$(SCRAT_GEN)    --configfile=$(BOOTLOADER_CONFIG_INI) \
-	                --otapseq=$(otap_seq_number) \
 	                $(1) \
 	                $(patsubst %.hex,%.conf,$(2)):$(firmware_area_id):$(2)
 endef
@@ -89,22 +97,16 @@ endef
 define BUILD_BOOTLOADER_TEST_APP
 	@echo "  Creating test application for bootloader: $(2) + $(3) + $(4) -> $(1)"
 	$(eval output_file:=$(BUILDPREFIX_TEST_BOOTLOADER)temp_file.hex)
-	$(SCRAT_GEN)    --bootloader=$(2) \
-	                --genprog=$(output_file) \
-	                --configfile=$(3) \
-	                --otapseq=$(otap_seq_number) \
-	                $(BUILDPREFIX_TEST_BOOTLOADER)otapfile.otap \
+	$(HEX_GEN)      --configfile=$(3) \
+					--bootloader=$(2) \
+	                $(1) \
 	                1.0.0.0:$(firmware_area_id):$(4)
-
-	@$(RM) $(output_file)
-	@$(RM) $(BUILDPREFIX_TEST_BOOTLOADER)otapfile.otap
-	@$(MV) $(BUILDPREFIX_TEST_BOOTLOADER)temp_file_without_scratchpad.hex $(1)
 endef
 
 .PHONY: all app_only otap
 all: $(TARGETS)
 
-app_only: $(APP_HEX)
+app_only: $(APP_HEX) $(APP_SCRATCHPAD_BIN)
 
 otap: $(FULL_SCRATCHPAD_BIN) $(APP_SCRATCHPAD_BIN) $(STACK_SCRATCHPAD_BIN)
 
@@ -144,9 +146,12 @@ $(STACK_HEX): initial_setup need_board
 	@	# Call app makefile to get the hex file of stack
 	+$(MAKE) -f makefile_stack.mk
 
+# This rule override APP_HEX rule when building the bootloader updater
+$(BOOTLOADER_UPDATER_HEX):: $(BOOTLOADER_UPDATER_DATA_BIN)
+
 # Add $(APP_HEX) to PHONY to always call app makefile
 .PHONY: $(APP_HEX)
-$(APP_HEX): initial_setup $(BUILDPREFIX_APP) need_board
+$(APP_HEX):: initial_setup $(BUILDPREFIX_APP) need_board
 	@	# Call app makefile to get the hex file of app
 	+$(MAKE) -f makefile_app.mk
 
@@ -167,18 +172,29 @@ $(STACK_SCRATCHPAD_BIN): initial_setup $(FIMWARE_HEX) $(BOOTLOADER_HEX) $(BUILDP
 $(APP_SCRATCHPAD_BIN): initial_setup $(APP_HEX) $(BOOTLOADER_CONFIG_INI)
 	$(call BUILD_APP_SCRATCHPAD,$(APP_SCRATCHPAD_BIN),$(APP_HEX))
 
-$(FULL_SCRATCHPAD_BIN): initial_setup $(BOOTLOADER_HEX) $(STACK_HEX) $(APP_HEX) $(BOOTLOADER_CONFIG_INI)
-	$(call BUILD_FULL_SCRATCHPAD,$(FINAL_IMAGE_HEX),$(FULL_SCRATCHPAD_BIN),$(BOOTLOADER_HEX),$(STACK_HEX),$(APP_HEX))
+$(FULL_SCRATCHPAD_BIN): initial_setup $(STACK_HEX) $(APP_HEX) $(BOOTLOADER_CONFIG_INI)
+	$(call BUILD_FULL_SCRATCHPAD,$(FULL_SCRATCHPAD_BIN),$(STACK_HEX),$(APP_HEX))
 
-$(FINAL_IMAGE_HEX): initial_setup $(FULL_SCRATCHPAD_BIN)
-	@   # Nothing, file already created by the previous rule
+$(FINAL_IMAGE_HEX): initial_setup $(STACK_HEX) $(APP_HEX) $(BOOTLOADER_HEX) $(BOOTLOADER_CONFIG_INI)
+	$(call BUILD_HEX,$(FINAL_IMAGE_HEX),$(BOOTLOADER_HEX),$(STACK_HEX),$(APP_HEX))
 
-$(BOOTLOADER_CONFIG_INI): initial_setup $(INI_FILE)
+$(BOOTLOADER_CONFIG_INI): initial_setup $(INI_FILE) $(BUILDPREFIX_APP)
 	@	# Rule to create the full config file based on multiple ini files and store it per build folder
-	$(BOOT_CONF) -i $(INI_FILE) -i $(KEY_FILE) -o $(BOOTLOADER_CONFIG_INI) -ol APP_AREA_ID:$(app_area_id)
+	$(BOOT_CONF) -i $(INI_FILE) -i $(KEY_FILE) -o $(BOOTLOADER_CONFIG_INI) -ol APP_AREA_ID:$(app_area_id) -ol STACK_AREA_ID:$(firmware_area_id)
 
-bootloader_test: $(BOOTLOADER_HEX) $(BOOTLOADER_TEST_HEX)
-	$(call BUILD_BOOTLOADER_TEST_APP,$(BUILDPREFIX_TEST_BOOTLOADER)final_bootloader_test.hex,$<,$(BOOTLOADER_CONFIG_INI),$(word 2,$^))
+bootloader_test: $(BOOTLOADER_HEX) $(BOOTLOADER_TEST_HEX) $(BOOTLOADER_CONFIG_INI)
+	$(call BUILD_BOOTLOADER_TEST_APP,$(BUILDPREFIX_APP)final_bootloader_test.hex,$<,$(BOOTLOADER_CONFIG_INI),$(word 2,$^))
+
+# Generates a binary containing the bootloader for the bootloader updater app.
+$(BOOTLOADER_UPDATER_DATA_BIN): initial_setup $(BUILDPREFIX_APP) need_board $(BOOTLOADER_HEX)
+	$(BOOT_CONF)   -i $(UPDATER_INI_FILE) -i $(UPDATER_KEY_FILE) \
+				   -o $(BUILDPREFIX_APP)bootloader_updater_config.ini \
+				   -ol APP_AREA_ID:$(updater_app_area_id) \
+				   -ol STACK_AREA_ID:$(firmware_area_id)
+	$(HEX_GEN)     --configfile=$(BUILDPREFIX_APP)bootloader_updater_config.ini \
+				   --bootloader=$(BOOTLOADER_HEX) \
+	               $(BUILDPREFIX_APP)bootloader_with_config.hex
+	$(HEX2ARRAY32) $(BUILDPREFIX_APP)bootloader_with_config.hex $(BUILDPREFIX_APP)bootloader_updater_data.bin
 
 $(BUILDPREFIX_APP):
 	$(MKDIR) $(@D)

@@ -4,6 +4,8 @@ ARCH=armv7e-m
 # This mcu has a bootloader (enough memory)
 HAS_BOOTLOADER=yes
 
+CFLAGS += -DNRF52_PLATFORM
+
 ifeq ($(MCU_SUB),832)
 	# Hardware magic used for this architecture
 	HW_MAGIC=03

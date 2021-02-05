@@ -7,6 +7,11 @@ SRCS += $(WP_LIB_PATH)shared_data/shared_data.c
 INCLUDES += -I$(WP_LIB_PATH)shared_data
 endif
 
+ifeq ($(SHARED_APP_CONFIG), yes)
+SRCS += $(WP_LIB_PATH)shared_appconfig/shared_appconfig.c
+INCLUDES += -I$(WP_LIB_PATH)shared_appconfig
+endif
+
 provisioning_tasks=0
 ifeq ($(PROVISIONING), yes)
 APP_SCHEDULER=yes
@@ -22,16 +27,59 @@ SRCS += $(WP_LIB_PATH)provisioning/proxy.c
 INCLUDES += -I$(WP_LIB_PATH)provisioning
 endif
 
-# TODO move elsewhere util?
-ifeq ($(APP_PRINTING), yes)
-CFLAGS += -DAPP_PRINTING
-HAL_UART=yes
-SRCS += $(WP_LIB_PATH)syscalls.c
-SRCS += $(WP_LIB_PATH)uart_print.c
+control_node_tasks=0
+ifeq ($(CONTROL_NODE), yes)
+APP_SCHEDULER=yes
+control_node_tasks=3
+SRCS += $(WP_LIB_PATH)control_node/control_node.c
+INCLUDES += -I$(WP_LIB_PATH)control_node
+endif
+
+ifeq ($(CONTROL_ROUTER), yes)
+SRCS += $(WP_LIB_PATH)control_node/control_router.c
+INCLUDES += -I$(WP_LIB_PATH)control_node
+endif
+
+ifeq ($(SHARED_NEIGHBORS), yes)
+SRCS += $(WP_LIB_PATH)shared_neighbors/shared_neighbors.c
+INCLUDES += -I$(WP_LIB_PATH)shared_neighbors
+endif
+
+ifeq ($(SHARED_SHUTDOWN), yes)
+SRCS += $(WP_LIB_PATH)shared_shutdown/shared_shutdown.c
+INCLUDES += -I$(WP_LIB_PATH)shared_shutdown
+endif
+
+ifeq ($(SHARED_BEACON), yes)
+SRCS += $(WP_LIB_PATH)shared_beacon/shared_beacon.c
+INCLUDES += -I$(WP_LIB_PATH)shared_beacon
+endif
+
+positioning_tasks=0
+ifeq ($(POSITIONING), yes)
+APP_SCHEDULER=yes
+positioning_tasks=5
+SRCS += $(WP_LIB_PATH)positioning/poslib/poslib_control.c
+SRCS += $(WP_LIB_PATH)positioning/poslib/poslib_measurement.c
+SRCS += $(WP_LIB_PATH)positioning/poslib/poslib_event.c
+SRCS += $(WP_LIB_PATH)positioning/poslib/poslib_decode.c
+SRCS += $(WP_LIB_PATH)positioning/poslib.c
+SRCS += $(WP_LIB_PATH)positioning/poslib/poslib_ble_beacon.c
+INCLUDES += -I$(WP_LIB_PATH)positioning/poslib
+INCLUDES += -I$(WP_LIB_PATH)positioning
+endif
+
+offline_tasks=0
+ifeq ($(SHARED_OFFLINE), yes)
+APP_SCHEDULER=yes
+offline_tasks=1
+SRCS += $(WP_LIB_PATH)shared_offline/shared_offline.c
+INCLUDES += -I$(WP_LIB_PATH)shared_offline
 endif
 
 ifeq ($(APP_SCHEDULER), yes)
-library_tasks=$(provisioning_tasks)
+library_tasks=$(shell expr $(provisioning_tasks) + $(positioning_tasks) + \
+				$(control_node_tasks) + $(offline_tasks) )
 SRCS += $(WP_LIB_PATH)scheduler/app_scheduler.c
 INCLUDES += -I$(WP_LIB_PATH)scheduler -DAPP_SCHEDULER_LIBRARY_TASKS=$(library_tasks)
 endif

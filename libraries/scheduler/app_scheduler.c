@@ -25,6 +25,11 @@
  */
 static uint32_t m_max_time_ms;
 
+/**
+ * Is library initialized
+ */
+static bool m_initialized = false;
+
 /** Measured time on nrf52 (13us) */
 #define EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US    20
 
@@ -397,6 +402,8 @@ void App_Scheduler_init()
     {
         m_tasks[i].func = NULL;
     }
+
+    m_initialized = true;
 }
 
 app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb,
@@ -408,6 +415,11 @@ app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb,
     new_task.func = cb;
     get_timestamp(&new_task.next_ts, delay_ms);
     new_task.exec_time_us = exec_time_us;
+
+    if (!m_initialized)
+    {
+        return APP_SCHEDULER_RES_UNINITIALIZED;
+    }
 
     Sys_enterCriticalSection();
 
@@ -443,6 +455,11 @@ app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb,
 app_scheduler_res_e App_Scheduler_cancelTask(task_cb_f cb)
 {
     app_scheduler_res_e res;
+
+    if (!m_initialized)
+    {
+        return APP_SCHEDULER_RES_UNINITIALIZED;
+    }
 
     Sys_enterCriticalSection();
 

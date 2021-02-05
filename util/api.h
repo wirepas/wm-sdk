@@ -30,7 +30,7 @@
 #include "sleep.h"
 #include "advertiser.h"
 #include "memory_area.h"
-#include "radio_fem.h"
+#include "radio_config.h"
 #include "joining.h"
 
 // Expose common APIs
@@ -50,7 +50,7 @@ extern const app_lib_beacon_rx_t *      lib_beacon_rx   __attribute((weak));
 extern const app_lib_advertiser_t *     lib_advertiser  __attribute((weak));
 extern const app_lib_sleep_t *          lib_sleep       __attribute((weak));
 extern const app_lib_memory_area_t *    lib_memory_area __attribute((weak));
-extern const app_lib_radio_fem_t *      lib_radio_fem   __attribute((weak));
+extern const app_lib_radio_cfg_t *      lib_radio_cfg   __attribute((weak));
 extern const app_lib_joining_t *        lib_joining     __attribute((weak));
 
 

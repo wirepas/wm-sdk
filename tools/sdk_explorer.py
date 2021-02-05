@@ -9,6 +9,7 @@ import os
 import argparse
 
 APP_FOLDER = "source"
+APP_SUBFOLDERS = ["example_apps","reference_apps","unitary_apps"]
 BOARD_FOLDER = "board"
 
 
@@ -43,7 +44,7 @@ class SDKExplorer(object):
         print("No folder %s (is root folder the right one? (-r option)" % folder)
         return None
 
-    def get_all_apps(self, folder=APP_FOLDER):
+    def get_all_apps(self, folder):
         """ Extracts all possible apps from source folder
 
         Args:
@@ -64,7 +65,7 @@ class SDKExplorer(object):
         print("No folder %s (is root folder the right one? (-r option)" % folder)
         return None
 
-    def get_compatible_boards_for_app(self, app_name, folder=APP_FOLDER):
+    def get_compatible_boards_for_app(self, app_name, folder):
         """ Extracts all compatible boards for a given app
 
         Args:
@@ -101,10 +102,12 @@ class SDKExplorer(object):
         """
         matrix = {}
 
-        apps = self.get_all_apps(APP_FOLDER)
-        if apps is not None:
-            for app in apps:
-                matrix[app] = self.get_compatible_boards_for_app(app, APP_FOLDER)
+        for subfolder in APP_SUBFOLDERS:
+            app_folder = os.path.join(APP_FOLDER, subfolder)
+            apps = self.get_all_apps(app_folder)
+            if apps is not None:
+                for app in apps:
+                    matrix[app] = self.get_compatible_boards_for_app(app, app_folder)
 
         return matrix
 

@@ -8,45 +8,16 @@
 #include <string.h>
 
 #include "hal_api.h"
-#include "hfperclk.h"
 #include "board.h"
+#include "board_usart.h"
 #include "api.h"
 
-/* Only one USART, this is easy */
-static volatile serial_rx_callback_f    m_rx_callback;
+#include "em_cmu.h"
+#include "em_gpio.h"
+#include "em_usart.h"
+#include "em_ldma.h"
 
-/* Map some registers constant to the USART selected */
-#if BOARD_USART_ID == 0
-#define BOARD_USART         USART0
-#define LDMA_REQ_SOURCESEL  LDMA_CH_REQSEL_SOURCESEL_USART0
-#define LDMA_REQ_SIGSEL_TX  LDMA_CH_REQSEL_SIGSEL_USART0TXEMPTY
-#define LDMA_REQ_SIGSEL_RX  LDMA_CH_REQSEL_SIGSEL_USART0RXDATAV
-#define BOARD_UART_RX_IRQn  USART0_RX_IRQn
-#define BOARD_UART_TX_IRQn  USART0_TX_IRQn
-#elif BOARD_USART_ID == 1
-#define BOARD_USART         USART1
-#define LDMA_REQ_SOURCESEL  LDMA_CH_REQSEL_SOURCESEL_USART1
-#define LDMA_REQ_SIGSEL_TX  LDMA_CH_REQSEL_SIGSEL_USART1TXEMPTY
-#define LDMA_REQ_SIGSEL_RX  LDMA_CH_REQSEL_SIGSEL_USART1RXDATAV
-#define BOARD_UART_RX_IRQn  USART1_RX_IRQn
-#define BOARD_UART_TX_IRQn  USART1_TX_IRQn
-#elif BOARD_USART_ID == 2
-#define BOARD_USART         USART2
-#define LDMA_REQ_SOURCESEL  LDMA_CH_REQSEL_SOURCESEL_USART2
-#define LDMA_REQ_SIGSEL_TX  LDMA_CH_REQSEL_SIGSEL_USART2TXEMPTY
-#define LDMA_REQ_SIGSEL_RX  LDMA_CH_REQSEL_SIGSEL_USART2RXDATAV
-#define BOARD_UART_RX_IRQn  USART2_RX_IRQn
-#define BOARD_UART_TX_IRQn  USART2_TX_IRQn
-#elif BOARD_USART_ID == 3
-#define BOARD_USART         USART3
-#define LDMA_REQ_SOURCESEL  LDMA_CH_REQSEL_SOURCESEL_USART3
-#define LDMA_REQ_SIGSEL_TX  LDMA_CH_REQSEL_SIGSEL_USART3TXEMPTY
-#define LDMA_REQ_SIGSEL_RX  LDMA_CH_REQSEL_SIGSEL_USART3RXDATAV
-#define BOARD_UART_RX_IRQn  USART3_RX_IRQn
-#define BOARD_UART_TX_IRQn  USART3_TX_IRQn
-#else
-#error USART ID must be 0, 1, 2 or 3
-#endif
+static volatile serial_rx_callback_f    m_rx_callback;
 
 /** DMA channel config. RX must have a higher priority (lower value) */
 #define DMA_RX_CH   1
@@ -68,9 +39,6 @@ static bool                             m_rx_enabled;
 /** Indicate if at least one Tw was started */
 static bool                             m_tx_started;
 
-/** Enable or disable HW flow control */
-static void set_baud(uint32_t baud);
-
 /** Declare the interrupt handlers */
 void __attribute__((__interrupt__))     USART_RX_IRQHandler(void);
 void __attribute__((__interrupt__))     LDMA_IRQHandler(void);
@@ -81,56 +49,20 @@ static void start_dma_rx_lock(void);
 /** Internal function to wait for end of latest Tx transfer */
 static void wait_end_of_tx(void);
 
-/* Is tx_ongoing ? */
+// Is tx_ongoing ?
 static volatile bool m_tx_ongoing;
 
-/* Buffers used for transmission */
+// Buffers used for transmission
 static double_buffer_t m_tx_buffers;
 
-/* Buffer used for reception */
+// Buffer used for reception
 static double_buffer_t m_rx_buffers;
 
-/* DMA descriptor used for reception */
-static DMA_DESCRIPTOR_TypeDef m_rx_dma_descriptor[2];
+// DMA descriptor used for reception
+static LDMA_Descriptor_t m_rx_dma_descriptor[2];
 
-/* DMA descriptor used for transmission */
-static DMA_DESCRIPTOR_TypeDef m_tx_dma_descriptor[3];
-
-/**
- * \brief   Enable the DMA clk
- * \param   enable
- *          True to enable, false otherwise
- * TODO: Should be move to hfperclk with a different file name
- */
-static void enableDMACLK(bool enable)
-{
-    if(enable)
-    {
-        CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_LDMA;
-    }
-    else
-    {
-        CMU->HFBUSCLKEN0 &= ~(CMU_HFBUSCLKEN0_LDMA);
-    }
-}
-
-/**
- * \brief   Enable the GPIO clk
- * \param   enable
- *          True to enable, false otherwise
- * TODO: Should be move to hfperclk with a different file name
- */
-static void enableGPIOCLK(bool enable)
-{
-    if(enable)
-    {
-        CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_GPIO;
-    }
-    else
-    {
-        CMU->HFBUSCLKEN0 &= ~(CMU_HFBUSCLKEN0_GPIO);
-    }
-}
+// DMA descriptor used for transmission
+static LDMA_Descriptor_t m_tx_dma_descriptor[3];
 
 bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 {
@@ -141,53 +73,46 @@ bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     (void)flow_control;
 
     // Enable GPIO clock
-    enableGPIOCLK(true);
+    BOARD_USART_ENABLE_GPIO_CLK;
 
-    //uart_tx_pin
+    // uart_tx_pin
     hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
                       BOARD_USART_TX_PIN,
                       GPIO_MODE_DISABLED);
     hal_gpio_clear(BOARD_USART_GPIO_PORT,
                    BOARD_USART_TX_PIN);
-    //uart_rx_pin
+    // uart_rx_pin
     hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
                       BOARD_USART_RX_PIN,
                       GPIO_MODE_DISABLED);
     hal_gpio_clear(BOARD_USART_GPIO_PORT,
                    BOARD_USART_RX_PIN);
 
-    /* Module variables */
+    // Module variables
     m_rx_callback = NULL;
     m_enabled = 0;
     m_rx_enabled = false;
 
-    /* Disable RX interrupt */
+    // Disable RX interrupt
     Sys_disableAppIrq(BOARD_UART_RX_IRQn);
     Sys_clearFastAppIrq(BOARD_UART_RX_IRQn);
 
     // Must enable clock for configuration period
-    enableHFPERCLK(true);
+    BOARD_USART_ENABLE_USART_CLK;
 
-    /* Set UART output pins */
-    BOARD_USART->ROUTEPEN = USART_ROUTEPEN_RXPEN |
-                            USART_ROUTEPEN_TXPEN;
+    // Set UART baudrate
+    USART_InitAsync_TypeDef USART_init = USART_INITASYNC_DEFAULT;
+    USART_init.enable = usartDisable;
+    USART_init.baudrate = baudrate;
+    USART_init.oversampling = usartOVS4;
+    USART_init.hwFlowControl = usartHwFlowControlNone;
+    USART_InitAsync(BOARD_USART, &USART_init);
 
-    /* Set UART route */
-    BOARD_USART->ROUTELOC0 = BOARD_USART_ROUTELOC_RXLOC |
-                             BOARD_USART_ROUTELOC_TXLOC;
+    // Set UART route
+    BOARD_USART_ROUTE;
 
-    /* Initialize UART for asynch mode with baudrate baud */
-    /* Disable transceiver */
-    BOARD_USART->CMD = 0;
-
-    BOARD_USART->I2SCTRL = 0;
-    /* Disables PRS */
-    BOARD_USART->INPUT = 0;
-    /* Set frame params: 8bit, nopar, 1stop */
-    BOARD_USART->FRAME = USART_FRAME_DATABITS_EIGHT |
-                         USART_FRAME_PARITY_NONE |
-                         USART_FRAME_STOPBITS_ONE;
-    set_baud(baudrate);
+    // Set UART output pins
+    BOARD_USART_PINS;
 
     /* Setup the UART Rx timeout
      * Timeout is in baud time */
@@ -197,17 +122,17 @@ bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
         ((TIMEOUT_INACTIVITY_RX_BAUD_TIME & _USART_TIMECMP1_TCMPVAL_MASK)
             << _USART_TIMECMP1_TCMPVAL_SHIFT);
 
-    /* Disable all interrupt sources */
+    // Disable all interrupt sources
     BOARD_USART->IEN = 0;
-    /* Clear all irq flags */
-    BOARD_USART->IFC = _USART_IFC_MASK;
-    /* Enable transmitter */
+    // Clear all irq flags
+    BOARD_USART_CLR_IRQ_ALL;
+    // Enable transmitter
     BOARD_USART->CMD = USART_CMD_TXEN;
 
     // Configuration done: disable clock
-    enableHFPERCLK(false);
+    BOARD_USART_DISABLE_USART_CLK;
 
-    /* APP IRQ */
+    // APP IRQ
     Sys_clearFastAppIrq(LDMA_IRQn);
     Sys_enableFastAppIrq(LDMA_IRQn,
                          APP_LIB_SYSTEM_IRQ_PRIO_HI,
@@ -229,12 +154,14 @@ void Usart_setEnabled(bool enabled)
     Sys_enterCriticalSection();
     if(enabled)
     {
-        /* Detect if someone is enabling UART but not disabling it ever */
+        // Detect if someone is enabling UART but not disabling it ever
         if(m_enabled == 0)
         {
             // Enable clocks
-            enableHFPERCLK(true);
-            enableDMACLK(true);
+            BOARD_USART_ENABLE_USART_CLK;
+            BOARD_USART_ENABLE_LDMA_CLK;
+            // Enable LDMA block
+            BOARD_USART_LDMA_ENABLE;
 
             // Disable deep sleep
             DS_Disable(DS_SOURCE_USART);
@@ -247,7 +174,7 @@ void Usart_setEnabled(bool enabled)
     }
     else if (m_enabled > 0)
     {
-        /* Usart was enabled at least one time */
+        // Usart was enabled at least one time
         m_enabled--;
 
         if(m_enabled == 0)
@@ -263,9 +190,11 @@ void Usart_setEnabled(bool enabled)
                          BOARD_USART_TX_PIN);
             // Enable deep sleep
             DS_Enable(DS_SOURCE_USART);
+            // Disable LDMA block
+            BOARD_USART_LDMA_DISABLE;
             // Disable clocks
-            enableHFPERCLK(false);
-            enableDMACLK(false);
+            BOARD_USART_DISABLE_LDMA_CLK;
+            BOARD_USART_DISABLE_USART_CLK;
         }
     }
     Sys_exitCriticalSection();
@@ -284,14 +213,14 @@ void Usart_receiverOn(void)
     m_rx_enabled = true;
 
     // Clear RX timeout
-    BOARD_USART->IFC = USART_IFC_TCMP1;
+    BOARD_USART_CLR_IRQ_TCMP1;
 
     // Prepare RX buffer
     DoubleBuffer_init(m_rx_buffers);
 
     start_dma_rx_lock();
 
-    BITBAND_Peripheral(&(BOARD_USART->CMD), _USART_CMD_RXEN_SHIFT, 1);
+    BUS_RegBitWrite(&(BOARD_USART->CMD), _USART_CMD_RXEN_SHIFT, 1);
 
     Sys_exitCriticalSection();
 }
@@ -300,10 +229,21 @@ void Usart_receiverOff(void)
 {
     Sys_enterCriticalSection();
 
+#if defined(EFR32MG22)
     // Stop Current DMA transfer
-    BITBAND_Peripheral(&(LDMA->CHEN), DMA_RX_CH, 0);
-    BITBAND_Peripheral(&(BOARD_USART->CMD), _USART_CMD_RXDIS_SHIFT, 1);
-
+    if (CMU->CLKEN0 & CMU_CLKEN0_LDMA)
+    {
+        BUS_RegBitWrite(&(LDMA->CHEN), DMA_RX_CH, 0);
+    }
+    if (CMU->CLKEN0 & BOARD_USART_CMU_BIT)
+    {
+        BUS_RegBitWrite(&(BOARD_USART->CMD), _USART_CMD_RXDIS_SHIFT, 1);
+    }
+#else
+    // Stop Current DMA transfer
+    BUS_RegBitWrite(&(LDMA->CHEN), DMA_RX_CH, 0);
+    BUS_RegBitWrite(&(BOARD_USART->CMD), _USART_CMD_RXDIS_SHIFT, 1);
+#endif
     m_rx_enabled = false;
     Sys_exitCriticalSection();
 }
@@ -321,72 +261,90 @@ static void start_dma_tx_lock(uint8_t size, void * src)
      *  - Second one is a loop which increment by one the source for each transfer
      *  - Third one is last byte that will generate an event when transfer is done
      */
-    m_tx_dma_descriptor[0].CTRL = LDMA_CH_CTRL_DSTMODE_ABSOLUTE |
-                               LDMA_CH_CTRL_SRCMODE_ABSOLUTE |
-                               LDMA_CH_CTRL_DSTINC_NONE | // Destination is fifo so no increment
-                               LDMA_CH_CTRL_SIZE_BYTE | // Fifo is fill with one byte
-                               LDMA_CH_CTRL_SRCINC_ONE | // Source is RAM so increment by one
-                               LDMA_CH_CTRL_IGNORESREQ | // As TX and RX setup, must be one according to RM in UART chapter
-                               LDMA_CH_CTRL_DECLOOPCNT | // Dec for loop count
-                               LDMA_CH_CTRL_REQMODE_ALL | // Transfer byte by byte as specified in XFERCNT
-                               LDMA_CH_CTRL_BLOCKSIZE_ALL | // Transfer all in arbitration
-                               (_LDMA_CH_CTRL_XFERCNT_MASK & (0 << _LDMA_CH_CTRL_XFERCNT_SHIFT)) |
-                               LDMA_CH_CTRL_STRUCTTYPE_TRANSFER; // Transfer type
 
-    m_tx_dma_descriptor[0].SRC = src;
-    m_tx_dma_descriptor[0].DST = &(BOARD_USART->TXDATA);
-    m_tx_dma_descriptor[0].LINK = (void *) &m_tx_dma_descriptor[1]; // Link to next transfer
+    m_tx_dma_descriptor[0] = (LDMA_Descriptor_t){
+        .xfer = {
+            .structType   = ldmaCtrlStructTypeXfer,
+            .structReq    = 0,
+            .xferCnt      = 0, // Number of bytes to transfer - 1:
+                               // transfer one byte.
+            .byteSwap     = 0,
+            .blockSize    = ldmaCtrlBlockSizeAll,
+            .doneIfs      = 0,
+            .reqMode      = ldmaCtrlReqModeAll,
+            .decLoopCnt   = 1,
+            .ignoreSrec   = 1,
+            .srcInc       = ldmaCtrlSrcIncOne,
+            .size         = ldmaCtrlSizeByte,
+            .dstInc       = ldmaCtrlDstIncNone,
+            .srcAddrMode  = ldmaCtrlSrcAddrModeAbs,
+            .dstAddrMode  = ldmaCtrlDstAddrModeAbs,
+            .srcAddr      = (uint32_t)src,
+            .dstAddr      = (uint32_t)&(BOARD_USART->TXDATA),
+            .linkMode     = ldmaLinkModeAbs,
+            .link         = 0,
+            .linkAddr     = ((uint32_t)&m_tx_dma_descriptor[1])>>2
+        }
+    };
 
-    // Setup the second loop transfer
-    m_tx_dma_descriptor[1].CTRL = LDMA_CH_CTRL_DSTMODE_ABSOLUTE |
-                               LDMA_CH_CTRL_SRCMODE_RELATIVE |
-                               LDMA_CH_CTRL_DSTINC_NONE | // Destination is fifo so no increment
-                               LDMA_CH_CTRL_SIZE_BYTE | // Fifo is fill with one byte
-                               LDMA_CH_CTRL_SRCINC_ONE | // Source is RAM so increment by one
-                               LDMA_CH_CTRL_IGNORESREQ | // As TX and RX setup, must be one according to RM in UART chapter
-                               LDMA_CH_CTRL_DECLOOPCNT | // Dec for loop count
-                               LDMA_CH_CTRL_REQMODE_ALL | // Transfer byte by byte as specified in XFERCNT
-                               LDMA_CH_CTRL_BLOCKSIZE_ALL | // Transfer all in arbitration
-                               (_LDMA_CH_CTRL_XFERCNT_MASK & (0 << _LDMA_CH_CTRL_XFERCNT_SHIFT)) |
-                               LDMA_CH_CTRL_STRUCTTYPE_TRANSFER; // Transfer type
+    m_tx_dma_descriptor[1] = (LDMA_Descriptor_t){
+        .xfer = {
+            .structType   = ldmaCtrlStructTypeXfer,
+            .structReq    = 0,
+            .xferCnt      = 0, // Number of bytes to transfer - 1:
+                               // transfer one byte.
+            .byteSwap     = 0,
+            .blockSize    = ldmaCtrlBlockSizeAll,
+            .doneIfs      = 0,
+            .reqMode      = ldmaCtrlReqModeAll,
+            .decLoopCnt   = 1,
+            .ignoreSrec   = 1,
+            .srcInc       = ldmaCtrlSrcIncOne,
+            .size         = ldmaCtrlSizeByte,
+            .dstInc       = ldmaCtrlDstIncNone,
+            .srcAddrMode  = ldmaCtrlSrcAddrModeRel,
+            .dstAddrMode  = ldmaCtrlDstAddrModeAbs,
+            .srcAddr      = 0, // Relative to previous transfer.
+            .dstAddr      = (uint32_t)&(BOARD_USART->TXDATA),
+            .linkMode     = ldmaLinkModeRel,
+            .link         = 0,
+            .linkAddr     = 0  // Point to ourself.
+        }
+    };
 
-    m_tx_dma_descriptor[1].SRC = 0; // Relative to previous transfer
-    m_tx_dma_descriptor[1].DST = &(BOARD_USART->TXDATA);
-    m_tx_dma_descriptor[1].LINK = (void *) LDMA_CH_LINK_LINKMODE_RELATIVE; // Point to ourself
+    m_tx_dma_descriptor[2] = (LDMA_Descriptor_t){
+        .xfer = {
+            .structType   = ldmaCtrlStructTypeXfer,
+            .structReq    = 0,
+            .xferCnt      = 0, // Number of bytes to transfer - 1:
+                               // transfer one byte.
+            .byteSwap     = 0,
+            .blockSize    = ldmaCtrlBlockSizeAll,
+            .doneIfs      = 1, // Interrupt when done
+            .reqMode      = ldmaCtrlReqModeAll,
+            .decLoopCnt   = 0,
+            .ignoreSrec   = 1,
+            .srcInc       = ldmaCtrlSrcIncOne,
+            .size         = ldmaCtrlSizeByte,
+            .dstInc       = ldmaCtrlDstIncNone,
+            .srcAddrMode  = ldmaCtrlSrcAddrModeRel,
+            .dstAddrMode  = ldmaCtrlDstAddrModeAbs,
+            .srcAddr      = 0, // Relative to previous transfer.
+            .dstAddr      = (uint32_t)&(BOARD_USART->TXDATA),
+            .linkMode     = ldmaLinkModeRel,
+            .link         = 0,
+            .linkAddr     = 0  // Point to ourself
+        }
+    };
 
-    // Setup last transfer that will automatically be executed at end of previous loop as continuous in memory
-    m_tx_dma_descriptor[2].CTRL = LDMA_CH_CTRL_DSTMODE_ABSOLUTE |
-                                   LDMA_CH_CTRL_SRCMODE_RELATIVE |
-                                   LDMA_CH_CTRL_DSTINC_NONE | // Destination is fifo so no increment
-                                   LDMA_CH_CTRL_SIZE_BYTE | // Fifo is fill with one byte
-                                   LDMA_CH_CTRL_SRCINC_ONE | // Source is RAM so increment by one
-                                   LDMA_CH_CTRL_IGNORESREQ | // As TX and RX setup, must be one according to RM in UART chapter
-                                   LDMA_CH_CTRL_REQMODE_ALL | // Transfer byte by byte as specified in XFERCNT
-                                   LDMA_CH_CTRL_DONEIFSEN | // Interrupt at end of transfer
-                                   LDMA_CH_CTRL_BLOCKSIZE_ALL | // Transfer all in arbitration
-                                   (_LDMA_CH_CTRL_XFERCNT_MASK & (0 << _LDMA_CH_CTRL_XFERCNT_SHIFT)) |
-                                   LDMA_CH_CTRL_STRUCTTYPE_TRANSFER; // Transfer type
+    LDMA_TransferCfg_t ldmaTXConfig =
+        (LDMA_TransferCfg_t)LDMA_TRANSFER_CFG_PERIPHERAL_LOOP(
+                                 BOARD_UART_LDMA_TX,
+                                 size - 1);
 
-    m_tx_dma_descriptor[2].SRC = 0;  // Relative to previous transfer
-    m_tx_dma_descriptor[2].DST = &(BOARD_USART->TXDATA);
-    m_tx_dma_descriptor[2].LINK = 0;
-
-    // Loop until last byte, and then execute last transfer that will generate IRQ
-    LDMA->CH[DMA_TX_CH].LOOP = size - 1;
-
-    // Trigger when USART TX is empty
-    LDMA->CH[DMA_TX_CH].REQSEL = LDMA_REQ_SOURCESEL |
-                                 LDMA_REQ_SIGSEL_TX;
-    // Positive sign, no round robin
-    LDMA->CH[DMA_TX_CH].CFG = _LDMA_CH_CFG_RESETVALUE;
-
-    // Enable DONE interrupt for TX channel
-    LDMA->IEN = LDMA->IEN | (1 << DMA_TX_CH);
-
-    LDMA->CH[DMA_TX_CH].LINK = (uint32_t) &m_tx_dma_descriptor;
-
-    // Start transfer by loading initial transfer
-    LDMA->LINKLOAD = 1 << DMA_TX_CH;
+    LDMA_StartTransfer(DMA_TX_CH,
+                       &ldmaTXConfig,
+                       &m_tx_dma_descriptor[0]);
 }
 
 /**
@@ -451,65 +409,75 @@ uint32_t Usart_sendBuffer(const void * buffer, uint32_t length)
 
 static void start_dma_rx_lock(void)
 {
-    // Setup the LDMA descriptor
-    m_rx_dma_descriptor[0].CTRL =  LDMA_CH_CTRL_DSTMODE_ABSOLUTE |
-                                   LDMA_CH_CTRL_SRCMODE_ABSOLUTE |
-                                   LDMA_CH_CTRL_DSTINC_ONE | // Destination is RAM so increment by one
-                                   LDMA_CH_CTRL_SIZE_BYTE | // Fifo is fill with one byte
-                                   LDMA_CH_CTRL_SRCINC_NONE | // Source is FIFO so no increment
-                                   LDMA_CH_CTRL_IGNORESREQ | // As TX and RX setup, must be one according to RM in UART chapter
-                                   LDMA_CH_CTRL_DECLOOPCNT | // Dec for loop count
-                                   LDMA_CH_CTRL_REQMODE_ALL | // Transfer byte by byte as specified in XFERCNT
-                                   LDMA_CH_CTRL_BLOCKSIZE_ALL | // Transfer all in arbitration
-                                   (_LDMA_CH_CTRL_XFERCNT_MASK & (0 << _LDMA_CH_CTRL_XFERCNT_SHIFT)) |
-                                   LDMA_CH_CTRL_STRUCTTYPE_TRANSFER; // Transfer type
+    m_rx_dma_descriptor[0] = (LDMA_Descriptor_t){
+        .xfer = {
+            .structType   = ldmaCtrlStructTypeXfer,
+            .structReq    = 0,
+            .xferCnt      = 0, // Number of bytes to transfer - 1:
+                               // transfer one byte.
+            .byteSwap     = 0,
+            .blockSize    = ldmaCtrlBlockSizeAll,
+            .doneIfs      = 0,
+            .reqMode      = ldmaCtrlReqModeAll,
+            .decLoopCnt   = 1,
+            .ignoreSrec   = 1,
+            .srcInc       = ldmaCtrlSrcIncNone,
+            .size         = ldmaCtrlSizeByte,
+            .dstInc       = ldmaCtrlDstIncOne,
+            .srcAddrMode  = ldmaCtrlSrcAddrModeAbs,
+            .dstAddrMode  = ldmaCtrlDstAddrModeAbs,
+            .srcAddr      = (uint32_t)&(BOARD_USART->RXDATA),
+            .dstAddr      = (uint32_t)DoubleBuffer_getActive(m_rx_buffers),
+            .linkMode     = ldmaLinkModeAbs,
+            .link         = 0,
+            .linkAddr     = ((uint32_t)&m_rx_dma_descriptor[1])>>2
+        }
+    };
 
-    m_rx_dma_descriptor[0].SRC = (void *) &(BOARD_USART->RXDATA);
-    m_rx_dma_descriptor[0].DST = DoubleBuffer_getActive(m_rx_buffers);
-    m_rx_dma_descriptor[0].LINK = (void *) &m_rx_dma_descriptor[1];
+    m_rx_dma_descriptor[1] = (LDMA_Descriptor_t){
+        .xfer = {
+            .structType   = ldmaCtrlStructTypeXfer,
+            .structReq    = 0,
+            .xferCnt      = 0, // Number of bytes to transfer - 1:
+                               // transfer one byte.
+            .byteSwap     = 0,
+            .blockSize    = ldmaCtrlBlockSizeAll,
+            .doneIfs      = 0,
+            .reqMode      = ldmaCtrlReqModeAll,
+            .decLoopCnt   = 1,
+            .ignoreSrec   = 1,
+            .srcInc       = ldmaCtrlSrcIncNone,
+            .size         = ldmaCtrlSizeByte,
+            .dstInc       = ldmaCtrlDstIncOne,
+            .srcAddrMode  = ldmaCtrlSrcAddrModeAbs,
+            .dstAddrMode  = ldmaCtrlDstAddrModeRel,
+            .srcAddr      = (uint32_t)&(BOARD_USART->RXDATA),
+            .dstAddr      = 0,
+            .linkMode     = ldmaLinkModeRel,
+            .link         = 0,
+            .linkAddr     = 0 // Point to ourself
+        }
+    };
 
-    m_rx_dma_descriptor[1].CTRL = LDMA_CH_CTRL_DSTMODE_RELATIVE |
-                                  LDMA_CH_CTRL_SRCMODE_ABSOLUTE |
-                                  LDMA_CH_CTRL_DSTINC_ONE | // Destination is RAM so increment by one
-                                  LDMA_CH_CTRL_SIZE_BYTE | // Fifo is fill with one byte
-                                  LDMA_CH_CTRL_SRCINC_NONE | // Source is FIFO so no increment
-                                  LDMA_CH_CTRL_IGNORESREQ | // As TX and RX setup, must be one according to RM in UART chapter
-                                  LDMA_CH_CTRL_DECLOOPCNT | // Dec for loop count
-                                  LDMA_CH_CTRL_REQMODE_ALL | // Transfer byte by byte as specified in XFERCNT
-                                  LDMA_CH_CTRL_BLOCKSIZE_ALL | // Transfer all in arbitration
-                                  (_LDMA_CH_CTRL_XFERCNT_MASK & (0 << _LDMA_CH_CTRL_XFERCNT_SHIFT)) |
-                                  LDMA_CH_CTRL_STRUCTTYPE_TRANSFER; // Transfer type
+    // Loop as much as we can, it will be stopped by uart timeout
+    // (255 max at the moment).
+    LDMA_TransferCfg_t ldmaRXConfig =
+        (LDMA_TransferCfg_t)LDMA_TRANSFER_CFG_PERIPHERAL_LOOP(
+                                 BOARD_UART_LDMA_RX,
+                                 0xff);
 
-    m_rx_dma_descriptor[1].SRC = (void *) &(BOARD_USART->RXDATA);
-    m_rx_dma_descriptor[1].DST = 0;
-    m_rx_dma_descriptor[1].LINK = (void *) LDMA_CH_LINK_LINKMODE_RELATIVE; // Point to ourself
-
-    // Loop as much as we can, it will be stopped by uart timeout (255 max at the moment)
-    LDMA->CH[DMA_RX_CH].LOOP = 0xff;
-
-    // Trigger when USART0 RX is not empty
-    LDMA->CH[DMA_RX_CH].REQSEL = LDMA_REQ_SOURCESEL |
-                                 LDMA_REQ_SIGSEL_RX;
-    // Positive sign, no round robin
-    LDMA->CH[DMA_RX_CH].CFG = _LDMA_CH_CFG_RESETVALUE;
-
-    // Enable DONE interrupt for RX channel
-    // (Not needed if maximum RX size is lower than 255)
-    LDMA->IEN = LDMA->IEN | (1 << DMA_RX_CH);
-
-    LDMA->CH[DMA_RX_CH].LINK = (uint32_t) &m_rx_dma_descriptor;
-
-    // Start transfer by loading initial transfer
-    LDMA->LINKLOAD = 1 << DMA_RX_CH;
+    LDMA_StartTransfer(DMA_RX_CH,
+                       &ldmaRXConfig,
+                       &m_rx_dma_descriptor[0]);
 }
 
 void Usart_enableReceiver(serial_rx_callback_f rx_callback)
 {
     Sys_enterCriticalSection();
-    /* Set callback */
+    // Set callback
     m_rx_callback = rx_callback;
     // Enable clock
-    enableHFPERCLK(true);
+    BOARD_USART_ENABLE_USART_CLK;
     if(rx_callback)
     {
         // Enable the RX interrupt
@@ -517,7 +485,7 @@ void Usart_enableReceiver(serial_rx_callback_f rx_callback)
                              APP_LIB_SYSTEM_IRQ_PRIO_HI,
                              USART_RX_IRQHandler);
         // Enable the correct interrupt
-        BITBAND_Peripheral(&(BOARD_USART->IEN), _USART_IEN_TCMP1_SHIFT, 1);
+        BUS_RegBitWrite(&(BOARD_USART->IEN), _USART_IEN_TCMP1_SHIFT, 1);
 
         // Set light pull-up resistor
         hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
@@ -530,7 +498,7 @@ void Usart_enableReceiver(serial_rx_callback_f rx_callback)
     else
     {
         Sys_disableAppIrq(BOARD_UART_RX_IRQn);
-        BITBAND_Peripheral(&(BOARD_USART->IEN), _USART_IEN_TCMP1_SHIFT, 0);
+        BUS_RegBitWrite(&(BOARD_USART->IEN), _USART_IEN_TCMP1_SHIFT, 0);
         hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
                           BOARD_USART_RX_PIN,
                           GPIO_MODE_DISABLED);
@@ -539,10 +507,10 @@ void Usart_enableReceiver(serial_rx_callback_f rx_callback)
                        BOARD_USART_RX_PIN);
     }
 
-    /* Clear RX timeout */
-    BOARD_USART->IFC = USART_IFC_TCMP1;
+    // Clear RX timeout
+    BOARD_USART_CLR_IRQ_TCMP1;
     // Disable clock
-    enableHFPERCLK(false);
+    BOARD_USART_DISABLE_USART_CLK;
     Sys_clearFastAppIrq(BOARD_UART_RX_IRQn);
     Sys_exitCriticalSection();
 }
@@ -566,16 +534,16 @@ void Usart_flush(void)
 
 void __attribute__((__interrupt__)) USART_RX_IRQHandler(void)
 {
-    /* RX Timeout */
+    // RX Timeout
     if (BOARD_USART->IF && USART_IF_TCMP1)
     {
-        BOARD_USART->IFC = USART_IFC_TCMP1;
+        BOARD_USART_CLR_IRQ_TCMP1;
         if(m_rx_callback != NULL)
         {
             uint8_t * end_buffer = (uint8_t *) LDMA->CH[DMA_RX_CH].DST;
             uint8_t * old_buffer = DoubleBuffer_getActive(m_rx_buffers);
             // Stop RX DMA
-            BITBAND_Peripheral(&(LDMA->CHEN), DMA_RX_CH, 0);
+            BUS_RegBitWrite(&(LDMA->CHEN), DMA_RX_CH, 0);
 
             // Swipe RX buffers
             DoubleBuffer_swipe(m_rx_buffers);
@@ -594,9 +562,9 @@ void __attribute__((__interrupt__)) LDMA_IRQHandler(void)
     // Check if DMA_TX_CHANNEL is done
     if (LDMA->IF & (1 << DMA_TX_CH))
     {
-        LDMA->IFC = 1 << DMA_TX_CH;
-        BITBAND_Peripheral(&(LDMA->CHEN), 1 << DMA_TX_CH, 0);
-        BITBAND_Peripheral(&(LDMA->CHDONE), 1 << DMA_TX_CH, 0);
+        BOARD_USART_LDMA_CLR_IRQ = 1 << DMA_TX_CH;
+        BUS_RegBitWrite(&(LDMA->CHEN), DMA_TX_CH, 0);
+        BUS_RegBitWrite(&(LDMA->CHDONE), DMA_TX_CH, 0);
         // TX channel done
         m_tx_ongoing = false;
         Usart_setEnabled(false);
@@ -604,22 +572,6 @@ void __attribute__((__interrupt__)) LDMA_IRQHandler(void)
         // Retry to send in case something was queued while transmitting
         start_tx_lock();
     }
-}
-
-static void set_baud(uint32_t baud)
-{
-    volatile uint32_t baud_gen;
-    /* Calculate baudrate: see em_usart.c in emlib for reference */
-    baud_gen = 32 * HFPERCLK_FREQ + (4 * baud) / 2;
-    baud_gen /= (4 * baud);
-    baud_gen -= 32;
-    baud_gen *= 8;
-    baud_gen &= _USART_CLKDIV_DIV_MASK;
-
-    /* Set oversampling bit (8) */
-    BOARD_USART->CTRL  &= ~_USART_CTRL_OVS_MASK;
-    BOARD_USART->CTRL  |= USART_CTRL_OVS_X4;
-    BOARD_USART->CLKDIV = baud_gen;
 }
 
 static void wait_end_of_tx(void)
@@ -638,6 +590,4 @@ static void wait_end_of_tx(void)
           != USART_STATUS_TXC)
     {
     }
-
 }
-

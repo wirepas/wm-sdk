@@ -38,6 +38,7 @@ def build_single_app(root_folder, app_name, board, app_only=False, extra_build_a
                                 cwd=root_folder)
     assert(_process.wait() == 0)
 
+
 def build_all_apps(root_folder, boards_subset=None, apps_subset=None, app_only=False, extra_build_args=None):
     """Build all possible apps for all boards within the defined subsets
 
@@ -51,6 +52,10 @@ def build_all_apps(root_folder, boards_subset=None, apps_subset=None, app_only=F
     sdk_matrix = SDKExplorer(root_folder).get_app_board_matrix()
     for app_name, compatible_boards in sdk_matrix.items():
         if apps_subset is not None and app_name not in apps_subset:
+            continue
+
+        # Bootloader updater cannot be built with app_only (ie no access to bootlader firmware)
+        if app_only and app_name == "bootloader_updater":
             continue
 
         for board in compatible_boards:

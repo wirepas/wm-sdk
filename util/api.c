@@ -23,7 +23,7 @@ const app_lib_beacon_rx_t *     lib_beacon_rx;
 const app_lib_advertiser_t *    lib_advertiser;
 const app_lib_sleep_t *         lib_sleep;
 const app_lib_memory_area_t *   lib_memory_area;
-const app_lib_radio_fem_t *     lib_radio_fem;
+const app_lib_radio_cfg_t *     lib_radio_cfg;
 const app_lib_joining_t *       lib_joining;
 
 bool API_Open(const app_global_functions_t * functions)
@@ -71,8 +71,8 @@ bool API_Open(const app_global_functions_t * functions)
     lib_memory_area = functions->openLibrary(APP_LIB_MEMORY_AREA_NAME,
                                              APP_LIB_MEMORY_AREA_VERSION);
 
-    lib_radio_fem = functions->openLibrary(APP_LIB_RADIO_FEM_NAME,
-                                           APP_LIB_RADIO_FEM_VERSION);
+    lib_radio_cfg = functions->openLibrary(APP_LIB_RADIO_CFG_NAME,
+                                           APP_LIB_RADIO_CFG_VERSION);
 
     lib_joining = functions->openLibrary(APP_LIB_JOINING_NAME,
                                          APP_LIB_JOINING_VERSION);
@@ -91,6 +91,6 @@ bool API_Open(const app_global_functions_t * functions)
             lib_storage &&
             lib_otap &&
             lib_sleep &&
-            lib_radio_fem &&
+            lib_radio_cfg &&
             lib_memory_area);
 }
