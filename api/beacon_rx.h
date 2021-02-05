@@ -55,7 +55,7 @@ typedef struct
     /** Number of bytes of data payload */
     uint8_t     length;
     /** RSSI from packet received */
-    uint8_t     rssi;
+    int8_t      rssi;
     /** Data payload */
     uint8_t     * payload;
 } app_lib_beacon_rx_received_t;
@@ -114,7 +114,7 @@ typedef void
  *          BlueTooth advertisement channel mask to use
  * \returns Result code, \ref APP_RES_OK if successful,
  *          @ref APP_RES_INVALID_STACK_STATE if BLE Scanner is already running,
- *          @ref APP_RES_INVALID_CONFIGURATION if node is not CSMA-CA device,
+ *          @ref APP_RES_INVALID_CONFIGURATION if node is sink,
  *          @ref APP_RES_INVALID_NULL_POINTER if no callback set
  */
 typedef app_res_e

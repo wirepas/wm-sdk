@@ -144,10 +144,6 @@ the board definitions, according to processor architecture:
 <tr><td>EFR32</td><td>@ref board/efr32_template/config.mk
 "board/efr32_template/config.mk"</td><td>Board Configuration</td></tr>
 
-<tr><td>EFR32</td><td>@ref board/efr32_template/bootloader/early_init_efr32.c
-"board/efr32_template/bootloader/early_init_efr32.c"</td>
-<td>Board DCDC configuration</td></tr>
-
 <tr><td>nRF52</td><td>@ref board/nrf52_template/board.h
 "board/nrf52_template/board.h"</td><td>Board definition</td></tr>
 
@@ -157,40 +153,44 @@ the board definitions, according to processor architecture:
 
 This page contains following sections:
 - @subpage DCDC_converter
+- @subpage crystal_32k
+- @subpage platform
 
 @page DCDC_converter DCDC converter configuration
 
 DCDC converter configuration is very important topic, especially if low energy
-consumption is desired. In following table, the configuration is summarized for
-all processor architectures.
+consumption is desired. DCDC converter is automatically enabled from the
+bootloader @ref early_init.h "early_init() function".
 
-<table>
-<tr><th>Processor architecture</th><th>DCDC enabled</th><th>DCDC disabled</th></tr>
+To enable the DCDC converter, board_hw_dcdc must be set to yes in
+@ref board/nrf52_template/config.mk "board config.mk" file.
 
-<tr><td>EFR32</td><td>Leave following code line commented in <code>
-early_init_efr32.c</code>:
-@code
-//#define MCU_NO_DCDC
-@endcode
-</td><td>Uncomment the line in <code>early_init_efr32.c</code>
-@code
-#define MCU_NO_DCDC
-@endcode
-</td></tr>
+@page crystal_32k 32kHz crystal configuration
 
-<tr><td>nRF52</td><td>Uncomment line in <code>board.h</code>:
-@code
-// The board supports DCDC
-#define BOARD_SUPPORT_DCDC
-@endcode
-</td><td>Comment line in <code>board.h</code>:
-@code
-// The board supports DCDC
-//#define BOARD_SUPPORT_DCDC
-@endcode
-</td></tr>
+For most applications the 32kHz crystal must be mounted on the board. But for
+some specific application like lighting, it is possible to omit this crystal on
+board running in Low Latency. Note that the crystal is mandatory for battery
+operated nodes in Low Energy.
 
-</table>
+To inform the stack that the board doesn't have 32kHz crystal,
+board_hw_crystal_32k must be set to no in
+@ref board/nrf52_template/config.mk "board config.mk" file.
+
+@page platform platform specific hardware configuration
+
+Nordic nRF52 platform does not have platform specific hardware descriptions
+that could be configured.
+
+Silabs EFR32 platform requires descriptions of lfxo and hfxo crystals.
+There are three values that are specific to each board design due selected
+crystal model and parasitic capacitance caused by wiring of the crystal
+on the board: board_hw_hfxo_ctune, board_hw_lfxo_ctune and
+board_hw_lfxo_gain. As the parasitic capacitance plays significant role
+in selection of these values, it is recommended to individually
+tune tens of devices to find average value to be used for the
+board. For more information about crystal oscillators
+see Silabs application notes an0016.1 and an0016.2.
+@ref board/efr32_template/config.mk "board config.mk" file.
 
 @page bootloader_folder bootloader/ Bootloader configuration
 
@@ -206,6 +206,8 @@ Following files are present:
 <td>Hooks called early during boot process</td></tr>
 <tr><td>@ref external_flash.h "external_flash.h"</td>
 <td>External flash operation</td></tr>
+<tr><td>@ref bl_hardware.h "bl_hardware.h"</td>
+<td>Board hardware capabilities description</td></tr>
 </table>
 
 @page debug_folder debug/ Debug printing
@@ -241,6 +243,8 @@ Following table, summarize these services and files by:
 <tr><th>Name</th><th>Description</th></tr>
 <tr><td>@ref app_scheduler.h "app_scheduler.h"</td><td>Scheduling of
 multiple application tasks</td></tr>
+<tr><td>@ref control_node.h "control_node.h"</td><td>Control node using
+Directed Advertiser</td></tr>
 <tr><td>@ref shared_data.h "shared_data.h"</td><td>Handling of data
 packets</td></tr>
 <tr><td>@ref uart_print.h "uart_print.h"</td><td>UART print module
@@ -427,6 +431,12 @@ Example applications are following:
 <td>How to use <a href="https://www.bosch-sensortec.com/bst/products/all_products/bme280">Bosch Sensortec BME280 environmental sensor</a> </td>
 <td>Only Ruuvitag</td></tr>
 
+<tr><td>@ref control_node/app.c "control_node"</td>
+<td>Control node example app using Directed Advertiser</td><td></td></tr>
+
+<tr><td>@ref control_router/app.c "control_router"</td>
+<td>Control Router app to be used with control node</td><td></td></tr>
+
 <tr><td>@ref custom_app/app.c "custom_app"</td>
 <td>Simple data transmission and reception</td><td></td></tr>
 
@@ -450,7 +460,7 @@ Example applications are following:
 <tr><td>@ref provisioning_joining_node/app.c "provisioning_joining_node"</td>
 <td>Using provisioning for a joining node</td><td></td></tr>
 
-<tr><td>@ref provisioning_proxy/app.c "provisioning_proxy_node"</td>
+<tr><td>@ref provisioning_proxy/app.c "provisioning_proxy"</td>
 <td>Using provisioning for a proxy node</td><td></td></tr>
 
 <tr><td>@ref pwm_driver/app.c "pwm_driver"</td><td>Create PWM signal</td>

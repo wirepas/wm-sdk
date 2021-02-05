@@ -19,8 +19,12 @@
 #define BOARD_USART_CTS_PIN             7  /* For USE_USART_HW_FLOW_CONTROL */
 #define BOARD_USART_RTS_PIN             31  /* For USE_USART_HW_FLOW_CONTROL */
 
-// The board supports DCDC
-#define BOARD_SUPPORT_DCDC
+// The board supports DCDC (#define BOARD_SUPPORT_DCDC)
+// Since SDK v1.2 (bootloader > v7) this option has been move to
+// board/<board_name>/config.mk. Set board_hw_dcdc to yes to enable DCDC.
+#ifdef BOARD_SUPPORT_DCDC
+#error This option has been moved to board/<board_name>/config.mk
+#endif
 
 
 #endif /* BOARD_UBLOX_B204_H_ */

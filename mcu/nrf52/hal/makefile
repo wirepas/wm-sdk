@@ -41,11 +41,6 @@ ifeq ($(HAL_HW_DELAY), yes)
 SRCS += $(NRF52_HAL_PREFIX)hw_delay.c
 endif
 
-ifeq ($(USE_FEM), yes)
-CFLAGS += -DUSE_FEM
-SRCS += $(NRF52_HAL_PREFIX)fem_driver.c
-endif
-
 SRCS += $(NRF52_HAL_PREFIX)ds.c             \
         $(NRF52_HAL_PREFIX)power.c          \
         $(NRF52_HAL_PREFIX)hal.c

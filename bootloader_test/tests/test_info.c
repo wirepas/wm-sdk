@@ -201,6 +201,34 @@ bool info_flash(const memory_area_services_t * mem_area_services)
     return res;
 }
 
+bool info_hardware(bl_interface_t * interface)
+{
+    bool res = true;
+    const hardware_services_t * hardware_services =
+                                                interface->hardware_services_p;
+
+    START_TEST(INFO, Get hardware capabilities);
+
+    if (interface->version >= 7)
+    {
+        Print_printf("Bootloader hardware capabilities:\n");
+        Print_printf("\t[crystal_32k]: %s\n",
+                hardware_services->getCapabilities()->crystal_32k?"yes":"no");
+        Print_printf("\t[dcdc]: %s\n",
+                hardware_services->getCapabilities()->dcdc?"yes":"no");
+    }
+    else
+    {
+        Print_printf("INFO: bootloader version is %d. Bootloader hardware "
+                     "capabilities introduced in version 7.\n",
+                     interface->version);
+    }
+
+    END_TEST(Get hardware capabilities, res);
+
+    return res;
+}
+
 bool Tests_info(bl_interface_t * interface)
 {
     bool res = true;
@@ -208,6 +236,7 @@ bool Tests_info(bl_interface_t * interface)
     res &= info_flash(interface->memory_area_services_p);
     res &= info_keys(interface->memory_area_services_p);
     res &= info_scratchpad(interface->scratchpad_services_p);
+    res &= info_hardware(interface);
 
     return res;
 }

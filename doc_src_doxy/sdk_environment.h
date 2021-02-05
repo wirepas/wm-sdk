@@ -234,14 +234,14 @@ Some peripherals are used by the Wirepas Mesh stack and cannot be
 used by the application.
 
 <table>
-<tr><th>Peripheral</th><th>Associated interrupt (from file @ref mcu/nrf52/vendor/nrf52.h)</th></tr>
-<tr><td>Power</td><td><code>POWER_CLOCK_IRQn</code></td></tr>
-<tr><td>Radio</td><td><code>RADIO_IRQn</code></td></tr>
-<tr><td>Timer0</td><td><code>TIMER0_IRQn</code></td></tr>
-<tr><td>WDT</td><td><code>WDT_IRQn</code></td></tr>
-<tr><td>Rtc1</td><td><code>RTC1_IRQn</code></td></tr>
-<tr><td>ECB (AES)</td><td><code>ECB_IRQn</code></td></tr>
-<tr><td>PPI (Channels 0, 1 and 2)</td><td><code>None</code></td></tr>
+<tr><th>Peripheral</th><th>Associated interrupt (from file @ref mcu/nrf52/vendor/nrf52.h)</th></tr><th>Comment</th>
+<tr><td>Power</td><td><code>POWER_CLOCK_IRQn</code></td><td></td></tr>
+<tr><td>Radio</td><td><code>RADIO_IRQn</code></td><td></td></tr>
+<tr><td>Timer0</td><td><code>TIMER0_IRQn</code></td><td></td></tr>
+<tr><td>WDT</td><td><code>WDT_IRQn</code></td><td></td></tr>
+<tr><td>Rtc1</td><td><code>RTC1_IRQn</code></td><td></td></tr>
+<tr><td>ECB (AES)</td><td><code>ECB_IRQn</code></td><td></td></tr>
+<tr><td>PPI (Channels 0, 1 and 2) </td><td><code>None</code></td><td>Only if stack version <= 5.0.x.x </td></tr>
 </table>
 
 All the internal interrupt of cortex M are handled by the stack

@@ -1,6 +1,0 @@
-DRIVERS_PREFIX := $(SRCS_PATH)drivers/
-
-INCLUDES += -I$(DRIVERS_PREFIX)
-
-include $(DRIVERS_PREFIX)$(MCU)/makefile
-

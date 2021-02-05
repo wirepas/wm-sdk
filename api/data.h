@@ -29,7 +29,7 @@
 #define APP_LIB_DATA_NAME 0x0003f161 //!< "DATA"
 
 /** \brief Maximum supported library version */
-#define APP_LIB_DATA_VERSION    0x207
+#define APP_LIB_DATA_VERSION    0x208
 
 /**
  * @brief Type of tracking ID for data packets
@@ -120,11 +120,9 @@ typedef enum
      * network (i.e. network consisting of both CSMA-CA and time-slotted mode
      * devices) by CSMA-CA device originated packets transmission only to
      * CSMA-CA devices. The purpose of this method is to avoid a performance
-     * bottleneck by NOT transmitting to time-slotted mode devices. Also, if
-     * used with sink-originated transmissions (by CSMA-CA mode sinks), the
-     * throughput is better when compared to a 'normal' transmission, however
-     * there is some penalty in reliability (due to unacknowledged nature of
-     * transmission). */
+     * bottleneck by NOT transmitting to time-slotted mode devices. Note:
+     * when using this flag, transmission is always sent beyond sink routing
+     * tree */
     APP_LIB_DATA_SEND_FLAG_UNACK_CSMA_CA = 8,
     /** Send packet on network channel only. Note, when this is set, it
      * overrides any hop limit definitions the packet otherwise has. These
@@ -278,6 +276,10 @@ typedef struct
      * (transmission to itself), this is meaningless because packet is not sent
      * via radio at all.*/
     int8_t rssi;
+    /** End-to-end transmission delay, in 1 / 1024 of seconds. This also
+     *  includes the value set in the delay field for @ref
+     *  app_lib_data_send_data_f "lib_data->sendData"*/
+    uint32_t delay_hp;
 } app_lib_data_received_t;
 
 /**

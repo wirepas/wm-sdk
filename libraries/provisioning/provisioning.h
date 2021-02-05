@@ -87,46 +87,6 @@ typedef const app_lib_joining_received_beacon_t *
                             (const app_lib_joining_received_beacon_t * beacons);
 
 /**
- * \brief This structure contains the network parameters sent by the
- *        provisioning proxy to the new node.
- */
-typedef struct
-{
-    /** The network encryption key. */
-    uint8_t enc_key[APP_LIB_SETTINGS_AES_KEY_NUM_BYTES];
-    /** The network authentication key. */
-    uint8_t auth_key[APP_LIB_SETTINGS_AES_KEY_NUM_BYTES];
-    /** The network address. */
-    app_lib_settings_net_addr_t net_addr;
-    /** The network channel. */
-    app_lib_settings_net_channel_t net_chan;
-} provisioning_proxy_net_param_t;
-
-/**
- * \brief   The proxy received START packet callback. This function is called
- *          when the proxy receives a valid START packet from a new node.
- * \note    Local provisioning must be activated for the proxy to be able to
- *          receive provisioning packet in the application. Otherwise they
- *          are directly forwarded by the stack to the Sink.
- * \param   uid
- *          A pointer to the node UID.
- * \param   uid_len
- *          The size in bytes of the UID
- * \param   method
- *          The provisioning method requested by the new node.
- * \param   net_param
- *          If returning true, the callback must fill this structure with the
- *          network parameters that will be sent to the new node.
- * \return  true: Send provisioning data to this node; false: discard the node
- *          request and reply with a NACK.
- */
-typedef bool (*provisioning_proxy_start_cb_f)(
-                                const uint8_t * uid,
-                                uint8_t uid_len,
-                                provisioning_method_e method,
-                                provisioning_proxy_net_param_t * net_param);
-
-/**
  * \brief This structure holds the provisioning parameters.
  */
 typedef struct
@@ -158,10 +118,6 @@ typedef struct
 
 /**
  * \brief This structure holds the joining proxy parameters.
- * \note  Local provisioning is enabled if unsecured or secured method is
- *        allowed. When local provisioning is enabled the provisioning packets
- *        are treated locally by the proxy and are not forwarded anymore to the
- *        Sink / Provisioing server.
  */
 typedef struct
 {
@@ -171,19 +127,6 @@ typedef struct
     uint8_t num_bytes;
     /** Transmission power to use for sending joining beacons, in dBm. */
     int8_t tx_power;
-    /** Is local unsecured provisioning method allowed. */
-    bool is_local_unsec_allowed;
-    /** Is local secured provisioning method allowed. */
-    bool is_local_sec_allowed;
-    /** Key used for provisioning, [16B AK][16B EK] for Secured method. This
-     *  implementation of the provisioning protocol only supports the factory
-     *  key.
-     */
-    const uint8_t * key;
-    /** Length of the key. Secure method expects 32 bytes keys. */
-    uint8_t key_len;
-    /** The received START packet callback. */
-    provisioning_proxy_start_cb_f start_cb;
 } provisioning_proxy_conf_t;
 
 /**
@@ -229,11 +172,6 @@ provisioning_ret_e Provisioning_stop(void);
 
 /**
  * \brief   Initialize the provisioning proxy.
- * \note    If Provisioning Proxy is used, Shared_data MUST BE initialized
- *          in App_Init of the application.
- * \note    If local provisioing is enabled, provisioning request sent by new
- *          node will be treated locally by this library instead of being
- *          forwarded to the provisioning server.
  * \param   conf
  *          Configuration for the provisioning proxy.
  * \return  Result code, \ref PROV_RET_OK if proxy is initialized.
@@ -243,8 +181,7 @@ provisioning_ret_e Provisioning_Proxy_init(provisioning_proxy_conf_t * conf);
 
 /**
  * \brief   Start sending joining beacons. Provisioning packets will be
- *          forwarded to provisioning server or treated locally if local
- *          provisioning is enabled.
+ *          forwarded to provisioning server.
  * \return  Result code, \ref PROV_RET_OK if proxy has started.
  *          See \ref provisioning_ret_e for other return codes.
  */
@@ -252,7 +189,6 @@ provisioning_ret_e Provisioning_Proxy_start(void);
 
 /**
  * \brief   Stops the provisioning proxy.
- * \note    All packet filter callbacks are freed.
  * \return  Result code, \ref PROV_RET_OK if proxy has stopped.
  *          See \ref provisioning_ret_e for other return codes.
  */

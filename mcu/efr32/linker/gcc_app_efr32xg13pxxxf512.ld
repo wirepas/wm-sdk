@@ -39,6 +39,13 @@ SECTIONS
 
     __data_src_start__ = .;
 
+    .rtt (NOLOAD):
+    {
+        /* Force placing _SEGGER_RTT control block here, if RTT tracing is on */
+        *(.rtt_cb_section)
+        . = ALIGN(8);
+    } >RAM
+
     .data :
     {
         __data_start__ = .;

@@ -34,6 +34,12 @@ Application examples can be found @ref source_folder "here".
 /** @example bme280_example/app.c
  */
 
+/** @example control_node/app.c
+ */
+
+/** @example control_router/app.c
+ */
+
 /** @example custom_app/app.c
  */
 
@@ -59,6 +65,9 @@ Application examples can be found @ref source_folder "here".
  */
 
 /** @example provisioning_joining_node/app.c
+ */
+
+/** @example provisioning_proxy/app.c
  */
 
 /** @example pwm_driver/app.c

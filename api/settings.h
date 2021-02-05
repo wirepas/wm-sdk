@@ -604,7 +604,7 @@ typedef app_res_e
  * <table>
  * <tr><th>Value<th>Description
  * <tr><td>20<td>Minimum: 20 seconds
- * <tr><td>600<td>Maximum: 600 seconds (10 minutes), default
+ * <tr><td>600<td>Maximum: 3600 seconds (1 hour)
  * </table>
  *
  * To manually start a neighbor scan, function startScanNbors() in the State

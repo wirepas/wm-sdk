@@ -50,24 +50,30 @@ INCLUDES += -I$(WP_LIB_PATH)
 # Include HAL drivers code
 -include $(HAL_API_PATH)makefile
 
+# Include common MCU sources
+include $(MCU_PATH)common/makefile
+
 #
 # Sources & includes paths
 #
-SRCS += $(APP_SRCS_PATH)app.c $(MCU_COMMON_SRCS_PATH)start.c
-ASM_SRCS += $(MCU_COMMON_SRCS_PATH)entrypoint.s
+SRCS += $(APP_SRCS_PATH)app.c
 INCLUDES += -iquote$(API_PATH) -I$(APP_SRCS_PATH)include -I$(UTIL_PATH)
 
 # Objects list
 OBJS_ = $(SRCS:.c=.o) $(ASM_SRCS:.s=.o)
 OBJS = $(addprefix $(BUILDPREFIX_APP), $(OBJS_))
 
+# Dependent list
+DEPS_ = $(SRCS:.c=.d)
+DEPS = $(addprefix $(BUILDPREFIX_APP), $(DEPS_))
+
+
 # Files to be cleaned
-CLEAN := $(OBJS) $(APP_ELF) $(APP_HEX)
+CLEAN := $(OBJS) $(APP_ELF) $(APP_HEX) $(DEPS)
 
-
-$(BUILDPREFIX_APP)%.o : %.c $(APP_SRCS_PATH)makefile $(APP_SRCS_PATH)config.mk
+$(BUILDPREFIX_APP)%.o : %.c $(APP_SRCS_PATH)makefile $(APP_CONFIG) $(BOARD_CONFIG) $(MCU_CONFIG)
 	$(MKDIR) $(@D)
-	$(CC) $(INCLUDES) $(CFLAGS) -c $< -o $@
+	$(CC) $(INCLUDES) $(CFLAGS) -MMD -MP -c $< -o $@
 
 $(BUILDPREFIX_APP)%.o : %.s
 	$(MKDIR) $(@D)
@@ -88,3 +94,6 @@ all: $(APP_HEX)
 
 clean:
 	$(RM) -rf $(CLEAN)
+
+-include $(DEPS)
+

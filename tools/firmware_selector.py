@@ -69,14 +69,40 @@ class FirmwareConfig(object):
     def __str__(self):
         return "Firmware config is: {}".format(self.__dict__)
 
+    def is_version_greater_or_equal(self, min_version):
+        # Both versions should have same format
+        # List of digit separated by points
+        min_ver_digits = min_version.split('.')
+        cur_ver_digits = self.general['version'].split('.')
+
+        if min_ver_digits.__len__() != cur_ver_digits.__len__():
+            return False
+
+        i=0
+        while i < min_ver_digits.__len__():
+            if int(min_ver_digits[i]) > int(cur_ver_digits[i]):
+                print("Version for this binary is too old: {} < {}"
+                      .format(self.general['version'], min_version))
+                return False
+            i+=1
+
+        return True
+
     def is_compatible(self, target_config):
         # Function to check if config is compatible with provided config
         for key in target_config:
             # In case keys are string, just compare them in case insensitive
             try:
-                # print("{} vs {}".format(self.general[key], target_config[key]))
-                if self.general[key].lower() != target_config[key].lower():
-                    return False
+                if key == "version":
+                    # Version is the minimal version to test
+                    if not self.is_version_greater_or_equal(target_config[key]):
+                        return False
+
+                else:
+                    # print("{} vs {}".format(self.general[key], target_config[key]))
+                    # Other keys must match
+                    if self.general[key].lower() != target_config[key].lower():
+                        return False
             except KeyError:
                 if key == "mcu_sub":
                     # if sub_mcu is not defined it is that the mcu is same for all
@@ -194,8 +220,7 @@ def main():
             , help_width))
 
     parser.add_argument("--firmware_path", "-i",
-        type=dir_path,
-        help = "Folder where the different Wirepas firmware are stored",
+        help = "Colon separated list of folders where the different Wirepas firmware are stored",
         default = "./image")
     parser.add_argument("--output_name",
         help = "Name for the firmware binaries",
@@ -232,6 +257,9 @@ def main():
         help = "Unlocked version (only valid if type is wp_bootloader)",
         type=str2bool,
         default = False)
+    parser.add_argument("--mode", "-mo",
+        help = "Special mode for the binary",
+        default = None)
 
     try:
         args = parser.parse_args()
@@ -266,19 +294,22 @@ def main():
             target_config['mac_profile'] = args.mac_profile
         if args.mac_profileid not in (None, ''):
             target_config['mac_profileid'] = args.mac_profileid
+        if args.mode not in (None, ''):
+            target_config['mode'] = args.mode
 
         if args.firmware_type == "wp_bootloader":
             # Set it as a string instead of bool to ease the following check
             target_config['unlocked'] = str(args.unlocked)
 
         # Get all the binaries available
-        conf_files = [f for f in listdir(args.firmware_path) if
-                      isfile(join(args.firmware_path, f)) and f.endswith('.conf')]
+        conf_files = []
+        for p in args.firmware_path.split(':'):
+            conf_files += [join(p, f) for f in listdir(p) if
+                           isfile(join(p, f)) and f.endswith('.conf')]
 
         # Check all available binaries with the target config
         possible_firmwares = []
-        for f in conf_files:
-            conf = os.path.join(args.firmware_path, f)
+        for conf in conf_files:
             config = FirmwareConfig.from_file(conf)
 
             if config is None:
@@ -295,7 +326,7 @@ def main():
         # Check result of the check
         if len(possible_firmwares) == 1:
             conf_file = possible_firmwares[0][0]
-            print("Firmware found with name: {}".format(conf_file))
+            print("Firmware for {} found with name: {}".format(args.firmware_type, conf_file))
 
             binary_file = os.path.splitext(conf_file)[0] + firmware_suffix
             if not os.path.isfile(binary_file):
