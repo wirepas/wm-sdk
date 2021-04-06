@@ -1,0 +1,28 @@
+name: Commit version to master
+on:
+  push:
+    branches: [ master ]
+ 
+jobs:
+  date:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the branch
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: save current date
+        run: |
+          # Add date to file
+          date > version.txt
+          # Add the sha1 of change that triggered this workflow
+          echo $GITHUB_SHA >> version.txt
+      - name: setup git config
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "<>"
+      - name: commit
+        run: |
+          # Stage the file, commit and push
+          git add version.txt
+          git commit -m "Update version.txt to keep track of version when SDK is downloaded (without git)"
+          git push origin master
