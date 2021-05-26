@@ -3,6 +3,7 @@ var data_8h =
     [ "app_lib_data_received_t", "d2/dbd/data_8h.html#d7/df3/structapp__lib__data__received__t", [
       [ "bytes", "d2/dbd/data_8h.html#acc7ee0a7ec28292d2c1be47c4a23f78d", null ],
       [ "delay", "d2/dbd/data_8h.html#a458421a43d4f6dc515faf427bf579d00", null ],
+      [ "delay_hp", "d2/dbd/data_8h.html#a0f8aed67bf2e6c76349d586acea37d29", null ],
       [ "dest_address", "d2/dbd/data_8h.html#abe388560a25c7690c48b6f3e20a32278", null ],
       [ "dest_endpoint", "d2/dbd/data_8h.html#a0992896b3999455a300e8ba25c368ae8", null ],
       [ "hops", "d2/dbd/data_8h.html#a2719bad26c6e7de2bc08439cea7111ce", null ],
@@ -49,7 +50,9 @@ var data_8h =
       [ "setDataSentCb", "d2/dbd/data_8h.html#a9c1c70812e5a7dabd812d7aac97d63b7", null ],
       [ "setMaxMsgQueuingTime", "d2/dbd/data_8h.html#a9647003d430c89c1588937c8fa103273", null ],
       [ "setNewAppConfigCb", "d2/dbd/data_8h.html#af852205932b8d703c666eff4e45a0601", null ],
-      [ "writeAppConfig", "d2/dbd/data_8h.html#ab4b6ec7182321ddc431a90098bb4b116", null ]
+      [ "writeAppConfig", "d2/dbd/data_8h.html#ab4b6ec7182321ddc431a90098bb4b116", null ],
+      [ "writeAppConfigData", "d2/dbd/data_8h.html#a58451e4c8ea3292aea678073111b22ed", null ],
+      [ "writeDiagnosticInterval", "d2/dbd/data_8h.html#a4610bb19decd1d72931d0bec73571986", null ]
     ] ],
     [ "app_lib_data_allow_reception_f", "d2/dbd/data_8h.html#abb2289fea975f61fe189f4310578c0df", null ],
     [ "app_lib_data_data_received_cb_f", "d2/dbd/data_8h.html#a7d8adb4ccf27eed17ff4b39ef26c6ab7", null ],
@@ -68,7 +71,9 @@ var data_8h =
     [ "app_lib_data_set_max_msg_queuing_time_f", "d2/dbd/data_8h.html#a3c836eac2cb4cfc2df204f3c5dd51e81", null ],
     [ "app_lib_data_set_new_app_config_cb_f", "d2/dbd/data_8h.html#abcc8bb343266f3fc98d25590ed9a66a6", null ],
     [ "app_lib_data_tracking_id_t", "d2/dbd/data_8h.html#a3a8535cade8b081cfee20f0f4b9b0e65", null ],
+    [ "app_lib_data_write_app_config_data_f", "d2/dbd/data_8h.html#a68d651aed3da98281a9e46f4145b4848", null ],
     [ "app_lib_data_write_app_config_f", "d2/dbd/data_8h.html#a9bf5c1ad44fb5c03ed5ed2625371e5f9", null ],
+    [ "app_lib_data_write_diagnostic_interval_f", "d2/dbd/data_8h.html#ab1f635574fae483de32201368ec6b6d0", null ],
     [ "app_lib_data_app_config_res_e", "d2/dbd/data_8h.html#af4e3fdf65e16c2dc9ae1aa415d541bb5", [
       [ "APP_LIB_DATA_APP_CONFIG_RES_SUCCESS", "d2/dbd/data_8h.html#af4e3fdf65e16c2dc9ae1aa415d541bb5a3237bc91d2d3122da0b4f8323e8a8993", null ],
       [ "APP_LIB_DATA_APP_CONFIG_RES_INVALID_ROLE", "d2/dbd/data_8h.html#af4e3fdf65e16c2dc9ae1aa415d541bb5aafb56658f9fc3bb9be090aff91b10188", null ],

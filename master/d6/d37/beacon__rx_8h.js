@@ -3,7 +3,7 @@ var beacon__rx_8h =
     [ "app_lib_beacon_rx_received_t", "d6/d37/beacon__rx_8h.html#d3/d1f/structapp__lib__beacon__rx__received__t", [
       [ "length", "d6/d37/beacon__rx_8h.html#ab2b3adeb2a67e656ff030b56727fd0ac", null ],
       [ "payload", "d6/d37/beacon__rx_8h.html#aa5cbdad2c57e9b3f949e1a4d96382b66", null ],
-      [ "rssi", "d6/d37/beacon__rx_8h.html#afb67d818cd76cce8057affabcb1979a6", null ],
+      [ "rssi", "d6/d37/beacon__rx_8h.html#a3b962e67ba74725bd60ca3c29f785abe", null ],
       [ "type", "d6/d37/beacon__rx_8h.html#a1d127017fb298b889f4ba24752d08b8e", null ]
     ] ],
     [ "app_lib_beacon_rx_t", "d6/d37/beacon__rx_8h.html#da/dd5/structapp__lib__beacon__rx__t", [

@@ -8,7 +8,6 @@ var files =
     [ "libraries", "dir_bc0718b08fb2015b8e59c47b2805f60c.html", "dir_bc0718b08fb2015b8e59c47b2805f60c" ],
     [ "mcu", "dir_4cee3ed2fe28b98d73407141cfd215dc.html", "dir_4cee3ed2fe28b98d73407141cfd215dc" ],
     [ "util", "dir_23ec12649285f9fabf3a6b7380226c28.html", "dir_23ec12649285f9fabf3a6b7380226c28" ],
-    [ "v5_0_updater", "dir_8c017d1b11724b6fe785bde7f9b9c84b.html", "dir_8c017d1b11724b6fe785bde7f9b9c84b" ],
     [ "config.mk", "d6/d6f/config_8mk.html", null ],
     [ "makefile_app.mk", "d3/dea/makefile__app_8mk.html", null ],
     [ "makefile_bootloader.mk", "d0/dd0/makefile__bootloader_8mk.html", null ],

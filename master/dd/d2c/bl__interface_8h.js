@@ -42,6 +42,10 @@ var bl__interface_8h =
       [ "status", "dd/d2c/bl__interface_8h.html#ade20423e91627f07e610924cb0081623", null ],
       [ "type", "dd/d2c/bl__interface_8h.html#ad44b615021ed3ccb734fcaf583ef4a03", null ]
     ] ],
+    [ "bl_hardware_capabilities_t", "dd/d2c/bl__interface_8h.html#d9/d0a/structbl__hardware__capabilities__t", [
+      [ "crystal_32k", "dd/d2c/bl__interface_8h.html#aa9221c3278f10b78d3b11ca2ce00dded", null ],
+      [ "dcdc", "dd/d2c/bl__interface_8h.html#aa8b1220e1f623a6b1e4a7aae240017d6", null ]
+    ] ],
     [ "memory_area_services_t", "dd/d2c/bl__interface_8h.html#d3/df8/structmemory__area__services__t", [
       [ "getAreaHeader", "dd/d2c/bl__interface_8h.html#a52acbd1af3182212912a3c8a201ca3c9", null ],
       [ "getAreaInfo", "dd/d2c/bl__interface_8h.html#a3fb4f66814ec5b6cf9f0229ee247327e", null ],
@@ -61,7 +65,11 @@ var bl__interface_8h =
       [ "setBootable", "dd/d2c/bl__interface_8h.html#a568991e7dc3a7b19d97d99b37c4054cf", null ],
       [ "write", "dd/d2c/bl__interface_8h.html#a92c7092dca00a14267567097a06044fa", null ]
     ] ],
+    [ "hardware_services_t", "dd/d2c/bl__interface_8h.html#d2/df4/structhardware__services__t", [
+      [ "getCapabilities", "dd/d2c/bl__interface_8h.html#a49f14c4635dc9b9119bf282836ee37ab", null ]
+    ] ],
     [ "bl_interface_t", "dd/d2c/bl__interface_8h.html#db/d6f/structbl__interface__t", [
+      [ "hardware_services_p", "dd/d2c/bl__interface_8h.html#add76fdce6b9e5d271858db5c0e77d762", null ],
       [ "memory_area_services_p", "dd/d2c/bl__interface_8h.html#a31cf9805894e88c65d6ec0611d8d10e4", null ],
       [ "scratchpad_services_p", "dd/d2c/bl__interface_8h.html#a618c3916d715a1709848abadfb64bd21", null ],
       [ "version", "dd/d2c/bl__interface_8h.html#acd99bb05ca015e7d74448acb1deba7ca", null ]
@@ -126,5 +134,6 @@ var bl__interface_8h =
       [ "BL_SCRAT_WRITE_STATUS_FLASH_ERROR", "dd/d2c/bl__interface_8h.html#a89973f10c4faed0bd6bd5da92853f566ace0b656348cce6c4f9a8ecd7080fb623", null ]
     ] ],
     [ "BL_MEMORY_AREA_MAX_AREAS", "dd/d2c/bl__interface_8h.html#a35b0af8a72e4be9715042ea14c5e8ece", null ],
-    [ "BL_MEMORY_AREA_UNDEFINED", "dd/d2c/bl__interface_8h.html#a935dcebd09fec384e242e1f45b02ac9d", null ]
+    [ "BL_MEMORY_AREA_UNDEFINED", "dd/d2c/bl__interface_8h.html#a935dcebd09fec384e242e1f45b02ac9d", null ],
+    [ "bl_hardware_getCapabilities_f", "dd/d2c/bl__interface_8h.html#abe48ebab96082c5c01ce0138b04ea55e", null ]
 ];

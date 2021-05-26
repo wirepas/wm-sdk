@@ -9,7 +9,6 @@ var promistel__rpi__hat_2board_8h =
     [ "BOARD_SPI_MISO_PIN", "de/de7/promistel__rpi__hat_2board_8h.html#af1c968d46b4d4c41bd41c5b355f89e33", null ],
     [ "BOARD_SPI_MOSI_PIN", "de/de7/promistel__rpi__hat_2board_8h.html#a0622d9cfd7f26d43d48855a1b83ed1d2", null ],
     [ "BOARD_SPI_SCK_PIN", "de/de7/promistel__rpi__hat_2board_8h.html#ad42584f70b63de114f7302fa5308753d", null ],
-    [ "BOARD_SUPPORT_DCDC", "de/de7/promistel__rpi__hat_2board_8h.html#a0fdc2f8cf1af139317a899ae118066f8", null ],
     [ "BOARD_UART_IRQ_PIN", "de/de7/promistel__rpi__hat_2board_8h.html#a86821c228bc6ae6867d9a724553e8ecc", null ],
     [ "BOARD_USART_CTS_PIN", "de/de7/promistel__rpi__hat_2board_8h.html#a73ea4f5228391904dcf748e08f98a172", null ],
     [ "BOARD_USART_RTS_PIN", "de/de7/promistel__rpi__hat_2board_8h.html#a0af72e93971553bc01429840dbcede95", null ],

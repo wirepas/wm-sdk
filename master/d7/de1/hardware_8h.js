@@ -20,9 +20,6 @@ var hardware_8h =
       [ "APP_LIB_HARDWARE_PERIPHERAL_HFXO", "d7/de1/hardware_8h.html#a9ee3f3d9a21aec13283acd93a13ec3f8ad739076b1dc1f8b44c79da7de0f0483f", null ]
     ] ],
     [ "app_lib_hardware_peripheral_e", "d7/de1/hardware_8h.html#ad0a85f67c1b871307b2059391432fa37", [
-      [ "APP_LIB_HARDWARE_PERIPHERAL_ADC", "d7/de1/hardware_8h.html#ad0a85f67c1b871307b2059391432fa37a14269f591fca037cfe5eba479fe2efd6", null ],
-      [ "APP_LIB_HARDWARE_PERIPHERAL_SUPPLY_VOLTAGE", "d7/de1/hardware_8h.html#ad0a85f67c1b871307b2059391432fa37abd05a81b14d9f0ce176334d916a608f6", null ],
-      [ "APP_LIB_HARDWARE_PERIPHERAL_TEMPERATURE", "d7/de1/hardware_8h.html#ad0a85f67c1b871307b2059391432fa37a6083353c8f1646dbaddeed2562b08de9", null ],
       [ "APP_LIB_HARDWARE_PERIPHERAL_RESERVED", "d7/de1/hardware_8h.html#ad0a85f67c1b871307b2059391432fa37ab1689f6061416b3ee0b888258d8da8a9", null ]
     ] ],
     [ "APP_LIB_HARDWARE_NAME", "d7/de1/hardware_8h.html#a9506a47e1a83373f0833ebb5351e0611", null ],
