@@ -4,8 +4,6 @@ const versions = [
 'v1.2.0_beta1',
 'v1.2.0_beta2',
 'test',
-'test',
-'test',
 'latest'
 ];
 
@@ -32,23 +30,27 @@ function populateSelector() {
     // Get current version based on path
     let cur_version = getVersion();
     let version_selector = document.getElementById("selectversion_list");
+    let version_legend = document.getElementById("selectversion_legend");
       
     if (versions.length > 1) {
-        document.getElementById("selectversion_legend").style.display = "block";
-        document.getElementById("selectversion_list").style.display = "block";
-        versions.forEach(version => {
-              let option = document.createElement("OPTION");
-              version_selector.options.add(option);
-              option.text = version;
-              option.value = version;
-              if (version == cur_version) {
-                  option.selected="selected";
-              }
-        });
-                
-        // Set title correctly
-        document.getElementById("projectname").innerText = "Wirepas Mesh SDK " + cur_version;        
+	    if (version_legend != null) {
+            version_legend.style.display = "block";
+        }
+	    if (version_selector != null) {
+            version_selector.style.display = "block";
+            versions.forEach(version => {
+                 let option = document.createElement("OPTION");
+                 version_selector.options.add(option);
+                 option.text = version;
+                 option.value = version;
+                 if (version == cur_version) {
+                     option.selected="selected";
+                 }
+            });
+        }
     }
+    // Set title correctly
+    document.getElementById("projectname").innerText = "Wirepas SDK " + cur_version;
  }
 
  window.onload = populateSelector;
