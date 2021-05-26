@@ -13,6 +13,12 @@
 #elif defined(EFR32FG12)
 #include "efr32fg12/em_device_fg12.h"
 #define GPIO_PORT_MAX 10
+#elif defined(EFR32MG21)
+#include "efr32mg21/Include/em_device.h"
+#define GPIO_PORT_MAX 3
+#elif defined(EFR32MG22)
+#include "efr32mg22/Include/em_device.h"
+#define GPIO_PORT_MAX 3
 #else
 #error "em_device.h: Unknown EFR32 PART"
 #endif

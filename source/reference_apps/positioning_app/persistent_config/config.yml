@@ -1,0 +1,26 @@
+# This is an example file to customize a node running the positioning appliation
+
+node_persistent_settings:
+    address:                      4294967293
+    network_address:              16777214
+    network_channel:              40
+    role:                         2
+
+poslib_persistent_settings:
+    node_mode:                    1
+    node_class:                   248
+    update_period_static_s:       300
+    update_period_dynamic_s:      60
+    update_period_offline_s:      600
+    ble_type:                     1
+    ble_mode:                     0
+    ble_activation_delay_s:       0
+    ble_eddystone_tx_power:       0
+    ble_eddystone_channels:       0
+    ble_eddystone_tx_interval_ms: 100
+    ble_ibeacon_tx_power:         0
+    ble_ibeacon_channels:         0
+    ble_ibeacon_tx_interval_ms:   100
+    motion_enabled:               false
+    motion_threshold_mg:          300
+    motion_duration_ms:           0

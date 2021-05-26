@@ -1,14 +1,22 @@
 # Version of GCC used for Wirepas testing
 GCC_TESTED_VERSIONS := 4.8.4, 7.2.1
 
+# Minimum binaries version required by this SDK version
+MIN_BOOTLOADER_VERSION := 7
+MIN_STACK_VERSION := 5.1.0.0
+
+# SDK itself
+SDK_PATH := .
+INCLUDES := -I$(SDK_PATH)
+
 # General SDK folder structure
-MCU_COMMON_SRCS_PATH := mcu/common/
 API_PATH := api/
 UTIL_PATH := util/
 HAL_API_PATH := mcu/hal_api/
 WP_LIB_PATH := libraries/
 GLOBAL_BUILD := build/
 BOARDS_PATH := board/
+MCU_PATH := mcu/
 
 # General compiler flags (Define it before specific makefile in order to allow app to overwrite it)
 CFLAGS  := -Wall -Werror -Wextra
@@ -54,19 +62,21 @@ endif
 PREFIX := $(arm_toolchain)arm-none-eabi-
 
 # Toolchain programs
-CC        := $(PREFIX)gcc
-AR        := $(PREFIX)ar
-OBJCOPY   := $(PREFIX)objcopy
-RM        := rm
-MV        := mv
-CP        := cp
-MKDIR     := mkdir -p
-SCRAT_GEN := $(python) tools/genscratchpad.py
-HEXTOOL   := $(python) tools/hextool.py
-FMW_SEL   := $(python) tools/firmware_selector.py
-BOOT_CONF := $(python) tools/bootloader_config.py
-WIZARD    := $(python) tools/sdk_wizard.py
-MAKE      := make
+CC          := $(PREFIX)gcc
+AR          := $(PREFIX)ar
+OBJCOPY     := $(PREFIX)objcopy
+RM          := rm
+MV          := mv
+CP          := cp
+MKDIR       := mkdir -p
+SCRAT_GEN   := $(python) tools/genscratchpad.py
+HEX_GEN     := $(python) tools/genhex.py
+HEXTOOL     := $(python) tools/hextool.py
+FMW_SEL     := $(python) tools/firmware_selector.py
+BOOT_CONF   := $(python) tools/bootloader_config.py
+WIZARD      := $(python) tools/sdk_wizard.py
+HEX2ARRAY32 := $(python) tools/hextoarray32.py
+MAKE        := make
 
 # Check the toolchain version with GCC
 GCC_VERSION := $(shell $(CC) -dumpversion)
@@ -92,11 +102,16 @@ AVAILABLE_BOARDS := $(patsubst $(BOARDS_PATH)%/,%,$(sort $(dir $(wildcard $(BOAR
 FIRMWARE_NAME := wpc_stack
 
 
-# Include board specific config
--include board/$(target_board)/config.mk
+# Board config file
+BOARD_CONFIG := board/$(target_board)/config.mk
 
+# Include board specific config
+-include $(BOARD_CONFIG)
+
+MCU_CONFIG := mcu/$(MCU)/config.mk
 # Include mcu specific config
--include mcu/$(MCU)/config.mk
+
+-include $(MCU_CONFIG)
 
 # Folder for Wirepas stack binary image
 IMAGE_PATH := image/
@@ -114,13 +129,17 @@ CFLAGS += -march=$(ARCH)
 INCLUDES += -Imcu/$(MCU) -Imcu/$(MCU)/hal -Imcu/$(MCU)/vendor -Imcu/$(MCU)/cmsis -Iboard/$(target_board)
 
 # Folder where the application sources are located (and config file)
-APP_SRCS_PATH := source/$(app_name)/
+# Can be in different folders, try them one by one
+APP_SRCS_PATH := $(wildcard source/*/$(app_name)/)
 ifeq (,$(wildcard $(APP_SRCS_PATH)))
 $(error App $(app_name) doesn't exist)
 endif
 
+APP_CONFIG = $(APP_SRCS_PATH)config.mk
+
 # Include app specific config
--include $(APP_SRCS_PATH)config.mk
+# It will generate an error if app doesn't have a config.mk
+include $(APP_CONFIG)
 
 # Build prefixes
 BUILDPREFIX := $(GLOBAL_BUILD)$(target_board)/
@@ -132,7 +151,9 @@ BUILDPREFIX_BOOTLOADER := $(BUILDPREFIX_APP)bootloader/
 BUILDPREFIX_TEST_BOOTLOADER := $(BUILDPREFIX_APP)bootloader_test/
 
 BOOTLOADER_HEX := $(BUILDPREFIX_BOOTLOADER)bootloader.hex
-BOOTLOADER_TEST_HEX := $(BUILDPREFIX_TEST_BOOTLOADER)bootloader_test.hex
+BOOTLOADER_TEST_HEX := $(BUILDPREFIX_APP)bootloader_test/bootloader_test.hex
+BOOTLOADER_UPDATER_HEX := $(BUILDPREFIX)bootloader_updater/bootloader_updater.hex
+BOOTLOADER_UPDATER_DATA_BIN := $(BUILDPREFIX)bootloader_updater/bootloader_updater_data.bin
 
 STACK_HEX := $(BUILDPREFIX_STACK)$(FIRMWARE_NAME).hex
 

@@ -1,4 +1,4 @@
-# This definition describes processor architecture. 
+# This definition describes processor architecture.
 # Valid value: nrf52 for nRF52 based boards
 MCU=nrf52
 
@@ -6,12 +6,10 @@ MCU=nrf52
 # following: 832,840
 MCU_SUB=832
 
-# This describes whether module contains @ref radio_fem.h "Radio FEM" module.
-# Optional.  
-# USE_FEM=yes
-
-# This describes the radio profiles to choose (only valid if MCU_SUB=840)
-# Allowed values are 0x0000000D (max power to 4dm), 0x0000000E (max power to 8dbm)
-# See @ref app_lib_system_protocol_profile_e "Radio profile" for full list
-# mac_profileid=0x0000000E
-
+# This describes the hardware capabilities of the board
+# (this is used to customize the hardware service of the bootloader).
+## Is 32kHz crystal mounted on the board? default:yes, possible values:yes, no
+board_hw_crystal_32k=yes
+## Is DCDC to be enabled on the board? default:yes, possible values:yes, no
+## (it replaces BOARD_SUPPORT_DCDC define in board.h)
+board_hw_dcdc=yes

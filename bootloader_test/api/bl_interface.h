@@ -15,6 +15,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stddef.h>
 
 /** \brief  Bootloader interface operations result */
 typedef enum
@@ -203,6 +204,19 @@ typedef struct
     /** true if scratchpad has is own dedicated area */
     bool dedicated;
 } bl_scrat_info_t;
+
+/** \brief  Hardware features that can be installed on a board. */
+typedef struct
+{
+    /** True if 32kHz crystal is present; default:true
+     *  (introduced in booloader v7).
+     */
+    bool crystal_32k;
+    /** True if DCDC converter is enabled; default:true
+     * (introduced in bootloader v7).
+     */
+    bool dcdc;
+} bl_hardware_capabilities_t;
 
 /**
  * \brief  Read bytes from a memory area.
@@ -415,6 +429,12 @@ typedef bl_interface_res_e
 typedef bl_interface_res_e
     (*bl_scrat_setBootable_f)(void);
 
+/**
+ * \brief   Returns board hardware capabilities.
+ * \return  Return a bit field \ref bl_hardware_capabilities_e with
+ *          hardware features installed on the board.
+ */
+typedef const bl_hardware_capabilities_t * (*bl_hardware_getCapabilities_f)(void);
 
 typedef struct
 {
@@ -439,6 +459,11 @@ typedef struct
     bl_scrat_setBootable_f          setBootable;
 } scratchpad_services_t;
 
+typedef struct
+{
+    bl_hardware_getCapabilities_f   getCapabilities;
+} hardware_services_t;
+
 /**
  * \brief   Global interface entry point with a version id
  */
@@ -447,6 +472,7 @@ typedef struct
     uint32_t version;
     const memory_area_services_t * memory_area_services_p;
     const scratchpad_services_t * scratchpad_services_p;
+    const hardware_services_t * hardware_services_p;
 } bl_interface_t;
 
 #endif /* BL_INTERFACE_H_ */

@@ -39,13 +39,17 @@ static const led_gpio_t pin_map[] = BOARD_LED_PIN_LIST;
 static void led_configure(uint8_t led_id)
 {
     led_gpio_t led = pin_map[led_id];
-    if (led.pin > 15 || led.port > GPIOF)
+    if (led.pin > 15 || led.port > GPIO_PORT_MAX)
     {
         return;
     }
 
+#if defined(_SILICON_LABS_32B_SERIES_1)
     /* Enable clocks */
     CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_GPIO;
+#elif !defined (EFR32MG21)
+    CMU->CLKEN0_SET = CMU_CLKEN0_GPIO;
+#endif
 
     /* Set pin mode */
     hal_gpio_set_mode(led.port,
@@ -77,7 +81,7 @@ led_res_e Led_set(uint8_t led_id, bool state)
     }
 
     led_gpio_t led = pin_map[led_id];
-    if (led.pin > 15 || led.port > GPIOF)
+    if (led.pin > 15 || led.port > GPIO_PORT_MAX)
     {
         return LED_RES_INVALID_ID;
     }
@@ -113,7 +117,8 @@ led_res_e Led_toggle(uint8_t led_id)
     }
 
     led_gpio_t led = pin_map[led_id];
-    if (led.pin > 15 || led.port > GPIOF)
+
+    if (led.pin > 15 || led.port > GPIO_PORT_MAX)
     {
         return LED_RES_INVALID_ID;
     }

@@ -39,14 +39,14 @@ static void uicr_erase()
     while(NRF_NVMC->READY == NVMC_READY_READY_Busy || NRF_NVMC->ERASEUICR == 1);
 }
 
-persistent_res_e Mcu_Persistent_read(uint8_t * data, uint16_t len)
+persistent_res_e Mcu_Persistent_read(uint8_t * data, uint16_t offset, uint16_t len)
 {
-    if (len > MAX_CUSTOMER_DATA_AREA)
+    if ((offset + len) > MAX_CUSTOMER_DATA_AREA)
     {
         return PERSISTENT_RES_DATA_AREA_OVERFLOW;
     }
 
-    memcpy(data, (uint8_t *)&NRF_UICR->CUSTOMER[0], len);
+    memcpy(data, (uint8_t *)&NRF_UICR->CUSTOMER[0] + offset, len);
 
     return PERSISTENT_RES_OK;
 }

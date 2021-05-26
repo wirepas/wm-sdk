@@ -92,7 +92,9 @@ static void button_enable_interrupt(uint8_t ext_int,
     set = enable ? (uint32_t)port << shift : 0;
     if (high_reg)
     {
+#if !defined(_SILICON_LABS_32B_SERIES_2_CONFIG_1)
         GPIO->EXTIPSELH = (GPIO->EXTIPSELH & mask) | set;
+#endif
     }
     else
     {
@@ -103,7 +105,9 @@ static void button_enable_interrupt(uint8_t ext_int,
     set = enable ? (uint32_t)(pin & 3) << shift : 0;
     if (high_reg)
     {
+#if !defined(_SILICON_LABS_32B_SERIES_2_CONFIG_1)
         GPIO->EXTIPINSELH = (GPIO->EXTIPINSELH & mask) | set;
+#endif
     }
     else
     {
@@ -118,7 +122,11 @@ static void button_enable_interrupt(uint8_t ext_int,
     GPIO->EXTIFALL = (GPIO->EXTIFALL & mask) | set;
 
     //Clear external interrupt flag
+#if defined(_SILICON_LABS_32B_SERIES_1)
     GPIO->IFC = (uint32_t)1 << shift;
+#else
+    GPIO->IF_CLR = (uint32_t)1 << shift;
+#endif
 
     // Enable or disable external interrupt
     GPIO->IEN = (GPIO->IEN & mask) | set;
@@ -127,7 +135,11 @@ static void button_enable_interrupt(uint8_t ext_int,
 void Button_init(void)
 {
     // Enable clocks
+#if defined(_SILICON_LABS_32B_SERIES_1)
     CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_GPIO;
+#elif !defined (EFR32MG21)
+    CMU->CLKEN0_SET = CMU_CLKEN0_GPIO;
+#endif
 
     // Get current timestamp
     app_lib_time_timestamp_hp_t now = lib_time->getTimestampHp();
@@ -269,7 +281,11 @@ static void button_interrupt_handler(void)
             }
 
             // Clear external interrupt flag
+#if defined(_SILICON_LABS_32B_SERIES_1)
             GPIO->IFC = (uint32_t)1 << m_pin_map[i].ext_int;
+#else
+            GPIO->IF_CLR = (uint32_t)1 << m_pin_map[i].ext_int;
+#endif
         }
     }
 }

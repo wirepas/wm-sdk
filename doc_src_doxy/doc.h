@@ -20,7 +20,7 @@ Main components are following:
 - @subpage bootloader_extension
 - @subpage hardware
 
-@page application Application
+@section application Application
 
 Application firmware includes the application logic. There can be multiple
 applications (i.e. different <I>kind of devices</I>) in the same network. For
@@ -42,7 +42,7 @@ and update a Wirepas Mesh network.
   recommendations for application development.
 
 
-@page sdk_hal Application-specific Hardware Abstraction Layer (HAL)
+@section sdk_hal Application-specific Hardware Abstraction Layer (HAL)
 
 This is commonly various software components for peripheral usage, such as
 sensors/actuators and communication interfaces. Some of those are delivered as
@@ -52,7 +52,7 @@ shared between different _applications.
 For HAL services offered by the SDK, see @ref api_folder "API services by SDK".
 
 
-@page single_mcu_api Wirepas Mesh Single MCU API
+@section single_mcu_api Wirepas Mesh Single MCU API
 
 Wirepas Mesh stack provides Wirepas Mesh Single-MCU API for application to
 use <I>stack services</I> and run tasks on the MCU.
@@ -60,7 +60,7 @@ use <I>stack services</I> and run tasks on the MCU.
 @ref programming_interface "Application API" describes the programming
   interface.
 
-@page sdk_libraries Wirepas Mesh Single MCU libraries wrapper
+@section sdk_libraries Wirepas Mesh Single MCU libraries wrapper
 
 These libraries are wrappers on top of the @ref single_mcu_api "single MCU api".
 Some services offered by the stack are quite low level and these wrapper
@@ -69,7 +69,7 @@ Main example is the app_scheduler abstracting the single periodic work offered
 by stack.
 
 
-@page wirepas_firmware Wirepas Mesh Stack
+@section wirepas_firmware Wirepas Mesh Stack
 Stack includes the Wirepas Mesh communication
 stack and Wirepas scheduler for enabling the application operation in the same
 MCU. Wirepas Mesh HAL includes all hardware abstractions and drivers <I>needed by
@@ -84,7 +84,7 @@ messaging) and has the highest priority. Thus, it is not recommended to
 do processing intensive (time consuming) tasks on the application side.
 Real-time guarantees are not provided to the application.
 
-@page bootloader Wirepas Mesh Bootloader
+@section bootloader Wirepas Mesh Bootloader
 
 Wirepas provides a bootloader binary. Its main purpose is to do the basic
 basic initialization of the hardware but also handle the processing of stored
@@ -93,14 +93,14 @@ Bootloader is in charge of the flash management and contains the flash
 partitioning that is configured through an @ref config_mk_ini_file ".ini file".
 
 
-@page bootloader_extension Custom bootloader extension
+@section bootloader_extension Custom bootloader extension
 
 Bootloader can be extended from the SDK. Main usage is to support an external
 flash.
 How to use it is described in a separated application note that will be
 available soon from here.
 
-@page hardware The physical Hardware
+@section hardware The physical Hardware
 
 This includes all the hardware of the device including the processor core,
 radio for wireless communication and application-specific peripherals.

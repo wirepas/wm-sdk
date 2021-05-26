@@ -33,28 +33,11 @@
 #define BOARD_UART_INT_PORT             GPIOD
 
 // Enadle vcom in silabs kit board
-#define BOARD_USART_VCOM_PIN            5
-
 // NOTE! To enable virtual com port (VCOM): When the target device drives the
 // VCOM_ENABLE (PA5) signal high, a communication line to the Board Controller
-// is enabled. Add the following code snippet to the
-// mcu/efr32xg12/hal/usart.c in function Usart_init starting
-// from Enable vcom comment:
-
-////    /* Enable clocks */
-//    CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_GPIO;
-//
-//    // Enable vcom
-//    hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
-//                      BOARD_USART_VCOM_PIN,
-//                      GPIO_MODE_DISABLED);
-//    hal_gpio_clear(BOARD_USART_GPIO_PORT,
-//                   BOARD_USART_VCOM_PIN);
-//    hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
-//                      BOARD_USART_VCOM_PIN,
-//                      GPIO_MODE_OUT_PP);
-//    hal_gpio_set(BOARD_USART_GPIO_PORT,
-//                 BOARD_USART_VCOM_PIN);
+// is enabled.
+#define BOARD_USART_VCOM_PORT           GPIOA
+#define BOARD_USART_VCOM_PIN            5
 
 // For further information about Silicon Labs Kit board pin configuration see:
 // UG265: EFR32FG12 2400/868 MHz 10 dBm Wireless Starter Kit User's Guide

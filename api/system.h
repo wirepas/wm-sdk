@@ -64,19 +64,25 @@
 typedef enum
 {
     /** Unknown radio (should never happen) */
-    APP_LIB_SYSTEM_HARDWARE_MAGIC_UNKNOWN = 0,
-    /** Nordic Semiconductor nRF51822 (legacy) */
-    APP_LIB_SYSTEM_HARDWARE_MAGIC_NRF51822_SP_2 = 1,
-    /** Silicon Labs EZR32 */
-    APP_LIB_SYSTEM_HARDWARE_MAGIC_EFM32_SP_3 = 2,
-    /** Nordic Semiconductor nRF52832 or nRF52840 */
-    APP_LIB_SYSTEM_HARDWARE_MAGIC_NRF52832_SP_2 = 3,
-    /** Texas Instruments CC2650 (legacy) */
-    APP_LIB_SYSTEM_HARDWARE_MAGIC_CC2650 = 4,
-    /** Silicon Labs EFR32  */
-    APP_LIB_SYSTEM_HARDWARE_MAGIC_EFR32 = 5,
-    /** Mark the last item */
-    APP_LIB_SYSTEM_HARDWARE_MAGIC_LAST = APP_LIB_SYSTEM_HARDWARE_MAGIC_EFR32
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_UNKNOWN       = 0,
+    /** Reserved */
+    APP_LIB_SYSTEM_HARDWARE_RESERVED_1          = 1,
+    /** Reserved */
+    APP_LIB_SYSTEM_HARDWARE_RESERVED_2          = 2,
+    /** Nordic Semiconductor nRF52832 */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_NRF52832      = 3,
+    /** Reserved */
+    APP_LIB_SYSTEM_HARDWARE_RESERVED_4          = 4,
+    /** Silicon Labs EFR32XG12 1024 kB Flash, 128 kB RAM */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_EFR32XG12     = 5,
+    /** Nordic Semiconductor nRF52840 */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_NRF52840      = 6,
+    /** Silicon Labs EFR32XG12 512 kB Flash, 64 kB RAM */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_EFR32XG12_512 = 7,
+    /** Silicon Labs EFR32XG13 512 kB Flash */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_EFR32XG13     = 8,
+    /** Nordic Semiconductor nRF52833 */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_NRF52833      = 9,
 } app_lib_system_hardware_magic_e;
 
 /**
@@ -90,38 +96,29 @@ typedef enum
 typedef enum
 {
     /** Unknown protocol profile (should never happen) */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_UNKNOWN = 0,
-    /** 2.4 GHz protocol for Nordic Semiconductor nRF51 and nRF52 */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_2_4_GHZ_NORDIC = 1,
-    /** 868 MHz for SiLabs EZR32 */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_868_MHZ_SILABS = 2,
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_UNKNOWN             = 0,
+    /** 2.4 GHz with BLE Phy */
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_ISM_24GHZ           = 1,
+    /** 868 MHz */
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_SUB_868_MHZ         = 2,
     /** 915 MHz for SiLabs EZR32 */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_915_MHZ_SILABS = 3,
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_SUB_915_MHZ         = 3,
     /** Reserved for future use */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_4 = 4,
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_4          = 4,
     /** Reserved for future use */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_5 = 5,
-    /** 2.4 GHz protocol for Texas Instruments CC2650 (legacy) */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_2_4_GHZ_TI = 6,
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_SUB_KOREA_917_MHZ   = 5,
     /** Reserved for future use */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_7 = 7,
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_6          = 6,
+    /** Reserved for future use */
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_7          = 7,
     /** 865 MHz for SiLabs EZR32 */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_865_MHZ_SILABS = 8,
-    /** 2.4 GHz profile for Silicon Labs EFR32 */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_2_4_GHz_BLE_SILABS = 9,
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_SUB_INDIA_865_MHZ   = 8,
+    /** Reserved for future use */
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_9          = 9,
     /** 915 MHz for SiLabs EZR32 with Brazil radio band  */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_915_MHz_BRAZIL_SILABS = 10,
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_SUB_BRAZIL_915_MHZ  = 10,
     /** 915 MHz for SiLabs EFR32 with Australia radio band  */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_915_MHz_AUSTRALIA_SILABS = 11,
-    /** 2.4 GHz for Silicon Labs EFR32 with High Power (max 19dbm) */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_2_4_GHz_BLE_SILABS_HP = 12,
-    /** 2.4 GHz for Nordic Semiconductor nRF52840 with 4dbm max power */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_2_4_GHz_BLE_NRF52840 = 13,
-    /** 2.4 GHz for Nordic Semiconductor nRF52840 with 8dbm max power */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_2_4_GHz_BLE_NRF52840_HP = 14,
-     /** Mark the last item */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_LAST =
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_2_4_GHz_BLE_NRF52840_HP
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_SUB_AUS_915_MHZ     = 11
 } app_lib_system_protocol_profile_e;
 
 /**

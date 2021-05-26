@@ -13,12 +13,13 @@
 /**
  * \brief   Enable DCDC converter.
  *
- * @note    This function is only called from low level board initialization
- *          functions. There is no need to call this explicitly if
+ * @note    This function is only called from bootloader early_init
+ *          function. There is no need to call this explicitly if
  *          @ref board_folder "board" has been defined correctly.
  *
- * @note    This function is used only on nRF52 architectures.
+ * @note    This function is also called from board_init on nRF52 architectures
+ *          for legacy purposes.
  */
-extern void Power_enableDCDC() __attribute__((weak));
+void Power_enableDCDC();
 
 #endif /* POWER_H_ */

@@ -19,6 +19,13 @@ BOOTLOADER_ELF := $(BL_BUILDPREFIX)bootloader.elf
 # Include bootloader makefile
 -include bootloader/makefile
 
+# Include board part (for BOARD_HW_xx defines)
+-include board/makefile
+
+# Include HAL drivers code (needed to build power.c (DCDC))
+-include $(HAL_API_PATH)makefile
+INCLUDES += -iquote$(API_PATH) -I$(UTIL_PATH)
+
 OBJS_ = $(SRCS:.c=.o)
 OBJS = $(addprefix $(BL_BUILDPREFIX), $(OBJS_))
 
@@ -30,12 +37,13 @@ $(BOOTLOADER_SRC): FORCE
 	$(MKDIR) $(@D)
 	@$(FMW_SEL)	--firmware_path=$(IMAGE_PATH)\
 				--firmware_type="wp_bootloader"\
-				--version=3\
+				--version=$(MIN_BOOTLOADER_VERSION)\
 				--output_path=$(@D)\
 				--output_name="bootloader"\
 				--unlocked=$(unprotected)\
 				--mcu=$(MCU)\
-				--mcu_sub=$(MCU_SUB)$(MCU_MEM_VAR)
+				--mcu_sub=$(MCU_SUB)\
+				--mcu_mem_var=$(MCU_MEM_VAR)
 
 $(BL_BUILDPREFIX)%.o : %.c
 	$(MKDIR) $(@D)

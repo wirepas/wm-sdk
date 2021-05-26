@@ -594,17 +594,18 @@ typedef app_res_e
 /**
  * @brief  Set the maximum offline scan interval in seconds
  *
- * The maximum offline scan interval determines how often a node scans for neighbors
- * when it has no route to a sink.
+ * The maximum offline scan interval determines how often a node scans for
+ * neighbors when it has no route to a sink.
  * Value is automatically limited to a valid range. The default value,
  * before calling @ref app_lib_settings_set_offline_scan_f
- * "lib_settings->setOfflineScan"() is 600 seconds (10 minutes).
+ * "lib_settings->setOfflineScan"() is 600 seconds (10 minutes) for Low Energy
+ * Mode and 30 seconds for Low Latency Mode.
  *
  * Valid offline scan values:
  * <table>
  * <tr><th>Value<th>Description
  * <tr><td>20<td>Minimum: 20 seconds
- * <tr><td>600<td>Maximum: 600 seconds (10 minutes), default
+ * <tr><td>600<td>Maximum: 3600 seconds (1 hour)
  * </table>
  *
  * To manually start a neighbor scan, function startScanNbors() in the State

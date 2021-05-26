@@ -7,12 +7,12 @@
 SEARCH_DIR(.)
 
 /* Flash is 1024 kB and RAM is 256 kB
- *   - 40 kB of Flash can be used by the app
+ *   - 256 kB of Flash can be used by the app
  *   - 188 kB (minus 8 bytes) of RAM can be used by the app
  */
 MEMORY
 {
-  FLASH (rx)      : ORIGIN = 0x00040000, LENGTH = 40K
+  FLASH (rx)      : ORIGIN = 0x00040000, LENGTH = 256K
   RAM (rwx)       : ORIGIN = 0x20010000, LENGTH = 188K - 8
   INVALID (rwx)   : ORIGIN = 0xFFFFFFFF, LENGTH = 0 /* Sanity check */
 }
@@ -38,6 +38,13 @@ SECTIONS
     } >FLASH
 
     __data_src_start__ = .;
+
+    .rtt (NOLOAD):
+    {
+        /* Force placing _SEGGER_RTT control block here, if RTT tracing is on */
+        *(.rtt_cb_section)
+        . = ALIGN(8);
+    } >RAM
 
     .data :
     {

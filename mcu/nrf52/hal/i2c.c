@@ -26,14 +26,8 @@ void __attribute__((__interrupt__))     I2C_IRQHandler(void);
 #error USE_I2C0 or USE_I2C1 must be defined
 #endif
 
-/**
- * Time taken to transfer one bit on I2C with 50% margin. This value depends
- * on the bus speed.
- * This timeout is necessary because I2C peripheral doesn't generate any errors
- * and hangs when the line is low (disconnected slave, no pull-up one the line).
- * In asynchronous mode, use I2C_status to check if transfer is finished.
- */
-static uint32_t m_i2c_bit_timeout_ns;
+#define HP_TIME_OPPERATION_MARGIN_US 32
+static uint32_t m_i2c_bit_ns;
 
 /** Is I2C module initialized */
 static bool m_initialized = false;
@@ -192,8 +186,8 @@ i2c_res_e I2C_init(i2c_conf_t * conf_p)
         return I2C_RES_INVALID_CONFIG;
     }
 
-    /* Add 50% margin to timeout calculation */
-    m_i2c_bit_timeout_ns = 1500000000 / conf_p->clock;
+    // 50% margin added to cover potential I2C clock frequency deltas
+    m_i2c_bit_ns = 1500000000 / conf_p->clock;
 
     disable_all_interrupts();
 
@@ -322,14 +316,25 @@ i2c_res_e I2C_transfer(i2c_xfer_t * xfer_p, i2c_on_transfer_done_cb_f cb)
         app_lib_time_timestamp_hp_t end;
 
         /* Timeout calculation, (timeout is in us)/
-         * - Start Address R/W bit is 10bits
-         * - For each byte read or written add 1 ack bit so 9bits
+         * - Start + Address + R/W bit + stop is 11 bits
+         * - For each written byte there are 8 bits of data + 1 ack
+         * - For each read opperation there are 10 bits for restart + address + R/W
+         *   and for every byte there are 8 bits + 1 ack  (note that 
+         *   imediate read is covered)
          */
-        uint32_t timeout = ((10 + xfer_p->read_size*9 + xfer_p->write_size*9) *
-                            m_i2c_bit_timeout_ns) / 1000;
+
+        uint16_t cycles = 11 + xfer_p->write_size*9;
+
+        if (xfer_p->read_size > 0)
+        {
+            cycles += xfer_p->read_size*9 + 10;
+        }
+
+        // Note that HP_TIME_OPPERATION_MARGIN_US is added to mitigate the 30uS resolution of the hp timer
+        uint32_t timeout_us = (cycles * m_i2c_bit_ns)/1000 + HP_TIME_OPPERATION_MARGIN_US;
 
         end = lib_time->addUsToHpTimestamp(lib_time->getTimestampHp(),
-                                           timeout);
+                                           timeout_us);
 
         // Active wait until end of transfer or timeout
         while (!m_current_xfer.done &&
