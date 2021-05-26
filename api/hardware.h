@@ -11,15 +11,11 @@
  * peripheral is in use by the application, so that the stack does not use the
  * peripheral at the same time. Also vice versa, hardware library tells
  * application if it is trying to use hardware peripheral used by the stack.
- * The stack needs to know remaining battery voltage or chip temperature to do
- * periodic RF calibrations on some platforms, and that may require the stack to
- * access hardware peripherals that the application also uses.
+ * The stack needs to know chip temperature to do periodic RF calibrations on
+ * some platforms, and that may require the stack to access hardware peripherals
+ * that the application also uses.
  *
- * The application may use a peripheral either intermittently or permanently. If
- * the stack is unable to measure battery voltage periodically, because the
- * application has reserved that particular peripheral permanently, the
- * application must use the \ref app_lib_state_set_energy_f "lib_state->setEnergy"() function in the
- * State library to tell the stack how much energy is left.
+ * The application may use a peripheral either intermittently or permanently.
  *
  * This library also allows the activation of a hardware peripheral. In fact,
  * some peripheral may be needed by the application or the stack with a
@@ -42,7 +38,7 @@
 #define APP_LIB_HARDWARE_NAME 0x014eff15 //!< "HWARE"
 
 /** \brief Maximum supported library version */
-#define APP_LIB_HARDWARE_VERSION 0x201
+#define APP_LIB_HARDWARE_VERSION 0x202
 
 /**
  * @brief Hardware peripherals to reserve.
@@ -55,12 +51,6 @@
  */
 typedef enum
 {
-    /** General purpose ADC peripheral */
-    APP_LIB_HARDWARE_PERIPHERAL_ADC = 0,
-    /** Dedicated supply voltage monitor peripheral */
-    APP_LIB_HARDWARE_PERIPHERAL_SUPPLY_VOLTAGE = 1,
-    /** Dedicated temperature measurement peripheral */
-    APP_LIB_HARDWARE_PERIPHERAL_TEMPERATURE = 2,
     /** Reserved for future use */
     APP_LIB_HARDWARE_PERIPHERAL_RESERVED = 3,
 } app_lib_hardware_peripheral_e;
@@ -83,48 +73,37 @@ typedef enum
 /**
  * @brief   Reserve a hardware peripheral
  *
- * Reserve a hardware peripheral for application use. When a peripheral is in
- * application use, the stack will not touch it. The peripheral parameter,
- * \ref app_lib_hardware_peripheral_e is the hardware peripheral to reserve.
+ * @note This is for stack versions <5.1.0. For 5.1.0 devices, stack does not
+ * reserve any peripherals, therefore @ref APP_RES_OK is returned.
  *
- * If peripheral is not recognized or the stack is currently using the
- * peripheral, \ref APP_RES_RESOURCE_UNAVAILABLE is returned. Otherwise, \ref
- * APP_RES_OK is returned
- * \param   peripheral
+ * @param   peripheral
  *          Hardware peripheral to reserve
- * \return  Result code, \ref APP_RES_OK if successful,
- *          \ref APP_RES_RESOURCE_UNAVAILABLE if the peripheral is currently
- *          in stack use or is not possible to reserve on this platform
+ * @return  Returns @ref APP_RES_OK
  */
 typedef app_res_e
-    (*app_lib_hardware_reserve_peripheral_f)(app_lib_hardware_peripheral_e peripheral);
+    (*app_lib_hardware_reserve_peripheral_f)
+    (app_lib_hardware_peripheral_e peripheral);
 
 /**
  * @brief  Release a reserved hardware peripheral back for stack use.
  *
- * If peripheral is not recognized or it was not reserved, \ref
- * APP_RES_RESOURCE_UNAVAILABLE is returned. Otherwise, \ref APP_RES_OK is
- * returned.
- * \param   peripheral
- *          Hardware peripheral to release
- * \return  Result code, \ref APP_RES_OK if successful,
- *          \ref APP_RES_RESOURCE_UNAVAILABLE if the peripheral
- *          was not reserved for the application previously
+ * @note This is for stack versions <5.1.0. For 5.1.0 devices, stack does not
+ * reserve any peripherals, therefore @ref APP_RES_OK is returned.
+ *
+ * @param   peripheral
+ *          Hardware peripheral to reserve
+ * @return  Returns @ref APP_RES_RESOURCE_OK
  */
 typedef app_res_e
-    (*app_lib_hardware_release_peripheral_f)(app_lib_hardware_peripheral_e peripheral);
+    (*app_lib_hardware_release_peripheral_f)
+    (app_lib_hardware_peripheral_e peripheral);
 
 /**
- * @brief Ask the last read supply voltage value from the stack
+ * @brief Query voltage value
  *
- * The stack periodically measures the supply voltage for its own use. The
- * measurement is done about once every minute. If the application has reserved
- * the peripheral that is used to do supply voltage measurements, the returned
- * value is invalid.
- * \return  Last sampled supply voltage, LSB is millivolts
- * \note    The stack normally samples the supply voltage once every
- *          minute, but reserving the ADC periheral for long periods of
- *          time may cause the sampling to happen less often, or not at all
+ * @note This is for stack versions <5.1.0.
+ *
+ * \return  Return always 0
  *
  * Example: See @ref inventory_app_tag/app.c "inventory_app_tag" example.
  */
@@ -132,19 +111,11 @@ typedef uint16_t
     (*app_lib_hardware_read_supply_voltage_f)(void);
 
 /**
- * \brief   Ask the last read chip temperature from the stack.
+ * @brief   Ask the last read chip temperature from the stack.
  *
- * On some radio architectures, the stack needs to periodically measure chip
- * temperature to do RF calibrations. The measurement is done about once every
- * minute. On architectures where RF calibrations are not done, the returned
- * value is invalid, usually 0. If the application has reserved the peripheral
- * that is used to do chip temperature measurements, the returned value is also
- * invalid.
+ * @note This is for stack versions <5.1.0.
  *
- * \return  Last sampled temperature, LSB is 0.01 degrees C
- *
- * \note This function returns always 0 for nRF52xxx radio profiles but
- * valid value for other profiles.
+ * @return  Return always 0
  */
 typedef int32_t
     (*app_lib_hardware_read_temperature_f)(void);

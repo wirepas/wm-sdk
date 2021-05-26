@@ -27,7 +27,7 @@
 #define APP_LIB_STATE_NAME 0x02f9c165 //!< "STATE"
 
 /** @brief Maximum supported library version */
-#define APP_LIB_STATE_VERSION 0x205
+#define APP_LIB_STATE_VERSION 0x20A
 
 /**
  * @brief   Macro for cost indicating "no route". Used in @ref
@@ -51,6 +51,13 @@
 #define APP_LIB_STATE_LINKREL_UNKNOWN   0
 
 /**
+ * @brief   Macro for using with @ref app_lib_state_set_scan_dur_f
+ * "lib_state->setScanDuration()" to disable custom scan duration and use stack
+ * default scan duration.
+ */
+#define APP_LIB_STATE_DEFAULT_SCAN  0
+
+/**
  * @brief   Neighbor type
  * @note    Most reliable information is always from next hop and members
  *          Other entries might be very old
@@ -67,13 +74,28 @@ typedef enum
 } app_lib_state_nbor_type_e;
 
 /**
+ * @brief   Support type for directed advertiser, i.e. does neighbor support
+ *          sending directed advertiser packets to it
+ */
+typedef enum
+{
+    /** Directed advertiser is supported by neighbor */
+    APP_LIB_STATE_DIRADV_SUPPORTED      = 0,
+    /** Sending not supported */
+    APP_LIB_STATE_DIRADV_NOT_SUPPORTED  = 1,
+    /** Unknown state. Maybe or maybe not supported */
+    APP_LIB_STATE_DIRADV_UNKNOWN        = 2,
+} app_lib_state_diradv_support_e;
+
+/**
  * @brief   Scan neighbor type to specify the scans that trigger the callback
  */
 typedef enum
 {
     /** All scans will trigger the registered callback */
     APP_LIB_STATE_SCAN_NBORS_ALL = 0,
-    /** Only explicitely requested scans from app will trigger the registered callback */
+    /** Only explicitly requested scans from app will trigger the registered
+     *  callback */
     APP_LIB_STATE_SCAN_NBORS_ONLY_REQUESTED = 1,
 } app_lib_state_scan_nbors_type_e;
 
@@ -89,30 +111,41 @@ typedef struct
     /** Link reliability to the neighboring node. Scaled so that 0 = 0 %,
      *  255 = 100 %. Value of @ref APP_LIB_STATE_LINKREL_UNKNOWN tells that link
      *  reliability to this neighbor is unknown. */
-    uint8_t  link_reliability;
-    /** Received signal strength, compensated with transmission power. Larger
-     *  value means better the signal.
-     *  * 0: No signal
-     *  * 1: Signal heard barely
-     *  * >50: Good signal */
-    uint8_t  norm_rssi;
+    uint8_t link_reliability;
+    /** Received signal strength, compensated with transmission power, i.e. this
+     *  value answers the question "what would the RSSI be, if the neighbor
+     *  transmits with its maximum TX power". Larger value means better signal.
+     *  * rssi < receiver sensitivity + 10 dB  : Insufficient signal level
+     *  * receiver sensitivity + 10 dB <= rssi < receiver_sensitivity + 20 dB :
+     *    weak signal level
+     *  * rssi >= receiver sensitivity + 20 dB : Good signal level.
+     *  @note weak signal level is likely to work in environments without
+     *  interference but the probability for connection problems in networks
+     *  having some background interference then increases */
+    int8_t  norm_rssi;
     /** Route cost to the sink via this neighbor. Value of @ref
      * APP_LIB_STATE_INVALID_ROUTE_COST indicates that a neighbor has no route
      * to a sink. Value of @ref APP_LIB_STATE_COST_UNKNOWN states that cost
      * is unknown for this neighbor. */
-    uint8_t  cost;
+    uint8_t cost;
     /** Radio channel used by the neighbor  */
-    uint8_t  channel;
+    uint8_t channel;
     /** Type of the neighbor. @ref app_lib_state_nbor_type_e  */
-    uint8_t  type;
-    /** Power level used for transmission (0-X):
-     *  * 0: Lowest power
-     *  * X: Highest power (depending on the stack profile) */
-    uint8_t  tx_power;
-    /** Received power level (0-X):
-     *  * 0: Lowest power
-     *  * X: Highest power (depending on the stack profile) */
-    uint8_t  rx_power;
+    uint8_t type;
+    /**
+     * Transmission power used when sending to neighbor.
+     * @note Only relevant for @ref app_lib_state_nbor_info_t.type "type"
+     * having value of @ref APP_LIB_STATE_NEIGHBOR_IS_NEXT_HOP or @ref
+     * APP_LIB_STATE_NEIGHBOR_IS_MEMBER */
+    int8_t  tx_power;
+    /**
+     * Transmission power used when neighbor sending to this device
+     * @note Only relevant for @ref app_lib_state_nbor_info_t.type "type"
+     * having value of @ref APP_LIB_STATE_NEIGHBOR_IS_NEXT_HOP or @ref
+     * APP_LIB_STATE_NEIGHBOR_IS_MEMBER */
+    int8_t  rx_power;
+    /** Is directed advertiser supported, @ref app_lib_state_diradv_support_e */
+    uint8_t diradv_support;
 } app_lib_state_nbor_info_t;
 
 /**
@@ -169,12 +202,32 @@ typedef enum
 typedef struct
 {
     app_addr_t  address; //!< Address of the beacon sender
-    int16_t     rssi;    //!< rssi in dBm
-    int8_t      txpower; //!< tx power in dB
+    /**
+     * @brief RSSI in dBm.
+     *
+     * Larger value means better signal.
+     *  * rssi < receiver sensitivity + 10 dB  : Insufficient signal level
+     *  * receiver sensitivity + 10 dB <= rssi < receiver_sensitivity + 20 dB :
+     *    weak signal level
+     *  * rssi >= receiver sensitivity + 20 dB : Good signal level
+     *  @note weak signal level is likely to work in environments without
+     *  interference but the probability for connection problems in networks
+     *  having some background interference then increases */
+    int8_t      rssi;
+    /**
+     * @brief Tx power in dB
+     * This equals maximum transmission power that sender can transmit (which
+     * is used when transmitting beacons)
+     */
+    int8_t      txpower;
     bool        is_sink; //!< Device is sink
     bool        is_ll;   //!< Device is LL
     uint8_t     cost;    //!< Cost of the device. 255==no route
     uint8_t     type;    //!< Type of beacon @ref app_lib_state_nbor_type_e
+    /**
+     * @brief   Sender supports Directed Advertiser sending packets to it
+     */
+    bool        is_da_support;
 } app_lib_state_beacon_rx_t;
 
 /**
@@ -206,6 +259,43 @@ typedef struct
 } app_lib_state_route_info_t;
 
 /**
+ * @brief   Error codes for installation quality, if an error code is active,
+ *          corrective action regarding the installation location is required.
+ */
+typedef enum
+{
+    /** No installation quality errors detected */
+    APP_LIB_STATE_INSTALL_QUALITY_ERROR_NONE    = 0x00,
+    /** Error: Node has no route to sink */
+    APP_LIB_STATE_INSTALL_QUALITY_ERROR_NOROUTE = 0x01,
+    /** Error: Node does not have enough good quality neighbors */
+    APP_LIB_STATE_INSTALL_QUALITY_ERROR_NONBORS = 0x02,
+    /** Error: Node has bad RSSI to next hop neighbor */
+    APP_LIB_STATE_INSTALL_QUALITY_ERROR_BADRSSI = 0x04,
+} install_quality_error_code_e;
+
+/**
+ * @brief   Installation quality information. Contains information about the
+ *          nodes installation location i.e. its quality indicated by a numeric
+ *          value, as well as error codes if something is wrong with the
+ *          location.
+ *
+ *          For more detailed information about the value(s) presented here,
+ *          see application note about installation quality API, document
+ *          reference: AN-XXX
+ */
+typedef struct
+{
+    /** Quality reported as u8. Limits are as follows:
+     *  Quality >= 127      : Good installation
+     *  127 > Quality > 63  : Average installation
+     *  Quality <= 63       : Bad installation */
+    uint8_t quality;
+    /** Error codes, @ref install_quality_error_code_e */
+    uint8_t error_codes;
+} app_lib_state_install_quality_t;
+
+/**
  * @brief    Function type for a neighbor scan completion callback
  */
 typedef void (*app_lib_state_on_scan_nbors_cb_f)(void);
@@ -215,7 +305,8 @@ typedef void (*app_lib_state_on_scan_nbors_cb_f)(void);
  * @param   beacon
  *          Information about received beacon
  */
-typedef void (*app_lib_state_on_beacon_cb_f)(const app_lib_state_beacon_rx_t * beacon);
+typedef void (*app_lib_state_on_beacon_cb_f)
+    (const app_lib_state_beacon_rx_t * beacon);
 
 /**
  * @brief   Start the stack
@@ -252,7 +343,8 @@ typedef app_res_e (*app_lib_state_start_stack_f)(void);
  *
  * @return  Result code, @ref APP_RES_OK if successful
  * @note    Stopping the stack will reboot the system. The system shutdown
- *          callback set with @ref app_lib_system_set_shutdown_cb_f "lib_system->setShutdownCb()"
+ *          callback set with @ref app_lib_system_set_shutdown_cb_f
+ *          "lib_system->setShutdownCb()"
  *          is called just before rebooting. Node configuration may
  *          be done in this callback
  * @note    This function never returns
@@ -333,9 +425,8 @@ typedef app_res_e (*app_lib_state_get_access_cycle_f)(uint16_t * ac_value_p);
  *
  * @endcode
  */
-typedef app_res_e
-    (*app_lib_state_set_on_scan_nbors_with_type_cb_f)(app_lib_state_on_scan_nbors_cb_f cb,
-                                                      app_lib_state_scan_nbors_type_e type);
+typedef app_res_e (*app_lib_state_set_on_scan_nbors_with_type_cb_f)
+    (app_lib_state_on_scan_nbors_cb_f cb, app_lib_state_scan_nbors_type_e type);
 
 /**
  * @brief   Start neighbor scan
@@ -346,7 +437,8 @@ typedef app_res_e
  * app_lib_state_set_on_scan_nbors_with_type_cb_f
  * "lib_state->setOnScanNborsCb" service).
  *
- * @return  Result code, always @ref APP_RES_OK
+ * @return  Result code, always @ref APP_RES_OK unless stack is not running when
+ *          @ref APP_RES_INVALID_STACK_STATE is returned.
  *
  * Example:
  * @code
@@ -395,50 +487,26 @@ typedef app_res_e
  * @param   energy_p
  *          Pointer to store the available energy as a
  *          proportional value from 0 to 255
- * @return  Result code, @ref APP_RES_OK if successful,
- *          @ref APP_RES_INVALID_STACK_STATE if the stack is not running
- *          @ref APP_RES_INVALID_NULL_POINTER if \@ energy_p is NULL
+ * @return  Result code, always @ref APP_RES_NOT_IMPLEMENTED
  *
- * Example:
- * @code
- * uint8_t energy;
- * lib_state->getEnergy(&energy);
- * @endcode
+ * @note This is legacy service used in stack versions <5.1.0.
  */
-typedef app_res_e
-    (*app_lib_state_get_energy_f)(uint8_t * energy_p);
+typedef app_res_e (*app_lib_state_get_energy_f)(uint8_t * energy_p);
 
 /**
  * @brief   Set available energy
- *
- * The stack can use in its route cost calculations the state of energy
- * remaining in each node. The value is currently used in route cost
- * calculations with a granularity of 32 units. In other words, the energy
- * value must change by at least 32 units for it to affect the cost
- * calculations. This attribute is intended to be set by the application
- * periodically, to enable the stack routing layer to use energy parameter in
- * cost and route calculation. The specifics on how the remaining energy is
- * measured is left for the responsibility of the application due to fact that
- * different power sources and measurement circuits may be used depending on
- * the implementation.
- *
  * @param   energy
  *          Available energy as a proportional value from 0 to 255
  *          * 0 corresponds to a state where the node is almost out of energy
  *          * 255 corresponds to a state where maximum amount of energy is
- *            available
- * @return  Result code, @ref APP_RES_OK if successful,
- *          @ref APP_RES_INVALID_STACK_STATE if the stack is not running
+ *            available. Also if there is no means to evaluate remaining energy,
+ *            this value should be used.
+ * @return  Result code, always @ref APP_RES_NOT_IMPLEMENTED
  *
+ * @note This is legacy service used in stack versions <5.1.0.
  *
- * Example:
- * @code
- * uint8_t energy50 = 128;
- * lib_state->setEnergy(energy50);
- * @endcode
  */
-typedef app_res_e
-    (*app_lib_state_set_energy_f)(uint8_t energy);
+typedef app_res_e (*app_lib_state_set_energy_f)(uint8_t energy);
 
 /**
  * @brief   Query the currently set additional penalty for the sink usage
@@ -454,8 +522,7 @@ typedef app_res_e
  * lib_state->getSinkCost(&current_cost);
  * @endcode
  */
-typedef app_res_e
-    (*app_lib_state_get_sink_cost_f)(uint8_t * cost_p);
+typedef app_res_e (*app_lib_state_get_sink_cost_f)(uint8_t * cost_p);
 
 /**
  * @brief   Set additional penalty for the sink usage
@@ -476,8 +543,7 @@ typedef app_res_e
  * lib_state->setSinkCost(8);
  * @endcode
  */
-typedef app_res_e
-    (*app_lib_state_set_sink_cost_f)(const uint8_t cost);
+typedef app_res_e (*app_lib_state_set_sink_cost_f)(const uint8_t cost);
 
 /**
  * @brief   Callback when route is changed
@@ -519,8 +585,9 @@ typedef app_res_e (*app_lib_state_set_route_cb_f)
  * @param   info
  *          Info about packet that is rerouted
  * @return  Amount of hops left. If unmodified, use value info->hops_left.
- * @note    It is not recommended to increase hops left! Either decrease or
- *          leave intact
+ * @note    Either decrease or leave intact the return value. If amount of hops
+ *          left is increased (from originally hop-limited transmission), value
+ *          is discarded.
  *
  * Usage: see documentation on @ref app_lib_state_set_adjust_hops_cb_f
  * "lib_state->setHopsLeftCb()" on how to use this callback.
@@ -585,9 +652,69 @@ typedef uint8_t (*app_lib_state_adjust_hops_cb_f)
  *       lib_state->startStack();
  *   }
  *   @endcode
+ *
+ *  @note This service is going to be deprecated in next feature release of
+ *        Wirepas Mesh, i.e. 5.2.0 and later versions won't have this service
+ *        supported.
  */
 typedef app_res_e (*app_lib_state_set_adjust_hops_cb_f)
     (app_lib_state_adjust_hops_cb_f cb);
+
+/**
+ * @brief   Set scan duration to be used.
+ * @param   duration_us
+ *          Scan duration in microseconds. If @p duration_us is @ref
+ *          APP_LIB_STATE_DEFAULT_SCAN, use default-length value and perform
+ *          similar length as standard stack scan operation
+ * @return  @ref APP_RES_OK if values is ok, @ref APP_RES_INVALID_VALUE if value
+ *          is too large or small. @ref APP_RES_INVALID_CONFIGURATION if device
+ *          is not @ref APP_LIB_SETTINGS_ROLE_ADVERTISER nor @ref
+ *          APP_LIB_SETTINGS_ROLE_SUBNODE.
+ *
+ * Example:
+ * @code
+ *
+ * uint32_t do_short_scan(void)
+ * {
+ *     // Perform scan of 0.5 seconds only
+ *     lib_state->setScanDuration(500000);
+ *     lib_state->startScanNbors();
+ *     // Perform only once
+ *     return APP_LIB_SYSTEM_STOP_PERIODIC;
+ * }
+ *
+ * void App_init(const app_global_functions_t * functions)
+ * {
+ *     // ...
+ *     // Create short scan in 10 seconds
+ *     lib_system->setPeriodicCb(do_short_scan, 10000000, 1000);
+ *     lib_state->startStack();
+ * }
+ * @endcode
+ */
+typedef app_res_e (*app_lib_state_set_scan_dur_f)(uint32_t duration_us);
+
+/**
+ * @brief       Stops ongoing scan operation before ended
+ * @return      Normally @ref APP_RES_OK. @ref APP_RES_INVALID_CONFIGURATION if
+ *              device is not @ref APP_LIB_SETTINGS_ROLE_ADVERTISER nor @ref
+ *              APP_LIB_SETTINGS_ROLE_SUBNODE, @ref APP_RES_RESOURCE_UNAVAILABLE
+ *              if memory has ran out, @ref
+ *              APP_RES_INVALID_STACK_STATE if stack is not running.
+ *
+ * This service aborts ongoing scan operation started with @ref
+ * app_lib_state_start_scan_nbors_f "lib_state->startScanNbors()".
+ */
+typedef app_res_e (*app_lib_state_scan_stop_f)(void);
+
+/**
+ * @brief   Read installation quality, @ref app_lib_state_install_quality_t
+ * @param   qual_out [out]
+ *          The installation quality information is copied to this pointer
+ * @return  APP_RES_OK if value was read OK
+ */
+typedef app_res_e (*app_lib_state_get_install_quality_f)
+    (app_lib_state_install_quality_t * qual_out);
 
 /**
  * @brief   List of library functions of v3 version (0x202)
@@ -611,6 +738,9 @@ typedef struct
     app_lib_state_get_route_f                       getRouteInfo;
     app_lib_state_set_route_cb_f                    setRouteCb;
     app_lib_state_set_adjust_hops_cb_f              setHopsLeftCb;
+    app_lib_state_set_scan_dur_f                    setScanDuration;
+    app_lib_state_scan_stop_f                       stopScanNbors;
+    app_lib_state_get_install_quality_f             getInstallQual;
 } app_lib_state_t;
 
 #endif /* APP_LIB_STATE_H_ */

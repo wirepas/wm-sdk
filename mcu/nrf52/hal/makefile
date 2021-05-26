@@ -41,9 +41,13 @@ ifeq ($(HAL_HW_DELAY), yes)
 SRCS += $(NRF52_HAL_PREFIX)hw_delay.c
 endif
 
-ifeq ($(USE_FEM), yes)
-CFLAGS += -DUSE_FEM
-SRCS += $(NRF52_HAL_PREFIX)fem_driver.c
+ifeq ($(HAL_VOLTAGE), yes)
+# Different subprocessors have different
+ifeq ($(MCU_SUB), 832)
+SRCS += $(NRF52_HAL_PREFIX)voltage_52832.c
+else
+SRCS += $(NRF52_HAL_PREFIX)voltage_52833_52840.c
+endif
 endif
 
 SRCS += $(NRF52_HAL_PREFIX)ds.c             \

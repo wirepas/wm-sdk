@@ -7,12 +7,15 @@
 SEARCH_DIR(.)
 
 /* nRF52833 is 512kB FLASH, 128kB RAM
- *   - 40 kB of Flash can be used by the app
+ *   - 40 kB of Flash is reserved by default for the application. But it is
+ *     not a hard limit and could be increased. As application and scratchpad area
+ *     are shared by default, if the application is too big, OTAP may be affected.
+ *     Please see the Wirepas documentation about OTAP for more details
  *   - 72 kB (minus 8 bytes) of RAM can be used by the app
  */
 MEMORY
 {
-  FLASH (rx)      : ORIGIN = 0x00040000, LENGTH = 40K
+  FLASH (rx)      : ORIGIN = 0x00040000, LENGTH = 40K /* See above note before changing length */
   RAM (rwx)       : ORIGIN = 0x2000D000, LENGTH = 72K - 8
   INVALID (rwx)   : ORIGIN = 0xFFFFFFFF, LENGTH = 0 /* Sanity check */
 }
@@ -38,6 +41,13 @@ SECTIONS
     } >FLASH
 
     __data_src_start__ = .;
+
+    .rtt (NOLOAD):
+    {
+        /* Force placing _SEGGER_RTT control block here, if RTT tracing is on */
+        *(.rtt_cb_section)
+        . = ALIGN(8);
+    } >RAM
 
     .data :
     {

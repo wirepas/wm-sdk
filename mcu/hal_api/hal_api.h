@@ -25,6 +25,9 @@
 // Deep sleep control
 #include "ds.h"
 
+// Voltage measurements examples
+#include "voltage.h"
+
 /**
  * \brief   Initialize HAL
  * \return  Status of operation

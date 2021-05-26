@@ -19,8 +19,20 @@
 #define BOARD_USART_CTS_PIN             7  /* For USE_USART_HW_FLOW_CONTROL */
 #define BOARD_USART_RTS_PIN             31  /* For USE_USART_HW_FLOW_CONTROL */
 
-// The board supports DCDC
-#define BOARD_SUPPORT_DCDC
+/* List of GPIO pins for the LEDs on the B204 board:
+LED     B204    / nrf52832 pin
+GREEN:  GPIO_7  / P0.16
+RED:    GPIO_1  / P0.08
+BLUE:   GPIO_8  / P0.18
+*/
+#define BOARD_LED_PIN_LIST              {16, 8, 18}
+
+// The board supports DCDC (#define BOARD_SUPPORT_DCDC)
+// Since SDK v1.2 (bootloader > v7) this option has been move to
+// board/<board_name>/config.mk. Set board_hw_dcdc to yes to enable DCDC.
+#ifdef BOARD_SUPPORT_DCDC
+#error This option has been moved to board/<board_name>/config.mk
+#endif
 
 
 #endif /* BOARD_UBLOX_B204_H_ */

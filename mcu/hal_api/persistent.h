@@ -25,6 +25,8 @@ typedef enum
  * \brief  Reading data from persistent memory from the beginnings
  * \param  data
  *         Pointer to store raw data from persistent memory
+ * \param  offset
+ *         The offset to read from
  * \param  len
  *         Read the desired amount of data length
  * \return PERSISTENT_RES_OK
@@ -32,7 +34,7 @@ typedef enum
  *         PERSISTENT_RES_DATA_AREA_OVERFLOW
  *         The suggested read data area is too long
  */
-persistent_res_e Mcu_Persistent_read(uint8_t * data, uint16_t len);
+persistent_res_e Mcu_Persistent_read(uint8_t * data, uint16_t offset, uint16_t len);
 
 /**
  * \brief  Writing data to persistent memory

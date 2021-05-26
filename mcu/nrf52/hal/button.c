@@ -118,7 +118,7 @@ static void button_enable_interrupt(uint8_t button_id,
                     return;
                 }
             }
-            NRF_GPIOTE->INTENCLR = GPIOTE_INTENSET_PORT_Msk;
+            NRF_GPIOTE->INTENCLR = GPIOTE_INTENCLR_PORT_Msk;
             return;
         }
         case ON_PRESSED_ONLY:
@@ -196,7 +196,7 @@ void Button_init(void)
         }
     }
 
-    NRF_GPIOTE->INTENCLR = GPIOTE_INTENSET_PORT_Msk;
+    NRF_GPIOTE->INTENCLR = GPIOTE_INTENCLR_PORT_Msk;
     NRF_GPIOTE->EVENTS_PORT = 0;
 
     // Enable interrupt
@@ -300,6 +300,7 @@ static void gpiote_interrupt_handler(void)
             {
                 bool pressed;
                 Button_getState(i, &pressed);
+                m_button_conf[i].last_button_event = now;
 
                 if (m_button_conf[i].on_pressed && pressed)
                 {

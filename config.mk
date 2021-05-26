@@ -8,19 +8,15 @@ app_name=custom_app
 # It can be overwritten on command line "make target_board=<...>"
 target_board=
 
-# Default version numbers for your app if not defined in app config.mk.
-app_major=0
-app_minor=0
-app_maintenance=0
-app_development=0
+# Version of the SDK
+sdk_major=0
+sdk_minor=0
+sdk_maintenance=0
+sdk_development=0
+
 
 # Specify the arm toolchain to use (leave it blank if already set in your PATH)
 arm_toolchain=
-
-# OTAP sequence number, valid range 1 .. 254
-# Sequence 0 = OTAP off (device will not download/upload scratchpad)
-# Sequence 0xFF = Will accept any valid OTAP sequence
-otap_seq_number=1
 
 # Only set this value if python interpreter is not found. Python3 is preferred.
 # Python2 is end of life and support will be removed in the future.

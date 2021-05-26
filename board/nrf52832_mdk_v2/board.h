@@ -24,7 +24,11 @@
 // Active low polarity for LEDs
 #define BOARD_LED_ACTIVE_LOW            true
 
-// The board supports DCDC
-#define BOARD_SUPPORT_DCDC
+// The board supports DCDC (#define BOARD_SUPPORT_DCDC)
+// Since SDK v1.2 (bootloader > v7) this option has been move to
+// board/<board_name>/config.mk.
+#ifdef BOARD_SUPPORT_DCDC
+#error This option has been moved to board/<board_name>/config.mk
+#endif
 
 #endif /* _BOARD_NRF52832_MDK_V2_BOARD_H_ */

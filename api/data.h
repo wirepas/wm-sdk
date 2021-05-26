@@ -29,7 +29,7 @@
 #define APP_LIB_DATA_NAME 0x0003f161 //!< "DATA"
 
 /** \brief Maximum supported library version */
-#define APP_LIB_DATA_VERSION    0x207
+#define APP_LIB_DATA_VERSION    0x209
 
 /**
  * @brief Type of tracking ID for data packets
@@ -120,11 +120,9 @@ typedef enum
      * network (i.e. network consisting of both CSMA-CA and time-slotted mode
      * devices) by CSMA-CA device originated packets transmission only to
      * CSMA-CA devices. The purpose of this method is to avoid a performance
-     * bottleneck by NOT transmitting to time-slotted mode devices. Also, if
-     * used with sink-originated transmissions (by CSMA-CA mode sinks), the
-     * throughput is better when compared to a 'normal' transmission, however
-     * there is some penalty in reliability (due to unacknowledged nature of
-     * transmission). */
+     * bottleneck by NOT transmitting to time-slotted mode devices. Note:
+     * when using this flag, transmission is always sent beyond sink routing
+     * tree */
     APP_LIB_DATA_SEND_FLAG_UNACK_CSMA_CA = 8,
     /** Send packet on network channel only. Note, when this is set, it
      * overrides any hop limit definitions the packet otherwise has. These
@@ -278,6 +276,10 @@ typedef struct
      * (transmission to itself), this is meaningless because packet is not sent
      * via radio at all.*/
     int8_t rssi;
+    /** End-to-end transmission delay, in 1 / 1024 of seconds. This also
+     *  includes the value set in the delay field for @ref
+     *  app_lib_data_send_data_f "lib_data->sendData"*/
+    uint32_t delay_hp;
 } app_lib_data_received_t;
 
 /**
@@ -662,6 +664,10 @@ typedef app_lib_data_app_config_res_e
  *          can cause unnecessary wearing of the memory with devices that
  *          need to use the program memory to store persistent variables and
  *          unnecessary load to the network.
+ * @note    This service is deprecated and has been replaced by
+ *          @ref app_lib_data_write_app_config_data_f "writeAppConfigData" and
+ *          @ref app_lib_data_write_diagnostic_interval_f "writeDiagnosticInterval"
+ *          that manages sequence increment automatically.
  *
  * Example:
  * @code
@@ -752,6 +758,60 @@ typedef app_res_e
                                                uint16_t * time_p);
 
 /**
+ * \brief   Write @ref appconfig "app config DATA"
+ * \param   bytes
+ *          Pointer to app config data to write. The format can be decided by
+ *          the application.
+ *
+ * \return  Result code, @ref APP_LIB_DATA_APP_CONFIG_RES_SUCCESS if
+ *          successful.  See @ref app_lib_data_app_config_res_e for
+ *          other result codes.
+ *
+ * @note    It is recommended that the app config data is not written too
+ *          often, as new configuration is always written to the non-
+ *          volatile memory of the sink and disseminated to the network. This
+ *          can cause unnecessary wearing of the memory with devices that
+ *          need to use the program memory to store persistent variables and
+ *          unnecessary load to the network.
+ *
+ * Example:
+ * @code
+ * uint8_t appconfig[APP_LIB_DATA_MAX_APP_CONFIG_NUM_BYTES];
+ *
+ * lib_data->writeAppConfigData(&appconfig[0]);
+ * @endcode
+ */
+typedef app_lib_data_app_config_res_e
+    (*app_lib_data_write_app_config_data_f)(const uint8_t * bytes);
+
+/**
+ * \brief   Write @ref appconfig "Diagnostic interval"
+ * \param   interval
+ *          Diagnostic data transmission interval in seconds, i.e. how often
+ *          the nodes on the network should send diagnostic PDUs. If the value
+ *          is 0, diagnostic data transmission is disabled.
+ *          Valid values are: 0 (default), 30, 60, 120, 300, 600 and 1800.
+ *
+ * \return  Result code, @ref APP_LIB_DATA_APP_CONFIG_RES_SUCCESS if
+ *          successful.  See @ref app_lib_data_app_config_res_e for
+ *          other result codes.
+ *
+ * @note    It is recommended that the diagnostic interval is not written too
+ *          often, as new configuration is always written to the non-
+ *          volatile memory of the sink and disseminated to the network. This
+ *          can cause unnecessary wearing of the memory with devices that
+ *          need to use the program memory to store persistent variables and
+ *          unnecessary load to the network.
+ *
+ * Example:
+ * @code
+ * lib_data->writeDiagnosticInterval(30);
+ * @endcode
+ */
+typedef app_lib_data_app_config_res_e
+    (*app_lib_data_write_diagnostic_interval_f)(uint16_t interval);
+
+/**
  * \brief       List of library services
  */
 typedef struct
@@ -771,6 +831,8 @@ typedef struct
     app_lib_data_depracated_f reserved;
     app_lib_data_set_max_msg_queuing_time_f  setMaxMsgQueuingTime;
     app_lib_data_get_max_msg_queuing_time_f  getMaxMsgQueuingTime;
+    app_lib_data_write_app_config_data_f writeAppConfigData;
+    app_lib_data_write_diagnostic_interval_f writeDiagnosticInterval;
 } app_lib_data_t;
 
 #endif /* APP_LIB_DATA_H_ */

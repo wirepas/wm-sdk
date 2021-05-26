@@ -9,36 +9,16 @@
 #include <string.h>
 
 #include "hal_api.h"
-#include "hfperclk.h"
 #include "board.h"
+#include "board_usart.h"
 #include "api.h"
 
-/* Map some registers constant to the USART selected */
-#if BOARD_USART_ID == 0
-#define BOARD_USART         USART0
-#define BOARD_USART_CMU_BIT CMU_HFPERCLKEN0_USART0
-#define BOARD_UART_RX_IRQn  USART0_RX_IRQn
-#define BOARD_UART_TX_IRQn  USART0_TX_IRQn
-#elif BOARD_USART_ID == 1
-#define BOARD_USART         USART1
-#define BOARD_USART_CMU_BIT CMU_HFPERCLKEN0_USART1
-#define BOARD_UART_RX_IRQn  USART1_RX_IRQn
-#define BOARD_UART_TX_IRQn  USART1_TX_IRQn
-#elif BOARD_USART_ID == 2
-#define BOARD_USART         USART2
-#define BOARD_USART_CMU_BIT CMU_HFPERCLKEN0_USART2
-#define BOARD_UART_RX_IRQn  USART2_RX_IRQn
-#define BOARD_UART_TX_IRQn  USART2_TX_IRQn
-#elif BOARD_USART_ID == 3
-#define BOARD_USART         USART3
-#define BOARD_USART_CMU_BIT CMU_HFPERCLKEN0_USART3
-#define BOARD_UART_RX_IRQn  USART3_RX_IRQn
-#define BOARD_UART_TX_IRQn  USART3_TX_IRQn
-#else
-#error USART ID must be 0, 1, 2 or 3
-#endif
+#include "em_cmu.h"
+#include "em_gpio.h"
+#include "em_usart.h"
 
-/* Only one USART, this is easy */
+#if defined(BOARD_USART_TX_PIN) && defined (BOARD_USART_RX_PIN)
+
 static volatile serial_rx_callback_f    m_rx_callback;
 
 // Declare unique ring-buffer size
@@ -52,9 +32,6 @@ static volatile ringbuffer_t            m_usart_tx_buffer;
 static volatile uint32_t                m_enabled;
 static volatile bool                    m_tx_active;
 
-/** Enable or disable HW flow control */
-static void set_baud(uint32_t baud);
-
 /** Declare the interrupt handlers */
 void __attribute__((__interrupt__))     USART_RX_IRQHandler(void);
 void __attribute__((__interrupt__))     USART_TX_IRQHandler(void);
@@ -67,71 +44,81 @@ bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 #endif
     (void)flow_control;
 
-    //    /* Enable clocks */
-    CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_GPIO;
+    // Enable GPIO clock
+    BOARD_USART_ENABLE_GPIO_CLK;
 
-    //uart_tx_pin
+#ifdef BOARD_USART_VCOM_PORT
+    // Enable vcom
+    hal_gpio_set_mode(BOARD_USART_VCOM_PORT,
+                      BOARD_USART_VCOM_PIN,
+                      GPIO_MODE_DISABLED);
+    hal_gpio_clear(BOARD_USART_VCOM_PORT,
+                   BOARD_USART_VCOM_PIN);
+    hal_gpio_set_mode(BOARD_USART_VCOM_PORT,
+                      BOARD_USART_VCOM_PIN,
+                      GPIO_MODE_OUT_PP);
+    hal_gpio_set(BOARD_USART_VCOM_PORT,
+                 BOARD_USART_VCOM_PIN);
+#endif
+
+    // uart_tx_pin
     hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
                       BOARD_USART_TX_PIN,
                       GPIO_MODE_DISABLED);
-    hal_gpio_clear(BOARD_USART_GPIO_PORT, BOARD_USART_TX_PIN);
-    //uart_rx_pin
+    hal_gpio_clear(BOARD_USART_GPIO_PORT,
+                   BOARD_USART_TX_PIN);
+    // uart_rx_pin
     hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
                       BOARD_USART_RX_PIN,
                       GPIO_MODE_DISABLED);
-    hal_gpio_clear(BOARD_USART_GPIO_PORT, BOARD_USART_RX_PIN);
+    hal_gpio_clear(BOARD_USART_GPIO_PORT,
+                   BOARD_USART_RX_PIN);
 
-    /* Module variables */
+    // Module variables
     Ringbuffer_reset(m_usart_tx_buffer);
     m_rx_callback = NULL;
     m_tx_active = false;
     m_enabled = 0;
 
-    /* Disable for RX */
+    // Disable for RX
     Sys_disableAppIrq(BOARD_UART_RX_IRQn);
     Sys_clearFastAppIrq(BOARD_UART_RX_IRQn);
-    /* Disable for TX */
+    // Disable for TX
     Sys_disableAppIrq(BOARD_UART_TX_IRQn);
     Sys_clearFastAppIrq(BOARD_UART_TX_IRQn);
 
     // Must enable clock for configuration period
-    enableHFPERCLK(true);
-    /* Set UART output pins */
-    BOARD_USART->ROUTEPEN = USART_ROUTEPEN_RXPEN |
-                            USART_ROUTEPEN_TXPEN;
+    BOARD_USART_ENABLE_USART_CLK;
 
-    /* Set UART route */
-    BOARD_USART->ROUTELOC0 = BOARD_USART_ROUTELOC_RXLOC |
-                             BOARD_USART_ROUTELOC_TXLOC;
+    // Set UART baudrate
+    USART_InitAsync_TypeDef USART_init = USART_INITASYNC_DEFAULT;
+    USART_init.enable = usartDisable;
+    USART_init.baudrate = baudrate;
+    USART_init.oversampling = usartOVS4;
+    USART_init.hwFlowControl = usartHwFlowControlNone;
+    USART_InitAsync(BOARD_USART, &USART_init);
 
-    /* Initialize UART for asynch mode with baudrate baud */
-    /* Disable transceiver */
-    BOARD_USART->CMD = 0;
-    BOARD_USART->CTRL = 0;
-    BOARD_USART->I2SCTRL = 0;
-    /* Disables PRS */
-    BOARD_USART->INPUT = 0;
-    /* Set frame params: 8bit, nopar, 1stop */
-    BOARD_USART->FRAME = USART_FRAME_DATABITS_EIGHT |
-                         USART_FRAME_PARITY_NONE |
-                         USART_FRAME_STOPBITS_ONE;
-    set_baud(baudrate);
+    // Set UART route
+    BOARD_USART_ROUTE;
 
-    /* Disable all interrupt sources */
+    // Set UART output pins
+    BOARD_USART_PINS;
+
+    // Disable all interrupt sources
     BOARD_USART->IEN = 0;
-    /* Clear all irq flags */
-    BOARD_USART->IFC = _USART_IFC_MASK;
-    /* Enable transmitter */
+    // Clear all irq flags
+    BOARD_USART_CLR_IRQ_ALL;
+    // Enable transmitter
     BOARD_USART->CMD = USART_CMD_TXEN;
 
-    /* APP IRQ */
+    // APP IRQ
     Sys_clearFastAppIrq(BOARD_UART_TX_IRQn);
     Sys_enableFastAppIrq(BOARD_UART_TX_IRQn,
                          APP_LIB_SYSTEM_IRQ_PRIO_HI,
                          USART_TX_IRQHandler);
 
     // Configuration done: disable clock
-    enableHFPERCLK(false);
+    BOARD_USART_DISABLE_USART_CLK;
 
     return true;
 }
@@ -141,11 +128,11 @@ void Usart_setEnabled(bool enabled)
     Sys_enterCriticalSection();
     if(enabled)
     {
-        /* Detect if someone is enabling UART but not disabling it ever */
+        // Detect if someone is enabling UART but not disabling it ever
         if(m_enabled == 0)
         {
             // Enable clock
-            enableHFPERCLK(true);
+            BOARD_USART_ENABLE_USART_CLK;
             // Disable deep sleep
             DS_Disable(DS_SOURCE_USART);
             // Set output
@@ -172,7 +159,7 @@ void Usart_setEnabled(bool enabled)
             // Enable deep sleep
             DS_Enable(DS_SOURCE_USART);
             // Disable clock
-            enableHFPERCLK(false);
+            BOARD_USART_DISABLE_USART_CLK;
         }
     }
     Sys_exitCriticalSection();
@@ -180,12 +167,12 @@ void Usart_setEnabled(bool enabled)
 
 void Usart_receiverOn(void)
 {
-    BITBAND_Peripheral(&(BOARD_USART->CMD), _USART_CMD_RXEN_SHIFT, 1);
+    BUS_RegBitWrite(&(BOARD_USART->CMD), _USART_CMD_RXEN_SHIFT, 1);
 }
 
 void Usart_receiverOff(void)
 {
-    BITBAND_Peripheral(&(BOARD_USART->CMD), _USART_CMD_RXDIS_SHIFT, 1);
+    BUS_RegBitWrite(&(BOARD_USART->CMD), _USART_CMD_RXDIS_SHIFT, 1);
 }
 
 bool Usart_setFlowControl(uart_flow_control_e flow)
@@ -214,7 +201,7 @@ uint32_t Usart_sendBuffer(const void * buffer, uint32_t length)
     if (empty)
     {
         Usart_setEnabled(true);
-        BITBAND_Peripheral(&(BOARD_USART->IEN), _USART_IEN_TXC_SHIFT, 1);
+        BUS_RegBitWrite(&(BOARD_USART->IEN), _USART_IEN_TXC_SHIFT, 1);
         BOARD_USART->TXDATA = Ringbuffer_getTailByte(m_usart_tx_buffer);
         m_tx_active = true;
     }
@@ -227,16 +214,16 @@ void Usart_enableReceiver(serial_rx_callback_f rx_callback)
 {
     uint32_t __attribute__((unused))dummy;
     Sys_enterCriticalSection();
-    /* Set callback */
+    // Set callback
     m_rx_callback = rx_callback;
     // Enable clock
-    enableHFPERCLK(true);
+    BOARD_USART_ENABLE_USART_CLK;
     if(rx_callback)
     {
         Sys_enableFastAppIrq(BOARD_UART_RX_IRQn,
                              APP_LIB_SYSTEM_IRQ_PRIO_HI,
                              USART_RX_IRQHandler);
-        BITBAND_Peripheral(&(BOARD_USART->IEN), _USART_IEN_RXDATAV_SHIFT, 1);
+        BUS_RegBitWrite(&(BOARD_USART->IEN), _USART_IEN_RXDATAV_SHIFT, 1);
         // Set light pull-up resistor
         hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
                           BOARD_USART_RX_PIN,
@@ -248,7 +235,7 @@ void Usart_enableReceiver(serial_rx_callback_f rx_callback)
     else
     {
         Sys_disableAppIrq(BOARD_UART_RX_IRQn);
-        BITBAND_Peripheral(&(BOARD_USART->IEN), _USART_IEN_RXDATAV_SHIFT, 0);
+        BUS_RegBitWrite(&(BOARD_USART->IEN), _USART_IEN_RXDATAV_SHIFT, 0);
         hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
                           BOARD_USART_RX_PIN,
                           GPIO_MODE_DISABLED);
@@ -256,11 +243,11 @@ void Usart_enableReceiver(serial_rx_callback_f rx_callback)
         hal_gpio_clear(BOARD_USART_GPIO_PORT,
                        BOARD_USART_RX_PIN);
     }
-    /* Clear all interrupts */
+    // Clear all interrupts
     dummy = BOARD_USART->RXDATA;
-    BOARD_USART->IFC = USART_IFC_RXFULL;
+    BOARD_USART_CLR_IRQ_RXFULL;
     // Disable clock
-    enableHFPERCLK(false);
+    BOARD_USART_DISABLE_USART_CLK;
     Sys_clearFastAppIrq(BOARD_UART_RX_IRQn);
     Sys_exitCriticalSection();
 }
@@ -280,10 +267,10 @@ void Usart_flush(void)
 void __attribute__((__interrupt__)) USART_RX_IRQHandler(void)
 {
 //    DBG_ENTER_IRQ_USART();
-    /* Data received */
+    // Data received
     uint16_t ch = BOARD_USART->RXDATA;
-    /* RXFULL must be explicitly cleared */
-    BOARD_USART->IFC = USART_IFC_RXFULL;
+    // RXFULL must be explicitly cleared
+    BOARD_USART_CLR_IRQ_RXFULL;
     if (m_rx_callback != NULL)
     {
         m_rx_callback((uint8_t *) &ch, 1);
@@ -294,8 +281,8 @@ void __attribute__((__interrupt__)) USART_RX_IRQHandler(void)
 void __attribute__((__interrupt__)) USART_TX_IRQHandler(void)
 {
 //    DBG_ENTER_IRQ_USART();
-    BOARD_USART->IFC = _USART_IFC_TXC_MASK;
-    /* byte has been sent -> move tail */
+    BOARD_USART_CLR_IRQ_TXC;
+    // byte has been sent -> move tail
     Ringbuffer_incrTail(m_usart_tx_buffer, 1);
     if (Ringbuffer_usage(m_usart_tx_buffer) != 0)
     {
@@ -303,27 +290,64 @@ void __attribute__((__interrupt__)) USART_TX_IRQHandler(void)
     }
     else
     {
-        /* when buffer becomes empty, reset indexes */
-        BITBAND_Peripheral(&(BOARD_USART->IEN), _USART_IEN_TXC_SHIFT, 0);
+        // when buffer becomes empty, reset indexes
+        BUS_RegBitWrite(&(BOARD_USART->IEN), _USART_IEN_TXC_SHIFT, 0);
         Usart_setEnabled(false);
         m_tx_active = false;
     }
 //    DBG_EXIT_IRQ_USART();
 }
 
-static void set_baud(uint32_t baud)
-{
-    volatile uint32_t baud_gen;
-    /* Calculate baudrate: see em_usart.c in emlib for reference */
-    baud_gen = 32 * HFPERCLK_FREQ + (4 * baud) / 2;
-    baud_gen /= (4 * baud);
-    baud_gen -= 32;
-    baud_gen *= 8;
-    baud_gen &= _USART_CLKDIV_DIV_MASK;
+#else
 
-    /* Set oversampling bit (8) */
-    BOARD_USART->CTRL  &= ~_USART_CTRL_OVS_MASK;
-    BOARD_USART->CTRL  |= USART_CTRL_OVS_X4;
-    BOARD_USART->CLKDIV = baud_gen;
+bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
+{
+    (void) baudrate;
+    (void) flow_control;
+
+    return false;
 }
 
+void Usart_setEnabled(bool enabled)
+{
+    (void) enabled;
+}
+
+void Usart_receiverOn(void)
+{
+}
+
+void Usart_receiverOff(void)
+{
+}
+
+bool Usart_setFlowControl(uart_flow_control_e flow)
+{
+    (void) flow;
+
+    return false;
+}
+
+uint32_t Usart_sendBuffer(const void * buf, uint32_t len)
+{
+    (void) buf;
+    (void) len;
+
+    return 0;
+}
+
+void Usart_enableReceiver(serial_rx_callback_f callback)
+{
+    (void) callback;
+}
+
+uint32_t Usart_getMTUSize(void)
+{
+    return 0;
+}
+
+void Usart_flush(void)
+{
+}
+
+#endif

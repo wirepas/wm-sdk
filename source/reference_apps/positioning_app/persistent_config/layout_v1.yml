@@ -1,0 +1,164 @@
+
+# Layout of persistent storage of positioning application
+#
+# Must match with content of posapp_settings.h
+# !!! DO NOT change
+#
+# Copyright 2021 Wirepas Ltd.
+
+
+node_persistent_settings:
+    address:
+        type:          uint32_t
+        # 0, broadcast (0xFFFFFFFF), anysink (0xFFFFFFFE) and
+        # multicast addresses (0x80??????) are not valid node addresses.
+        range:         1-2147483647,2164260864-4294967293
+        optional:      false
+        #default_value: mandatory fields (optional=false) do not have default value.
+    network_address:
+        type:          uint32_t
+        # Avoid repeating bit patterns.
+        # Values 0x000000, >= 0xFFFFFF, 0x55????, 0x??55??, 0x????55,
+        # 0xAA????, 0x??AA??, 0x????AA are not allowed.
+        range:         1-16777214
+        optional:      false
+        #default_value: mandatory fields (optional=false) do not have default value.
+    network_channel:
+        type:          uint8_t
+        range:         1-40
+        optional:      false
+        #default_value: mandatory fields (optional=false) do not have default value.
+    role:
+        type:          uint8_t
+        #  1: Low energy headnode              (not available with EFR32xG22)
+        #  2: Low energy subnode
+        # 17: Low latency headnode             (not available with EFR32xG22)
+        range:         1-2,17
+        optional:      false
+        #default_value: mandatory fields (optional=false) do not have default value.
+    rfu_0:
+        # reserved for future usage
+        type:          uint8_t
+        optional:      true
+        default_value: 0
+    rfu_1:
+        # reserved for future usage
+        type:          uint8_t
+        optional:      true
+        default_value: 0
+    rfu_2:
+        # reserved for future usage
+        type:          uint8_t
+        optional:      true
+        default_value: 0
+    rfu_3:
+        # reserved for future usage
+        type:          uint8_t
+        optional:      true
+        default_value: 0
+    rfu_4:
+        # reserved for future usage
+        type:          uint8_t
+        optional:      true
+        default_value: 0
+    rfu_5:
+        # reserved for future usage
+        type:          uint8_t
+        optional:      true
+        default_value: 0
+
+poslib_persistent_settings:
+    poslib_record_magic:
+        type:          uint16_t
+        optional:      true
+        range:         0x2020
+        default_value: 0x2020
+    poslib_settings_version:
+        type:          uint8_t
+        optional:      true
+        range:         1
+        default_value: 1
+    node_mode:
+        type:          uint8_t
+        optional:      false
+        range:         1-4
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    node_class:
+        type:          uint8_t
+        optional:      false
+        range:         248-255
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    update_period_static_s:
+        type:          uint32_t
+        optional:      false
+        range:         1-86400
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    update_period_dynamic_s:
+        type:          uint32_t
+        optional:      false
+        range:         0-86400
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    update_period_offline_s:
+        type:          uint32_t
+        optional:      false
+        range:         0-86400
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    ble_type:
+        type:          uint8_t
+        optional:      false
+        range:         1-3
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    ble_mode:
+        type:          uint8_t
+        optional:      false
+        range:         0-2
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    ble_activation_delay_s:
+        type:          uint16_t
+        optional:      false
+        range:         0-65535
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    ble_eddystone_tx_power:
+        type:          int8_t
+        optional:      false
+        range:         -128...+127
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    ble_eddystone_channels:
+        type:          uint8_t
+        optional:      false
+        range:         0-6
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    ble_eddystone_tx_interval_ms:
+        type:          uint16_t
+        optional:      false
+        range:         100-60000
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    ble_ibeacon_tx_power:
+        type:          int8_t
+        optional:      false
+        range:         -128...+127
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    ble_ibeacon_channels:
+        type:          uint8_t
+        optional:      false
+        range:         0-6
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    ble_ibeacon_tx_interval_ms:
+        type:          uint16_t
+        optional:      false
+        range:         100-60000
+        #default_value: mandatory fields (optional=false) do not have default value. 
+    motion_enabled:
+        type:          bool
+        optional:      false
+        #default_value: mandatory fields (optional=false) do not have default value.
+    motion_threshold_mg:
+        type:          uint16_t
+        optional:      false
+        range:         100-2000
+        #default_value: mandatory fields (optional=false) do not have default value.
+    motion_duration_ms:
+        type:          uint16_t
+        optional:      false
+        range:         0-2000
+        #default_value: mandatory fields (optional=false) do not have default value.

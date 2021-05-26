@@ -23,8 +23,37 @@ const app_lib_beacon_rx_t *     lib_beacon_rx;
 const app_lib_advertiser_t *    lib_advertiser;
 const app_lib_sleep_t *         lib_sleep;
 const app_lib_memory_area_t *   lib_memory_area;
-const app_lib_radio_fem_t *     lib_radio_fem;
+const app_lib_radio_cfg_t *     lib_radio_cfg;
 const app_lib_joining_t *       lib_joining;
+
+static const void * open_lib_with_fallback(uint32_t name,
+                                           uint32_t version)
+{
+    const void * lib_handle;
+    lib_handle = global_func->openLibrary(name, version);
+    if (lib_handle != NULL)
+    {
+        return lib_handle;
+    }
+
+    // The requested version is not available.
+    // It means that the app is built for a newer stack
+    // Try to open older lib to limit the consequences.
+    // If new features or modified services are not use,
+    // it "could" work, but no guarantees.
+    // This fallback allows to reduce the risk of
+    // bricking the device
+    while (--version >= 0x200)
+    {
+        lib_handle = global_func->openLibrary(name, version);
+        if (lib_handle != NULL)
+        {
+            return lib_handle;
+        }
+    }
+
+    return NULL;
+}
 
 bool API_Open(const app_global_functions_t * functions)
 {
@@ -32,49 +61,49 @@ bool API_Open(const app_global_functions_t * functions)
     global_func = functions;
 
     // Open the libraries
-    lib_data = functions->openLibrary(APP_LIB_DATA_NAME,
+    lib_data = open_lib_with_fallback(APP_LIB_DATA_NAME,
                                       APP_LIB_DATA_VERSION);
 
-    lib_settings = functions->openLibrary(APP_LIB_SETTINGS_NAME,
+    lib_settings = open_lib_with_fallback(APP_LIB_SETTINGS_NAME,
                                           APP_LIB_SETTINGS_VERSION);
 
-    lib_state = functions->openLibrary(APP_LIB_STATE_NAME,
+    lib_state = open_lib_with_fallback(APP_LIB_STATE_NAME,
                                        APP_LIB_STATE_VERSION);
 
-    lib_system = functions->openLibrary(APP_LIB_SYSTEM_NAME,
+    lib_system = open_lib_with_fallback(APP_LIB_SYSTEM_NAME,
                                         APP_LIB_SYSTEM_VERSION);
 
-    lib_time = functions->openLibrary(APP_LIB_TIME_NAME,
+    lib_time = open_lib_with_fallback(APP_LIB_TIME_NAME,
                                       APP_LIB_TIME_VERSION);
 
-    lib_hw = functions->openLibrary(APP_LIB_HARDWARE_NAME,
+    lib_hw = open_lib_with_fallback(APP_LIB_HARDWARE_NAME,
                                     APP_LIB_HARDWARE_VERSION);
 
-    lib_storage = functions->openLibrary(APP_LIB_STORAGE_NAME,
+    lib_storage = open_lib_with_fallback(APP_LIB_STORAGE_NAME,
                                          APP_LIB_STORAGE_VERSION);
 
-    lib_otap = functions->openLibrary(APP_LIB_OTAP_NAME,
+    lib_otap = open_lib_with_fallback(APP_LIB_OTAP_NAME,
                                       APP_LIB_OTAP_VERSION);
 
-    lib_beacon_tx = functions->openLibrary(APP_LIB_BEACON_TX_NAME,
+    lib_beacon_tx = open_lib_with_fallback(APP_LIB_BEACON_TX_NAME,
                                            APP_LIB_BEACON_TX_VERSION);
 
-    lib_beacon_rx = functions->openLibrary(APP_LIB_BEACON_RX_NAME,
+    lib_beacon_rx = open_lib_with_fallback(APP_LIB_BEACON_RX_NAME,
                                            APP_LIB_BEACON_RX_VERSION);
 
-    lib_advertiser = functions->openLibrary(APP_LIB_ADVERTISER_NAME,
+    lib_advertiser = open_lib_with_fallback(APP_LIB_ADVERTISER_NAME,
                                             APP_LIB_ADVERTISER_VERSION);
 
-    lib_sleep = functions->openLibrary(APP_LIB_LONGSLEEP_NAME,
+    lib_sleep = open_lib_with_fallback(APP_LIB_LONGSLEEP_NAME,
                                        APP_LIB_LONGSLEEP_VERSION);
 
-    lib_memory_area = functions->openLibrary(APP_LIB_MEMORY_AREA_NAME,
+    lib_memory_area = open_lib_with_fallback(APP_LIB_MEMORY_AREA_NAME,
                                              APP_LIB_MEMORY_AREA_VERSION);
 
-    lib_radio_fem = functions->openLibrary(APP_LIB_RADIO_FEM_NAME,
-                                           APP_LIB_RADIO_FEM_VERSION);
+    lib_radio_cfg = open_lib_with_fallback(APP_LIB_RADIO_CFG_NAME,
+                                           APP_LIB_RADIO_CFG_VERSION);
 
-    lib_joining = functions->openLibrary(APP_LIB_JOINING_NAME,
+    lib_joining = open_lib_with_fallback(APP_LIB_JOINING_NAME,
                                          APP_LIB_JOINING_VERSION);
 
 
@@ -91,6 +120,6 @@ bool API_Open(const app_global_functions_t * functions)
             lib_storage &&
             lib_otap &&
             lib_sleep &&
-            lib_radio_fem &&
+            lib_radio_cfg &&
             lib_memory_area);
 }

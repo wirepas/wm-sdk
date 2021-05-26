@@ -30,7 +30,7 @@
 #define APP_LIB_OTAP_NAME 0x000f2338 //!< "OTAP"
 
 /** @brief Maximum supported library version */
-#define APP_LIB_OTAP_VERSION 0x200
+#define APP_LIB_OTAP_VERSION 0x201
 
 /**
  * @brief Different scratchpad type
@@ -92,6 +92,29 @@ typedef enum
 } app_lib_otap_write_res_e;
 
 /**
+ * @brief Scratchpad possible actions
+ *
+ * Used with the @ref app_lib_otap_set_target_scratchpad_and_action_f
+ * "lib_otap->setTargetScratchpadAndAction()" function
+ */
+typedef enum
+{
+    /** No otap in the sink tree. */
+    APP_LIB_OTAP_ACTION_NO_OTAP = 0,
+    /** Only propagate the target scratchpad but do not process it. */
+    APP_LIB_OTAP_ACTION_PROPAGATE_ONLY = 1,
+    /** Propagate the target scratchpad and process it immediately. */
+    APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS = 2,
+    /** Same as previous except that the processing should happen after
+     *  the given delay. Delay starts when node receive the information and the
+     *  scratchpad is valid. */
+    APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS_WITH_DELAY = 3,
+    /** Exchange and processing of scratchpad is managed the old way
+     *  (sequence comparison). */
+    APP_LIB_OTAP_ACTION_LEGACY = 4,
+} app_lib_otap_action_e;
+
+/**
  * @brief Type for OTAP sequence number
  *
  * Two numbers are special:
@@ -102,65 +125,6 @@ typedef enum
  * </table>
  */
 typedef uint8_t app_lib_otap_seq_t;
-
-/**
- * @brief Scratchpad information
- *
- * Information about stored scratchpad and the processed scratchpad that
- * produced the running stack firmware. This struct is passed to the remote
- * status reception callback @ref app_lib_otap_set_remote_status_received_cb_f
- * "lib_otap->setRemoteStatusReceivedCb()" when remote status is received
- *
- * @note This structure is not used anymore as @ref app_lib_otap_set_remote_status_received_cb_f
- * "lib_otap->setRemoteStatusReceivedCb()" is deprecated
- */
-typedef struct
-{
-    /** Size of stored scratchpad, in bytes */
-    size_t num_bytes;
-    /** Size of the scratchpad that produced the running stack firmware, in bytes */
-    size_t processed_num_bytes;
-    /** Node address of the sender of the remote status */
-    app_addr_t source;
-    /** Processed scratchpad status, @ref app_lib_otap_status_e */
-    uint32_t status;
-    /** Processed scratchpad area ID */
-    uint32_t area_id;
-    /** 16-bit CRC of the stored scratchpad */
-    uint16_t crc;
-    /** 16-bit CRC of the scratchpad that produced the running stack firmware */
-    uint16_t processed_crc;
-    /** Update request timeout in seconds, or 0 if update request not running */
-    uint16_t update_req_timeout;
-    /** OTAP sequence number of stored scratchpad, or 0 if no stored
-     * scratchpad */
-    app_lib_otap_seq_t seq;
-    /** OTAP sequence number of the scratchpad that produced the running stack
-     * firmware */
-    app_lib_otap_seq_t processed_seq;
-    /** Type of stored scratchpad, @ref app_lib_otap_type_e */
-    uint8_t type;
-    /** Major version of currently running stack firmware */
-    uint8_t major_version;
-    /** Minor version of currently running stack firmware */
-    uint8_t minor_version;
-    /** Maintenance version of currently running stack firmware */
-    uint8_t maint_version;
-    /** Development version of currently running stack firmware */
-    uint8_t devel_version;
-} app_lib_otap_remote_status_t;
-
-/**
- * @brief Remote status reception callback type
- *
- * The application sets a remote status reception callback by calling @ref
- * app_lib_otap_set_remote_status_received_cb_f "lib_otap->setRemoteStatusReceivedCb()".
- *
- * The remote status is represented as a pointer to @ref
- * app_lib_otap_remote_status_t struct.
- */
-typedef void
-    (*app_lib_otap_remote_status_received_cb_f)(const app_lib_otap_remote_status_t * status);
 
 /**
  * @brief Get maximum scratchpad size
@@ -431,70 +395,116 @@ typedef app_res_e
     (*app_lib_otap_set_to_be_processed_f)(void);
 
 /**
- * @brief This service has been DEPRACATED!
+ * @brief   This service allows to set the information for scratchpad
+ *          in the sink tree. What is the target scratchpad and what is the
+ *          action to do with it
+ * @param   target_sequence
+ *          The scratchpad target sequence for this Sink tree. Only needed if
+ *          action is @ref APP_LIB_OTAP_ACTION_PROPAGATE_ONLY,
+ *          @ref APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS
+ *          or @ref APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS_WITH_DELAY.
+ *          Valid values are 1..255.
+ * @param   target_crc
+ *          The scratchpad target crc for this Sink tree. Only needed if
+ *          action is @ref APP_LIB_OTAP_ACTION_PROPAGATE_ONLY,
+ *          @ref APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS
+ *          or @ref APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS_WITH_DELAY.
+ * @param   action
+ *          The action to do with the target scratchpad
+ * @param   delay
+ *          The delay to process the scratchpad. Only needed if action is
+ *          @ref APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS_WITH_DELAY. This
+ *          delay can't be 0 minute/hour/day.
+ * @return  @ref Result code, @ref APP_RES_OK if successful.
+ * @note    Returns @ref APP_RES_INVALID_VALUE if passed parameters are exactly
+ *          the same than the actual ones.
  *
- * It is no longer operational in this version of the Single-MCU API. It has
- * been replaced by Remote API command, see document WP-RM-117 - Wirepas Mesh
- * Remote API Reference Manual, chapter MSAP Scratchpad Status.
+ * Example of use to load and set a scratcphad of N bytes with seq S to be
+ * processed in Sink tree
+ * @code
+ *     // Write a scratchpad to the sink
+ *     lib_otap->begin(N, S);
+ *     while (res == APP_LIB_OTAP_WRITE_RES_COMPLETED_OK)
+ *     {
+ *        res = lib_otap->write(x,x,x)
+ *     }
  *
- * \return  @ref APP_RES_RESOURCE_UNAVAILABLE
+ *     // Check that scratchpad is correctly written
+ *     ...
+ *
+ *     lib_data->setTargetScratchpadAndAction(lib_otap->getSeq(),
+ *                                            lib_otap->getCrc(),
+ *                                            APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS,
+ *                                            0 // Not used for this action);
+ * }
+ * @endcode
+ *
+ * The delay parameter is encoded as follows :
+ * @code
+ * struct
+ * {
+ *     //Bits 0.. 5 - The time to delay.
+ *     uint8_t delay :6;
+ *     //Bits 6  .7 - Time unit used (1:Minutes, 2:Hours, 3:Days).
+ *     uint8_t unit  :2;
+ * };
+ * @endcode
  */
-typedef app_res_e
-    (*app_lib_otap_set_remote_status_received_cb_f)(app_lib_otap_remote_status_received_cb_f cb);
+typedef app_res_e (*app_lib_otap_set_target_scratchpad_and_action_f)(
+                                            app_lib_otap_seq_t target_sequence,
+                                            uint16_t target_crc,
+                                            app_lib_otap_action_e action,
+                                            uint8_t delay);
 
 /**
- * This service has been DEPRACATED!
+ * @brief   This service allows to get the information for scratchpad
+ *          in the sink tree. What is the target scratchpad and what is the
+ *          action to do with it
+ * @param   target_sequence
+ *          The scratchpad target sequence for this sink tree.
+ * @param   target_crc
+ *          The scratchpad target crc for this sink tree.
+ * @param   action
+ *          The action to do with the target scratchpad
+ * @param   delay
+ *          The delay to process the scratchpad. Only needed if action is
+ *          @ref APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS_WITH_DELAY.
  *
- * It is no longer operational in this version of the Single-MCU API. It has
- * been replaced by Remote API command, see document WP-RM-117 - Wirepas Mesh
- * Remote API Reference Manual, chapter MSAP Scratchpad Status.
- *
- * \return  @ref APP_RES_RESOURCE_UNAVAILABLE
+ * @return  @ref Result code, @ref APP_RES_OK if successful
  */
 typedef app_res_e
-    (*app_lib_otap_send_remote_status_req_f)(app_addr_t target);
-
-/**
- * This service has been DEPRACATED!
- *
- * It is no longer operational in this version of the Single-MCU API. It has
- * been replaced by Remote API command, see document WP-RM-117 - Wirepas Mesh
- * Remote API Reference Manual, chapter MSAP Scratchpad Update.
- *
- * \return  @ref APP_RES_RESOURCE_UNAVAILABLE
- */
-typedef app_res_e
-    (*app_lib_otap_send_remote_update_req_f)(app_addr_t target,
-                                             app_lib_otap_seq_t seq,
-                                             uint16_t timeout);
+    (*app_lib_otap_get_target_scratchpad_and_action_f)(
+                                            app_lib_otap_seq_t * target_sequence,
+                                            uint16_t * target_crc,
+                                            app_lib_otap_action_e * action,
+                                            uint8_t * delay);
 
 /**
  * The function table returned from @ref app_open_library_f
  */
 typedef struct
 {
-    app_lib_otap_get_max_num_bytes_f getMaxNumBytes;
-    app_lib_otap_get_num_bytes_f getNumBytes;
-    app_lib_otap_get_max_block_num_bytes_f getMaxBlockNumBytes;
-    app_lib_otap_get_seq_f getSeq;
-    app_lib_otap_get_crc_f getCrc;
-    app_lib_otap_get_type_f getType;
-    app_lib_otap_get_status_f getStatus;
-    app_lib_otap_get_processed_num_bytes_f getProcessedNumBytes;
-    app_lib_otap_get_processed_seq_f getProcessedSeq;
-    app_lib_otap_get_processed_crc_f getProcessedCrc;
-    app_lib_otap_get_processed_area_id_f getProcessedAreaId;
-    app_lib_otap_is_valid_f isValid;
-    app_lib_otap_is_processed_f isProcessed;
-    app_lib_otap_is_set_to_be_processed_f isSetToBeProcessed;
-    app_lib_otap_read_f read;
-    app_lib_otap_clear_f clear;
-    app_lib_otap_begin_f begin;
-    app_lib_otap_write_f write;
-    app_lib_otap_set_to_be_processed_f setToBeProcessed;
-    app_lib_otap_set_remote_status_received_cb_f setRemoteStatusReceivedCb;
-    app_lib_otap_send_remote_status_req_f sendRemoteStatusReq;
-    app_lib_otap_send_remote_update_req_f sendRemoteUpdateReq;
+    app_lib_otap_get_max_num_bytes_f                getMaxNumBytes;
+    app_lib_otap_get_num_bytes_f                    getNumBytes;
+    app_lib_otap_get_max_block_num_bytes_f          getMaxBlockNumBytes;
+    app_lib_otap_get_seq_f                          getSeq;
+    app_lib_otap_get_crc_f                          getCrc;
+    app_lib_otap_get_type_f                         getType;
+    app_lib_otap_get_status_f                       getStatus;
+    app_lib_otap_get_processed_num_bytes_f          getProcessedNumBytes;
+    app_lib_otap_get_processed_seq_f                getProcessedSeq;
+    app_lib_otap_get_processed_crc_f                getProcessedCrc;
+    app_lib_otap_get_processed_area_id_f            getProcessedAreaId;
+    app_lib_otap_is_valid_f                         isValid;
+    app_lib_otap_is_processed_f                     isProcessed;
+    app_lib_otap_is_set_to_be_processed_f           isSetToBeProcessed;
+    app_lib_otap_read_f                             read;
+    app_lib_otap_clear_f                            clear;
+    app_lib_otap_begin_f                            begin;
+    app_lib_otap_write_f                            write;
+    app_lib_otap_set_to_be_processed_f              setToBeProcessed;
+    app_lib_otap_set_target_scratchpad_and_action_f setTargetScratchpadAndAction;
+    app_lib_otap_get_target_scratchpad_and_action_f getTargetScratchpadAndAction;
 } app_lib_otap_t;
 
 #endif /* APP_LIB_OTAP_H_ */
