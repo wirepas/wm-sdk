@@ -4,6 +4,7 @@ const versions = [
 'v1.2.0_beta1',
 'v1.2.0_beta2',
 '1.2.0',
+'v1.2.0',
 'latest'
 ];
 
