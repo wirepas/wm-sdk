@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := pca10040 pca10100 pca10056 pca10059 ruuvitag 
+TARGET_BOARDS := pca10040 pca10100 pca10056 pca10059 ruuvitag silabs_brd4180b silabs_brd4181b silabs_brd4184a 
 #
 # Network default settings configuration
 #

@@ -18,7 +18,7 @@
 #include "power.h"
 #include "../inventory_app_router/common.h"
 
-#ifndef EFR32MG22
+#ifdef NRF52_PLATFORM
 #define USE_UICR_CONFIG
 #endif
 

@@ -425,7 +425,6 @@ static uint32_t diagnostic_task(void)
     LOG(LVL_INFO, "Sending DIAG.");
     LOG(LVL_DEBUG, " - proc_otap_seq %d", diag.proc_otap_seq);
     LOG(LVL_DEBUG, " - stored_otap_seq %d", diag.stored_otap_seq);
-    LOG(LVL_DEBUG, " - voltage %d", diag.voltage);
     LOG(LVL_DEBUG, " - diag_sent %d", diag.success);
     LOG(LVL_DEBUG, " - diag_error %d", diag.error);
     LOG(LVL_DEBUG, " - diag_timing_us %u", diag.timing_us);

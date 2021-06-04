@@ -11,7 +11,7 @@ target_board=
 # Version of the SDK
 sdk_major=1
 sdk_minor=2
-sdk_maintenance=0
+sdk_maintenance=1
 sdk_development=0
 
 
