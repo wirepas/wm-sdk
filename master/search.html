@@ -21632,7 +21632,7 @@ $(document).ready(function(){initNavTree('search.html',''); initResizable(); });
     <field name="args">(poslib_settings_t *settings)</field>
     <field name="url">d6/d21/poslib_8h.html#ad346d18e7c29a591fa8a4f78e4de5792</field>
     <field name="keywords">PosLib_getConfig</field>
-    <field name="text">Gets PosLib configuration poslib_settings_t type pointer See poslib_ret_e</field>
+    <field name="text">Gets PosLib configuration poslib_settings_t pointer where settings will be copied See poslib_ret_e</field>
   </doc>
   <doc>
     <field name="type">function</field>
@@ -21640,7 +21640,7 @@ $(document).ready(function(){initNavTree('search.html',''); initResizable(); });
     <field name="args">(void)</field>
     <field name="url">d6/d21/poslib_8h.html#a25e325100a463c7f51cac612956f54f0</field>
     <field name="keywords">PosLib_startPeriodic</field>
-    <field name="text">Start the positioning updates according to provided configuration Calls PosLib initialization function before start Following shared libraries needs to be initialized before use PosLib_start() Shared_Data_init() Shared_Appconfig_init() Shared_Neighbors_init() Shared_Shutdown_init() See poslib_ret_e</field>
+    <field name="text">Start the positioning updates according to provided configuration Calls PosLib initialization function before start Following shared libraries needs to be initialized before use App_Scheduler_init() Shared_Data_init() Shared_Appconfig_init() Shared_Neighbors_init() Shared_Beacon_init() Shared_Offline_init() See poslib_ret_e</field>
   </doc>
   <doc>
     <field name="type">function</field>
@@ -21656,7 +21656,7 @@ $(document).ready(function(){initNavTree('search.html',''); initResizable(); });
     <field name="args">(void)</field>
     <field name="url">d6/d21/poslib_8h.html#a86d60f262f339365c5b50f04cbd9bccc</field>
     <field name="keywords">PosLib_startOneshot</field>
-    <field name="text">Triggers one position update If PosLib is started the scheduled operation will continue after the one-shot update with the respective schedule If in stop mode then will stay in stop mode after the one-shot update If called during NRLS sleep sleep is stopped which triggers one position update NRLS period continues with the respective schedule See poslib_ret_e</field>
+    <field name="text">Triggers one position update If PosLib is started the scheduled operation will continue after the oneshot update If in stop state then after the oneshot update is completed it will return in stop state If called during NRLS sleep sleep is stopped which triggers one position update NRLS period continues with the respective schedule See poslib_ret_e</field>
   </doc>
   <doc>
     <field name="type">function</field>
@@ -21664,7 +21664,7 @@ $(document).ready(function(){initNavTree('search.html',''); initResizable(); });
     <field name="args">(poslib_motion_mode_e mode)</field>
     <field name="url">d6/d21/poslib_8h.html#aab50cf9ddf10ac9526375bc0c282b6b9</field>
     <field name="keywords">PosLib_motion</field>
-    <field name="text">Is used to indicate that the tag is static or dynamic The update rate used will be adjusted according to the state when moving from static → dynamic an update will be triggered immediately if the last update is older than current time dynamic rate otherwise the next update is re-scheduled as last update dynamic rate mode type of poslib_motion_mode_e See poslib_ret_e</field>
+    <field name="text">Used to indicate that the tag is static or dynamic The update rate used will be adjusted according to the state mode type of poslib_motion_mode_e See poslib_ret_e</field>
   </doc>
   <doc>
     <field name="type">function</field>
@@ -21672,7 +21672,7 @@ $(document).ready(function(){initNavTree('search.html',''); initResizable(); });
     <field name="args">(void)</field>
     <field name="url">d6/d21/poslib_8h.html#a816a08a8eeb80b08ccb54371d956ea75</field>
     <field name="keywords">PosLib_status</field>
-    <field name="text">Returns the current status of PosLib See poslib_ret_e</field>
+    <field name="text">Returns the current status of PosLib See poslib_status_e</field>
   </doc>
   <doc>
     <field name="type">function</field>
@@ -21688,7 +21688,7 @@ $(document).ready(function(){initNavTree('search.html',''); initResizable(); });
     <field name="args">(uint8_t id)</field>
     <field name="url">d6/d21/poslib_8h.html#ae1f5ba1467653135307c16abd23f4c19</field>
     <field name="keywords">PosLib_eventDeregister</field>
-    <field name="text">Clears a callback for the requested event requested_event type of poslib_events_e</field>
+    <field name="text">De-register the event subscriber with the provided id id subscriber ID</field>
   </doc>
   <doc>
     <field name="type">enum</field>

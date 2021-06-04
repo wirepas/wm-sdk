@@ -115,10 +115,11 @@ Functions</h2></td></tr>
 <tr class="memdesc:aaf3499fe534a846c6a1d999d6b94169f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the positioning updates.  <a href="../../d6/d21/poslib_8h.html#aaf3499fe534a846c6a1d999d6b94169f">More...</a><br /></td></tr>
 <tr class="separator:aaf3499fe534a846c6a1d999d6b94169f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86d60f262f339365c5b50f04cbd9bccc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0">poslib_ret_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a86d60f262f339365c5b50f04cbd9bccc">PosLib_startOneshot</a> (void)</td></tr>
-<tr class="memdesc:a86d60f262f339365c5b50f04cbd9bccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers one position update. If PosLib is started the scheduled operation will continue after the one-shot update with the respective schedule. If in stop mode then will stay in stop mode after the one-shot update.  <a href="../../d6/d21/poslib_8h.html#a86d60f262f339365c5b50f04cbd9bccc">More...</a><br /></td></tr>
+<tr class="memdesc:a86d60f262f339365c5b50f04cbd9bccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers one position update. If PosLib is started the scheduled operation will continue after the oneshot update. If in stop state then after the oneshot update is completed it will return in stop state.  <a href="../../d6/d21/poslib_8h.html#a86d60f262f339365c5b50f04cbd9bccc">More...</a><br /></td></tr>
 <tr class="separator:a86d60f262f339365c5b50f04cbd9bccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab50cf9ddf10ac9526375bc0c282b6b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0">poslib_ret_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#aab50cf9ddf10ac9526375bc0c282b6b9">PosLib_motion</a> (<a class="el" href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831">poslib_motion_mode_e</a> mode)</td></tr>
-<tr class="memdesc:aab50cf9ddf10ac9526375bc0c282b6b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is used to indicate that the tag is static or dynamic. The update rate used will be adjusted according to the state: when moving from static → dynamic: an update will be triggered immediately if the last update is older than (current time - dynamic rate), otherwise the next update is re-scheduled as (last update + dynamic rate).  <a href="../../d6/d21/poslib_8h.html#aab50cf9ddf10ac9526375bc0c282b6b9">More...</a><br /></td></tr>
+<tr class="memdesc:aab50cf9ddf10ac9526375bc0c282b6b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to indicate that the tag is static or dynamic. The update rate used will be adjusted according to the state. <br  />
+  <a href="../../d6/d21/poslib_8h.html#aab50cf9ddf10ac9526375bc0c282b6b9">More...</a><br /></td></tr>
 <tr class="separator:aab50cf9ddf10ac9526375bc0c282b6b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a816a08a8eeb80b08ccb54371d956ea75"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6">poslib_status_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a816a08a8eeb80b08ccb54371d956ea75">PosLib_status</a> (void)</td></tr>
 <tr class="memdesc:a816a08a8eeb80b08ccb54371d956ea75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current status of PosLib.  <a href="../../d6/d21/poslib_8h.html#a816a08a8eeb80b08ccb54371d956ea75">More...</a><br /></td></tr>
@@ -127,7 +128,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:abe0a8a35b6df046773253cf888bb0d0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register an event subscriber.  <a href="../../d6/d21/poslib_8h.html#abe0a8a35b6df046773253cf888bb0d0f">More...</a><br /></td></tr>
 <tr class="separator:abe0a8a35b6df046773253cf888bb0d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1f5ba1467653135307c16abd23f4c19"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#ae1f5ba1467653135307c16abd23f4c19">PosLib_eventDeregister</a> (uint8_t id)</td></tr>
-<tr class="memdesc:ae1f5ba1467653135307c16abd23f4c19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears a callback for the requested event.  <a href="../../d6/d21/poslib_8h.html#ae1f5ba1467653135307c16abd23f4c19">More...</a><br /></td></tr>
+<tr class="memdesc:ae1f5ba1467653135307c16abd23f4c19"><td class="mdescLeft">&#160;</td><td class="mdescRight">De-register the event subscriber with the provided id.  <a href="../../d6/d21/poslib_8h.html#ae1f5ba1467653135307c16abd23f4c19">More...</a><br /></td></tr>
 <tr class="separator:ae1f5ba1467653135307c16abd23f4c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -242,7 +243,7 @@ Macros</h2></td></tr>
 <tr class="separator:a23c24b5786467170305052e2da467218"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04643836163884cc6da06db1839ffdce"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a04643836163884cc6da06db1839ffdce">POS_SOURCE_ENDPOINT</a>&#160;&#160;&#160;238</td></tr>
 <tr class="separator:a04643836163884cc6da06db1839ffdce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75d520a2801a3c341a3eabbaf528d90e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a75d520a2801a3c341a3eabbaf528d90e">POSLIB_MIN_MEAS_RATE_S</a>&#160;&#160;&#160;8 /* FixMe: adjust based on testing*/</td></tr>
+<tr class="memitem:a75d520a2801a3c341a3eabbaf528d90e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a75d520a2801a3c341a3eabbaf528d90e">POSLIB_MIN_MEAS_RATE_S</a>&#160;&#160;&#160;8</td></tr>
 <tr class="memdesc:a75d520a2801a3c341a3eabbaf528d90e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update rate min/max.  <a href="../../d6/d21/poslib_8h.html#a75d520a2801a3c341a3eabbaf528d90e">More...</a><br /></td></tr>
 <tr class="separator:a75d520a2801a3c341a3eabbaf528d90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ff91cbf1732a7b8530166ace428d2ec"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a6ff91cbf1732a7b8530166ace428d2ec">POSLIB_MAX_MEAS_RATE_S</a>&#160;&#160;&#160;86400</td></tr>
@@ -321,10 +322,10 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Clears a callback for the requested event. </p>
+<p>De-register the event subscriber with the provided id. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">requested_event</td><td>type of poslib_events_e </td></tr>
+    <tr><td class="paramname">id</td><td>subscriber ID </td></tr>
   </table>
   </dd>
 </dl>
@@ -397,7 +398,7 @@ Macros</h2></td></tr>
 <p>Gets PosLib configuration. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname"><a class="el" href="../../d6/d21/poslib_8h.html#d4/d10/structposlib__settings__t" title="position library settings.">poslib_settings_t</a></td><td>type pointer </td></tr>
+    <tr><td class="paramname"><a class="el" href="../../d6/d21/poslib_8h.html#d4/d10/structposlib__settings__t" title="position library settings.">poslib_settings_t</a></td><td>pointer where settings will be copied </td></tr>
   </table>
   </dd>
 </dl>
@@ -423,7 +424,8 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Is used to indicate that the tag is static or dynamic. The update rate used will be adjusted according to the state: when moving from static → dynamic: an update will be triggered immediately if the last update is older than (current time - dynamic rate), otherwise the next update is re-scheduled as (last update + dynamic rate). </p>
+<p>Used to indicate that the tag is static or dynamic. The update rate used will be adjusted according to the state. <br  />
+ </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mode</td><td>type of poslib_motion_mode_e </td></tr>
@@ -481,7 +483,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Triggers one position update. If PosLib is started the scheduled operation will continue after the one-shot update with the respective schedule. If in stop mode then will stay in stop mode after the one-shot update. </p>
+<p>Triggers one position update. If PosLib is started the scheduled operation will continue after the oneshot update. If in stop state then after the oneshot update is completed it will return in stop state. </p>
 <dl class="section note"><dt>Note</dt><dd>If called during NRLS sleep, sleep is stopped which triggers one position update. NRLS period continues with the respective schedule. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0">poslib_ret_e</a> </dd></dl>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a3">positioning_app/app.c</a>.</dd>
@@ -506,7 +508,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Start the positioning updates according to provided configuration. Calls PosLib initialization function before start. </p>
-<dl class="section note"><dt>Note</dt><dd>Following shared libraries needs to be initialized before use PosLib_start(): <a class="el" href="../../d5/d74/shared__data_8h.html#ae4c8e98d1b0f33bf18414441f72dc270" title="Initialize the shared data library.">Shared_Data_init()</a>; <a class="el" href="../../d2/d67/shared__appconfig_8h.html#aec6dd99594beb669cb5e1a200a09bf6b" title="Initialize the shared app config library library.">Shared_Appconfig_init()</a>; <a class="el" href="../../d7/ded/shared__neighbors_8h.html#a005f16fc05b1aac1c98e5f599f7105c6" title="Initialize the shared neighbors library.">Shared_Neighbors_init()</a>; <a class="el" href="../../d0/de4/shared__shutdown_8h.html#aca22ac0578ba1609ec2aa7f18938b2e3" title="Initialize the shared Shutdown library.">Shared_Shutdown_init()</a>; </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Following shared libraries needs to be initialized before use <a class="el" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802" title="Initialize scheduler.">App_Scheduler_init()</a>; <a class="el" href="../../d5/d74/shared__data_8h.html#ae4c8e98d1b0f33bf18414441f72dc270" title="Initialize the shared data library.">Shared_Data_init()</a>; <a class="el" href="../../d2/d67/shared__appconfig_8h.html#aec6dd99594beb669cb5e1a200a09bf6b" title="Initialize the shared app config library library.">Shared_Appconfig_init()</a>; <a class="el" href="../../d7/ded/shared__neighbors_8h.html#a005f16fc05b1aac1c98e5f599f7105c6" title="Initialize the shared neighbors library.">Shared_Neighbors_init()</a>; <a class="el" href="../../d2/d3b/shared__beacon_8h.html#ae78612ba7fcbd7044abc69e8d7bb1992" title="Initialize the Shared_Beacon library.">Shared_Beacon_init()</a>; <a class="el" href="../../d9/d7b/shared__offline_8h.html#a68ab2b3d1b3904f7a6109b9f4e80f412" title="Initialize shared offline module.">Shared_Offline_init()</a>;</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0">poslib_ret_e</a> </dd></dl>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a30">positioning_app/app.c</a>.</dd>
 </dl>
@@ -530,7 +532,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the current status of PosLib. </p>
-<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0">poslib_ret_e</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6">poslib_status_e</a> </dd></dl>
 
 </div>
 </div>
@@ -1181,7 +1183,7 @@ time_hp</td>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define POSLIB_MIN_MEAS_RATE_S&#160;&#160;&#160;8 /* FixMe: adjust based on testing*/</td>
+          <td class="memname">#define POSLIB_MIN_MEAS_RATE_S&#160;&#160;&#160;8</td>
         </tr>
       </table>
 </div><div class="memdoc">
