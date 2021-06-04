@@ -21,7 +21,7 @@
 /**
  * @brief Update rate min/max
  */
-#define POSLIB_MIN_MEAS_RATE_S   8 /* FixMe: adjust based on testing*/
+#define POSLIB_MIN_MEAS_RATE_S   8
 #define POSLIB_MAX_MEAS_RATE_S   86400
 
 /**
@@ -249,7 +249,7 @@ poslib_ret_e PosLib_setConfig(poslib_settings_t * settings);
 
 /**
  * @brief   Gets PosLib configuration.
- * @param   poslib_settings_t type pointer
+ * @param   poslib_settings_t pointer where settings will be copied
  * @return  See \ref poslib_ret_e
  */
 poslib_ret_e PosLib_getConfig(poslib_settings_t * settings);
@@ -258,11 +258,13 @@ poslib_ret_e PosLib_getConfig(poslib_settings_t * settings);
  * @brief   Start the positioning updates according to provided configuration.
  *          Calls PosLib initialization function before start.
  * @note    Following shared libraries needs to be initialized before use
- *          PosLib_start():
+ *          App_Scheduler_init();
  *          Shared_Data_init();
  *          Shared_Appconfig_init();
  *          Shared_Neighbors_init();
- *          Shared_Shutdown_init();
+ *          Shared_Beacon_init();
+ *          Shared_Offline_init();
+ *          
  * @return  See \ref poslib_ret_e
  */
 poslib_ret_e PosLib_startPeriodic(void);
@@ -275,9 +277,8 @@ poslib_ret_e PosLib_stopPeriodic(void);
 
 /**
  * @brief   Triggers one position update. If PosLib is started the scheduled
- *          operation will continue after the one-shot update with the
- *          respective schedule. If in stop mode then will stay in stop mode
- *          after the one-shot update.
+ *          operation will continue after the oneshot update. 
+ *          If in stop state then after the oneshot update is completed it will return in stop state.
  * @note    If called during NRLS sleep, sleep is stopped which triggers one
  *          position update. NRLS period continues with the respective schedule.
  * @return  See \ref poslib_ret_e
@@ -285,12 +286,8 @@ poslib_ret_e PosLib_stopPeriodic(void);
 poslib_ret_e PosLib_startOneshot(void);
 
 /**
- * @brief   Is used to indicate that the tag is static or dynamic. The update
- *          rate used will be adjusted according to the state:  when moving from
- *          static → dynamic:  an update will be triggered immediately if the
- *          last update is older than (current time - dynamic rate),
- *          otherwise the next update is re-scheduled as
- *          (last update + dynamic rate).
+ * @brief   Used to indicate that the tag is static or dynamic. The update
+ *          rate used will be adjusted according to the state.  
  * @param   mode type of poslib_motion_mode_e
  * @return  See \ref poslib_ret_e
  */
@@ -298,7 +295,7 @@ poslib_ret_e PosLib_motion(poslib_motion_mode_e mode);
 
 /**
  * @brief   Returns the current status of PosLib.
- * @return  See \ref poslib_ret_e
+ * @return  See \ref poslib_status_e
  */
 poslib_status_e PosLib_status(void);
 
@@ -314,8 +311,8 @@ poslib_ret_e PosLib_eventRegister(poslib_events_e event,
                             uint8_t * id);
 
 /**
- * @brief   Clears a callback for the requested event.
- * @param   requested_event type of poslib_events_e
+ * @brief   De-register the event subscriber with the provided id
+ * @param   id subscriber ID
  */
 void PosLib_eventDeregister(uint8_t id);
 #endif

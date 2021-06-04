@@ -1,1 +1,0 @@
-For documentation please see: "WP-RM-135 Wirepas Positioning Application Reference Manual"

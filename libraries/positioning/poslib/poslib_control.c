@@ -151,15 +151,16 @@ static offline_setting_conf_t m_shared_offline_cbs =
 
 static void data_send_cb(const app_lib_data_sent_status_t * status)
 {
-    //FixMe: add EP check here -low risk
     m_data_sent_success = status->success;
     PosLibEvent_add(POSLIB_CTRL_EVENT_DATA_SENT);
 }
 
+#ifdef ROUTE_CHECK
 static void route_cb(void)
 {
     PosLibEvent_add(POSLIB_CTRL_EVENT_ROUTE_CHANGE);
 }
+#endif
 
 static uint32_t led_off_cb(void)
 {
@@ -294,6 +295,7 @@ static bool register_callbacks(void)
         }
     }
 
+    #ifdef ROUTE_CHECK
     /** Route change callback */
     {
         app_res_e res;
@@ -304,6 +306,7 @@ static bool register_callbacks(void)
             LOG(LVL_ERROR, "Cannot register route change callback. res. %u", res)
         }
     }
+    #endif
 
     return ret;
 }
@@ -556,7 +559,7 @@ static bool shared_offline_unregister()
 
     return m_shared_offline.reg;
 }
-
+#ifdef ROUTE_CHECK
 static app_lib_state_route_state_e get_route_state(void)
 {
     app_lib_state_route_info_t info;
@@ -565,6 +568,7 @@ static app_lib_state_route_state_e get_route_state(void)
                 info.state, info.sink, info.next_hop, info.channel, info.cost);
     return info.state;
 }
+#endif
 
 static void control_init(void)
 {    
@@ -963,12 +967,13 @@ static uint32_t get_update_period()
         return  m_pos_settings.update_period_offline_s;
     }
 
-    if (m_motion_mode == POSLIB_MOTION_DYNAMIC &&
+    if (m_pos_settings.motion.enabled &&
+        m_motion_mode == POSLIB_MOTION_DYNAMIC &&
         m_pos_settings.update_period_dynamic_s != 0)
     {
         return m_pos_settings.update_period_dynamic_s;
     }
-
+    
     return m_pos_settings.update_period_static_s;
 }
 
@@ -1273,7 +1278,7 @@ static void handle_update_state(poslib_internal_event_t * event)
             }
             break;
         }
-
+#ifdef ROUTE_CHECK
         case POSLIB_CTRL_EVENT_ROUTE_CHANGE:
         {
 
@@ -1281,16 +1286,17 @@ static void handle_update_state(poslib_internal_event_t * event)
             (void)route_state;
             LOG(LVL_INFO,"<state> Route change. state: %u time: %u", m_ctrl.events.sent_success, 
                                                     MS_TIME_FROM(m_ctrl.update_start_hp));
-#if 0
+
 
             if (!m_ctrl.events.data_sent && (route_state == APP_LIB_STATE_ROUTE_STATE_VALID))
             {
                 send_measurement_message();
                 set_timeout(POSLIB_CTRL_EVENT_DATA_SENT, TIMEOUT_SEND_MS);
             }
-#endif
+
             break;
         }
+#endif
 
         case POSLIB_CTRL_EVENT_TIMEOUT:
         {
