@@ -1566,7 +1566,7 @@ The MSAP attributes are specified in Table 45.
 | [mPDUBufferUsage](#mPDUBufferUsage)         | 2                | R        | 1        |
 | [mPDUBufferCapacity](#mPDUBufferCapacity)   | 3                | R        | 1        |
 | [Reserved]                                  | 4                | \-       | \-       |
-| [mEnergy](#mEnergy)                         | 5                | R/W      | 1        |
+| [Reserved]                                  | 5                | \-       | \-       |
 | [mAutostart](#mAutostart)                   | 6                | R/W      | 1        |
 | [mRouteCount](#mRouteCount)                 | 7                | R        | 1        |
 | [mSystemTime](#mSystemTime)                 | 8                | R        | 4        |
@@ -1631,29 +1631,6 @@ at the moment.
 The *mPDUBufferCapacity* attribute indicates the number of PDUs that can still
 fit in the stack PDU buffer at the moment (i.e. *cPDUBufferSize -
 mPDUBufferUsage*).
-
-#### mEnergy
-
-| **Attribute ID** | **5**          |
-|------------------|----------------|
-| Type             | Read and write |
-| Size             | 1 octet        |
-| Valid values     | 0 – *255*      |
-| Default value    | 255            |
-
-The stack can use in its route cost calculations the state of energy remaining
-in each node. The state can be set with the *mEnergy* attribute. It is a value
-between 0 and 255, where 0 corresponds to a state where the node is almost out
-of energy and 255 corresponds to a state where maximum amount of energy is
-available.  
-The value is currently used in route cost calculations with a granularity of 32
-units. In other words, the energy value must change by at least 32 units for it
-to affect the cost calculations.  
-This attribute is intended to be set by the application periodically, to enable
-the stack routing layer to use energy parameter in cost and route calculation.  
-The specifics on how the remaining energy is measured is left for the
-responsibility of the application due to fact that different power sources and
-measurement circuits may be used depending on the implementation.
 
 #### mAutostart
 
