@@ -36,6 +36,7 @@
     + [MSAP Attributes](#msap-attributes)
   * [Configuration Services (CSAP)](#configuration-services-csap)
 - [Sequence Numbers](#sequence-numbers)
+- [Response Primitives](#response-primitives)
 - [Common Use Cases](#common-use-cases)
   * [Required Configuration](#required-configuration)
 - [Annex A: Additional CRC Information](#annex-a-additional-crc-information)
@@ -2331,6 +2332,26 @@ detect whether a key is set or not. When reading the key value, the error value
 that key is not set. And error value of 5 (Failure: Write-only attribute)
 indicates that the key has been set.
 
+# Response Primitives
+ 
+All stack indications must be acknowledged by the application using a response-primitive. All the
+response-primitives have the same frame format as illustrated in table bellow. Only thing that
+changes is the Primitive ID. The values of the primitive IDs are listed in [Table 3](#stack-service-specification).
+ 
+
+| **Primitive ID** | **Frame ID** | **Payload length** | **Result**   | **CRC**  |
+|------------------|--------------|--------------------|--------------|----------|
+| 1 octet          | 1 octet      | 1 octet            | 1 octet      | 2 octets |
+
+Frame fields are described in the table below.
+
+| **Field Name** | **Size** | **Valid Values** | **Description**
+|----------------|----------|------------------|----------------
+| *Primitive ID* | 1        | -                | Response Id associated to Indication Id as descibed in [Table 3](#stack-service-specification)
+| *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
+| *Result*       | 1        | 0 - 1            | The result field indicates if the application is ready to receive another pending indication (if there are any)<p>The different values are defined as follows: <p> - 0 = Do not send more indications<p> - 1 = Send next pending indication
+| *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
+ 
 # Sequence Numbers
 
 Some Wirepas Mesh stack services, such as the application configuration data
