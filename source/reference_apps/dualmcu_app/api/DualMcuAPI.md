@@ -1562,19 +1562,19 @@ The MSAP attributes are specified in Table 45.
 
 | **Attribute name**                       | **Attribute ID** | **Type** | **Size** |
 |------------------------------------------|------------------|----------|----------|
-| mStackStatus*mStackStatus*               | 1                | R        | 1        |
-| mPDUBufferUsage*mPDUBufferUsage*         | 2                | R        | 1        |
-| mPDUBufferCapacity*mPDUBufferCapacity*   | 3                | R        | 1        |
-| Reserved                                 | 4                | \-       | \-       |
-| mEnergy*mEnergy*                         | 5                | R/W      | 1        |
-| mAutostart*mAutostart*                   | 6                | R/W      | 1        |
-| mRouteCount*mRouteCount*                 | 7                | R        | 1        |
-| mSystemTime*mSystemTime*                 | 8                | R        | 4        |
-| mAccessCycleRange*mAccessCycleRange*     | 9                | R/W      | 4        |
-| mAccessCycleLimits*mAccessCycleLimits*   | 10               | R        | 4        |
-| mCurrentAccessCycle*mCurrentAccessCycle* | 11               | R        | 2        |
-| mScratchpadBlockMax*mScratchpadBlockMax* | 12               | R        | 1        |
-| mMulticastGroups*mMulticastGroups*       | 13               | R/W      | 40       |
+| [mStackStatus](#mStackStatus)               | 1                | R        | 1        |
+| [mPDUBufferUsage](#mPDUBufferUsage)         | 2                | R        | 1        |
+| [mPDUBufferCapacity](#mPDUBufferCapacity)   | 3                | R        | 1        |
+| [Reserved]                                  | 4                | \-       | \-       |
+| [mEnergy](#mEnergy)                         | 5                | R/W      | 1        |
+| [mAutostart](#mAutostart)                   | 6                | R/W      | 1        |
+| [mRouteCount](#mRouteCount)                 | 7                | R        | 1        |
+| [mSystemTime](#mSystemTime)                 | 8                | R        | 4        |
+| [mAccessCycleRange](#mAccessCycleRange)     | 9                | R/W      | 4        |
+| [mAccessCycleLimits](#mAccessCycleLimits)   | 10               | R        | 4        |
+| [mCurrentAccessCycle](#mCurrentAccessCycle) | 11               | R        | 2        |
+| [mScratchpadBlockMax](#mScratchpadBlockMax) | 12               | R        | 1        |
+| [mMulticastGroups](#mMulticastGroups*       | 13               | R/W      | 40       |
 
 #### mStackStatus
 
@@ -1896,28 +1896,28 @@ The CSAP attributes are specified in Table 50.
 
 | **Attribute name**   | **Attribute ID** | **Type** | **Size** |
 |----------------------|------------------|----------|----------|
-| [cNodeAddress](#WirepasMeshDual-MCUAPIReferenceManual-_cNodeAddress)                 | 1                | R/W      | 4        |
-| [cNetworkAddress](#WirepasMeshDual-MCUAPIReferenceManual-_cNetworkAddress)           | 2                | R/W      | 3        |
-| [cNetworkChannel](#WirepasMeshDual-MCUAPIReferenceManual-_cNetworkChannel)           | 3                | R/W      | 1        |
-| [cNodeRole](#WirepasMeshDual-MCUAPIReferenceManual-_cNodeRole)                       | 4                | R/W      | 1        |
-| [cMTU](#WirepasMeshDual-MCUAPIReferenceManual-_cMTU)                                 | 5                | R        | 1        |
-| [cPDUBufferSize](#WirepasMeshDual-MCUAPIReferenceManual-_cPDUBufferSize)             | 6                | R        | 1        |
-| [cScratchpadSequence](#WirepasMeshDual-MCUAPIReferenceManual-_cScratchpadSequence)   | 7                | R        | 1        |
-| [cMeshAPIVersion](#WirepasMeshDual-MCUAPIReferenceManual-_cMeshAPIVersion)           | 8                | R        | 2        |
-| [cFirmwareMajor](#WirepasMeshDual-MCUAPIReferenceManual-_cFirmwareMajor)             | 9                | R        | 2        |
-| [cFirmwareMinor](#WirepasMeshDual-MCUAPIReferenceManual-_cFirmwareMinor)             | 10               | R        | 2        |
-| [cFirmwareMaintenance](#WirepasMeshDual-MCUAPIReferenceManual-_cFirmwareMaintenance) | 11               | R        | 2        |
-| [cFirmwareDevelopment](#WirepasMeshDual-MCUAPIReferenceManual-_cFirmwareDevelopment) | 12               | R        | 2        |
-| [cCipherKey](#WirepasMeshDual-MCUAPIReferenceManual-_cCipherKey)                     | 13               | W        | 16       |
-| [cAuthenticationKey](#WirepasMeshDual-MCUAPIReferenceManual-_cAuthenticationKey)     | 14               | W        | 16       |
-| [cChannelLimits](#WirepasMeshDual-MCUAPIReferenceManual-_cChannelLimits)             | 15               | R        | 2        |
-| [cAppConfigDataSize](#WirepasMeshDual-MCUAPIReferenceManual-_cAppConfigDataSize)     | 16               | R        | 1        |
-| [cHwMagic](#WirepasMeshDual-MCUAPIReferenceManual-_cHwMagic)                         | 17               | R        | 2        |
-| [cStackProfile](#WirepasMeshDual-MCUAPIReferenceManual-_cStackProfile)               | 18               | R        | 2        |
-| [cOfflineScan](#WirepasMeshDual-MCUAPIReferenceManual-_cOfflineScan)                 | 20               | R/W      | 2        |
-| [cChannelAllocMap](#WirepasMeshDual-MCUAPIReferenceManual-_cChannelAllocMap)         | 21               | R/W      | 4        |
-| [cFeatureLockBits](#WirepasMeshDual-MCUAPIReferenceManual-_cFeatureLockBits)         | 22               | R/W      | 4        |
-| [cFeatureLockKey](#WirepasMeshDual-MCUAPIReferenceManual-_cFeatureLockKey)           | 23               | W        | 16       |
+| [cNodeAddress](#cNodeAddress)                | 1                | R/W      | 4        |
+| [cNetworkAddress](#cNetworkAddress)           | 2                | R/W      | 3        |
+| [cNetworkChannel](#cNetworkChannel)           | 3                | R/W      | 1        |
+| [cNodeRole](#cNodeRole)                       | 4                | R/W      | 1        |
+| [cMTU](#cMTU)                                 | 5                | R        | 1        |
+| [cPDUBufferSize](#cPDUBufferSize)             | 6                | R        | 1        |
+| [cScratchpadSequence](#cScratchpadSequence)   | 7                | R        | 1        |
+| [cMeshAPIVersion](#cMeshAPIVersion)           | 8                | R        | 2        |
+| [cFirmwareMajor](#cFirmwareMajor)             | 9                | R        | 2        |
+| [cFirmwareMinor](#cFirmwareMinor)             | 10               | R        | 2        |
+| [cFirmwareMaintenance](#cFirmwareMaintenance) | 11               | R        | 2        |
+| [cFirmwareDevelopment](#cFirmwareDevelopment) | 12               | R        | 2        |
+| [cCipherKey](#cCipherKey)                     | 13               | W        | 16       |
+| [cAuthenticationKey](#cAuthenticationKey)     | 14               | W        | 16       |
+| [cChannelLimits](#cChannelLimits)             | 15               | R        | 2        |
+| [cAppConfigDataSize](#cAppConfigDataSize)     | 16               | R        | 1        |
+| [cHwMagic](#cHwMagic)                         | 17               | R        | 2        |
+| [cStackProfile](#cStackProfile)               | 18               | R        | 2        |
+| [cOfflineScan](#cOfflineScan)                 | 20               | R/W      | 2        |
+| [cChannelAllocMap](#cChannelAllocMap)         | 21               | R/W      | 4        |
+| [cFeatureLockBits](#cFeatureLockBits)         | 22               | R/W      | 4        |
+| [cFeatureLockKey](#cFeatureLockKey)           | 23               | W        | 16       |
 
 #### cNodeAddress
 
