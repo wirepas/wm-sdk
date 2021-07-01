@@ -119,6 +119,7 @@ void App_Scheduler_init(void);
  */
 app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_ms, uint32_t exec_time_us);
 
+#ifdef APP_SCHEDULER_MAX_EXEC_TIME_US
 /**
  * \brief   Add a task without execution time (deprecated)
  * \param   cb
@@ -131,7 +132,6 @@ app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_
  *
  * \note    This call is deprecated and you should use @ref App_Scheduler_addTask_execTime instead
  */
-#ifdef APP_SCHEDULER_MAX_EXEC_TIME_US
 static inline app_scheduler_res_e App_Scheduler_addTask(task_cb_f cb, uint32_t delay_ms)
 {
     return App_Scheduler_addTask_execTime(cb, delay_ms, APP_SCHEDULER_MAX_EXEC_TIME_US);

@@ -3,7 +3,7 @@
 ## Application scope
 
 This application is an evaluation application (i.e some sort of hello world)
-allowing to discover Wirepas mesh network capabilities. It embeds some use cases
+allowing to discover Wirepas Massive network capabilities. It embeds some use cases
 to generate and process messages from a node it is running on.
 
 This application provides to a node the following capabilities:
@@ -21,9 +21,9 @@ This application provides to a node the following capabilities:
 
 The python script found in the **backend_scripts** folder allows a user to interact
 with the nodes running the app using the **wirepas-gateway-API** if the nodes are part of a
-Wirepas Mesh Network connected to a Wirepas gateway. In this configuration, a remote communication
+Wirepas Massive Network connected to a Wirepas gateway. In this configuration, a remote communication
 channel can be established via MQTT protocol as commands (described above) sent by the user are published
-on dedicated MQTT topics from which gateway can read and parse to send them to the Wirepas Mesh network. By
+on dedicated MQTT topics from which gateway can read and parse to send them to the Wirepas Massive network. By
 subscribing to dedicated topics the user can also get messages (from the set listed above) coming from nodes
 running the Evaluation application. See Readme.md file provided with the script to get more information about
 its usage and how communication via wirepas-gateway-API is handled.
@@ -41,9 +41,13 @@ From a communication point, to send and receive data this application:
     In this software, all messages have a dedicated source and destination
     endpoint fixed to the value 1
 
-* receives and generates internal Wirepas mesh network packet format with a specific
+* receives and generates internal Wirepas Massive network packet format with a specific
     payload format (\<Message ID\>\<Message specific data format\>) for each
     messages. See the "Message description" section to get all message' data format.
+
+* supports the configuration of one application parameter via the "Application data configuration" (app config)
+feature of Wirepas Massive stack
+    meaning it can receive network wide persistent message
 
 ### Messages description
 This section covers the description of the evaluation application supported
@@ -83,6 +87,20 @@ The table given below presents the field bytes size and meaning:
 |       :---:       |:---: |                              :---:                                     |
 | Message ID        | 1    | Message identifier. Decimal Value is 128                               |
 | New period value  | 4    | Interval value expressed in milliseconds (2000-1200000, default 10000) |
+
+#### Set measurement rate via "app config" (network wide persistent message)
+This message format follows the rules of all messages delivered with Shared_AppConfig, described in the file shared_appconfig.md located in libraries\shared_appconfig folder. 
+\<AppConfig Header\>\<TLV entries Nb>\<Type>\<Length>\<Value>
+The table given below presents the field byte size and meaning:
+
+| FIELD         	| SIZE |                         DESCRIPTION                                 |
+|     :---:     	|:---: |                            :---:                                    |
+| AppConfig Header  |  2   | App config header on 2 bytes, fixed pattern : "0xF6 0x7E"                            |
+| TLV entries Nb 	|  1   | Number of TLV (Type/ Length/ Value) entries contained in the message. In basic case, this is equal to 1 (One entry for the measurement period)|
+| Type  			|  1   | Message type. To set the mesurement rate, the type to set is "0xC3"|
+| Length			|  1   | Length of the value on 1 byte. For the measurment rate, the length is 4.
+| Value				|  1   | Value of the measurement rate in seconds. 
+
 
 #### Button pressed notification message
 This message format is :
@@ -151,9 +169,9 @@ The table given below presents the field byte size and meaning:
 ## Application architecture
 
 The evaluation application implements a user application which runs in a cooperative
-manner with the Wirepas Mesh stack which is in charge of handling all Wirepas network
+manner with the Wirepas Massive stack which is in charge of handling all Wirepas network
 related tasks. The [diagram](https://wirepas.github.io/wm-sdk/) displayed on the
-linked page illustrates how the user application interacts the Wirepas Mesh Stack.
+linked page illustrates how the user application interacts the Wirepas Massive Stack.
 
 This application depends on:
 * the Single-MCU api to send and receive messages
@@ -161,6 +179,7 @@ This application depends on:
 * the SDK Libraries to
     * process and filter incoming packets
     * schedule the different application's processing
+    * handle "application data configuration"
 
 ## Testing
 
@@ -177,3 +196,14 @@ the _config.mk_ file in the folder application.
 To do that **default_operation_mode** should be set according to the desired
 mode. A value of 1 will enable the Low-latency mode and a value of 0 will enable
 the Low-energy one (default configuration).
+
+
+### Logs
+Logs can be enabled by setting the line 31 of app.c like this :
+#define DEBUG_LOG_MAX_LEVEL LVL_INFO.
+They can be caught with a serial connection, with the following parameters:
+* Baudrate : 115200
+* Data bits : 8
+* Stop bit : 1
+* Parity : None
+

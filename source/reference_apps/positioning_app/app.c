@@ -18,15 +18,8 @@
 #define DEBUG_LOG_MAX_LEVEL LVL_NOLOG
 #endif
 #include "debug_log.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
-#include <stdbool.h>
 #include "api.h"
-#include "bitfield.h"
 #include "app_scheduler.h"
-#include "random.h"
 #include "poslib.h"
 #include "shared_neighbors.h"
 #include "shared_shutdown.h"
@@ -35,12 +28,14 @@
 #include "shared_offline.h"
 #include "shared_beacon.h"
 #include "posapp_settings.h"
-#include "power.h"
-#include "button.h"
+#include "board.h"
 #include "led.h"
-#include "motion.h"
+
 #include "gpio.h"
 #include "voltage.h"
+#ifdef MOTION_SUPPORTED
+#include "motion.h"
+#endif
 #ifdef CONF_USE_PERSISTENT_MEMORY
 #include "app_persistent.h"
 #endif

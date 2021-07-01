@@ -60,7 +60,7 @@ use_persistent_memory=yes
 button_enabled=no
 
 #Enable led notification (yes/no)
-led_notification_enabled=yes
+led_notification_enabled=no
 
 #Enable motion sensor
 motion_sensor=

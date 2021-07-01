@@ -49,6 +49,7 @@ typedef struct
     timestamp_t                         next_ts;/* When is the next execution */
     uint32_t                            exec_time_us; /* Time needed for execution */
     bool                                updated; /* Updated in IRQ context? */
+    bool                                removed; /* Task removed, to be released */
 } task_t;
 
 /**  List of tasks */
@@ -150,7 +151,22 @@ static uint32_t get_delay_from_now_us(timestamp_t * ts_p)
             return 0;
         }
 
-        return (((ts_p->coarse - now_coarse) * 1000) / 128) * 1000;
+        // Check for overflow
+        uint32_t delta_coarse = ts_p->coarse - now_coarse;
+
+        // on 32 bits, max delay in us is 2^32 * 128 / 1000 / 1000 = 549755 coarse
+        if (delta_coarse > 549755)
+        {
+            // No need to compute, it is far enough in future and cannot be represented
+            // on a 32 bits counter in us without overflow.
+            // Anyway the scheduler itself will be scheduled at least every
+            // m_max_time_ms so we just need to Know that it is far in future
+            return (uint32_t)(-1);
+        }
+        else
+        {
+            return (((ts_p->coarse - now_coarse) * 1000) / 128) * 1000;
+        }
     }
 }
 
@@ -207,7 +223,7 @@ static void perform_task(task_t * task)
     // Update its next execution time under critical section
     // to avoid overriding new value set by IRQ
     Sys_enterCriticalSection();
-    if (!task->updated)
+    if (!task->updated && !task->removed)
     {
         // Task was not modified from IRQ or task itself during execution
         // so we can safely update task
@@ -228,18 +244,26 @@ static void perform_task(task_t * task)
 
 /**
  * \brief   Get the next task for execution
+ * \note    Must be called under critical section
  */
-static task_t * get_next_task()
+static task_t * get_next_task_locked()
 {
     task_t * next = NULL;
     for (uint8_t i = 0; i < APP_SCHEDULER_ALL_TASKS; i++)
     {
         if (m_tasks[i].func != NULL)
         {
+            if (m_tasks[i].removed)
+            {
+                // Time to clear the task
+                m_tasks[i].func = NULL;
+                continue;
+            }
+
             if (next == NULL
                 || is_timestamp_before(&m_tasks[i].next_ts, &next->next_ts))
             {
-                // First task found or task is before the elected one
+                // First task found or task is before the selected one
                 next = &m_tasks[i];
             }
         }
@@ -290,7 +314,8 @@ static uint32_t periodic_work(void)
     if (!m_force_reschedule)
     {
         if (m_next_task_p != NULL
-            && get_delay_from_now_us(&m_next_task_p->next_ts) == 0)
+            && get_delay_from_now_us(&m_next_task_p->next_ts) == 0
+            && !m_next_task_p->removed)
         {
             // The last selected task is ready
             perform_task(m_next_task_p);
@@ -299,8 +324,8 @@ static uint32_t periodic_work(void)
 
     // Enter critical section to protect m_next_task_p
     Sys_enterCriticalSection();
-    // Update next task
-    m_next_task_p = get_next_task();
+    // Update next task and clean canceled task
+    m_next_task_p = get_next_task_locked();
     if (m_next_task_p != NULL)
     {
         // Update periodic work according to next task
@@ -342,6 +367,7 @@ static bool add_task_to_table_locked(task_t * task_p)
             // Task found, just update the next timestamp and exit
             m_tasks[i].next_ts = task_p->next_ts;
             m_tasks[i].updated = true;
+            m_tasks[i].removed = false;
             res = true;
             break;
         }
@@ -379,8 +405,9 @@ static task_t * remove_task_from_table_locked(task_cb_f cb)
     {
         if (m_tasks[i].func == cb)
         {
-            m_tasks[i].func = NULL;
+            // Mark the task as removed
             m_tasks[i].updated = true;
+            m_tasks[i].removed = true;
             removed_task = &m_tasks[i];
             break;
         }
@@ -410,11 +437,14 @@ app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb,
                                                    uint32_t delay_ms,
                                                    uint32_t exec_time_us)
 {
-    task_t new_task;
+    task_t new_task = {
+        .func = cb,
+        .exec_time_us = exec_time_us,
+        .updated = false,
+        .removed = false,
+    };
     app_scheduler_res_e res;
-    new_task.func = cb;
     get_timestamp(&new_task.next_ts, delay_ms);
-    new_task.exec_time_us = exec_time_us;
 
     if (!m_initialized)
     {
@@ -466,18 +496,13 @@ app_scheduler_res_e App_Scheduler_cancelTask(task_cb_f cb)
     task_t * removed_task = remove_task_from_table_locked(cb);
     if (removed_task != NULL)
     {
-        if (removed_task == m_next_task_p)
-        {
-            // We suppressed the next task to be schedule, need a reschedule
-            // Not really needed as it could be detected when trying t execute
-            // the task.
-            m_force_reschedule = true;
-            // Call our periodic work to update the next task ASAP
-            // with short exec time as no task will be executed
-            lib_system->setPeriodicCb(periodic_work,
-                                      0,
-                                      EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US);
-        }
+        // Force our task to be reschedule asap to do the cleanup of the task
+        // and potentially change the next task to be schedule
+        m_force_reschedule = true;
+        lib_system->setPeriodicCb(periodic_work,
+                                  0,
+                                  EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US);
+
         res = APP_SCHEDULER_RES_OK;
     }
     else

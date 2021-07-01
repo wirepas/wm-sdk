@@ -22,6 +22,6 @@ app_specific_area_id=0x8030B3
 
 # App version
 app_major=0
-app_minor=1
-app_maintenance=0
+app_minor=2
+app_maintenance=1
 app_development=0

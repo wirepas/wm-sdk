@@ -29,13 +29,13 @@ on this [website](http://cbor.me/).
 
 An example of a full battery voltage packet payload (in hexadecimal format)
 is given below with its decoding: <br>
-bf 02 19 0b 3a ff <br>
-|| || || || || || <br>
-|| || || || || vv --- primitive <br>
-|| || || vv vv --- value (2874 millivolts) <br>
-|| || vv --- major type additional information <br>
-|| vv --- key (voltage) <br>
-vv --- map <br>
+`bf 02 19 0b 3a ff` <br>
+`|| || || || || ||` <br>
+`|| || || || || vv --- primitive` <br>
+`|| || || vv vv --- value (2874 millivolts)` <br>
+`|| || vv --- major type additional information` <br>
+`|| vv --- key (voltage)` <br>
+`vv --- map` <br>
 Optionally the result can be printed on a node UART interface if application logging
 is enabled.
 

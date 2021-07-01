@@ -76,6 +76,7 @@ CFLAGS += -DAPP_SCHEDULER_MAX_EXEC_TIME_US=500
 
 # MOTION support
 ifneq ($(motion_sensor),)
+INCLUDES += -I$(SRCS_PATH)/motion/
 include $(SRCS_PATH)/motion/makefile_motion.mk
 endif 
-INCLUDES += -I$(SRCS_PATH)/motion/
+

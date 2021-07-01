@@ -269,7 +269,9 @@ void App_init(const app_global_functions_t * functions)
 
     app_res = lib_settings->setNodeRole(
                 app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE,
-                                             APP_LIB_SETTINGS_ROLE_FLAG_LL));
+                                             APP_LIB_SETTINGS_ROLE_FLAG_LL |
+                                             APP_LIB_SETTINGS_ROLE_FLAG_AUTOROLE));
+
     if (app_res != APP_RES_OK)
     {
         LOG(LVL_ERROR, "Error setting node role (res:%d)", app_res);
@@ -285,14 +287,12 @@ void App_init(const app_global_functions_t * functions)
     {
         LOG(LVL_ERROR, "Error initializing control library (ret:%d)",
                        ctrl_ret);
-        return;
     }
 
     app_res = Shared_Data_addDataReceivedCb(&m_switch_received_item);
     if (app_res != APP_RES_OK)
     {
         LOG(LVL_ERROR, "Error adding Data callback (res:%d)", app_res);
-        return;
     }
 
     app_cfg_res = Shared_Appconfig_addFilter(&m_da_appconfig_item,
@@ -300,7 +300,6 @@ void App_init(const app_global_functions_t * functions)
     if (app_cfg_res != SHARED_APP_CONFIG_RES_OK)
     {
         LOG(LVL_ERROR, "Error adding AppConfig filter (res:%d)", app_cfg_res);
-        return;
     }
 
     m_light_state = false;

@@ -108,15 +108,6 @@ control_node_ret_e Control_Router_init(control_router_conf_t * conf)
         return CONTROL_RET_INVALID_ROLE;
     }
 
-    /* Must be Low Latency Router. */
-    if ((app_lib_settings_get_base_role(role) !=
-         APP_LIB_SETTINGS_ROLE_HEADNODE) ||
-         (app_lib_settings_get_flags_role(role) !=
-         APP_LIB_SETTINGS_ROLE_FLAG_LL))
-    {
-        return CONTROL_RET_INVALID_ROLE;
-    }
-
     /* Copy config to local. */
     memcpy(&m_conf, conf, sizeof(control_router_conf_t));
 
