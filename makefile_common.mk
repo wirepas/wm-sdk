@@ -130,7 +130,9 @@ INCLUDES += -Imcu/$(MCU) -Imcu/$(MCU)/hal -Imcu/$(MCU)/vendor -Imcu/$(MCU)/cmsis
 
 # Folder where the application sources are located (and config file)
 # Can be in different folders, try them one by one
-APP_SRCS_PATH := $(wildcard source/*/$(app_name)/)
+APP_POSSIBLE_FOLDER := source/*/$(app_name)/ source/$(app_name)/
+
+APP_SRCS_PATH := $(wildcard $(APP_POSSIBLE_FOLDER))
 ifeq (,$(wildcard $(APP_SRCS_PATH)))
 $(error App $(app_name) doesn't exist)
 endif

@@ -20,7 +20,9 @@
 #include "poslib_decode.h"
 #include "tlv.h"
 #include "poslib_tlv.h"
+#ifdef MOTION_SUPPORTED
 #include "motion.h"
+#endif
 
 /** BLE config - control special values */
 #define POSLIB_DECODE_BEACON_OFF    0

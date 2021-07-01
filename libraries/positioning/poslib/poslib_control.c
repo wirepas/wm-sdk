@@ -607,7 +607,7 @@ poslib_ret_e PosLibCtrl_setConfig(poslib_settings_t * settings)
     /* If started notify configuration change */
     if(m_poslib_started && config_change)
     {
-        PosLibEvent_add(POSLIB_FLAG_EVENT_CONFIG_CHANGE);
+        PosLibEvent_add(POSLIB_CTRL_EVENT_CONFIG_CHANGE);
     }
 
     return POS_RET_OK;
@@ -1139,6 +1139,11 @@ static void handle_idle_state(poslib_internal_event_t * event)
 
         case POSLIB_CTRL_EVENT_CONFIG_CHANGE:
         {
+            /*Set motion to default if disabled*/
+            if (!m_pos_settings.motion.enabled)
+            {
+                m_motion_mode = MOTION_DEFAULT;
+            }
             /* Configuration changed, re-schedule*/
             schedule_next(false);
             break;

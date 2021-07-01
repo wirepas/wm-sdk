@@ -36,6 +36,7 @@
     + [MSAP Attributes](#msap-attributes)
   * [Configuration Services (CSAP)](#configuration-services-csap)
 - [Sequence Numbers](#sequence-numbers)
+- [Response Primitives](#response-primitives)
 - [Common Use Cases](#common-use-cases)
   * [Required Configuration](#required-configuration)
 - [Annex A: Additional CRC Information](#annex-a-additional-crc-information)
@@ -1562,19 +1563,19 @@ The MSAP attributes are specified in Table 45.
 
 | **Attribute name**                       | **Attribute ID** | **Type** | **Size** |
 |------------------------------------------|------------------|----------|----------|
-| mStackStatus*mStackStatus*               | 1                | R        | 1        |
-| mPDUBufferUsage*mPDUBufferUsage*         | 2                | R        | 1        |
-| mPDUBufferCapacity*mPDUBufferCapacity*   | 3                | R        | 1        |
-| Reserved                                 | 4                | \-       | \-       |
-| mEnergy*mEnergy*                         | 5                | R/W      | 1        |
-| mAutostart*mAutostart*                   | 6                | R/W      | 1        |
-| mRouteCount*mRouteCount*                 | 7                | R        | 1        |
-| mSystemTime*mSystemTime*                 | 8                | R        | 4        |
-| mAccessCycleRange*mAccessCycleRange*     | 9                | R/W      | 4        |
-| mAccessCycleLimits*mAccessCycleLimits*   | 10               | R        | 4        |
-| mCurrentAccessCycle*mCurrentAccessCycle* | 11               | R        | 2        |
-| mScratchpadBlockMax*mScratchpadBlockMax* | 12               | R        | 1        |
-| mMulticastGroups*mMulticastGroups*       | 13               | R/W      | 40       |
+| [mStackStatus](#mStackStatus)               | 1                | R        | 1        |
+| [mPDUBufferUsage](#mPDUBufferUsage)         | 2                | R        | 1        |
+| [mPDUBufferCapacity](#mPDUBufferCapacity)   | 3                | R        | 1        |
+| [Reserved]                                  | 4                | \-       | \-       |
+| [Reserved]                                  | 5                | \-       | \-       |
+| [mAutostart](#mAutostart)                   | 6                | R/W      | 1        |
+| [mRouteCount](#mRouteCount)                 | 7                | R        | 1        |
+| [mSystemTime](#mSystemTime)                 | 8                | R        | 4        |
+| [mAccessCycleRange](#mAccessCycleRange)     | 9                | R/W      | 4        |
+| [mAccessCycleLimits](#mAccessCycleLimits)   | 10               | R        | 4        |
+| [mCurrentAccessCycle](#mCurrentAccessCycle) | 11               | R        | 2        |
+| [mScratchpadBlockMax](#mScratchpadBlockMax) | 12               | R        | 1        |
+| [mMulticastGroups](#mMulticastGroups)       | 13               | R/W      | 40       |
 
 #### mStackStatus
 
@@ -1631,29 +1632,6 @@ at the moment.
 The *mPDUBufferCapacity* attribute indicates the number of PDUs that can still
 fit in the stack PDU buffer at the moment (i.e. *cPDUBufferSize -
 mPDUBufferUsage*).
-
-#### mEnergy
-
-| **Attribute ID** | **5**          |
-|------------------|----------------|
-| Type             | Read and write |
-| Size             | 1 octet        |
-| Valid values     | 0 – *255*      |
-| Default value    | 255            |
-
-The stack can use in its route cost calculations the state of energy remaining
-in each node. The state can be set with the *mEnergy* attribute. It is a value
-between 0 and 255, where 0 corresponds to a state where the node is almost out
-of energy and 255 corresponds to a state where maximum amount of energy is
-available.  
-The value is currently used in route cost calculations with a granularity of 32
-units. In other words, the energy value must change by at least 32 units for it
-to affect the cost calculations.  
-This attribute is intended to be set by the application periodically, to enable
-the stack routing layer to use energy parameter in cost and route calculation.  
-The specifics on how the remaining energy is measured is left for the
-responsibility of the application due to fact that different power sources and
-measurement circuits may be used depending on the implementation.
 
 #### mAutostart
 
@@ -1896,28 +1874,28 @@ The CSAP attributes are specified in Table 50.
 
 | **Attribute name**   | **Attribute ID** | **Type** | **Size** |
 |----------------------|------------------|----------|----------|
-| [cNodeAddress](#WirepasMeshDual-MCUAPIReferenceManual-_cNodeAddress)                 | 1                | R/W      | 4        |
-| [cNetworkAddress](#WirepasMeshDual-MCUAPIReferenceManual-_cNetworkAddress)           | 2                | R/W      | 3        |
-| [cNetworkChannel](#WirepasMeshDual-MCUAPIReferenceManual-_cNetworkChannel)           | 3                | R/W      | 1        |
-| [cNodeRole](#WirepasMeshDual-MCUAPIReferenceManual-_cNodeRole)                       | 4                | R/W      | 1        |
-| [cMTU](#WirepasMeshDual-MCUAPIReferenceManual-_cMTU)                                 | 5                | R        | 1        |
-| [cPDUBufferSize](#WirepasMeshDual-MCUAPIReferenceManual-_cPDUBufferSize)             | 6                | R        | 1        |
-| [cScratchpadSequence](#WirepasMeshDual-MCUAPIReferenceManual-_cScratchpadSequence)   | 7                | R        | 1        |
-| [cMeshAPIVersion](#WirepasMeshDual-MCUAPIReferenceManual-_cMeshAPIVersion)           | 8                | R        | 2        |
-| [cFirmwareMajor](#WirepasMeshDual-MCUAPIReferenceManual-_cFirmwareMajor)             | 9                | R        | 2        |
-| [cFirmwareMinor](#WirepasMeshDual-MCUAPIReferenceManual-_cFirmwareMinor)             | 10               | R        | 2        |
-| [cFirmwareMaintenance](#WirepasMeshDual-MCUAPIReferenceManual-_cFirmwareMaintenance) | 11               | R        | 2        |
-| [cFirmwareDevelopment](#WirepasMeshDual-MCUAPIReferenceManual-_cFirmwareDevelopment) | 12               | R        | 2        |
-| [cCipherKey](#WirepasMeshDual-MCUAPIReferenceManual-_cCipherKey)                     | 13               | W        | 16       |
-| [cAuthenticationKey](#WirepasMeshDual-MCUAPIReferenceManual-_cAuthenticationKey)     | 14               | W        | 16       |
-| [cChannelLimits](#WirepasMeshDual-MCUAPIReferenceManual-_cChannelLimits)             | 15               | R        | 2        |
-| [cAppConfigDataSize](#WirepasMeshDual-MCUAPIReferenceManual-_cAppConfigDataSize)     | 16               | R        | 1        |
-| [cHwMagic](#WirepasMeshDual-MCUAPIReferenceManual-_cHwMagic)                         | 17               | R        | 2        |
-| [cStackProfile](#WirepasMeshDual-MCUAPIReferenceManual-_cStackProfile)               | 18               | R        | 2        |
-| [cOfflineScan](#WirepasMeshDual-MCUAPIReferenceManual-_cOfflineScan)                 | 20               | R/W      | 2        |
-| [cChannelAllocMap](#WirepasMeshDual-MCUAPIReferenceManual-_cChannelAllocMap)         | 21               | R/W      | 4        |
-| [cFeatureLockBits](#WirepasMeshDual-MCUAPIReferenceManual-_cFeatureLockBits)         | 22               | R/W      | 4        |
-| [cFeatureLockKey](#WirepasMeshDual-MCUAPIReferenceManual-_cFeatureLockKey)           | 23               | W        | 16       |
+| [cNodeAddress](#cNodeAddress)                | 1                | R/W      | 4        |
+| [cNetworkAddress](#cNetworkAddress)           | 2                | R/W      | 3        |
+| [cNetworkChannel](#cNetworkChannel)           | 3                | R/W      | 1        |
+| [cNodeRole](#cNodeRole)                       | 4                | R/W      | 1        |
+| [cMTU](#cMTU)                                 | 5                | R        | 1        |
+| [cPDUBufferSize](#cPDUBufferSize)             | 6                | R        | 1        |
+| [cScratchpadSequence](#cScratchpadSequence)   | 7                | R        | 1        |
+| [cMeshAPIVersion](#cMeshAPIVersion)           | 8                | R        | 2        |
+| [cFirmwareMajor](#cFirmwareMajor)             | 9                | R        | 2        |
+| [cFirmwareMinor](#cFirmwareMinor)             | 10               | R        | 2        |
+| [cFirmwareMaintenance](#cFirmwareMaintenance) | 11               | R        | 2        |
+| [cFirmwareDevelopment](#cFirmwareDevelopment) | 12               | R        | 2        |
+| [cCipherKey](#cCipherKey)                     | 13               | W        | 16       |
+| [cAuthenticationKey](#cAuthenticationKey)     | 14               | W        | 16       |
+| [cChannelLimits](#cChannelLimits)             | 15               | R        | 2        |
+| [cAppConfigDataSize](#cAppConfigDataSize)     | 16               | R        | 1        |
+| [cHwMagic](#cHwMagic)                         | 17               | R        | 2        |
+| [cStackProfile](#cStackProfile)               | 18               | R        | 2        |
+| [cOfflineScan](#cOfflineScan)                 | 20               | R/W      | 2        |
+| [cChannelAllocMap](#cChannelAllocMap)         | 21               | R/W      | 4        |
+| [cFeatureLockBits](#cFeatureLockBits)         | 22               | R/W      | 4        |
+| [cFeatureLockKey](#cFeatureLockKey)           | 23               | W        | 16       |
 
 #### cNodeAddress
 
@@ -2354,6 +2332,26 @@ detect whether a key is set or not. When reading the key value, the error value
 that key is not set. And error value of 5 (Failure: Write-only attribute)
 indicates that the key has been set.
 
+# Response Primitives
+ 
+All stack indications must be acknowledged by the application using a response-primitive. All the
+response-primitives have the same frame format as illustrated in table below. Only thing that
+changes is the Primitive ID. The values of the primitive IDs are listed in [Table 3](#stack-service-specification).
+ 
+
+| **Primitive ID** | **Frame ID** | **Payload length** | **Result**   | **CRC**  |
+|------------------|--------------|--------------------|--------------|----------|
+| 1 octet          | 1 octet      | 1 octet            | 1 octet      | 2 octets |
+
+Frame fields are described in the table below.
+
+| **Field Name** | **Size** | **Valid Values** | **Description**
+|----------------|----------|------------------|----------------
+| *Primitive ID* | 1        | -                | Response Id associated to Indication Id as descibed in [Table 3](#stack-service-specification)
+| *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
+| *Result*       | 1        | 0 - 1            | The result field indicates if the application is ready to receive another pending indication (if there are any)<p>The different values are defined as follows: <p> - 0 = Do not send more indications<p> - 1 = Send next pending indication
+| *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
+ 
 # Sequence Numbers
 
 Some Wirepas Mesh stack services, such as the application configuration data

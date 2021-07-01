@@ -16,12 +16,21 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "shared_appconfig.h"
 #include "api.h"
 #include "node_configuration.h"
 #include "led.h"
 #include "button.h"
 #include "shared_data.h"
 #include "app_scheduler.h"
+
+
+#define DEBUG_LOG_MODULE_NAME "EVAL_APP"
+/** To activate logs, configure the following line with "LVL_INFO". */
+#define DEBUG_LOG_MAX_LEVEL LVL_NOLOG
+
+#include "debug_log.h"
+
 
 /** Convert message travel delay from 1/128th second to milliseconds. */
 #define COARSE_TO_MS(delay)    (1000u * (delay) >> 7)
@@ -36,6 +45,9 @@
  */
 #define DEFAULT_PERIOD_MS   (DEFAULT_PERIOD_S*1000u)
 
+/** The application will register for this type of app_config, corresponding to the measurement rate. */
+#define CUSTOM_PERIOD_TYPE 0xC3 
+
 /** Time needed to execute the periodic work, in us. */
 #define PERIODIC_WORK_EXECUTION_TIME_US (250u)
 
@@ -43,6 +55,21 @@
 #define BUTTON_PRESSED_STATE  (2u)
 /** Time needed to execute the send "button pressed message" task, in us. */
 #define TASK_EXEC_TIME_US_SEND_BUTTON_PRESSED_MSG (250u)
+
+
+/**
+ *  In this example the periodic data transfer interval is changed according
+ *  to received configuration data or via regular downlink message.
+ *  Configuration data structure is application dependent, in this example it
+ *  is structured as followed:
+ *      A period and eventually a custom data, to be filled with what you need.
+ * */
+typedef struct  __attribute__((packed))
+{
+    uint32_t interval;    /** Measurment rate in seconds. */
+    /* uint16_t custom_data; */
+} app_config_t;
+
 
 /**
  * Application "periodic message period setup message" minimal allowed
@@ -61,7 +88,8 @@
 /** Endpoint used to communicate. */
 #define DATA_EP        (1u)
 
-
+/** Filter to process shared_appconfig updates. */
+static uint16_t m_filter_id;
 /**
  * @brief Message ID.
  * (range splitted in two (0-127 => UPLINK packet /
@@ -176,8 +204,8 @@ typedef struct __attribute__((packed))
 } msg_t;
 
 /** Application periodic message fixed data pattern. */
-static const uint8_t m_periodic_data_pattern[PERIODIC_MSG_DATA_PATTERN_LEN] =
-                                      {0x0A,0x0B,0x0B,0x0A,0x0A,0x0C,0x0D,0x0C};
+static const uint8_t m_periodic_data_pattern[PERIODIC_MSG_DATA_PATTERN_LEN] = 
+                                            {0x0A,0x0B,0x0B,0x0A,0x0A,0x0C,0x0D,0x0C};
 
 /** Button ID which was pressed */
 static volatile uint8_t m_button_pressed_id;
@@ -190,21 +218,21 @@ static led_state_e m_table_led_state[MAX_LED_PER_BOARD] = {0};
 
 /** Unicast & broadcast messages handling callback */
 static app_lib_data_receive_res_e unicast_broadcast_data_received_cb(
-                                          const shared_data_item_t * item,
-                                          const app_lib_data_received_t * data);
+        const shared_data_item_t * item,
+        const app_lib_data_received_t * data);
 
 /** Unicast messages filter */
 static shared_data_item_t unicast_packets_filter =
 {
     .cb = unicast_broadcast_data_received_cb,
     .filter = {
-                .mode = SHARED_DATA_NET_MODE_UNICAST,
-                /* Filtering by source endpoint. */
-                .src_endpoint = DATA_EP,
-                /* Filtering by destination endpoint. */
-                .dest_endpoint = DATA_EP,
-                .multicast_cb = NULL
-              }
+        .mode = SHARED_DATA_NET_MODE_UNICAST,
+        /* Filtering by source endpoint. */
+        .src_endpoint = DATA_EP,
+        /* Filtering by destination endpoint. */
+        .dest_endpoint = DATA_EP,
+        .multicast_cb = NULL
+    }
 };
 
 /** Broadcast messages filter */
@@ -212,13 +240,13 @@ static shared_data_item_t broadcast_packets_filter =
 {
     .cb = unicast_broadcast_data_received_cb,
     .filter = {
-                .mode = SHARED_DATA_NET_MODE_BROADCAST,
-                /* Filtering by source endpoint. */
-                .src_endpoint = DATA_EP,
-                /* Filtering by destination endpoint. */
-                .dest_endpoint = DATA_EP,
-                .multicast_cb = NULL
-              }
+        .mode = SHARED_DATA_NET_MODE_BROADCAST,
+        /* Filtering by source endpoint. */
+        .src_endpoint = DATA_EP,
+        /* Filtering by destination endpoint. */
+        .dest_endpoint = DATA_EP,
+        .multicast_cb = NULL
+    }
 };
 
 /**
@@ -233,7 +261,7 @@ static shared_data_item_t broadcast_packets_filter =
  *          accepted for sending. See @ref app_res_e for other result codes.
  */
 static app_lib_data_send_res_e send_uplink_msg(message_id_e id,
-                                                uint8_t * payload)
+                                               uint8_t * payload)
 {
     msg_t msg; /* Create uplink message structure. */
     size_t msg_byte_size = sizeof(msg.id); /* Message to send byte size. */
@@ -382,18 +410,18 @@ static uint32_t task_send_button_pressed_msg(void)
  * This function is called when a button is pressed down.
  */
 static void button_pressed_handler(uint8_t button_id, button_event_e event)
- {
-     /* Store button_id to process it in a dedicated application task. */
-     m_button_pressed_id = button_id;
+{
+    /* Store button_id to process it in a dedicated application task. */
+    m_button_pressed_id = button_id;
 
-     /*
-      * Send "button pressed message" in a single shot application task (called
-      * each time button is pressed) as we are here in an IRQ context.
-      */
-      App_Scheduler_addTask_execTime(task_send_button_pressed_msg,
-                                     APP_SCHEDULER_SCHEDULE_ASAP,
-                                     TASK_EXEC_TIME_US_SEND_BUTTON_PRESSED_MSG);
- }
+    /*
+     * Send "button pressed message" in a single shot application task (called
+     * each time button is pressed) as we are here in an IRQ context.
+     */
+    App_Scheduler_addTask_execTime(task_send_button_pressed_msg,
+                                   APP_SCHEDULER_SCHEDULE_ASAP,
+                                   TASK_EXEC_TIME_US_SEND_BUTTON_PRESSED_MSG);
+}
 
 /**
  * @brief   Echo command response sending function
@@ -420,7 +448,7 @@ static void send_echo_response_msg(uint32_t delay)
 
     /* Send message. */
     if (send_uplink_msg(MSG_ID_ECHO_RESPONSE_MSG,
-                       (uint8_t *)&payload) != APP_LIB_DATA_SEND_RES_SUCCESS)
+                        (uint8_t *)&payload) != APP_LIB_DATA_SEND_RES_SUCCESS)
     {
         /*
          * Message was not accepted for sending.
@@ -442,7 +470,7 @@ static void set_periodic_msg_period(uint32_t new_period_ms)
      * and update period accordingly.
      */
     if ((new_period_ms >= PERIODIC_MSG_PERIOD_SET_MIN_VAL_MS) &&
-        (new_period_ms <= PERIODIC_MSG_PERIOD_SET_MAX_VAL_MS))
+            (new_period_ms <= PERIODIC_MSG_PERIOD_SET_MAX_VAL_MS))
     {
         m_period_ms = new_period_ms;
 
@@ -515,7 +543,7 @@ static void send_led_state(uint8_t led_id)
 
         /* Send message. */
         if (send_uplink_msg(MSG_ID_LED_GET_STATE_RESPONSE_MSG,
-                          (uint8_t *)&payload) != APP_LIB_DATA_SEND_RES_SUCCESS)
+                            (uint8_t *)&payload) != APP_LIB_DATA_SEND_RES_SUCCESS)
         {
             /*
              * Message was not accepted for sending.
@@ -532,8 +560,8 @@ static void send_led_state(uint8_t led_id)
  * @return  Result code, @ref app_lib_data_receive_res_e
  */
 static app_lib_data_receive_res_e unicast_broadcast_data_received_cb(
-                                           const shared_data_item_t * item,
-                                           const app_lib_data_received_t * data)
+        const shared_data_item_t * item,
+        const app_lib_data_received_t * data)
 {
     msg_t msg = *((msg_t *)data->bytes);
     uint8_t msg_size = data->num_bytes;
@@ -564,7 +592,7 @@ static app_lib_data_receive_res_e unicast_broadcast_data_received_cb(
             if (msg_size == sizeof(payload_periodic_set_t))
             {
                 set_periodic_msg_period(
-                                 msg.payload.periodic_set_period.new_period_ms);
+                        msg.payload.periodic_set_period.new_period_ms);
             }
             break;
 
@@ -592,6 +620,44 @@ static app_lib_data_receive_res_e unicast_broadcast_data_received_cb(
     return APP_LIB_DATA_RECEIVE_RES_HANDLED;
 }
 
+
+/**
+ * @brief Period change callback
+ * This function is called when an app config message concerning period change has been received
+ */
+static void appConfigPeriodReceivedCb(uint16_t type, 
+                                      uint8_t length,
+                                      uint8_t * value_p)
+{
+    app_config_t * config;
+
+    if (type != CUSTOM_PERIOD_TYPE)
+    {
+        /* It should never happen as we registered only this type with this cb. */
+        LOG(LVL_ERROR, "Wrong app config type");
+        return;
+    }
+
+    if (length != sizeof(app_config_t))
+    {
+        /* Wrong size. */
+        LOG(LVL_ERROR, "Wrong app config size");
+        return;
+    }
+
+    config = (app_config_t *) value_p;
+
+    LOG(LVL_INFO,
+        "New app configuration  interval_s=%d",
+        config->interval);
+
+    /* Set new periodic data transfer interval. */
+    set_periodic_msg_period(config->interval*1000);
+
+}
+
+
+
 /**
  * @brief   Initialization callback for application
  *
@@ -601,6 +667,20 @@ static app_lib_data_receive_res_e unicast_broadcast_data_received_cb(
  */
 void App_init(const app_global_functions_t * functions)
 {
+    LOG_INIT();
+    LOG(LVL_INFO, "Evaluation App example start");
+
+    shared_app_config_filter_t app_config_period_filter;
+
+    /* App config. */
+    Shared_Appconfig_init();
+    /* Prepare the app_config filter for measurement rate. */
+    app_config_period_filter.type = CUSTOM_PERIOD_TYPE;
+    app_config_period_filter.cb = appConfigPeriodReceivedCb;
+    Shared_Appconfig_addFilter(&app_config_period_filter, &m_filter_id);
+    LOG(LVL_INFO, "Filter added for static period with id=%d\n", m_filter_id);
+
+
     uint8_t num_buttons;
 
     /* Basic configuration of the node with a unique node address. */
@@ -614,13 +694,14 @@ void App_init(const app_global_functions_t * functions)
     }
 
     /*
-     * Set node operating mode (i.e low-energy or low-latency).
-     * Default is low-energy).
+     * Set node operating mode (i.e low-energy or low-latency with autorole)
+     * Default is low-energy.
      */
 #ifdef ENABLE_LOW_LATENCY_MODE
     lib_settings->setNodeRole(
-        app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE,
-                                     APP_LIB_SETTINGS_ROLE_FLAG_LL));
+            app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE,
+                                         APP_LIB_SETTINGS_ROLE_FLAG_LL |
+                                         APP_LIB_SETTINGS_ROLE_FLAG_AUTOROLE));
 #endif
 
     /* Init shared data module. */

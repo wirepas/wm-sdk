@@ -9,6 +9,7 @@ TARGET_BOARDS := pca10040 pca10100 pca10056 ruuvitag tbsense2
 # a different way
 default_network_address ?= 0xD8D42B
 default_network_channel ?= 9
+
 # !HIGHLY RECOMMENDED! : To enable security keys please un-comment the lines below and fill with a
 #                        randomly generated authentication & encryption keys (exactly 16 bytes)
 #default_network_cipher_key ?= 0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??,0x??
@@ -26,6 +27,6 @@ default_operating_mode ?= 0
 
 # App version
 app_major=1
-app_minor=0
-app_maintenance=0
+app_minor=1
+app_maintenance=1
 app_development=0
