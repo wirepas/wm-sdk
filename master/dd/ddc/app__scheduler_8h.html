@@ -110,7 +110,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a71e4c4c0dfd5649947194df11af4fe17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task.  <a href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">More...</a><br /></td></tr>
 <tr class="separator:a71e4c4c0dfd5649947194df11af4fe17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd03212a86359f0f62d4953785087fd2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3">app_scheduler_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/ddc/app__scheduler_8h.html#acd03212a86359f0f62d4953785087fd2">App_Scheduler_cancelTask</a> (<a class="el" href="../../dd/ddc/app__scheduler_8h.html#a06b7a823ab31a50859f715de74473a2d">task_cb_f</a> cb)</td></tr>
-<tr class="memdesc:acd03212a86359f0f62d4953785087fd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a task without execution time (deprecated)  <a href="../../dd/ddc/app__scheduler_8h.html#acd03212a86359f0f62d4953785087fd2">More...</a><br /></td></tr>
+<tr class="memdesc:acd03212a86359f0f62d4953785087fd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancel a task.  <a href="../../dd/ddc/app__scheduler_8h.html#acd03212a86359f0f62d4953785087fd2">More...</a><br /></td></tr>
 <tr class="separator:acd03212a86359f0f62d4953785087fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
@@ -240,17 +240,8 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Add a task without execution time (deprecated) </p>
+<p>Cancel a task. </p>
 <dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cb</td><td>Callback to be called from main periodic task. Same cb can only be added once. Calling this function with an already registered cb will update the next scheduled time. </td></tr>
-    <tr><td class="paramname">delay_ms</td><td>delay in ms to be scheduled (0 to be scheduled asap) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if able to add, false otherwise</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This call is deprecated and you should use <a class="el" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a> instead</dd></dl>
-<p>Cancel a task </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cb</td><td>Callback already registered from App_Scheduler_addTask. </td></tr>
   </table>

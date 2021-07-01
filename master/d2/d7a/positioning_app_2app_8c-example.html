@@ -90,15 +90,8 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="line"><span class="preprocessor">#define DEBUG_LOG_MAX_LEVEL LVL_NOLOG</span></div>
 <div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dd/dd9/debug__log_8h.html">debug_log.h</a>&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;string.h&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d65/api_8h.html">api.h</a>&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d3/dbc/bitfield_8h.html">bitfield.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a>&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d1/d79/random_8h.html">random.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d6/d21/poslib_8h.html">poslib.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d7/ded/shared__neighbors_8h.html">shared_neighbors.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d0/de4/shared__shutdown_8h.html">shared_shutdown.h</a>&quot;</span></div>
@@ -107,12 +100,14 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d7b/shared__offline_8h.html">shared_offline.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d2/d3b/shared__beacon_8h.html">shared_beacon.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;posapp_settings.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d3/d6a/power_8h.html">power.h</a>&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d0e/button_8h.html">button.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;board.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../db/da0/led_8h.html">led.h</a>&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;motion.h&quot;</span></div>
+<div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &quot;gpio.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d0/d27/voltage_8h.html">voltage.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#ifdef MOTION_SUPPORTED</span></div>
+<div class="line"><span class="preprocessor">#include &quot;motion.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line"><span class="preprocessor">#ifdef CONF_USE_PERSISTENT_MEMORY</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dc/db1/app__persistent_8h.html">app_persistent.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#endif</span></div>
@@ -357,13 +352,10 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="ttc" id="aled_8h_html_aa8fb1f4b9ec78bfc448496565e6f91c8"><div class="ttname"><a href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8">led_res_e</a></div><div class="ttdeci">led_res_e</div><div class="ttdoc">List of return code.</div><div class="ttdef"><b>Definition:</b> <a href="../../db/da0/led_8h_source.html#l00017">led.h:17</a></div></div>
 <div class="ttc" id="ashared__neighbors_8h_html"><div class="ttname"><a href="../../d7/ded/shared__neighbors_8h.html">shared_neighbors.h</a></div></div>
 <div class="ttc" id="adebug__log_8h_html_a80fe8a6a673728cc8d8b2a90742b46b7"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a80fe8a6a673728cc8d8b2a90742b46b7">LVL_ERROR</a></div><div class="ttdeci">#define LVL_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00085">debug_log.h:85</a></div></div>
-<div class="ttc" id="abitfield_8h_html"><div class="ttname"><a href="../../d3/dbc/bitfield_8h.html">bitfield.h</a></div></div>
 <div class="ttc" id="aposlib_8h_html_aab50cf9ddf10ac9526375bc0c282b6b9"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#aab50cf9ddf10ac9526375bc0c282b6b9">PosLib_motion</a></div><div class="ttdeci">poslib_ret_e PosLib_motion(poslib_motion_mode_e mode)</div><div class="ttdoc">Used to indicate that the tag is static or dynamic. The update rate used will be adjusted according t...</div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_a52e39bcd9fb750ac5001e4e6b8de21c4"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a52e39bcd9fb750ac5001e4e6b8de21c4">APP_SCHEDULER_STOP_TASK</a></div><div class="ttdeci">#define APP_SCHEDULER_STOP_TASK</div><div class="ttdoc">Value to return from task to remove it.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00037">app_scheduler.h:37</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa2c81f87d2e97c13dc7bb936cc12bf0fe"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa2c81f87d2e97c13dc7bb936cc12bf0fe">POSLIB_FLAG_EVENT_CONFIG_CHANGE</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_CONFIG_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00138">poslib.h:138</a></div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_aadb275bc1de9c05d677ab56117535802"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a></div><div class="ttdeci">void App_Scheduler_init(void)</div><div class="ttdoc">Initialize scheduler.</div></div>
-<div class="ttc" id="abutton_8h_html"><div class="ttname"><a href="../../d7/d0e/button_8h.html">button.h</a></div><div class="ttdoc">Board-independent button functions.</div></div>
-<div class="ttc" id="apower_8h_html"><div class="ttname"><a href="../../d3/d6a/power_8h.html">power.h</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6">POS_RET_OK</a></div><div class="ttdeci">@ POS_RET_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00040">poslib.h:40</a></div></div>
 <div class="ttc" id="ashared__beacon_8h_html_ae78612ba7fcbd7044abc69e8d7bb1992"><div class="ttname"><a href="../../d2/d3b/shared__beacon_8h.html#ae78612ba7fcbd7044abc69e8d7bb1992">Shared_Beacon_init</a></div><div class="ttdeci">shared_beacon_res_e Shared_Beacon_init(void)</div><div class="ttdoc">Initialize the Shared_Beacon library.</div></div>
 <div class="ttc" id="ashared__appconfig_8h_html_aec6dd99594beb669cb5e1a200a09bf6b"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#aec6dd99594beb669cb5e1a200a09bf6b">Shared_Appconfig_init</a></div><div class="ttdeci">shared_app_config_res_e Shared_Appconfig_init(void)</div><div class="ttdoc">Initialize the shared app config library library.</div></div>
@@ -377,7 +369,6 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="ttc" id="aposlib_8h_html_ae9d621179c75788632e3180438d84384"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#ae9d621179c75788632e3180438d84384">PosLib_setConfig</a></div><div class="ttdeci">poslib_ret_e PosLib_setConfig(poslib_settings_t *settings)</div><div class="ttdoc">Sets PosLib configuration.</div></div>
 <div class="ttc" id="aefr32__template_2board_8h_html_ac206a3fdd4723341044664ddbf85f6d3"><div class="ttname"><a href="../../d9/df8/efr32__template_2board_8h.html#ac206a3fdd4723341044664ddbf85f6d3">BOARD_BUTTON_PIN_LIST</a></div><div class="ttdeci">#define BOARD_BUTTON_PIN_LIST</div><div class="ttdoc">Button definitions.</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/df8/efr32__template_2board_8h_source.html#l00106">board.h:106</a></div></div>
 <div class="ttc" id="ashared__offline_8h_html"><div class="ttname"><a href="../../d9/d7b/shared__offline_8h.html">shared_offline.h</a></div></div>
-<div class="ttc" id="arandom_8h_html"><div class="ttname"><a href="../../d1/d79/random_8h.html">random.h</a></div></div>
 <div class="ttc" id="aefr32__template_2board_8h_html_a8f91fc44ad1f0b5ab77c76564145318a"><div class="ttname"><a href="../../d9/df8/efr32__template_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a">BOARD_BUTTON_INTERNAL_PULL</a></div><div class="ttdeci">#define BOARD_BUTTON_INTERNAL_PULL</div><div class="ttdoc">Button GPIO internal pull up/down.</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/df8/efr32__template_2board_8h_source.html#l00126">board.h:126</a></div></div>
 <div class="ttc" id="aposlib_8h_html_ad346d18e7c29a591fa8a4f78e4de5792"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#ad346d18e7c29a591fa8a4f78e4de5792">PosLib_getConfig</a></div><div class="ttdeci">poslib_ret_e PosLib_getConfig(poslib_settings_t *settings)</div><div class="ttdoc">Gets PosLib configuration.</div></div>
 <div class="ttc" id="ashared__neighbors_8h_html_a005f16fc05b1aac1c98e5f599f7105c6"><div class="ttname"><a href="../../d7/ded/shared__neighbors_8h.html#a005f16fc05b1aac1c98e5f599f7105c6">Shared_Neighbors_init</a></div><div class="ttdeci">app_res_e Shared_Neighbors_init(void)</div><div class="ttdoc">Initialize the shared neighbors library.</div></div>
