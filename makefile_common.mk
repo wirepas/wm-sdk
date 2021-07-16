@@ -103,7 +103,7 @@ FIRMWARE_NAME := wpc_stack
 
 
 # Board config file
-BOARD_CONFIG := board/$(target_board)/config.mk
+BOARD_CONFIG := $(BOARDS_PATH)$(target_board)/config.mk
 
 # Include board specific config
 -include $(BOARD_CONFIG)
@@ -126,7 +126,7 @@ CFLAGS += -D$(MCU_UPPER)
 
 CFLAGS += -march=$(ARCH)
 
-INCLUDES += -Imcu/$(MCU) -Imcu/$(MCU)/hal -Imcu/$(MCU)/vendor -Imcu/$(MCU)/cmsis -Iboard/$(target_board)
+INCLUDES += -Imcu/$(MCU) -Imcu/$(MCU)/hal -Imcu/$(MCU)/vendor -Imcu/$(MCU)/cmsis -I$(BOARDS_PATH)/$(target_board)
 
 # Folder where the application sources are located (and config file)
 # Can be in different folders, try them one by one

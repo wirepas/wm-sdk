@@ -34,7 +34,7 @@ CFLAGS += -DNET_AUTHEN_KEY=$(default_network_authen_key)
 endif
 
 # Include board init part
--include board/makefile
+-include $(BOARDS_PATH)makefile
 
 # Include app specific makefile
 -include $(APP_SRCS_PATH)makefile
