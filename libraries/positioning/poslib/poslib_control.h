@@ -72,4 +72,15 @@ poslib_status_e PosLibCtrl_status(void);
  * @return   void
  */
 void PosLibCtrl_processEvent(poslib_internal_event_t * event);
+
+
+/**
+ * @brief   Returns the current app config payload
+ * @param[out] cfg pointer to the app config array
+ * @param[out] len the length of the app config, 0 no configuration valid    
+ * @return  void
+ */
+void PosLibCtrl_getAppConfig(uint8_t ** cfg, uint8_t * len);
+void PosLibCtrl_setAppConfig(const uint8_t * cfg, uint8_t len);
+
 #endif

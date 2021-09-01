@@ -380,6 +380,15 @@ static bool set_mode(poslib_tlv_item_t * item,
             }
             break;
         }
+        case APP_LIB_SETTINGS_ROLE_ADVERTISER:
+        {    /** only node modes for tags are accepted */
+            if((POSLIB_MODE_DA_TAG == node_mode) || force)
+            {
+                settings->node_mode = node_mode;
+                LOG(LVL_INFO, "Update mode: %d", settings->node_mode);
+            }
+            break;
+        }
         default:
         {
             LOG(LVL_ERROR, "Node role is not set: %d", base_role);

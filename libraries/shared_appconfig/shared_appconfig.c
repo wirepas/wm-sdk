@@ -22,12 +22,6 @@
 /** Tag that must be present at the beginning of app config */
 #define APP_CONFIG_V1_TLV   0x7EF6
 
-/** Internal structure of a filter */
-typedef struct
-{
-    shared_app_config_filter_t  filter; /* Filter set by app */
-} filter_t;
-
 /** Format of a app config following the TLV format */
 typedef struct __attribute__((packed))
 {
@@ -41,85 +35,61 @@ typedef struct __attribute__((packed))
 static bool m_initialized = false;
 
 /**  List of filters */
-static filter_t m_filter[SHARED_APP_CONFIG_MAX_FILTER];
+static shared_app_config_filter_t m_filter[SHARED_APP_CONFIG_MAX_FILTER];
 
-static void dispatch_to_modules(filter_t * filters,
+static void dispatch_to_modules(shared_app_config_filter_t filters[],
+                                uint16_t num_filters,
                                 uint16_t type,
                                 uint8_t len,
                                 const uint8_t * val)
 {
-    for (uint8_t i = 0; i < SHARED_APP_CONFIG_MAX_FILTER; i++)
+    for (uint8_t i = 0; i < num_filters; i++)
     {
-        if (filters[i].filter.cb == NULL)
+        if ((filters[i].type == type) ||
+            (filters[i].type == SHARED_APP_CONFIG_ALL_TYPE_FILTER))
         {
-            continue;
-        }
-
-        if ((filters[i].filter.type == type) ||
-            (filters[i].filter.type == SHARED_APP_CONFIG_ALL_TYPE_FILTER))
-        {
-            filters[i].filter.cb(type, len, (uint8_t *) val);
+            filters[i].cb(type, len, (uint8_t *) val);
             /* If filter is called, remember it by modyfing the working copy*/
-            filters[i].filter.cb = NULL;
+            filters[i].cb = NULL;
         }
     }
 }
 
-static void inform_other_modules(filter_t * filters)
+static void inform_other_modules(shared_app_config_filter_t filters[],
+                                 uint16_t num_filters)
 {
-    for (uint8_t i = 0; i < SHARED_APP_CONFIG_MAX_FILTER; i++)
+    for (uint8_t i = 0; i < num_filters; i++)
     {
-        if (filters[i].filter.cb == NULL)
-        {
-            continue;
-        }
-
         // Cb is still in the list so was not called yet
         // Check if filter is interested by information
-        if (filters[i].filter.call_cb_always)
+        if (filters[i].cb != NULL && filters[i].call_cb_always)
         {
-            filters[i].filter.cb(filters[i].filter.type, 0, NULL);
+            filters[i].cb(filters[i].type, 0, NULL);
         }
     }
 }
 
-/**
- * \brief Callback when a new app config is received form network
- */
-static void new_app_config_cb(const uint8_t * bytes,
-                              uint8_t seq,
-                              uint16_t interval)
+static void inform_filters(const uint8_t * bytes,
+                           shared_app_config_filter_t * filters,
+                           uint16_t num_filters)
 {
     tlv_record record;
     uint8_t entry_number;
+
     tlv_app_config_header_t * header = (tlv_app_config_header_t *) bytes;
-    // Allocate on stack the filter. A filter is only 8 bytes and
-    // SHARED_APP_CONFIG_MAX_FILTER should remain relatively small.
-    // Even if it is 10, it will be only 80 bytes allocated on stack
-    filter_t current_filter[SHARED_APP_CONFIG_MAX_FILTER];
-
-    // Before iterating filters, make a copy of them to avoid any
-    // update of them. It also ease the way to know which filter were called
-    // and which were not
-    Sys_enterCriticalSection();
-    for (uint8_t i = 0; i < SHARED_APP_CONFIG_MAX_FILTER; i++)
-    {
-        memcpy(&(current_filter[i].filter), &(m_filter[i].filter), sizeof(shared_app_config_filter_t));
-    }
-    Sys_exitCriticalSection();
-
-    LOG(LVL_DEBUG, "Rx app_conf (s: %d, inter=%d)", seq, interval);
-
     if (header->version != APP_CONFIG_V1_TLV)
     {
         LOG(LVL_WARNING, "App config with wrong header: 0x%x", header->version);
         // Not the right header/format
         // Dispatch it to the ones interested by incompatible app_config format
         // for backward compatibility reason
-        dispatch_to_modules(current_filter,
+        dispatch_to_modules(filters,
+                            num_filters,
                             SHARED_APP_CONFIG_INCOMPATIBLE_FILTER,
                             lib_data->getAppConfigNumBytes(),
                             bytes);
+
+        inform_other_modules(filters, num_filters);
         return;
     }
 
@@ -151,10 +121,45 @@ static void new_app_config_cb(const uint8_t * bytes,
             break;
         }
 
-        dispatch_to_modules(current_filter, item.type, item.length, item.value);
+        dispatch_to_modules(filters, num_filters, item.type, item.length, item.value);
     }
 
-    inform_other_modules(current_filter);
+    inform_other_modules(filters, num_filters);
+}
+
+/**
+ * \brief Callback when a new app config is received form network
+ */
+static void new_app_config_cb(const uint8_t * bytes,
+                              uint8_t seq,
+                              uint16_t interval)
+{
+    uint16_t nb_filter = 0;
+    // Allocate on stack the filter. A filter is only 8 bytes and
+    // SHARED_APP_CONFIG_MAX_FILTER should remain relatively small.
+    // Even if it is 10, it will be only 80 bytes allocated on stack
+    shared_app_config_filter_t current_filters[SHARED_APP_CONFIG_MAX_FILTER];
+
+    // Before iterating filters, make a copy of them to avoid any
+    // update of them. It also ease the way to know which filter were called
+    // and which were not
+    Sys_enterCriticalSection();
+    for (uint8_t i = 0; i < SHARED_APP_CONFIG_MAX_FILTER; i++)
+    {
+        if (m_filter[i].cb != NULL)
+        {
+            memcpy(&(current_filters[i]), &(m_filter[i]), sizeof(shared_app_config_filter_t));
+            nb_filter++;
+        }
+    }
+    Sys_exitCriticalSection();
+
+    // Seq and interval are not in use in this module
+    (void) seq;
+    (void) interval;
+    LOG(LVL_DEBUG, "Rx app_conf (s: %d, inter=%d)", seq, interval);
+
+    inform_filters(bytes, current_filters, nb_filter);
 }
 
 shared_app_config_res_e Shared_Appconfig_init(void)
@@ -164,7 +169,7 @@ shared_app_config_res_e Shared_Appconfig_init(void)
 
     for (uint8_t i = 0; i < SHARED_APP_CONFIG_MAX_FILTER; i++)
     {
-        m_filter[i].filter.cb = NULL;
+        m_filter[i].cb = NULL;
     }
 
     m_initialized = true;
@@ -194,10 +199,10 @@ shared_app_config_res_e Shared_Appconfig_addFilter(
     Sys_enterCriticalSection();
     for (uint8_t i = 0; i < SHARED_APP_CONFIG_MAX_FILTER; i++)
     {
-        if (m_filter[i].filter.cb == NULL)
+        if (m_filter[i].cb == NULL)
         {
             // One filter found
-            memcpy(&m_filter[i].filter,
+            memcpy(&m_filter[i],
                    filter,
                    sizeof(shared_app_config_filter_t));
 
@@ -216,6 +221,16 @@ shared_app_config_res_e Shared_Appconfig_addFilter(
             "App conf filter added (type: %d id: %d)",
             filter->type,
             *filter_id);
+
+        // Filter added, let's update it with current app_config if set
+        uint8_t appconfig[APP_LIB_DATA_MAX_APP_CONFIG_NUM_BYTES];
+        uint8_t seq;
+        uint16_t interval;
+        if (lib_data->readAppConfig(appconfig, &seq, &interval)
+             == APP_LIB_DATA_APP_CONFIG_RES_SUCCESS)
+        {
+            inform_filters(appconfig, filter, 1);
+        }
     }
     else
     {
@@ -238,10 +253,11 @@ shared_app_config_res_e Shared_Appconfig_removeFilter(uint16_t filter_id)
 
     shared_app_config_res_e res = SHARED_APP_CONFIG_RES_OK;
     Sys_enterCriticalSection();
+
     if (filter_id < SHARED_APP_CONFIG_MAX_FILTER &&
-        m_filter[filter_id].filter.cb != NULL)
+        m_filter[filter_id].cb != NULL)
     {
-        m_filter[filter_id].filter.cb = NULL;
+        m_filter[filter_id].cb = NULL;
     }
     else
     {
@@ -254,4 +270,53 @@ shared_app_config_res_e Shared_Appconfig_removeFilter(uint16_t filter_id)
         LOG(LVL_ERROR, "Cannot remove filter %d", filter_id);
     }
     return res;
+}
+
+shared_app_config_res_e Shared_Appconfig_setAppConfig(const uint8_t * bytes)
+{
+    app_lib_data_app_config_res_e res;
+    if (!m_initialized)
+    {
+        return SHARED_APP_CONFIG_RES_UNINITIALIZED;
+    }
+
+    LOG(LVL_DEBUG, "Set new app config");
+    res = lib_data->writeAppConfigData(bytes);
+
+    if (res == APP_LIB_DATA_APP_CONFIG_RES_INVALID_NULL_POINTER)
+    {
+        return SHARED_APP_CONFIG_RES_INVALID_PARAM;
+    }
+    else if (res == APP_LIB_DATA_APP_CONFIG_RES_INVALID_ROLE)
+    {
+        return SHARED_APP_CONFIG_RES_INVALID_ROLE;
+    }
+    else if (res != APP_LIB_DATA_APP_CONFIG_RES_SUCCESS)
+    {
+        // It should never happen, but if another error code is returned later
+        // Just return an invalid param error code instead of OK...
+        return SHARED_APP_CONFIG_RES_INVALID_PARAM;
+    }
+
+    // Notify ourself of the change
+    // Seq and interval are not used in this module so can be set to max value
+    // Could be called on a dedicated task but fine for now
+    new_app_config_cb(bytes, (uint8_t)(-1), (uint16_t)(-1));
+
+    return SHARED_APP_CONFIG_RES_OK;
+}
+
+shared_app_config_res_e Shared_Appconfig_notifyAppConfig(const uint8_t * bytes)
+{
+    if (!m_initialized)
+    {
+        return SHARED_APP_CONFIG_RES_UNINITIALIZED;
+    }
+
+    // Notify ourself of the change
+    // Seq and interval are not used in this module so can be set to max value
+    // Could be called on a dedicated task but fine for now
+    new_app_config_cb(bytes, (uint8_t)(-1), (uint16_t)(-1));
+
+    return SHARED_APP_CONFIG_RES_OK;
 }

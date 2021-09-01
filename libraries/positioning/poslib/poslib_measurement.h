@@ -22,6 +22,7 @@ typedef enum
     POSLIB_MEAS_VOLTAGE = 0x04,
     POSLIB_MEAS_RSS_SR_4BYTE_ADDR = 0x05,
     POSLIB_MEAS_NODE_INFO = 0x06,
+    POSLIB_MEAS_DA = 0x07,
     /** 0x70 - 0xEF : range reserved for customer
      *  Please notify Wirepas if a custom record ID is used by
      * your customised positoning app
@@ -33,8 +34,8 @@ typedef enum
 /** 2.4 profile - limited by internal memory */
 #define MAX_PAYLOAD         102
 
-/** limited by internal memory */
-#define MAX_BEACONS         16
+/** limited by maximum payload size */
+#define MAX_BEACONS         14
 /** node address length in bytes */
 #define NODE_ADDRESS_LENGTH 4
 #define DEFAULT_MEASUREMENT_TYPE_TAG POSLIB_MEAS_RSS_SR_4BYTE_ADDR
@@ -67,6 +68,12 @@ typedef PACKED_STRUCT
     uint8_t length;
 } poslib_meas_record_header_t;
 
+typedef PACKED_STRUCT
+{
+    poslib_meas_record_header_t header;
+    uint32_t node_addr;
+} poslib_meas_record_da_t;
+
 /**
     @brief Voltage record (header + payload)
 */
@@ -77,7 +84,7 @@ typedef PACKED_STRUCT
 } poslib_meas_record_voltage_t;
 
 /** Defines the feature flags version, to be incremented when new flags are added */
-#define  POSLIB_NODE_INFO_FEATURES_VERSION 0
+#define  POSLIB_NODE_INFO_FEATURES_VERSION 1
 /**
     @brief Node active features ( @note this is a bit )
 */
@@ -85,14 +92,16 @@ typedef enum
 {
     /**< Features flags version mask */
     POSLIB_NODE_INFO_MASK_VERSION = 0x0000000F,
-    /**< Motion enabled */
+    /**< Motion enabled - valid from ver 0 */
     POSLIB_NODE_INFO_FLAG_MOTION_EN = 0x00000010,
-    /**< node was static since last measurement */
+    /**< node was static since last measurement - valid from ver 0 */
     POSLIB_NODE_INFO_FLAG_IS_STATIC = 0x000000020,
-    /**< Eddystone BLE beacon active */
+    /**< Eddystone BLE beacon active - valid from ver 0 */
     POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON = 0x00000040,
-    /**< iBeacon BLE beacon active */
-    POSLIB_NODE_INFO_FLAG_IBEACON_ON = 0x00000080
+    /**< iBeacon BLE beacon active - valid from ver 0 */
+    POSLIB_NODE_INFO_FLAG_IBEACON_ON = 0x00000080,
+    /**< Mini-beacon active - valid from ver 1 */
+    POSLIB_NODE_INFO_FLAG_MBCN_ON = 0x00000100,
 } poslib_node_info_features_e;
 
 /**
@@ -144,8 +153,8 @@ void PosLibMeas_stop(void);
 
 bool PosLibMeas_getPayload(uint8_t * bytes, uint8_t max_len, uint8_t sequence,
                                 poslib_measurements_e meas_type, bool add_voltage, 
-                                 poslib_meas_record_node_info_t * node_info,
-                                 uint8_t * bytes_len, uint8_t * num_meas);
+                                poslib_meas_record_node_info_t * node_info,
+                                uint8_t * bytes_len, uint8_t * num_meas);
 
 /**
  * @brief Clears measurement table.

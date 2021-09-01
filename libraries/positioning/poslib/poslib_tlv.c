@@ -88,3 +88,42 @@ poslib_tlv_res_e PosLibTlv_Decode_getNextItem(poslib_tlv_record * rcd,
          return POSLIB_TLV_RES_ERROR;
     }
 }
+
+poslib_tlv_res_e PosLibTlv_Encode_addItem(poslib_tlv_record * rcd,
+                                             poslib_tlv_item_t * item)
+{
+     uint8_t bytes_left;
+     
+     if (rcd->index >= rcd->length || item->length == 0 || 
+          rcd->buffer == NULL || item->value == NULL || item->type > 31)
+     {
+          LOG(LVL_ERROR, "Invalid input parameters");
+          return POSLIB_TLV_RES_ERROR;
+     }
+     
+     bytes_left = rcd->length - rcd->index;
+
+     // for value smaller than 8 bytes type & length are encoded into one byte
+     if (item->length <=7 && bytes_left >= (item->length + 1))
+     {
+          uint8_t tl = 0;
+          tl = (item->length << 5) | (item->type & 0x1F);
+          rcd->buffer[rcd->index++] = tl;
+          memcpy(&rcd->buffer[rcd->index], item->value, item->length); 
+          rcd->index += item->length;
+     } 
+      // for value larger than 7 bytes type & length are encoded on separate bytes
+     else if (item->length > 7 && bytes_left >= (item->length + 2)) 
+     {
+          rcd->buffer[rcd->index++] = item->type & 0x1F;
+          rcd->buffer[rcd->index++] = item->length;
+          memcpy(&rcd->buffer[rcd->index], item->value, item->length); 
+          rcd->index += item->length;
+     }
+     else
+     {
+          LOG(LVL_ERROR, "Cannot encode. type: %u, length: %u", item->type, item->length);
+          return POSLIB_TLV_RES_ERROR;
+     }
+      return POSLIB_TLV_RES_OK;
+} 

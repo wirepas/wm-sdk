@@ -23,7 +23,9 @@ typedef enum
     /** Trying to remove a filter that doesn't exist */
     SHARED_APP_CONFIG_RES_INVALID_FILTER = 3,
     /** Using the library without previous initialization */
-    SHARED_APP_CONFIG_RES_UNINITIALIZED = 4
+    SHARED_APP_CONFIG_RES_UNINITIALIZED = 4,
+    /** Invalid node role (not a sink) */
+    SHARED_APP_CONFIG_RES_INVALID_ROLE = 5,
 } shared_app_config_res_e;
 
 /**
@@ -107,5 +109,28 @@ shared_app_config_res_e Shared_Appconfig_addFilter(shared_app_config_filter_t * 
  *          for other result codes.
  */
 shared_app_config_res_e Shared_Appconfig_removeFilter(uint16_t filter_id);
+
+/**
+ * \brief   Set a new app config
+ * \param   bytes
+ *          Pointer to app config data to write.
+ * \return  @ref SHARED_APP_CONFIG_RES_OK if ok. See @ref shared_app_config_res_e
+ *          for other result codes.
+ * \note    This function must be used on the node that set the app config (sink) in order for other
+ *          local modules to be notified by the change. In fact, stack itself will not trigger an
+ *          app config changed callback on the node that change it.
+ */
+shared_app_config_res_e Shared_Appconfig_setAppConfig(const uint8_t * bytes);
+
+/**
+ * \brief   Notify other modules of a new app config received
+ * \param   bytes
+ *          Pointer to app config to notify.
+ * \return  @ref SHARED_APP_CONFIG_RES_OK if ok. See @ref shared_app_config_res_e
+ *          for other result codes.
+ * \note    This function must be used very carefully and is only needed on systems
+ *          where the app config is received from a different path (like DA nodes)
+ */
+shared_app_config_res_e Shared_Appconfig_notifyAppConfig(const uint8_t * bytes);
 
 #endif //_SHARED_APPCONFIG_H_
