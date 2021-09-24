@@ -34,6 +34,11 @@ typedef union
      *  (dummy, introduced in bootloader v8).
      */
     const void * nrf52;
+#elif defined(NRF91_PLATFORM)
+    /** Platform specific descriptions for nRF91.
+     *  (dummy, introduced in bootloader v8).
+     */
+    const void * nrf91;
 #elif defined(EFR32_PLATFORM)
     /** Platform specific descriptions for EFR32.
      *  (introduced in bootloader v8).

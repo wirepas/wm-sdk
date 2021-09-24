@@ -18,19 +18,28 @@
 #include "poslib_event.h"
 #include "poslib_measurement.h"
 #include "shared_neighbors.h"
-#include "shared_shutdown.h"
 #include "shared_data.h"
 #include "voltage.h"
 
 
 /** Internal module structures */
 
+typedef enum
+{
+    POSLIB_MEAS_BEACON_TYPE_CB = 0, //cluster-beacon
+    POSLIB_MEAS_BEACON_TYPE_NB = 1, // network-beacon
+    POSLIB_MEAS_BEACON_TYPE_MBCN = 2, //mini-beacon
+    POSLIB_MEAS_BEACON_TYPE_FLT = 3, // mixed (filtered) beacon
+    POSLIB_MEAS_BEACON_TYPE_UNKNOWN = 4,
+} poslib_meas_beacon_type_e;
+
 typedef struct
 {
     app_addr_t address;
     int16_t  norm_rss; // normalized to 0dB TX power
     int8_t   txpower;
-    uint8_t  beacon_type;  
+    poslib_meas_beacon_type_e  type;
+    uint8_t samples;  
     app_lib_time_timestamp_hp_t last_update;
 } poslib_meas_wm_beacon_t;
 
@@ -65,6 +74,11 @@ static bool m_beacon_cb_reg = false;
 
 static bool m_opportunistic = false;
 
+static shared_data_item_t m_mbcn_item;
+
+// Maximum sample history in RSSI filter
+#define MAX_FLT_SAMPLES 8
+
 /** 0 if beacons are found, otherwise time in sec when no beacons */
 static uint32_t m_time_when_no_beacons_s;
 
@@ -90,7 +104,7 @@ static uint16_t m_voltage_flt = 0;
  *
  * @param   beacon       The network/cluster beacon
  */
-static void insert_beacon(const app_lib_state_beacon_rx_t * beacon);
+static void insert_beacon(const poslib_meas_wm_beacon_t * beacon);
 
 
 #ifdef POSLIB_CLEANBEACON_USE
@@ -124,6 +138,12 @@ static void deregister_callbacks(void)
     {  
         Shared_Neighbors_removeBeaconCb(m_beacon_cb_id);
         m_beacon_cb_reg = false;
+    }
+
+    if (m_mbcn_item.cb != NULL)
+    {
+        Shared_Data_removeDataReceivedCb(&m_mbcn_item);
+        m_mbcn_item.cb = NULL;
     }
 }
 
@@ -159,7 +179,68 @@ static void scanend_cb(void)
  */
 static void beacon_cb(const app_lib_state_beacon_rx_t * beacon)
 {
-    insert_beacon(beacon); 
+    poslib_meas_wm_beacon_t bcn;
+
+    bcn.address = beacon->address;
+    bcn.norm_rss = beacon->rssi - beacon->txpower;
+    bcn.txpower = beacon->txpower;
+    bcn.last_update = lib_time->getTimestampHp();
+    bcn.samples = 1;
+
+    if (beacon->type == APP_LIB_STATE_BEACON_TYPE_NB)
+    {
+        bcn.type = POSLIB_MEAS_BEACON_TYPE_NB;
+    }
+    else if (beacon->type == APP_LIB_STATE_BEACON_TYPE_CB)
+    {
+        bcn.type = POSLIB_MEAS_BEACON_TYPE_CB;
+    }
+    else
+    {
+        bcn.type = POSLIB_MEAS_BEACON_TYPE_UNKNOWN;
+    }
+    
+    if (beacon->is_da_support)
+    {
+        LOG(LVL_INFO, "DA router: %u", beacon->address);
+    }
+
+    insert_beacon(&bcn); 
+}
+
+static app_lib_data_receive_res_e mbcn_cb(const shared_data_item_t * item,
+                                    const app_lib_data_received_t * data)
+{
+    poslib_meas_wm_beacon_t bcn;
+    
+    if (item->filter.src_endpoint != POSLIB_MBCN_SRC_EP ||
+        item->filter.dest_endpoint != POSLIB_MBCN_DEST_EP)
+    {
+        LOG(LVL_ERROR, "Incorect EP for mini-beacon");
+        return APP_LIB_DATA_RECEIVE_RES_HANDLED;
+    }
+
+    bcn.address = data->mac_src_address;
+    bcn.norm_rss = data->rssi - data->tx_power;
+    bcn.txpower = data->tx_power;
+    bcn.last_update = lib_time->getTimestampHp();
+    bcn.type = POSLIB_MEAS_BEACON_TYPE_MBCN;
+    bcn.samples = 1;
+
+    //FixMe: decode beacon data    
+    insert_beacon(&bcn); 
+
+    return APP_LIB_DATA_RECEIVE_RES_HANDLED;
+}
+
+void init_mbcn_item()
+{
+    memset(&m_mbcn_item, 0, sizeof(m_mbcn_item));
+    m_mbcn_item.cb = mbcn_cb;
+    m_mbcn_item.filter.mode = SHARED_DATA_NET_MODE_BROADCAST;
+    m_mbcn_item.filter.src_endpoint = POSLIB_MBCN_SRC_EP;
+    m_mbcn_item.filter.dest_endpoint = POSLIB_MBCN_DEST_EP;
+    m_mbcn_item.filter.multicast_cb = NULL;
 }
 
 /**
@@ -189,11 +270,27 @@ static void register_callbacks(void)
         Shared_Neighbors_addOnBeaconCb(beacon_cb, &m_beacon_cb_id);
         m_beacon_cb_reg = true;
     }
+
+    if (m_mbcn_item.cb == NULL)
+    {
+        init_mbcn_item();
+        res = Shared_Data_addDataReceivedCb(&m_mbcn_item);
+        if (res != APP_RES_OK)
+        {
+            m_mbcn_item.cb = NULL;
+        }
+    }
 }
 
 static void init_module(void)
 {
     memset(&m_meas_table, 0, sizeof(m_meas_table));
+}
+
+static void clear_measurement_table()
+{
+    m_meas_table.num_beacons = 0;
+    memset(&m_meas_table.beacons, 0, sizeof(m_meas_table.beacons));
 }
 
 /**
@@ -214,6 +311,7 @@ bool PosLibMeas_opportunisticScan(bool enable)
     {
         register_callbacks();
         m_opportunistic = true;
+        clear_measurement_table();
     }
     else
     {
@@ -253,7 +351,7 @@ bool PosLibMeas_startScan(poslib_scan_ctrl_t * scan_ctrl)
     }
  
     memcpy(&m_scan_ctrl, scan_ctrl, sizeof(poslib_scan_ctrl_t));
-    m_meas_table.num_beacons = 0;
+    clear_measurement_table();
     register_callbacks(); 
     
     lib_state->setScanDuration(m_scan_ctrl.max_duration_us);
@@ -335,11 +433,12 @@ static void update_min(void)
     }
 }
 
-static void insert_beacon(const app_lib_state_beacon_rx_t * beacon)
+static void insert_beacon(const poslib_meas_wm_beacon_t * beacon)
 {
     uint8_t i = 0;
     uint8_t insert_idx = MAX_BEACONS;
     bool match = false;
+    poslib_meas_wm_beacon_t * bcn = NULL;
 
     // searches for itself
     for (i = 0; i < m_meas_table.num_beacons; i++)
@@ -355,13 +454,13 @@ static void insert_beacon(const app_lib_state_beacon_rx_t * beacon)
 
     // if there is no entry in the table for the given address, then simply
     // append the beacon, otherwise replace the entry with the lowest minimum
-    if(!match)
+    if (!match)
     {
         if(m_meas_table.num_beacons == MAX_BEACONS) // no space
         {
             update_min();
 
-            if(beacon->rssi > m_meas_table.min_rss)
+            if(beacon->norm_rss > m_meas_table.min_rss)
             {
                 insert_idx = m_meas_table.min_index;
             }
@@ -369,25 +468,39 @@ static void insert_beacon(const app_lib_state_beacon_rx_t * beacon)
         else
         {
             insert_idx = m_meas_table.num_beacons;
-            m_meas_table.num_beacons++; // table size has to be increased
+            m_meas_table.num_beacons++; 
         }
     }
 
     // update the table
-    if(insert_idx < MAX_BEACONS)
+    if (insert_idx < MAX_BEACONS)
     {
-        m_meas_table.beacons[insert_idx].address = beacon->address;
-        m_meas_table.beacons[insert_idx].norm_rss = beacon->rssi - beacon->txpower;
-        m_meas_table.beacons[insert_idx].txpower = beacon->txpower;
-        m_meas_table.beacons[insert_idx].last_update = lib_time->getTimestampHp();
-        m_meas_table.beacons[insert_idx].beacon_type = beacon->type;
+        bcn = &m_meas_table.beacons[insert_idx];
+        if (bcn->samples < MAX_FLT_SAMPLES)
+        {
+           bcn->samples++; 
+        }
+        bcn->address = beacon->address;
+        bcn->txpower = beacon->txpower;
+        bcn->last_update = lib_time->getTimestampHp();
+        
+        if (bcn->samples > 1)
+        {
+            bcn->type = POSLIB_MEAS_BEACON_TYPE_FLT;
+            bcn->norm_rss += (beacon->norm_rss - bcn->norm_rss) / bcn->samples;
+        }
+        else
+        {
+            bcn->type = beacon->type;
+            bcn->norm_rss = beacon->norm_rss;
+        }
 
-        // LOG(LVL_DEBUG, "idx:%d,address:%d,rss:%d,txpower:%d,type:%d",
-        //     insert_idx,
-        //     beacon->address,
-        //     beacon->rssi,
-        //     beacon->txpower,
-        //     beacon->type);
+        LOG(LVL_DEBUG, "idx:%d,address:%d,rss:%d,txpower:%d,type:%d",
+            insert_idx,
+            beacon->address,
+            beacon->norm_rss,
+            beacon->txpower,
+            beacon->type);
     }
     // else
     // {

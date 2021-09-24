@@ -16,6 +16,8 @@
 #include "api.h"
 #include "lock_bits.h"
 #include "persistent.h"
+#include "shared_appconfig.h"
+#include "stack_state.h"
 
 /* Request handlers */
 static bool stackStart(waps_item_t * item);
@@ -447,8 +449,8 @@ static bool stackStart(waps_item_t * item)
         {
             return false;
         }
-        // Try starting the stack
-        if (lib_state->startStack() == APP_RES_OK)
+
+        if (Stack_State_startStack() == APP_RES_OK)
         {
             state = APP_LIB_STATE_STARTED;
         }
@@ -471,7 +473,7 @@ static void reboot_callback(waps_item_t * item)
     /* Wait for uart to be empty */
     Waps_prot_flush_hw();
     /* Reset */
-    (void)lib_state->stopStack();
+    Stack_State_stopStack();
 }
 
 static bool stackStop(waps_item_t * item)
@@ -768,22 +770,65 @@ static attribute_result_e writeAttr(attr_t attr_id,
 
 static bool writeInterest(waps_item_t * item)
 {
+    app_config_write_res_e result =
+        APP_CONFIG_WRITE_RET_ACCESS_DENIED;
     if (item->frame.splen != sizeof(msap_int_write_req_t))
     {
         return false;
     }
 
-    app_lib_data_app_config_res_e result =
-        APP_LIB_DATA_APP_CONFIG_RES_INVALID_NULL_POINTER;
     /* Check that write app config data feature is permitted */
     if (LockBits_isFeaturePermitted(LOCK_BITS_MSAP_APP_CONFIG_WRITE))
     {
-
         msap_int_write_req_t * req = &item->frame.msap.int_write_req;
-        result = lib_data->writeAppConfig(req->config,
-                                          req->seq,
-                                          req->interval);
+
+        uint8_t cur_appconfig[APP_LIB_DATA_MAX_APP_CONFIG_NUM_BYTES];
+        uint8_t cur_seq;
+        uint16_t cur_interval;
+        app_lib_data_app_config_res_e read_res = lib_data->readAppConfig(
+                    &cur_appconfig[0],
+                    &cur_seq,
+                    &cur_interval);
+
+        // Check the current interval to avoid modifying sometging already set
+        if (read_res == APP_LIB_DATA_APP_CONFIG_RES_SUCCESS && cur_interval == req->interval)
+        {
+            // No need to update interval
+            result = APP_CONFIG_WRITE_RET_SUCCESS;
+        }
+        else
+        {
+            // Seq is automatic, no need to specify it
+            result = WriteLibAppCfg2appCfg(lib_data->writeDiagnosticInterval(req->interval));
+        }
+
+        if (result == APP_CONFIG_WRITE_RET_SUCCESS)
+        {
+            if (read_res == APP_LIB_DATA_APP_CONFIG_RES_SUCCESS &&
+                memcmp(cur_appconfig, req->config, APP_LIB_DATA_MAX_APP_CONFIG_NUM_BYTES) == 0)
+            {
+                // Same app config, nothing to update
+                result = APP_CONFIG_WRITE_RET_SUCCESS;
+            }
+            else
+            {
+                switch (Shared_Appconfig_setAppConfig(req->config))
+                {
+                    case SHARED_APP_CONFIG_RES_OK:
+                        result = APP_CONFIG_WRITE_RET_SUCCESS;
+                        break;
+                    case SHARED_APP_CONFIG_RES_INVALID_ROLE:
+                        result = APP_CONFIG_WRITE_RET_FAILURE_NOT_SINK;
+                        break;
+                    case SHARED_APP_CONFIG_RES_INVALID_PARAM:
+                        // No dedicated code in app config
+                    default:
+                        result = APP_CONFIG_WRITE_RET_ACCESS_DENIED;
+                }
+            }
+        }
     }
+
     /* Processing done, build response over request */
     Waps_item_init(item,
                    WAPS_FUNC_MSAP_APP_CONFIG_WRITE_CNF,

@@ -145,12 +145,9 @@ void App_init(const app_global_functions_t * functions)
     Led_init();
     Button_init();
 
-    App_Scheduler_init();
-
     // Launch two periodic task with different period
     App_Scheduler_addTask_execTime(periodic_task_50ms, APP_SCHEDULER_SCHEDULE_ASAP, 5);
     App_Scheduler_addTask_execTime(periodic_task_500ms, APP_SCHEDULER_SCHEDULE_ASAP, 5);
-
 
     // Register to button 0 event that will triger a single shot task
     // Will work only if target board support buttons

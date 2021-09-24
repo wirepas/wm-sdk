@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := pca10040 pca10100 pca10056 pca10059 ruuvitag silabs_brd4180b silabs_brd4181b silabs_brd4184a 
+TARGET_BOARDS := pca10059 pca10056 pca10100 pca10040 ruuvitag silabs_brd4180b silabs_brd4184a silabs_brd4181b 
 #
 # Network default settings configuration
 #
@@ -67,6 +67,15 @@ motion_sensor=
 default_motion_enabled = 1
 default_motion_threshold_mg = 300
 default_motion_duration_ms = 0
+
+# Mini-beacon settings
+default_mbcn_enabled = 0
+# for tx interval only 1000, 500, 250 msec supported
+default_mbcn_tx_interval_ms = 1000
+
+#DA settings
+default_da_routing_enabled = 0
+default_da_follow_network = 1
 
 # App version
 app_major=$(sdk_major)

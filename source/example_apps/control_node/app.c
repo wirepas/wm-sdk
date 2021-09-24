@@ -188,7 +188,7 @@ void App_init(const app_global_functions_t * functions)
     }
 
     Button_init();
-    Shared_Data_init();  // Always return APP_RES_OK.
+
     app_res = lib_settings->setNodeRole(APP_LIB_SETTINGS_ROLE_ADVERTISER);
     if (app_res != APP_RES_OK)
     {

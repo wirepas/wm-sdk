@@ -222,14 +222,8 @@ the PosApp.
 
 To instantiate PosLib in an application the following three steps must be followed:
 
-1. initialize the application scheduler the shared libraries used by PosLib
-```c     
-    App_Scheduler_init();
-    Shared_Data_init();
-    Shared_Appconfig_init();
-    Shared_Neighbors_init();
-    Shared_Beacon_init();
-    Shared_Offline_init();
+1. initialize the libraries used by PosLib
+```c
     Mcu_voltageInit();
 ```
 2. configure PosLib

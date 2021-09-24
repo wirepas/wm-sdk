@@ -98,7 +98,7 @@ bool PosLibEvent_add(poslib_internal_event_type_e type)
 
     LOG(LVL_DEBUG, "Event %u added slot %u (left %u)", event->type, i, sl_list_size(&m_events_head));
 
-    App_Scheduler_addTask(handle_events, APP_SCHEDULER_SCHEDULE_ASAP);
+    App_Scheduler_addTask_execTime(handle_events, APP_SCHEDULER_SCHEDULE_ASAP, 500);
     return true;
 }
 

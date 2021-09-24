@@ -5,7 +5,7 @@ LIBS +=
 LDFLAGS +=
 
 SHARED_APP_CONFIG=yes
-CFLAGS += -DSHARED_APP_CONFIG_MAX_FILTER=2
+SHARED_APP_CONFIG_FILTERS=2
 
 # Enable the debug logs (has no effect on board without serial port)
 APP_PRINTING=yes

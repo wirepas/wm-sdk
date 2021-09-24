@@ -18,11 +18,11 @@ CONTROL_ROUTER=yes
 
 # Enable shared appconfig (needed by app)
 SHARED_APP_CONFIG=yes
-CFLAGS += -DSHARED_APP_CONFIG_MAX_FILTER=1
+SHARED_APP_CONFIG_FILTERS=1
 
 # Enable App scheduler (needed by app)
 APP_SCHEDULER=yes
-CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=1
+APP_SCHEDULER_TASKS=1
 
 # This application use HAL for leds
 HAL_LED=yes

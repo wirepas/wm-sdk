@@ -164,8 +164,6 @@ void App_init(const app_global_functions_t * functions)
         return;
     }
 
-    Shared_Data_init();
-
     Shared_Data_addDataReceivedCb(&packet_1);
     Shared_Data_addDataReceivedCb(&packet_2);
     Shared_Data_addDataReceivedCb(&packet_3);

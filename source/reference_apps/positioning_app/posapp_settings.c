@@ -15,7 +15,7 @@
 #include <string.h>
 #include "api.h"
 #include "posapp_settings.h"
-#include "shared_shutdown.h"
+#include "stack_state.h"
 
 /*
  *  Network keys define in mcu/common/start.c and
@@ -26,8 +26,6 @@ extern const uint8_t * authen_key_p;
 extern const uint8_t * cipher_key_p;
 
 static app_lib_settings_role_t m_new_role;
-static uint16_t m_shared_shutdown_id;
-
 
 void get_default_settings(poslib_settings_t * settings)
 {
@@ -64,11 +62,26 @@ void get_default_settings(poslib_settings_t * settings)
     settings->motion.threshold_mg = 0;
     settings->motion.threshold_mg = 0;
 #endif
+
+    // Mini-beacon 
+    settings->mbcn.enabled = POSLIB_MBCN_ENABLED;
+    settings->mbcn.tx_interval_ms = POSLIB_MBCN_TX_INTERVAL_MS;
+    memset(settings->mbcn.records, 0 , sizeof(settings->mbcn.records));
+    // Default custom records can be initialized here
+    settings->da.routing_enabled = POSLIB_DA_ROUTING_ENABLED;
+    settings->da.follow_network = POSLIB_DA_FOLLOW_NETWORK;
 }
 
-static void shutdown_cb()
+static void stack_state_cb(stack_state_event_e event)
 {
-    app_res_e res = lib_settings->setNodeRole(m_new_role);
+    app_res_e res;
+    if (event != STACK_STATE_STOPPED_EVENT)
+    {
+        // only interested by stopped event
+        return;
+    }
+    res = lib_settings->setNodeRole(m_new_role);
+
     if (res == APP_RES_OK)
     {
         LOG(LVL_INFO, "New role %u set", m_new_role);
@@ -79,70 +92,127 @@ static void shutdown_cb()
     }
 }
 
-static void check_role(poslib_settings_t * settings, bool force_set_role)
+static app_lib_settings_role_t enforce_node_mode(poslib_settings_t * settings, 
+                                        app_lib_settings_role_t role)
 {
-    app_lib_settings_role_t role;
-    app_lib_settings_role_t new_role;
-    uint8_t base_role;
-    uint8_t flags_role;
-    uint8_t node_mode = settings->node_mode;
-   
-    lib_settings->getNodeRole(&role);
-    new_role = role;
-    base_role = app_lib_settings_get_base_role(role);
-    flags_role = app_lib_settings_get_flags_role(role);
+    app_lib_settings_role_t new_role = role;
+    uint8_t base_role = app_lib_settings_get_base_role(role);
+    uint8_t flags_role = app_lib_settings_get_flags_role(role);
 
+    switch(settings->node_mode)
+    {
+        case POSLIB_MODE_AUTOSCAN_ANCHOR:
+        case POSLIB_MODE_OPPORTUNISTIC_ANCHOR:
+        {
+            if (base_role != APP_LIB_SETTINGS_ROLE_HEADNODE || 
+                !(base_role = APP_LIB_SETTINGS_ROLE_SUBNODE && settings->mbcn.enabled))
+            {
+                new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE, flags_role);
+            }
+            break;
+        }
+        case POSLIB_MODE_NRLS_TAG:
+        case POSLIB_MODE_AUTOSCAN_TAG:
+        {
+            new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_SUBNODE, flags_role);
+            break;
+        }
+        case POSLIB_MODE_DA_TAG:
+        {
+            new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_ADVERTISER, flags_role);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+    return new_role;
+}
+
+static uint8_t enforce_node_role(poslib_settings_t * settings, 
+                                app_lib_settings_role_t role)
+{
+    uint8_t node_mode = settings->node_mode;
+    uint8_t base_role = app_lib_settings_get_base_role(role);
+   
     switch (base_role)
     {
         case APP_LIB_SETTINGS_ROLE_HEADNODE:
         {
-            if (node_mode == POSLIB_MODE_NRLS_TAG ||
-                node_mode == POSLIB_MODE_AUTOSCAN_TAG)
+            if (node_mode != POSLIB_MODE_AUTOSCAN_ANCHOR || 
+                node_mode != POSLIB_MODE_OPPORTUNISTIC_ANCHOR)
             {
-                if (force_set_role)
-                {
-                    new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_SUBNODE, flags_role);
-                }
-                else
-                {
-                   settings->node_mode = POSAPP_ANCHOR_DEFAULT_ROLE;
-                   LOG(LVL_INFO, "Setting node mode to anchor default: %u",  settings->node_mode);
-                }
+                node_mode = POSAPP_ANCHOR_DEFAULT_ROLE;
+                LOG(LVL_INFO, "Setting node mode to anchor default: %u",  node_mode);
             }
             break;
         }
         case APP_LIB_SETTINGS_ROLE_SUBNODE:
-        {
-            if (node_mode == POSLIB_MODE_AUTOSCAN_ANCHOR || 
-                node_mode == POSLIB_MODE_OPPORTUNISTIC_ANCHOR)
             {
-                if (force_set_role)
-                {
-                    new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE, flags_role);
-                }
-                else
-                {
-                   settings->node_mode = POSAPP_TAG_DEFAULT_ROLE;
-                   LOG(LVL_INFO, "Setting node mode to tag default: %u",  settings->node_mode);
-                }
+            if (!(node_mode == POSLIB_MODE_NRLS_TAG || 
+                node_mode == POSLIB_MODE_AUTOSCAN_TAG || 
+                ((node_mode == POSLIB_MODE_AUTOSCAN_ANCHOR || 
+                    node_mode == POSLIB_MODE_OPPORTUNISTIC_ANCHOR) 
+                    && settings->mbcn.enabled)))
+            {
+                node_mode = POSAPP_TAG_DEFAULT_ROLE;
+                LOG(LVL_INFO, "Setting node mode to tag default: %u",  node_mode);
+            }
+            break;
+        }
+        case APP_LIB_SETTINGS_ROLE_ADVERTISER:
+        {
+            if (node_mode != POSLIB_MODE_DA_TAG)
+            {
+                node_mode = POSLIB_MODE_DA_TAG;
+                LOG(LVL_INFO, "Setting node mode to DA tag default: %u",  node_mode);
             }
             break;
         }
         default:
         {
-            LOG(LVL_ERROR,"Node node %u unknown", settings->node_mode);
-            return;
+            LOG(LVL_ERROR,"Node role %u unknown", base_role);
         }
     }
+    return node_mode;
+}
+
+
+static void check_role(poslib_settings_t * settings, bool force_set_role)
+{
+    app_lib_settings_role_t role;
+    app_lib_settings_role_t new_role;
+    uint8_t node_mode = settings->node_mode; 
+
+
+    lib_settings->getNodeRole(&role);
+    new_role = role;
+  
+    if (force_set_role)
+    {
+        // Enforce the positioning mode -> node role might change
+       new_role = enforce_node_mode(settings, role);
+    }
+    else
+    {
+        // Ensure node mode matches node role -> when differ enforce 
+        // default mode for the role
+        settings->node_mode = enforce_node_role(settings, role);
+    }
+   
+    (void) node_mode;
+    LOG(LVL_INFO, "Mode mode: %u->%u, role %u->%u",  node_mode, settings->node_mode, 
+                                                     role, new_role);
 
     if (force_set_role && role != new_role)
     {
         app_res_e res;
-        res = Shared_Shutdown_addShutDownCb(shutdown_cb,&m_shared_shutdown_id);
+        res = Stack_State_addEventCb(stack_state_cb);
 
         if (res != APP_RES_OK)
         {
-            LOG(LVL_ERROR, "Cannot register shutdown CB. res: %u", res);
+            LOG(LVL_ERROR, "Cannot register stack state CB. res: %u", res);
             return;
         }
 

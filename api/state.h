@@ -27,7 +27,7 @@
 #define APP_LIB_STATE_NAME 0x02f9c165 //!< "STATE"
 
 /** @brief Maximum supported library version */
-#define APP_LIB_STATE_VERSION 0x20A
+#define APP_LIB_STATE_VERSION 0x20B
 
 /**
  * @brief   Macro for cost indicating "no route". Used in @ref
@@ -79,11 +79,13 @@ typedef enum
  */
 typedef enum
 {
-    /** Directed advertiser is supported by neighbor */
+    /** Directed advertiser is supported by neighbor and packet can be sent to
+     * it */
     APP_LIB_STATE_DIRADV_SUPPORTED      = 0,
-    /** Sending not supported */
+    /** Sending not supported by neighbor */
     APP_LIB_STATE_DIRADV_NOT_SUPPORTED  = 1,
-    /** Unknown state. Maybe or maybe not supported */
+    /** Unknown state. Directed advertiser maybe or maybe not supported by
+     * neighbor but packet can not be sent to it */
     APP_LIB_STATE_DIRADV_UNKNOWN        = 2,
 } app_lib_state_diradv_support_e;
 
@@ -223,7 +225,7 @@ typedef struct
     bool        is_sink; //!< Device is sink
     bool        is_ll;   //!< Device is LL
     uint8_t     cost;    //!< Cost of the device. 255==no route
-    uint8_t     type;    //!< Type of beacon @ref app_lib_state_nbor_type_e
+    uint8_t     type;    //!< Type of beacon @ref app_lib_state_beacon_type_e
     /**
      * @brief   Sender supports Directed Advertiser sending packets to it
      */
@@ -299,6 +301,35 @@ typedef struct
  * @brief    Function type for a neighbor scan completion callback
  */
 typedef void (*app_lib_state_on_scan_nbors_cb_f)(void);
+
+/**
+ * @brief   Types of scans
+ */
+typedef enum
+{
+    // Scan originated by application (by using call @ref
+    // app_lib_state_start_scan_nbors_f "lib_state->startScanNbors()")
+    SCAN_TYPE_APP_ORIGINATED = 0x00,
+    // Scan originated by stack
+    SCAN_TYPE_STACK_ORIGINATED = 0x01,
+} app_lib_state_scan_type_e;
+
+/**
+ * @brief   Information on started scan
+ */
+typedef struct
+{
+    // Type of scan, @ref app_lib_state_scan_type_e
+    uint8_t scan_type;
+} app_lib_state_on_scan_start_info_t;
+
+/**
+ * @brief   Function type for scan start callback
+ * @param   scan_info
+ *          Info on started scan
+ */
+typedef void (*app_lib_state_on_scan_start_cb_f)
+    (const app_lib_state_on_scan_start_info_t * scan_info);
 
 /**
  * @brief   Function type for a beacon reception callback
@@ -427,6 +458,31 @@ typedef app_res_e (*app_lib_state_get_access_cycle_f)(uint16_t * ac_value_p);
  */
 typedef app_res_e (*app_lib_state_set_on_scan_nbors_with_type_cb_f)
     (app_lib_state_on_scan_nbors_cb_f cb, app_lib_state_scan_nbors_type_e type);
+
+/**
+ * @brief   Set a callback to be called when neighbor scan starts
+ * @param   cb
+ *          Function to be executed, or NULL to unregister
+ * @return  Result code, always @ref APP_RES_OK
+ *
+ * Example:
+ * @code
+ *
+ * static
+ * void onScanStartCb(const app_lib_state_on_scan_start_info_t * scan_info)
+ * {
+ *    // Here scan_info->scan_type tells who originated the scan
+ *    ...
+ * }
+ *
+ * ...
+ * lib_state->setOnScanStartCb(onScanStartCb);
+ * ...
+ *
+ * @endcode
+ */
+typedef app_res_e (*app_lib_state_set_on_scan_start_cb_f)
+    (app_lib_state_on_scan_start_cb_f cb);
 
 /**
  * @brief   Start neighbor scan
@@ -602,60 +658,9 @@ typedef uint8_t (*app_lib_state_adjust_hops_cb_f)
  * @param   cb
  *          Callback function to be called when querying hops left adjusting.
  *          NULL to disable callback function.
- * @return  Result code, always @ref APP_RES_OK
+ * @return  Result code, always @ref APP_RES_NOT_IMPLEMENTED
  *
- * The mechanism is intended to be used with 'local multicast groups'. Then,
- * the propagation of packet is limited to the edge of the multicast group.
- * If following assumptions apply, this can be done:
- * 1) Multicast group X is 'concise', i.e. ALL devices that belong to multicast
- *    group X are close to each other.
- * 2) There are no devices that do not belong to multicast group X 'in middle'
- *    of multicast group X
- * 3) Originator of the command is close to multicast group X.
- *
- * If these apply, then following can be done:
- * - If packet is transmitted to group X and routing device belongs to this
- *   group, do not modify the hops left.
- * - If packet is transmitted to group X but routing device does NOT belong to
- *   this group, decrease hops left value. Note: do not set it immediately to
- *   0 because that would lead to reliability problems at the edge of the group
- *
- *   Example:
- *   @code
- *   // This device belongs to this group
- *   #define OWN_GROUP (APP_ADDR_MULTICAST | 1)
- *
- *   bool group_query_cb(app_addr_t group_addr)
- *   {
- *       return (group_addr == OWN_GROUP);
- *   }
- *
- *   uint8_t on_hopsleft_cb(const app_lib_state_hops_left_adjust_t * info)
- *   {
- *       if (group_query_cb(info->address))
- *       {
- *           // Belongs to a group, do not modify
- *           return info->hops_left;
- *       }
- *       else
- *       {
- *          // Limit to 2 hops (max)
- *          return 2;
- *       }
- *   }
- *
- *   void App_init(const app_global_functions_t * functions)
- *   {
- *       lib_settings->registerGroupQuery(group_query_cb);
- *       lib_state->setHopsLeftCb(on_hopsleft_cb);
- *       // ...
- *       lib_state->startStack();
- *   }
- *   @endcode
- *
- *  @note This service is going to be deprecated in next feature release of
- *        Wirepas Mesh, i.e. 5.2.0 and later versions won't have this service
- *        supported.
+ * @note    This service is deprecated in Wirepas Mesh version 5.2.0 and later.
  */
 typedef app_res_e (*app_lib_state_set_adjust_hops_cb_f)
     (app_lib_state_adjust_hops_cb_f cb);
@@ -741,6 +746,7 @@ typedef struct
     app_lib_state_set_scan_dur_f                    setScanDuration;
     app_lib_state_scan_stop_f                       stopScanNbors;
     app_lib_state_get_install_quality_f             getInstallQual;
+    app_lib_state_set_on_scan_start_cb_f            setOnScanStartCb;
 } app_lib_state_t;
 
 #endif /* APP_LIB_STATE_H_ */

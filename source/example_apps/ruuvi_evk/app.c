@@ -199,7 +199,7 @@ static void on_config_update(void)
     else
     {
         /* Config changed, schedule Sensor task ASAP. */
-        App_Scheduler_addTask(sensor_task, APP_SCHEDULER_SCHEDULE_ASAP);
+        App_Scheduler_addTask_execTime(sensor_task, APP_SCHEDULER_SCHEDULE_ASAP, 100);
     }
 }
 
@@ -226,13 +226,13 @@ void App_init(const app_global_functions_t * functions)
 
     /* Initialize all the modules. */
     App_Config_init(on_config_update);
-    App_Scheduler_init();
+
     ruuvi_spi_init();
     BME280_wrapper_init();
     LIS2DH12_wrapper_init();
 
     /* Launch the sensor task. */
-    App_Scheduler_addTask(sensor_task, APP_SCHEDULER_SCHEDULE_ASAP);
+    App_Scheduler_addTask_execTime(sensor_task, APP_SCHEDULER_SCHEDULE_ASAP, 100);
 
     /*
      * Start the stack.

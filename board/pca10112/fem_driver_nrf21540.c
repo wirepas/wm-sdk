@@ -25,7 +25,7 @@
 // that the default TX gain of +10dB has an error margin of +/- 1.5dB.
 
 // For RADIO_TX_POWER_XXX
-#include "mcu/nrf52/vendor/nrf52840_bitfields.h"
+#include "mcu/nrf/common/vendor/mdk/nrf52840_bitfields.h"
 
 // +10 dBm power table for nrf52840, with 7 power levels, PA gain +10dB
 // With +10dB gain power consumption increases by 38mA

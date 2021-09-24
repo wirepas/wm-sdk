@@ -28,6 +28,9 @@ typedef void (*waps_pre_tx_cb_f)(waps_item_t *);
 /** Callback for performing operations after successfully sending the frame */
 typedef void (*waps_post_tx_cb_f)(waps_item_t *);
 
+/** Callback to be called when the defined thershold of free buffer is reached */
+typedef void (*waps_free_item_threshold_cb_t)(void);
+
 typedef struct waps_item_t
 {
     sl_list_t           list;
@@ -41,7 +44,6 @@ typedef struct waps_item_t
      * size can vary */
     STRUCT_ALIGN_4(waps_frame_t);
 } waps_item_t;
-
 
 /**
  * \brief   Initialize common frame fields
@@ -68,7 +70,7 @@ __STATIC_INLINE void Waps_item_init(waps_item_t * item,
 /**
  * \brief   Initialize dynamic item bank
  */
-void Waps_itemInit(void);
+void Waps_itemInit(waps_free_item_threshold_cb_t thresold_cb, uint8_t thresold_percent);
 
 /**
  * \brief   Reserve item from item bank

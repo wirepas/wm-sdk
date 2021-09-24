@@ -19,6 +19,14 @@
 #include "api.h"
 #include "lis2_dev.h"
 
+#ifdef LIS2DH12_I2C
+#define LIS2_I2C_ADD_L LIS2DH12_I2C_ADD_L
+#define LIS2_I2C_ADD_H LIS2DH12_I2C_ADD_H
+#elif defined LIS2DW12_I2C
+#define LIS2_I2C_ADD_L LIS2DW12_I2C_ADD_L
+#define LIS2_I2C_ADD_H LIS2DW12_I2C_ADD_H
+#endif
+
 /** Maximum I2C write transfer */
 #define MAX_WRITE_SIZE             16
 
@@ -69,7 +77,7 @@ static int32_t lis2_writeI2C(void * handle,
 }
 
 /**
-    @brief     Read from SPI (function required by STMicroelectronics lib).
+    @brief     Read from I2C (function required by STMicroelectronics lib).
     @param[in] handle I2C driver id (unused here).
     @param[in] reg First register to read.
     @param[in] bufp Pointer to store read registers.
@@ -102,7 +110,7 @@ static int32_t lis2_readI2C(void * handle,
         res = I2C_transfer(&xfer_rx, NULL);
         memcpy(bufp, &rx[0], len);
     }
-     I2C_close();
+    I2C_close();
 
     //LOG(LVL_DEBUG, "I2C read. res:%u reg: 0x%x len: %u", res, reg, len);
     return res;
@@ -111,8 +119,8 @@ static int32_t lis2_readI2C(void * handle,
 
 void LIS2_dev_init(stmdev_ctx_t * dev)
 {
-    m_lis2dh12_address = (BOARD_I2C_LIS2DH12_SA0 == 0) ? LIS2DH12_I2C_ADD_L >> 1 : 
-                                                    LIS2DH12_I2C_ADD_H >> 1;
+    m_lis2dh12_address = (BOARD_I2C_LIS2DH12_SA0 == 0) ? LIS2_I2C_ADD_L >> 1 : 
+                                                    LIS2_I2C_ADD_H >> 1;
     dev->handle = NULL;
     dev->write_reg = lis2_writeI2C;
     dev->read_reg = lis2_readI2C;

@@ -43,6 +43,12 @@ static app_lib_data_data_sent_cb_f
                             m_tracked_packets[SHARED_DATA_MAX_TRACKED_PACKET];
 
 /**
+ * Is library initialized
+ */
+static bool m_initialized = false;
+
+
+/**
  * @brief   Delete marked items from linked list.
  */
 static void delete_marked_items(void)
@@ -69,6 +75,38 @@ static void delete_marked_items(void)
         }
     }
     lib_system->exitCriticalSection();
+}
+
+/**
+ * @brief   Enable recepton back if all itemas are ready
+ */
+static void enable_reception_if_needed(void)
+{
+    shared_data_item_t * item;
+    bool ready = true;
+    sl_list_t * i = sl_list_begin((sl_list_t *)&m_shared_data_head);
+
+    m_iterating_list = true;
+
+    while (i != sl_list_end((sl_list_t *)&m_shared_data_head))
+    {
+        item = (shared_data_item_t *) i;
+
+        if (item->reserved3)
+        {
+            ready = false;
+            break;
+        }
+        i = sl_list_next(i);
+    }
+
+    delete_marked_items();
+
+    if (ready)
+    {
+        /* All filters are ready, notify stack */
+        lib_data->allowReception(true);
+    }
 }
 
 /**
@@ -105,8 +143,9 @@ static bool filter_received_packet(const shared_data_filter_t * filter,
         return false;
     }
 
-    /* MultiCast group is filtered again here. */
-    if (IS_ANYCAST(filter->mode) || IS_MULTICAST(filter->mode))
+    /* Check multicast cb for any multicast address if it exists */
+    /* If we are at this point, filter already match multicast if multicast address */
+    if (IS_MULTICAST_ADDRESS(data->dest_address))
     {
         /* If Not multicast group. */
         if (filter->multicast_cb != NULL &&
@@ -197,19 +236,24 @@ static app_lib_data_receive_res_e received_cb(
         if (filter_received_packet(&item->filter, data))
         {
             app_lib_data_receive_res_e cb_res = item->cb(item, data);
-            if (cb_res == APP_LIB_DATA_RECEIVE_RES_HANDLED)
+            if (cb_res == APP_LIB_DATA_RECEIVE_RES_HANDLED &&
+                res == APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP)
             {
-                res = APP_LIB_DATA_RECEIVE_RES_HANDLED;
+                /* At lease one filter consumed the packet */
+                res = cb_res;
             }
-            /* Packet is dropped in case callback
-             * returns APP_LIB_DATA_RECEIVE_RES_NO_SPACE.
-             */
+            else if (cb_res == APP_LIB_DATA_RECEIVE_RES_NO_SPACE)
+            {
+                /* Filter cannot receive data anymore, mark it as busy */
+                item->reserved3 = true;
+                /* Report it to stack (It will not be overwritten by anyone else) */
+                res = cb_res;
+            }
         }
         else
         {
             /* Packet is dropped. */
         }
-
 
         i = sl_list_next(i);
     }
@@ -236,6 +280,12 @@ static void sent_cb(const app_lib_data_sent_status_t * status)
 
 app_res_e Shared_Data_init(void)
 {
+    if (m_initialized)
+    {
+        // Library already initialized
+        return APP_RES_OK;
+    }
+
     sl_list_init(&m_shared_data_head);
 
     m_iterating_list = false;
@@ -253,11 +303,20 @@ app_res_e Shared_Data_init(void)
     /* Set callback for sent packet. */
     lib_data->setDataSentCb(sent_cb);
 
+    m_initialized = true;
+
     return APP_RES_OK;
 }
 
 app_res_e Shared_Data_addDataReceivedCb(shared_data_item_t * item)
 {
+    if (!m_initialized)
+    {
+        // It should be a different error code but
+        // app_res_e doesn't have UNINITIALIZED error code
+        return APP_RES_RESOURCE_UNAVAILABLE;
+    }
+
     if (item->cb == NULL)
     {
         return APP_RES_INVALID_NULL_POINTER;
@@ -291,10 +350,30 @@ app_res_e Shared_Data_addDataReceivedCb(shared_data_item_t * item)
     }
     lib_system->exitCriticalSection();
 
+    item->reserved3 = false;
     LOG(LVL_DEBUG, "Add received cb (src ep: %d, dst ep: %d, mode: %u)",
                    item->filter.src_endpoint,
                    item->filter.dest_endpoint,
                    item->filter.mode);
+
+    return APP_RES_OK;
+}
+
+app_res_e Shared_Data_readyToReceive(shared_data_item_t * item)
+{
+    LOG(LVL_DEBUG, "Filter ready again for reception (src ep: %d, dst ep: %d, mode: %u)",
+                   item->filter.src_endpoint,
+                   item->filter.dest_endpoint,
+                   item->filter.mode);
+
+    /* Clear the flag from current item if set */
+    if (item->reserved3)
+    {
+        item->reserved3 = false;
+
+        /* Check from all filters if it is time to enable reception back */
+        enable_reception_if_needed();
+    }
 
     return APP_RES_OK;
 }
@@ -312,6 +391,10 @@ void Shared_Data_removeDataReceivedCb(shared_data_item_t * item)
         if ((sl_list_t *)item != sl_list_remove(&m_shared_data_head,
                                                 (sl_list_t *)item))
         {
+            if (item->reserved3)
+            {
+                enable_reception_if_needed();
+            }
             memset(item, 0, sizeof(shared_data_item_t));
         }
         lib_system->exitCriticalSection();
@@ -327,6 +410,13 @@ app_lib_data_send_res_e Shared_Data_sendData(
                                         app_lib_data_data_sent_cb_f sent_cb)
 {
     app_lib_data_send_res_e res;
+
+    if (!m_initialized)
+    {
+        // It should be a different error code but
+        // app_res_e doesn't have UNINITIALIZED error code
+        return APP_RES_RESOURCE_UNAVAILABLE;
+    }
 
     data->tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 

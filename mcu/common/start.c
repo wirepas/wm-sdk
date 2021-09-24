@@ -13,6 +13,7 @@
 #include "app.h"
 #include "api.h"
 #include "board_init.h"
+#include "libraries_init.h"
 
 /** Addresses determined by the linker */
 extern unsigned int __text_start__;
@@ -111,6 +112,9 @@ intptr_t _start(const app_global_functions_t * functions,
 
     /* Call any board specific initialization */
     Board_init();
+
+    /* Initialize libraries in use */
+    Libraries_init();
 
     /* Call application initialization function */
     App_init(functions);

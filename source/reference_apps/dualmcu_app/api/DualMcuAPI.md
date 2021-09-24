@@ -265,7 +265,7 @@ Octets are transferred most significant bit first.
 ## Timing
 
 There is a reception timeout for received UART frames. A transmission of
-complete API frame to the stack MCU shall take no longer than 200 ms.
+complete API frame to the stack MCU shall take no longer than 300 ms.
 
 ## CRC Calculation (CRC-16-CCITT)
 

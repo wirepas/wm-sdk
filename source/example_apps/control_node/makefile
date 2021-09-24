@@ -18,10 +18,7 @@ CFLAGS += -DCONF_PKT_TTL_MS=$(default_packet_ttl_ms)
 HAL_BUTTON=yes
 
 APP_SCHEDULER=yes
-CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=1
-
-# Enable shared data library (needed by control library)
-SHARED_DATA=yes
+APP_SCHEDULER_TASKS=1
 
 # Enable Control library
 CONTROL_NODE=yes

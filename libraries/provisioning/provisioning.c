@@ -121,9 +121,9 @@ static app_lib_data_receive_res_e pkt_received_cb(
 
     memcpy(&m_data_buffer,data->bytes,m_data_length);
 
-    if (App_Scheduler_addTask(run_state_machine,
-                              APP_SCHEDULER_SCHEDULE_ASAP) !=
-                                                        APP_SCHEDULER_RES_OK)
+    if (App_Scheduler_addTask_execTime(run_state_machine,
+                              APP_SCHEDULER_SCHEDULE_ASAP,
+                              500) != APP_SCHEDULER_RES_OK)
     {
         reset_provisioning();
         m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
@@ -140,9 +140,9 @@ static uint32_t timeout_task(void)
 {
     LOG(LVL_INFO, "Event : TIMEOUT.");
     m_events.timeout = 1;
-    if (App_Scheduler_addTask(run_state_machine,
-                              APP_SCHEDULER_SCHEDULE_ASAP) !=
-                                                        APP_SCHEDULER_RES_OK)
+    if (App_Scheduler_addTask_execTime(run_state_machine,
+                              APP_SCHEDULER_SCHEDULE_ASAP,
+                              500) != APP_SCHEDULER_RES_OK)
     {
         reset_provisioning();
         m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
@@ -160,9 +160,9 @@ static void packet_sent_cb(const app_lib_data_sent_status_t * status)
     LOG(LVL_INFO, "Event : ACK SENT.");
     /* No need to check if packet has been sent successfully. */
     m_events.ack_sent = 1;
-    if (App_Scheduler_addTask(run_state_machine,
-                              APP_SCHEDULER_SCHEDULE_ASAP) !=
-                                                        APP_SCHEDULER_RES_OK)
+    if (App_Scheduler_addTask_execTime(run_state_machine,
+                              APP_SCHEDULER_SCHEDULE_ASAP,
+                              500) != APP_SCHEDULER_RES_OK)
     {
         reset_provisioning();
         m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
@@ -181,9 +181,9 @@ static void end_joining_cb(provisioning_res_e result)
 
     m_joining_res = result;
     m_events.joined = 1;
-    if (App_Scheduler_addTask(run_state_machine,
-                              APP_SCHEDULER_SCHEDULE_ASAP) !=
-                                                        APP_SCHEDULER_RES_OK)
+    if (App_Scheduler_addTask_execTime(run_state_machine,
+                              APP_SCHEDULER_SCHEDULE_ASAP,
+                              500) != APP_SCHEDULER_RES_OK)
     {
         reset_provisioning();
         m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
@@ -238,8 +238,9 @@ static uint32_t send_ack_packet(void)
             * to be sent.
             */
         m_timeout_ms = m_conf.timeout_s * 1000;
-        if (App_Scheduler_addTask(timeout_task, m_timeout_ms) !=
-                                                APP_SCHEDULER_RES_OK)
+        if (App_Scheduler_addTask_execTime(timeout_task,
+                                    m_timeout_ms,
+                                    500) != APP_SCHEDULER_RES_OK)
         {
             reset_provisioning();
             m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
@@ -532,8 +533,9 @@ static uint32_t state_start(void)
     {
         Shared_Data_addDataReceivedCb(&m_ptk_received_item);
         m_timeout_ms = m_conf.timeout_s * 1000;
-        if (App_Scheduler_addTask(timeout_task, m_timeout_ms) !=
-                                                APP_SCHEDULER_RES_OK)
+        if (App_Scheduler_addTask_execTime(timeout_task,
+                                    m_timeout_ms,
+                                    500) != APP_SCHEDULER_RES_OK)
         {
             reset_provisioning();
             m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
@@ -814,9 +816,9 @@ provisioning_ret_e Provisioning_start(void)
         return PROV_RET_INVALID_STATE;
     }
 
-    if (App_Scheduler_addTask(run_state_machine,
-                              APP_SCHEDULER_SCHEDULE_ASAP) !=
-                                                        APP_SCHEDULER_RES_OK)
+    if (App_Scheduler_addTask_execTime(run_state_machine,
+                              APP_SCHEDULER_SCHEDULE_ASAP,
+                              500) != APP_SCHEDULER_RES_OK)
     {
         reset_provisioning();
         m_conf.end_cb(PROV_RES_ERROR_INTERNAL);

@@ -1,3 +1,6 @@
+# This definition describes mcu family.
+MCU_FAMILY=nrf
+
 # This definition describes processor architecture.
 # Valid value: nrf52 for nRF52 based boards
 MCU=nrf52

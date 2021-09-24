@@ -22,6 +22,10 @@ Example how to use:
 
 Init needs to called only once in the firmware:
 Shared_Beacon_init();
+If this library is enabled, init call is automatically called and application doesn't
+have to call it again.
+
+
 
 Variable needed to get the index of the activated beacon tx:
 static uint8_t shared_beacon_index_1;

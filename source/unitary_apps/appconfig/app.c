@@ -174,8 +174,6 @@ void App_init(const app_global_functions_t * functions)
 
     LOG(LVL_DEBUG, "App starting");
 
-    Shared_Appconfig_init();
-
     // Prepare the app_config filter
     app_config_filter.type = CUSTOM_TLV_TYPE;
     app_config_filter.cb = appConfigTLVReceivedCb;

@@ -209,7 +209,6 @@ void App_init(const app_global_functions_t * functions)
         return;
     }
 
-    App_Scheduler_init();
     App_Scheduler_addTask_execTime(measure_voltage,
                                    MEA_INTERVAL*1000,
                                    1000);

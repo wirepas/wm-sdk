@@ -65,6 +65,7 @@ typedef enum
     POSLIB_MODE_AUTOSCAN_TAG = 2,
     POSLIB_MODE_AUTOSCAN_ANCHOR = 3,
     POSLIB_MODE_OPPORTUNISTIC_ANCHOR = 4,
+    POSLIB_MODE_DA_TAG = 5,
     POSLIB_MODE_ENDS = 5
 } poslib_mode_e;
 
@@ -155,7 +156,81 @@ typedef enum
 } poslib_status_e;
 
 /**
- * @brief  defines BLE mode mode configration.
+ * @brief  defines the mini-beacon payload records types
+ */
+typedef enum
+{
+    POSLIB_MBCN_INVALID_TYPE = 0, 
+    // Wirepas defined - required types
+    POSLIB_MBCN_TX_INTERVAL = 1,  
+    POSLIB_MBCN_FEATURES = 2,
+    // Wirepas defined - optional types
+    POSLIB_MBCN_AREA_ID = 3,
+    POSLIB_MBCN_FLOOR_ID = 4,
+    POSLIB_MBCN_X = 5,
+    POSLIB_MBCN_Y = 6,
+    POSLIB_MBCN_Z = 7,
+    // 8-15 reserved
+    // Application specific types (use only when standard records not available)
+    POSLIB_MBCN_CUSTOM_1 = 16,
+    POSLIB_MBCN_CUSTOM_2 = 17,
+    POSLIB_MBCN_CUSTOM_3 = 18,
+    POSLIB_MBCN_CUSTOM_4 = 19,
+    // 20-31 reserved.  !!! type cannot be > 31
+    POSLIB_MBCN_MAX_TYPE = 31,
+} poslib_mbcn_record_types_e;
+
+/**< Maximum number of bytes included in one record */
+#define POSLIB_MBCN_RECORD_MAX_SIZE 16
+
+/**< Maximum optional records in mini-beacon payload*/
+#define POSLIB_MBCN_RECORDS 8
+
+#define POSLIB_MBCN_SRC_EP 238
+#define POSLIB_MBCN_DEST_EP 238
+
+typedef enum
+{
+    POSLIB_MBCN_TX_INTERVAL_DEFAULT = 1000,
+    POSLIB_MBCN_TX_INTERVAL_500 = 500,
+    POSLIB_MBCN_TX_INTERVAL_250 = 250,
+} poslib_mbcn_tx_interval_e;
+
+/**
+ * @brief  defines mini-beacon record.
+ */
+typedef struct
+{
+    uint8_t type;   // according to poslib_mbcn_record_types_e
+    uint8_t length;  // shall be <= POSLIB_MBCN_RECORD_MAX_SIZE, invalid record when 0
+    uint8_t value[POSLIB_MBCN_RECORD_MAX_SIZE];
+} poslib_mbcn_record_t;
+
+/**
+ * @brief  defines mini-beacon configuration.
+ */
+typedef struct
+{
+    bool enabled;
+    uint16_t tx_interval_ms;
+    poslib_mbcn_record_t records[POSLIB_MBCN_RECORDS];
+} poslib_mbcn_config_t;
+
+
+/**
+ * @brief  defines mini-beacon data payload.
+ */
+typedef struct
+{
+    uint16_t seq;
+    uint16_t tx_interval_ms;
+    uint16_t features;
+    poslib_mbcn_record_t records[POSLIB_MBCN_RECORDS];
+} poslib_mbcn_data_t;
+
+
+/**
+ * @brief  defines BLE mode mode configuration.
  */
 typedef struct
 {
@@ -187,6 +262,15 @@ typedef struct
 } poslib_motion_mon_settings_t;
 
 /**
+ * @brief position library DA settings.
+ */
+typedef struct
+{    
+    bool routing_enabled;
+    bool follow_network;
+} poslib_da_settings_t;
+
+/**
  * @brief position library settings.
  */
 typedef struct
@@ -205,6 +289,10 @@ typedef struct
     ble_beacon_settings_t ble;
     /* Motion settings*/
     poslib_motion_mon_settings_t motion;
+    /*Mini-beacon settings*/
+    poslib_mbcn_config_t mbcn;
+    /* DA settings */
+    poslib_da_settings_t da;
 } poslib_settings_t;
 
 /**
@@ -257,13 +345,6 @@ poslib_ret_e PosLib_getConfig(poslib_settings_t * settings);
 /**
  * @brief   Start the positioning updates according to provided configuration.
  *          Calls PosLib initialization function before start.
- * @note    Following shared libraries needs to be initialized before use
- *          App_Scheduler_init();
- *          Shared_Data_init();
- *          Shared_Appconfig_init();
- *          Shared_Neighbors_init();
- *          Shared_Beacon_init();
- *          Shared_Offline_init();
  *          
  * @return  See \ref poslib_ret_e
  */
@@ -315,4 +396,35 @@ poslib_ret_e PosLib_eventRegister(poslib_events_e event,
  * @param   id subscriber ID
  */
 void PosLib_eventDeregister(uint8_t id);
+
+/**
+ * @brief   Decodes the mini-beacon payload
+ * @param[in]   buf pointer to MBCN payload
+ * @param[in]   length length of the MBCN payload
+ * @param[out]  mbcn decoded minibeacon content   
+ * @return  true: decoding sucessful, false: decode failed
+ */
+bool PosLib_decodeMbcn(uint8_t * buf, uint8_t length, poslib_mbcn_data_t * mbcn);
+
+/**
+ * @brief   Send data. The packet to send is represented as a
+ *          @ref app_lib_data_to_send_t struct. In node has Advertiser role
+ *          and dest_address is APP_ADDR_ANYSINK then the function will replace
+ *          the destination with the address of the best found LL router supporting DA
+ * @param   data
+ *          Data to send
+ * @param   sent_cb
+ *          Callback function to be called when a packet has gone through local
+ *          processing and has finally been sent or discarded. If NULL is
+ *          passed, the callback is disabled. This callback replaces
+ *          tracking_id and APP_LIB_DATA_SEND_FLAG_TRACK flag of data
+ *          structure.
+ * @note    tracking_id is managed by the library. When function return the
+ *          data structure is modified to reflect id used to send the packet.
+ * @return  Result code, @ref APP_LIB_DATA_SEND_RES_SUCCESS means that data
+ *          was accepted for sending. See @ref app_res_e for
+ *          other result codes.
+ */
+app_lib_data_send_res_e PosLib_sendData(app_lib_data_to_send_t * data,
+                                            app_lib_data_data_sent_cb_f sent_cb);
 #endif

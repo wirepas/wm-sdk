@@ -1,4 +1,5 @@
 # Mcu of the board
+MCU_FAMILY=nrf
 MCU=nrf52
 MCU_SUB=840
 
@@ -20,4 +21,4 @@ usb_product_str="Raytac Wirepas Dongle"
 # instead of the default
 # For convenience, an example of a +4dBm power table is provided, uncomment the
 # line below to use that instead of the default +8dBm power table
-#RADIO_CUSTOM_POWER_TABLE=mcu/nrf52/hal/radio/radio_power_table_nrf52840_4dBm.h
+#RADIO_CUSTOM_POWER_TABLE=mcu/nrf/nrf52/hal/radio/radio_power_table_nrf52840_4dBm.h

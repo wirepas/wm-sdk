@@ -784,13 +784,15 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                = ./build    \
-                         ./image \
-                         ./mcu/efr32 \
-                         ./mcu/nrf52 \
-                         ./mcu/nrf52840 \
-                         ./tools \
-                         ./source
+EXCLUDE                = ./build/ \
+                         ./image/ \
+                         ./mcu/efr/ \
+                         ./mcu/nrf/ \
+                         ./mcu/common/ \
+                         ./projects/ \
+                         ./source/ \
+                         ./source_internal/ \
+                         ./tools/ \
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded

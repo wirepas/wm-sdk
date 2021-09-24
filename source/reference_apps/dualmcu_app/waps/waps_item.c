@@ -49,7 +49,11 @@ static uint32_t                 m_free_waps_items;
 // List of usable (free) items
 static sl_list_head_t           free_items;
 
-void Waps_itemInit(void)
+// Filter used by waps to receive data. Needed here to pause reception
+static waps_free_item_threshold_cb_t m_threshold_cb;
+
+void Waps_itemInit(waps_free_item_threshold_cb_t thresold_cb,
+                   uint8_t thresold_percent)
 {
     uint32_t * free_ram_start = &__bss_end__;
     uint32_t * free_ram_ends = &__ram_end__;
@@ -60,9 +64,12 @@ void Waps_itemInit(void)
 
     // First the min items and then the dyn ones.
     uint32_t max_waps_items = WAPS_MIN_ITEMS;
+
+    m_threshold_cb = thresold_cb;
+
     max_waps_items += (uint32_t)(free_bytes / sizeof(waps_item_t));
 
-    m_free_waps_items = max_waps_items/2;
+    m_free_waps_items = max_waps_items * thresold_percent / 100;
     // Initialize free items list
     sl_list_init(&free_items);
     // Clear items
@@ -109,8 +116,9 @@ void Waps_itemFree(waps_item_t * item)
     lib_system->exitCriticalSection();
     // If there is enough room in the buffer, announce firmware to send new
     // packets
-    if (sl_list_size(&free_items) >= m_free_waps_items)
+    if (sl_list_size(&free_items) >= m_free_waps_items
+        && m_threshold_cb != NULL)
     {
-        lib_data->allowReception(true);
+        m_threshold_cb();
     }
 }

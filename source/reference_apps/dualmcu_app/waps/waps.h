@@ -43,14 +43,6 @@ typedef struct
 extern const app_interface_config_s m_interface_config;
 
 /**
- * \brief   Schedule waps task.
- *
- *
- * \post    waps_exec is scheduled
-*/
-void wakeup_task(void);
-
-/**
  * \brief   Initializes waps and modules it requires.
  *          Currently waps relies on waps_uart as sole communication module.
  *          It is initialized first. Finally, attribute manager is initialized.
@@ -58,24 +50,6 @@ void wakeup_task(void);
  */
 bool Waps_init(void);
 
-/**
- * \brief   cb to informed app when scanning neighbors is done
- *          when the application is first requested scanning.
- */
-void Waps_onScannedNbors(void);
-
-/**
- * \brief   A new app config from network
- * \param   seq
- *          Application config sequence
- * \param   config
- *          Pointer to a new application config data
- * \param   interval
- *          Diagnostic interval in seconds
- */
-void Waps_sinkUpdated(uint8_t seq,
-                      const uint8_t * config,
-                      uint16_t interval);
 
 /**
  * \brief   Packet sent callback
@@ -97,30 +71,5 @@ void Waps_packetSent(app_lib_data_tracking_id_t tracking_id,
                      uint32_t queue_time,
                      app_addr_t dst_addr,
                      bool success);
-
-/**
- * \brief   Routing layer has received a packet for this device
- *          and it has forwarded to app/WAPS
- * \param   data
- *          Info of received packet
- * \return  Result code, \ref app_lib_data_receive_res_e
- */
-app_lib_data_receive_res_e
-Waps_receiveUnicast(const app_lib_data_received_t * data);
-
-/**
- * \brief   Routing layer has received a broadcast packet
- *          and it has forwarded to app/WAPS
- * \param   data
- *          Info of received packet
- * \return  Result code, \ref app_lib_data_receive_res_e
- */
-app_lib_data_receive_res_e
-Waps_receiveBcast(const app_lib_data_received_t * data);
-
-/**
- * \brief   Received a SDU indication msg
- */
-void Waps_rcvSduInd(void);
 
 #endif // WAPS_H_

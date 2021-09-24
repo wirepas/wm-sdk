@@ -279,9 +279,7 @@ void App_init(const app_global_functions_t * functions)
     }
 
     Led_init();
-    App_Scheduler_init();
-    Shared_Data_init();  // Always return APP_RES_OK
-    Shared_Appconfig_init();  // Always return APP_RES_OK
+
     ctrl_ret = Control_Router_init(&conf);
     if (ctrl_ret != CONTROL_RET_OK)
     {

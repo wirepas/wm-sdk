@@ -51,10 +51,11 @@ firmware_area_id=0x000001$(HW_MAGIC)
 ifneq ($(INI_FILE),)
 $(error You are overriding the default flash partitioning with INI_FILE variable. \
 	You must now override INI_FILE_APP variable with a modified version of \
-	mcu/$(MCU)/ini_files/$(MCU)$(MCU_SUB)$(MCU_MEM_VAR)_app.ini)
+	$(MCU_PATH)$(MCU_FAMILY)/$(MCU)/ini_files/$(MCU)$(MCU_SUB)$(MCU_MEM_VAR)_app.ini)
 endif
-INI_FILE_WP ?= mcu/$(MCU)/ini_files/$(MCU)$(MCU_SUB)$(MCU_MEM_VAR)_wp.ini
-INI_FILE_APP ?= mcu/$(MCU)/ini_files/$(MCU)$(MCU_SUB)$(MCU_MEM_VAR)_app.ini
+
+INI_FILE_WP ?= $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/ini_files/$(MCU)$(MCU_SUB)$(MCU_MEM_VAR)_wp.ini
+INI_FILE_APP ?=$(MCU_PATH)$(MCU_FAMILY)/$(MCU)/ini_files/$(MCU)$(MCU_SUB)$(MCU_MEM_VAR)_app.ini
 
 # By default the key file is positionned at root of SDK and used for all apps/boards
 # But it can be overwritten by any app (it will be generated at first execution if needed)
@@ -127,7 +128,7 @@ need_board:
 	        A default value can be set in main config.mk file))
 
 	# Check if board really exist
-	@test -s board/$(target_board)/config.mk || \
+	@test -s $(BOARD_FOLDER)/config.mk || \
 		   { echo "Specified target board $(target_board) doesn't exist. Available boards are: $(AVAILABLE_BOARDS)"; exit 1; }
 
 initial_setup: $(LICENSE_ACCEPTED) $(KEY_FILE)

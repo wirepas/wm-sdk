@@ -672,8 +672,6 @@ void App_init(const app_global_functions_t * functions)
 
     shared_app_config_filter_t app_config_period_filter;
 
-    /* App config. */
-    Shared_Appconfig_init();
     /* Prepare the app_config filter for measurement rate. */
     app_config_period_filter.type = CUSTOM_PERIOD_TYPE;
     app_config_period_filter.cb = appConfigPeriodReceivedCb;
@@ -703,10 +701,6 @@ void App_init(const app_global_functions_t * functions)
                                          APP_LIB_SETTINGS_ROLE_FLAG_LL |
                                          APP_LIB_SETTINGS_ROLE_FLAG_AUTOROLE));
 #endif
-
-    /* Init shared data module. */
-    Shared_Data_init();
-
     /* Set up LED. */
     Led_init();
 
@@ -721,9 +715,6 @@ void App_init(const app_global_functions_t * functions)
                                   BUTTON_PRESSED,
                                   button_pressed_handler);
     }
-
-    /* Init application scheduler. */
-    App_Scheduler_init();
 
     /* Set a periodic task to be called after DEFAULT_PERIOD_MS. */
     m_period_ms = DEFAULT_PERIOD_MS;

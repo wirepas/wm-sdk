@@ -265,6 +265,15 @@ let the stack use them for its own purpose.
 <tr><td>Temp</td><td>@ref APP_LIB_HARDWARE_PERIPHERAL_TEMPERATURE</td></tr>
 </table>
 
+Random Number Generator RNG (nRF52) and True Random Number Generator TRNG (EFR32)
+are available for application to use within App_init function.
+After App_init returns, these peripherals are reserved for Wirepas Mesh stack and
+all initializations done in App_init may be overwritten.
+Application may also take the control of RNG/TRNG by initializing the peripheral in
+scheduled task after App_init has returned and after Wirepas Mesh stack has started.
+Do note that initialization must not take place within interrupt context as interrupt
+could be served before these peripherals are released from Wirepas Mesh stack usage.
+
 @subsection peripherals_available_for_the_application Peripherals available for the application
 
 All the other peripherals not listed above are free to be used by the application.

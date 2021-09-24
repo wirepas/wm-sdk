@@ -58,18 +58,8 @@ typedef enum
 
 /**
  * \brief   Initialize scheduler
- *
- * Example on use:
- * @code
- * void App_init(const app_global_functions_t * functions)
- * {
- *     App_Scheduler_init();
- *     ...
- *     // Start the stack
- *     lib_state->startStack();
- * }
- * @endcode
- *
+ * \note    If App scheduler is enabled in app, @ref App_Scheduler_init is
+ *          automatically called before App_init
  * \note    If App scheduler is used in application, the periodicWork offered
  *          by system library MUST NOT be used outside of this module
  */
@@ -96,10 +86,9 @@ void App_Scheduler_init(void);
  *
  * void App_init(const app_global_functions_t * functions)
  * {
- *     App_Scheduler_init();
  *     // Launch two periodic task with different period
- *     App_Scheduler_addTask(periodic_task_50ms, APP_SCHEDULER_SCHEDULE_ASAP);
- *     App_Scheduler_addTask(periodic_task_500ms, APP_SCHEDULER_SCHEDULE_ASAP);
+ *     App_Scheduler_addTask_execTime(periodic_task_50ms, APP_SCHEDULER_SCHEDULE_ASAP, 10);
+ *     App_Scheduler_addTask_execTime(periodic_task_500ms, APP_SCHEDULER_SCHEDULE_ASAP, 10);
  *     ...
  *     // Start the stack
  *     lib_state->startStack();

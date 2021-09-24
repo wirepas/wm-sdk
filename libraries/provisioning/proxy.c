@@ -244,6 +244,7 @@ static app_lib_data_receive_res_e pkt_received_cb(
     LOG_BUFFER(LVL_DEBUG, data->bytes, data->num_bytes);
 
     /* Check if it is a ACK packet. */
+    // TODO check TYPE
     if (pdu->pdu_header.type != PROV_PACKET_TYPE_START)
     {
         LOG(LVL_INFO, "ACK received from %08X.", data->src_address);

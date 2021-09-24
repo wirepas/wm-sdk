@@ -16,7 +16,7 @@ HAL_LED=yes
 
 # Use App Scheduler and configure it
 APP_SCHEDULER=yes
-CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=4
+APP_SCHEDULER_TASKS=4
 
 # Enable the debug logs (has no effect on board without serial port)
 APP_PRINTING=yes
