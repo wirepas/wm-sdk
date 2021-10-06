@@ -44,6 +44,14 @@
 #define BOARD_UART_INT_PIN              6
 #define BOARD_UART_INT_PORT             GPIOF
 
+// I2C configuration: SDA on PC4, SCL on PC5 (ENV_I2C on Thunderboard Sense 2)
+#define USE_I2C1
+#define BOARD_I2C_GPIO_PORT             GPIOC
+#define BOARD_I2C_SDA_PIN               4
+#define BOARD_I2C_SCL_PIN               5
+#define BOARD_I2C_ROUTELOC_SDALOC I2C_ROUTELOC0_SDALOC_LOC17
+#define BOARD_I2C_ROUTELOC_SCLLOC I2C_ROUTELOC0_SCLLOC_LOC17
+
 // List of GPIO ports and pins for the LEDs on the board: red LED, green LED
 #define BOARD_LED_PIN_LIST              {{GPIOD, 8}, {GPIOD, 9}}
 

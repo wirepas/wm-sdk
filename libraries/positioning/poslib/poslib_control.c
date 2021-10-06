@@ -22,10 +22,12 @@
 #include "poslib_event.h"
 #include "poslib_measurement.h"
 #include "poslib_decode.h"
+#include "poslib_da.h"
 #include "shared_shutdown.h"
 #include "shared_data.h"
 #include "shared_appconfig.h"
 #include "shared_offline.h"
+#include "poslib_mbcn.h"
 
 /** Module internal type definitions */
 
@@ -69,6 +71,7 @@ typedef struct {
 
 #define TIMEOUT_APPCFG_MS 30000
 #define TIMEOUT_SCAN_MS 60000
+#define SCAN_MARGIN_RATIO 2 // +(scan_time/SCAN_MARGIN_RATIO) added to mini-beacon period
 
 #define MS_TIME_FROM(x) (lib_time->getTimeDiffUs(lib_time->getTimestampHp(), x) / 1000)
 
@@ -390,37 +393,49 @@ static poslib_ret_e check_role(poslib_settings_t * settings)
     lib_settings->getNodeRole(&role);
     base_role = app_lib_settings_get_base_role(role);
 
-    switch(base_role)
+    switch (poslib_mode)
     {
-         case APP_LIB_SETTINGS_ROLE_SINK:
-         case APP_LIB_SETTINGS_ROLE_HEADNODE:
-          {
-             if (poslib_mode != POSLIB_MODE_AUTOSCAN_ANCHOR &&
-                 poslib_mode != POSLIB_MODE_OPPORTUNISTIC_ANCHOR)
-             {
-                LOG(LVL_ERROR, "Router role but mode is: %d", poslib_mode);
-                return POS_RET_INVALID_PARAM;
-             }
+        case POSLIB_MODE_AUTOSCAN_ANCHOR:
+        case POSLIB_MODE_OPPORTUNISTIC_ANCHOR:
+        {
+            bool valid = (base_role == APP_LIB_SETTINGS_ROLE_HEADNODE) || 
+                    (base_role == APP_LIB_SETTINGS_ROLE_SINK) ||
+                    (base_role == APP_LIB_SETTINGS_ROLE_SUBNODE && settings->mbcn.enabled);
+
+            if (!valid)
+            {
+                LOG(LVL_ERROR, "Anchor mode: %u but role: %u", poslib_mode, base_role);
+                return POS_RET_INVALID_PARAM; 
+            }
             break;
-          }
-         case APP_LIB_SETTINGS_ROLE_SUBNODE:
-         {
-             if (poslib_mode != POSLIB_MODE_NRLS_TAG &&
-                 poslib_mode != POSLIB_MODE_AUTOSCAN_TAG)
-             {
-                LOG(LVL_ERROR, "Subnode role but mode is: %d", poslib_mode);
+        }
+        case POSLIB_MODE_NRLS_TAG:
+        case POSLIB_MODE_AUTOSCAN_TAG:
+        {
+            if (base_role != APP_LIB_SETTINGS_ROLE_SUBNODE)
+            {
+                LOG(LVL_ERROR, "Tag mode: %u but role: %u", poslib_mode, base_role);
                 return POS_RET_INVALID_PARAM;
-             }
+            }
             break;
-         }
-         default:
+        }
+        case POSLIB_MODE_DA_TAG:
+        {
+            if (base_role != APP_LIB_SETTINGS_ROLE_ADVERTISER)
+            {
+                LOG(LVL_ERROR, "DA Tag mode: %u but role: %u", poslib_mode, base_role);
+                return POS_RET_INVALID_PARAM;
+            }
+            break;
+        }
+        default:
          {
-            LOG(LVL_ERROR, "Unknown node role: %d", base_role);
+            LOG(LVL_ERROR, "Unknown node mode: %u, role: %u", poslib_mode, base_role);
             return POS_RET_INVALID_PARAM;
             break;
          }
-     }
 
+    }
     return POS_RET_OK;
 }
 
@@ -646,6 +661,15 @@ poslib_ret_e PosLibCtrl_startPeriodic(void)
     App_Scheduler_addTask(delayed_start, 5000);  //FixME: this is needed to prevent a race condition in NRLS
     
     PosLibBle_start(&m_pos_settings.ble);
+
+    if (m_pos_settings.node_mode == POSLIB_MODE_AUTOSCAN_ANCHOR ||
+        m_pos_settings.node_mode == POSLIB_MODE_OPPORTUNISTIC_ANCHOR)
+    {
+        PosLibMbcn_start(&m_pos_settings.mbcn);
+    }
+
+    PosLibDa_start(&m_pos_settings);
+
     LOG(LVL_INFO, "Started periodic update");
     return POS_RET_OK;
  }
@@ -680,6 +704,8 @@ poslib_ret_e PosLibCtrl_stopPeriodic(void)
     shared_offline_unregister();
     PosLibMeas_stop();
     PosLibBle_stop();
+    PosLibMbcn_stop();
+    PosLibDa_stop();
     return POS_RET_OK;
 }
 
@@ -743,6 +769,7 @@ poslib_measurements_e get_meas_type()
     {
         case POSLIB_MODE_NRLS_TAG:
         case POSLIB_MODE_AUTOSCAN_TAG:
+        case POSLIB_MODE_DA_TAG:
         {
             meas_type = DEFAULT_MEASUREMENT_TYPE_TAG;
             break;
@@ -789,6 +816,10 @@ static void get_node_info(poslib_meas_record_node_info_t * node_info)
     {
         *features |= POSLIB_NODE_INFO_FLAG_IBEACON_ON;
     }
+    if(m_pos_settings.da.routing_enabled)
+    {
+        *features |= POSLIB_NODE_INFO_FLAG_MBCN_ON; 
+    }
     LOG(LVL_DEBUG, "Node info feature: %x en: %u", node_info->features, m_pos_settings.motion.enabled); 
 }
 
@@ -804,6 +835,7 @@ static uint8_t send_measurement_message()
     uint8_t num_meas = 0;
     bool add_voltage = false;
     poslib_meas_record_node_info_t node_info;
+    app_lib_settings_role_t role;
 
     m_data_sent_success = false;
 
@@ -818,9 +850,9 @@ static uint8_t send_measurement_message()
         return 0;
     }
 
-    //Fill in node info
+    // Fill in node info
     get_node_info(&node_info);
- 
+
     if (PosLibMeas_getPayload(bytes, sizeof(bytes), m_ctrl.sequence,
                                 get_meas_type(), add_voltage, &node_info, 
                                 &num_bytes, &num_meas))
@@ -836,7 +868,11 @@ static uint8_t send_measurement_message()
         payload.flags = APP_LIB_DATA_SEND_FLAG_TRACK;
         payload.tracking_id = 0;
 
-        rc = Shared_Data_sendData(&payload, data_send_cb);
+        lib_settings->getNodeRole(&role);
+        rc = (role == APP_LIB_SETTINGS_ROLE_ADVERTISER) ? 
+                    PosLibDa_sendData(&payload, data_send_cb) :
+                    Shared_Data_sendData(&payload, data_send_cb);
+ 
         if (rc == APP_LIB_DATA_SEND_RES_SUCCESS)
         {
            m_ctrl.events.data_sent = true;
@@ -849,6 +885,20 @@ static uint8_t send_measurement_message()
     }
 
     return num_meas;
+}
+
+
+static uint32_t get_scan_duration()
+{
+    uint32_t scan_duration_us = APP_LIB_STATE_DEFAULT_SCAN;
+    
+    if (m_pos_settings.mbcn.enabled && 
+        m_pos_settings.mbcn.tx_interval_ms < 1000)
+    {
+        scan_duration_us = m_pos_settings.mbcn.tx_interval_ms * 1000;
+        scan_duration_us +=  scan_duration_us / SCAN_MARGIN_RATIO;
+    }
+    return scan_duration_us;
 }
 
 static uint32_t trigger_update_task()
@@ -884,7 +934,7 @@ static uint32_t trigger_update_task()
     //Stack online - trigger scan
     poslib_scan_ctrl_t scan_ctrl = {
         .mode = SCAN_MODE_STANDARD,
-        .max_duration_us = 0 };
+        .max_duration_us = get_scan_duration()};
     PosLibMeas_startScan(&scan_ctrl);
 
     LOG(LVL_DEBUG, "Update triggered at %u", lib_time->getTimestampS());
@@ -1045,6 +1095,7 @@ static void schedule_next(bool update_now)
 
             case POSLIB_MODE_AUTOSCAN_TAG:
             case POSLIB_MODE_AUTOSCAN_ANCHOR:
+            case POSLIB_MODE_DA_TAG:
             {
                 LOG(LVL_INFO, "<state> Update ended - autoscan. seq: %u, time: %u",
                     m_ctrl.sequence, MS_TIME_FROM(m_ctrl.update_start_hp));
@@ -1274,7 +1325,7 @@ static void handle_update_state(poslib_internal_event_t * event)
             break;
         }
 
-         case POSLIB_CTRL_EVENT_MOTION:
+        case POSLIB_CTRL_EVENT_MOTION:
         {
             LOG(LVL_DEBUG, "Motion event: %u", m_motion_mode);
             if (m_motion_mode == POSLIB_MOTION_DYNAMIC)
@@ -1346,4 +1397,21 @@ static void handle_update_state(poslib_internal_event_t * event)
     {
         LOG(LVL_ERROR, "Unknown state: %u", m_ctrl.state)
     }
+ }
+
+ void PosLibCtrl_getAppConfig(uint8_t ** cfg, uint8_t * len)
+ {
+    *cfg = (uint8_t *) &m_appcfg;
+    *len = m_appcfg_len;
+ }
+
+  void PosLibCtrl_setAppConfig(const uint8_t * cfg, uint8_t len)
+ {
+    
+    if (len <= sizeof(m_appcfg))
+    {
+        memcpy(&m_appcfg, cfg, len);
+        m_appcfg_len = len;
+    }
+    PosLibEvent_add(POSLIB_CTRL_EVENT_APPCFG); 
  }

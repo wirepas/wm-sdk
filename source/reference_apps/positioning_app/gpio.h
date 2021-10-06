@@ -63,7 +63,7 @@ typedef void (*on_gpio_event_cb)(uint8_t pin,
  * \brief   Register for a GPIO event on a given pin
  * \param   pin 
  *          pin number  FixMe: !! to be made generic whe EFR32 support added
- * \param  pull 
+ * \param   pull 
  *          pull value :GPIO_PULLDOWN / GPIO_PULLUP / GPIO_NOPULL
  * \param   event
  *          Event that generated this callback

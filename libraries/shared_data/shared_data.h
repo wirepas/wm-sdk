@@ -45,8 +45,9 @@ typedef enum
     SHARED_DATA_NET_MODE_BROADCAST = 1,
     /** Only receive Multicast packets. */
     SHARED_DATA_NET_MODE_MULTICAST = 2,
+    SHARED_DATA_NET_MODE_ACKDA = 3,
     /** Accept all type of packets (ignore filtering packet by type). */
-    SHARED_DATA_NET_MODE_ALL = 3
+    SHARED_DATA_NET_MODE_ALL = 4
 } shared_data_net_mode_e;
 
 /** @brief Structure holding all parameters for packet filtering. */

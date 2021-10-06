@@ -13,6 +13,9 @@ else
  $(info Building app for $(target_board))
 endif
 
+# File to store app version
+VERSION_FILE := $(BUILDPREFIX_APP)version.txt
+
 # App different formats
 APP_ELF := $(BUILDPREFIX_APP)$(APP_NAME).elf
 
@@ -89,8 +92,12 @@ $(APP_HEX): $(APP_ELF)
 	@echo "Generating $(APP_HEX)"
 	$(OBJCOPY) $< -O ihex $@
 
+.PHONY: $(VERSION_FILE)
+$(VERSION_FILE):
+	@echo "app_version=$(app_major).$(app_minor).$(app_maintenance).$(app_development)" > $(@)
+	@echo "sha1=$(shell git log -1 --pretty=format:"%h")" >> $(@)
 .PHONY: all
-all: $(APP_HEX)
+all: $(APP_HEX) $(VERSION_FILE)
 
 clean:
 	$(RM) -rf $(CLEAN)

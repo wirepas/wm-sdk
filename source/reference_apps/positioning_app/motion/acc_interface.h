@@ -12,6 +12,11 @@
 #include "lis2dh12_wrapper.h"
 #endif
 
+/*LIS12DW12*/
+#if defined LIS2DW12_I2C || defined LIS2DW12_SPI
+#include "lis2dw12_wrapper.h"
+#endif
+
 /**
  * @brief Structure containing acceleration measurement.
  */

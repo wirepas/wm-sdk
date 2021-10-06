@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := pca10040 pca10100 pca10056 pca10059 
+TARGET_BOARDS := pca10040 pca10056 pca10059 pca10100 
 
 #
 # Network default settings configuration

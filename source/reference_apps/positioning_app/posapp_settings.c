@@ -64,6 +64,14 @@ void get_default_settings(poslib_settings_t * settings)
     settings->motion.threshold_mg = 0;
     settings->motion.threshold_mg = 0;
 #endif
+
+    // Mini-beacon 
+    settings->mbcn.enabled = POSLIB_MBCN_ENABLED;
+    settings->mbcn.tx_interval_ms = POSLIB_MBCN_TX_INTERVAL_MS;
+    memset(settings->mbcn.records, 0 , sizeof(settings->mbcn.records));
+    // Default custom records can be initialized here
+    settings->da.routing_enabled = POSLIB_DA_ROUTING_ENABLED;
+    settings->da.follow_network = POSLIB_DA_FOLLOW_NETWORK;
 }
 
 static void shutdown_cb()
@@ -79,61 +87,118 @@ static void shutdown_cb()
     }
 }
 
-static void check_role(poslib_settings_t * settings, bool force_set_role)
+static app_lib_settings_role_t enforce_node_mode(poslib_settings_t * settings, 
+                                        app_lib_settings_role_t role)
 {
-    app_lib_settings_role_t role;
-    app_lib_settings_role_t new_role;
-    uint8_t base_role;
-    uint8_t flags_role;
-    uint8_t node_mode = settings->node_mode;
-   
-    lib_settings->getNodeRole(&role);
-    new_role = role;
-    base_role = app_lib_settings_get_base_role(role);
-    flags_role = app_lib_settings_get_flags_role(role);
+    app_lib_settings_role_t new_role = role;
+    uint8_t base_role = app_lib_settings_get_base_role(role);
+    uint8_t flags_role = app_lib_settings_get_flags_role(role);
 
+    switch(settings->node_mode)
+    {
+        case POSLIB_MODE_AUTOSCAN_ANCHOR:
+        case POSLIB_MODE_OPPORTUNISTIC_ANCHOR:
+        {
+            if (base_role != APP_LIB_SETTINGS_ROLE_HEADNODE || 
+                !(base_role = APP_LIB_SETTINGS_ROLE_SUBNODE && settings->mbcn.enabled))
+            {
+                new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE, flags_role);
+            }
+            break;
+        }
+        case POSLIB_MODE_NRLS_TAG:
+        case POSLIB_MODE_AUTOSCAN_TAG:
+        {
+            new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_SUBNODE, flags_role);
+            break;
+        }
+        case POSLIB_MODE_DA_TAG:
+        {
+            new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_ADVERTISER, flags_role);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+    return new_role;
+}
+
+static uint8_t enforce_node_role(poslib_settings_t * settings, 
+                                app_lib_settings_role_t role)
+{
+    uint8_t node_mode = settings->node_mode;
+    uint8_t base_role = app_lib_settings_get_base_role(role);
+   
     switch (base_role)
     {
         case APP_LIB_SETTINGS_ROLE_HEADNODE:
         {
-            if (node_mode == POSLIB_MODE_NRLS_TAG ||
-                node_mode == POSLIB_MODE_AUTOSCAN_TAG)
+            if (node_mode != POSLIB_MODE_AUTOSCAN_ANCHOR || 
+                node_mode != POSLIB_MODE_OPPORTUNISTIC_ANCHOR)
             {
-                if (force_set_role)
-                {
-                    new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_SUBNODE, flags_role);
-                }
-                else
-                {
-                   settings->node_mode = POSAPP_ANCHOR_DEFAULT_ROLE;
-                   LOG(LVL_INFO, "Setting node mode to anchor default: %u",  settings->node_mode);
-                }
+                node_mode = POSAPP_ANCHOR_DEFAULT_ROLE;
+                LOG(LVL_INFO, "Setting node mode to anchor default: %u",  node_mode);
             }
             break;
         }
         case APP_LIB_SETTINGS_ROLE_SUBNODE:
-        {
-            if (node_mode == POSLIB_MODE_AUTOSCAN_ANCHOR || 
-                node_mode == POSLIB_MODE_OPPORTUNISTIC_ANCHOR)
             {
-                if (force_set_role)
-                {
-                    new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE, flags_role);
-                }
-                else
-                {
-                   settings->node_mode = POSAPP_TAG_DEFAULT_ROLE;
-                   LOG(LVL_INFO, "Setting node mode to tag default: %u",  settings->node_mode);
-                }
+            if (!(node_mode == POSLIB_MODE_NRLS_TAG || 
+                node_mode == POSLIB_MODE_AUTOSCAN_TAG || 
+                ((node_mode == POSLIB_MODE_AUTOSCAN_ANCHOR || 
+                    node_mode == POSLIB_MODE_OPPORTUNISTIC_ANCHOR) 
+                    && settings->mbcn.enabled)))
+            {
+                node_mode = POSAPP_TAG_DEFAULT_ROLE;
+                LOG(LVL_INFO, "Setting node mode to tag default: %u",  node_mode);
+            }
+            break;
+        }
+        case APP_LIB_SETTINGS_ROLE_ADVERTISER:
+        {
+            if (node_mode != POSLIB_MODE_DA_TAG)
+            {
+                node_mode = POSLIB_MODE_DA_TAG;
+                LOG(LVL_INFO, "Setting node mode to DA tag default: %u",  node_mode);
             }
             break;
         }
         default:
         {
-            LOG(LVL_ERROR,"Node node %u unknown", settings->node_mode);
-            return;
+            LOG(LVL_ERROR,"Node role %u unknown", base_role);
         }
     }
+    return node_mode;
+}
+
+
+static void check_role(poslib_settings_t * settings, bool force_set_role)
+{
+    app_lib_settings_role_t role;
+    app_lib_settings_role_t new_role;
+    uint8_t node_mode = settings->node_mode; 
+
+
+    lib_settings->getNodeRole(&role);
+    new_role = role;
+  
+    if (force_set_role)
+    {
+        // Enforce the positioning mode -> node role might change
+       new_role = enforce_node_mode(settings, role);
+    }
+    else
+    {
+        // Ensure node mode matches node role -> when differ enforce 
+        // default mode for the role
+        settings->node_mode = enforce_node_role(settings, role);
+    }
+   
+    (void) node_mode;
+    LOG(LVL_INFO, "Mode mode: %u->%u, role %u->%u",  node_mode, settings->node_mode, 
+                                                     role, new_role);
 
     if (force_set_role && role != new_role)
     {
@@ -216,7 +281,23 @@ static bool persistent_to_poslib(poslib_persistent_settings_t * p,
 
     /* All fields valid from version N onwards filled here under 
         version check */
+    if (p->poslib_settings_version == 2)
+    {
+        /* Mini-beacon settings */
+        s->mbcn.enabled = p->mbcn_enabled;
+        s->mbcn.tx_interval_ms = p->mbcn_tx_interval_ms;
+        uint8_t i;
+        for (i = 0; i < POSLIB_MBCN_RECORDS; i++)
+        {
+            s->mbcn.records[i].type = p->mbcn_records[i].type;
+            s->mbcn.records[i].length = p->mbcn_records[i].length;
+            memcpy(s->mbcn.records[i].value, p->mbcn_records[i].value, s->mbcn.records[i].length);
+        }
 
+        /* DA settings */
+        s->da.routing_enabled = p->da_routing_enabled;
+        s->da.follow_network = p->da_follow_network;
+    }
     return true;
 }
 
@@ -272,6 +353,20 @@ static void poslib_to_persistent(poslib_settings_t * s,
     p->motion_duration_ms = 0;
 #endif
 
+    /* Mini-beacon settings */
+    p->mbcn_enabled = s->mbcn.enabled;
+    p->mbcn_tx_interval_ms = s->mbcn.tx_interval_ms;
+    uint8_t i;
+    for (i = 0; i < POSLIB_MBCN_RECORDS; i++)
+    {
+        p->mbcn_records[i].type = s->mbcn.records[i].type;
+        p->mbcn_records[i].length = s->mbcn.records[i].length;
+        memcpy(p->mbcn_records[i].value, s->mbcn.records[i].value, s->mbcn.records[i].length);
+    }
+
+    /* DA settings */
+    p->da_routing_enabled = s->da.routing_enabled;
+    p->da_follow_network = s->da.follow_network;
 }
 
 bool PosApp_Settings_store(poslib_settings_t * settings)

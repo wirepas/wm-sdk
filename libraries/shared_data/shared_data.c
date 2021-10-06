@@ -105,8 +105,9 @@ static bool filter_received_packet(const shared_data_filter_t * filter,
         return false;
     }
 
-    /* MultiCast group is filtered again here. */
-    if (IS_ANYCAST(filter->mode) || IS_MULTICAST(filter->mode))
+    /* Check multicast cb for any multicast address if it exists */
+    /* If we are at this point, filter already match multicast if multicast address */
+    if (IS_MULTICAST_ADDRESS(data->dest_address))
     {
         /* If Not multicast group. */
         if (filter->multicast_cb != NULL &&

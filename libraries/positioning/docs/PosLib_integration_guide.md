@@ -8,7 +8,6 @@
 - [Important notes](#important-notes)
 - [Simple integration example](#simple-integration-example)
 - [References](#references)
-- [Revision History](#revision-history)
 
 # Introduction
 
@@ -45,6 +44,8 @@ PosLib provides the following features:
 * **BLE beacons**: conditional sending of configurable BLE Eddystone UID and/or iBeacons.
 * **battery voltage sampling**: each measurement message will contain the battery voltage record (if enabled).
 * **LED notification event**: it is possible to trigger an event through application configuration     
+* **Directed-advertiser**: a Wirepas Massive (WM) non-connected communication mode for tags to reduce power consumption and to enable higher tag density
+* **Mini-beacon**: additional beacons transmitted from anchors to support the measurement and to optimize tag power consumption
    
 # API
 
@@ -79,6 +80,13 @@ PosLib settings defined in `poslib_settings_t` consist of:
   * **enabled:**  indicates that application supports motion monitoring
   * **threshold_mg:** threshold for motion detection (PosLib will change the value if provided through application configuration)
   * **duration_ms:** duration of acceleration above the set threshold (PosLib will change the value if provided through application configuration)
+* **da:**
+  * **routing_enabled:** re-routing of received DA data packets by a LL router
+  * **follow_network:** automatic neighbour discovery
+* **mbcn:**
+  * **enabled:** indicates that application supports sending mini-beacons
+  * **tx_interval_ms:** provides the update rate for mini-beacon broadcasts (miliseconds), currently supports 250ms, 500ms or 1000ms
+  * **records:** defines records to be included in mini-beacon payload
 * **led notification:** provides an event notification (e.g. to control a LED for pick-to-light application) controlled through PosLib application configuration
    
 :exclamation: **NOTES**: 
@@ -249,12 +257,6 @@ To instantiate PosLib in an application the following three steps must be follow
 
 # References
 
-[1] [Wirepas Positioning Application Reference Manual v1.4](https://developer.wirepas.com/support/solutions/articles/77000498897)
+[1] [Wirepas Positioning Application Reference Manual v1.5](https://developer.wirepas.com/support/solutions/articles/77000508783-wirepas-positioning-application-reference-manual-v1-5)
 
 [2] [Non-Router Long Sleep (NRLS)](https://developer.wirepas.com/a/solutions/articles/77000406955?portalId=77000019115) 
-
-# Revision History
-
-| **Date**     | **Version** | **Notes** 
-|--------------|-------------|----------
-| 04 June 2021  | v1.0.0      | Initial version
