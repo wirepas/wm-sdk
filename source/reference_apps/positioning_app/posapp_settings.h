@@ -38,11 +38,18 @@ typedef struct __attribute__ ((packed))
     uint8_t rfu[6]; //reserved for further usage
 } node_persistent_settings_t;
 
+typedef struct __attribute__ ((packed))
+{
+    /** Mini-beacon configuration */
+    uint8_t type;
+    uint8_t length;
+    uint8_t value[POSLIB_MBCN_RECORD_MAX_SIZE];
+} poslib_mbcn_record_persistent_t;
 
 /** PosLib persistent storage struct poslib_persistent_settings_t version
 * !!! Must be incremented every time a new field is introduced
 */
-#define POSLIB_PERSISTENT_VERSION 1
+#define POSLIB_PERSISTENT_VERSION 2
 
 /** PosLib persistent settings 
  *  !!! DO NOT remove any field previously defined
@@ -52,6 +59,7 @@ typedef struct __attribute__ ((packed))
 {
     uint16_t poslib_record_magic;
     uint8_t poslib_settings_version;
+    // PosLib persistent version: 1
     uint8_t node_mode;
     uint8_t node_class;
     uint32_t update_period_static_s;
@@ -69,6 +77,12 @@ typedef struct __attribute__ ((packed))
     bool motion_enabled;
     uint16_t motion_threshold_mg;
     uint16_t motion_duration_ms;
+    // PosLib persistent version: 2 (including fields above)
+    bool mbcn_enabled;
+    uint16_t mbcn_tx_interval_ms;
+    poslib_mbcn_record_persistent_t mbcn_records[POSLIB_MBCN_RECORDS];
+    bool da_routing_enabled;
+    bool da_follow_network;
 } poslib_persistent_settings_t;
 
 

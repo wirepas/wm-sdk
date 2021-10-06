@@ -31,6 +31,14 @@ CFLAGS += -DCONF_VOLTAGE_REPORT
 HAL_VOLTAGE=yes
 endif
 
+# Mini-beacon
+CFLAGS += -DPOSLIB_MBCN_ENABLED=$(default_mbcn_enabled)
+CFLAGS += -DPOSLIB_MBCN_TX_INTERVAL_MS=$(default_mbcn_tx_interval_ms)
+
+#DA
+CFLAGS += -DPOSLIB_DA_ROUTING_ENABLED=$(default_da_routing_enabled)
+CFLAGS += -DPOSLIB_DA_FOLLOW_NETWORK=$(default_da_follow_network)
+
 # Enable shared libdata library
 SHARED_DATA=yes
 # Enable shared app_config library

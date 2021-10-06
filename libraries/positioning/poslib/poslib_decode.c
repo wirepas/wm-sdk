@@ -57,7 +57,8 @@ return ret;
 static bool is_node_mode_tag(poslib_mode_e node_mode)
 {
     bool ret = ((node_mode == POSLIB_MODE_NRLS_TAG)
-                || (node_mode == POSLIB_MODE_AUTOSCAN_TAG));
+                || (node_mode == POSLIB_MODE_AUTOSCAN_TAG) 
+                || (node_mode == POSLIB_MODE_DA_TAG));
     return ret;
 }
 
@@ -372,6 +373,15 @@ static bool set_mode(poslib_tlv_item_t * item,
             break;
         }
         case APP_LIB_SETTINGS_ROLE_SUBNODE:
+        {    /** only node modes for tags are accepted */
+            if(is_node_mode_tag(node_mode) || force)
+            {
+                settings->node_mode = node_mode;
+                LOG(LVL_INFO, "Update mode: %d", settings->node_mode);
+            }
+            break;
+        }
+        case APP_LIB_SETTINGS_ROLE_ADVERTISER:
         {    /** only node modes for tags are accepted */
             if(is_node_mode_tag(node_mode) || force)
             {

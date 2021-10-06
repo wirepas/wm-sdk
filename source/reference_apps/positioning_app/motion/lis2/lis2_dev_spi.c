@@ -19,6 +19,14 @@
 #include "api.h"
 #include "lis2_dev.h"
 
+#ifdef LIS2DH12_SPI
+#define TX_MASK_SPI_READ_MODE 0xC0
+#define TX_MASK_SPI_WRITE_MODE 0x40
+#elif defined LIS2DW12_SPI
+#define TX_MASK_SPI_READ_MODE 0x80
+#define TX_MASK_SPI_WRITE_MODE 0x00
+#endif
+
 /** Maximum SPI write transfer */
 #define MAX_WRITE_SIZE             16
 
@@ -39,11 +47,11 @@ void lis2_select_chip(bool select)
 {
     if (select)
     {
-        nrf_gpio_pin_clear(BOARD_SPI_LIS2DH12_CS_PIN);
+        nrf_gpio_pin_clear(BOARD_SPI_LIS2_CS_PIN);
     }
     else
     {
-        nrf_gpio_pin_set(BOARD_SPI_LIS2DH12_CS_PIN);
+        nrf_gpio_pin_set(BOARD_SPI_LIS2_CS_PIN);
     }
 }
 
@@ -70,7 +78,7 @@ static int32_t lis2_spi_read(void * handle,
 
     res = SPI_init(&m_spi_conf);
 
-    tx[0] = reg | 0xC0;
+    tx[0] = reg | TX_MASK_SPI_READ_MODE;
 
     spi_xfer_t transfer;
     transfer.write_ptr = tx;
@@ -113,7 +121,7 @@ static int32_t lis2_spi_write(void *handle,
         return -1;
     }
 
-    tx[0] = reg | 0x40;
+    tx[0] = reg | TX_MASK_SPI_WRITE_MODE;
     memcpy(&tx[1], bufp, len);
 
     spi_xfer_t transfer;
@@ -137,9 +145,10 @@ static int32_t lis2_spi_write(void *handle,
 
 void LIS2_dev_init(stmdev_ctx_t * dev)
 {
-    nrf_gpio_pin_dir_set(BOARD_SPI_LIS2DH12_CS_PIN, NRF_GPIO_PIN_DIR_OUTPUT);
-    nrf_gpio_cfg_output(BOARD_SPI_LIS2DH12_CS_PIN);
-    nrf_gpio_pin_set(BOARD_SPI_LIS2DH12_CS_PIN);
+    nrf_gpio_pin_dir_set(BOARD_SPI_LIS2_CS_PIN, NRF_GPIO_PIN_DIR_OUTPUT);
+    nrf_gpio_cfg_output(BOARD_SPI_LIS2_CS_PIN);
+    nrf_gpio_pin_set(BOARD_SPI_LIS2_CS_PIN);
+    LOG(LVL_DEBUG, "BOARD_SPI_LIS2_CS_PIN: %u", BOARD_SPI_LIS2_CS_PIN);
     dev->handle = NULL;
     dev->write_reg = lis2_spi_write;
     dev->read_reg = lis2_spi_read;

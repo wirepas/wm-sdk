@@ -76,6 +76,12 @@ def append_data(data, type, val, st, va):
         data = data + struct.pack("<I", val)
     elif type == 'bool':
         data = data + struct.pack("<?", val)
+    elif type == 'mbcn_record_uint8_t':
+        l = len(val)
+        if l < 16:
+            val = val + [0]*(16-l)
+        format_string = "<" + "B"*16
+        data = data + struct.pack(format_string, *val)
     else:
         print( f"ERROR: variable {st}.{va} unknown type {type}" )
         return False,data

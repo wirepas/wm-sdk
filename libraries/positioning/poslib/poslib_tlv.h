@@ -61,4 +61,15 @@ void PosLibTlv_init(poslib_tlv_record * rcd, uint8_t * buffer, uint8_t length);
 poslib_tlv_res_e PosLibTlv_Decode_getNextItem(poslib_tlv_record * rcd,
                                               poslib_tlv_item_t * item);
 
+
+/**
+    @brief      Encode tlv_item in the tlv_record passed as parameter.
+    @param[in]  rcd Pointer to a tlv_record structure to encode items into.
+    @param[in]  item Pointer to a tlv_item to add. 
+    @return     POSLIB_TLV_RES_OK if encoding possible, see poslib_tlv_res_e otherwise.
+*/
+poslib_tlv_res_e PosLibTlv_Encode_addItem(poslib_tlv_record * rcd,
+                                            poslib_tlv_item_t * item);
+
+
 #endif /* _POSLIB_TLV_H_ */

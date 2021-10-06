@@ -14,6 +14,7 @@
 #include <stdbool.h>
 #include "api.h"
 #include "motion.h"
+#include "mcu.h"
 #include "gpio.h"
 #include "acc_interface.h"
 #include "app_scheduler.h"
@@ -47,6 +48,7 @@ static uint32_t set_motion_static()
 {
     if (m_mon_enabled && m_mon_cfg.cb != NULL)
     {
+        /* Node goes to static mode */
         m_mon_cfg.cb(POSLIB_MOTION_STATIC);
     }
 

@@ -71,6 +71,8 @@ SRCS += $(WP_LIB_PATH)positioning/poslib/poslib_decode.c
 SRCS += $(WP_LIB_PATH)positioning/poslib/poslib_tlv.c
 SRCS += $(WP_LIB_PATH)positioning/poslib.c
 SRCS += $(WP_LIB_PATH)positioning/poslib/poslib_ble_beacon.c
+SRCS += $(WP_LIB_PATH)positioning/poslib/poslib_mbcn.c
+SRCS += $(WP_LIB_PATH)positioning/poslib/poslib_da.c
 INCLUDES += -I$(WP_LIB_PATH)positioning/poslib
 INCLUDES += -I$(WP_LIB_PATH)positioning
 endif

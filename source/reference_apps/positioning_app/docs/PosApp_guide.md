@@ -4,9 +4,9 @@
 - [Getting started](#getting-started)
 - [Settings](#settings)
 - [Motion](#motion)
+- [Directed-advertiser and mini-beacons](#directed-advertiser-and-mini-beacons)
 - [Other features](#other-features)
 - [References](#references)
-- [Revision History](#revision-history)
 
 # Introduction
 
@@ -58,6 +58,10 @@ The following application settings can be controlled through `config.mk` paramet
 | default_motion_enabled | Enables/disables motion support: 1/0 |
 | default_motion_threshold_mg | Acceleration threshold above which motion will be detected [mg]| 
 | default_motion_duration_ms | Duration for acceleration to be above threshold for motion to be detected [ms]|
+| default_mbcn_enabled | Enables (1) or disable (0) mini-beacon sending |
+| default_mbcn_tx_interval_ms | Mini-beacon transmit rate in miliseconds: only 250ms, 500ms or 1000ms are allowed| 
+| default_da_routing_enabled | Enables (1) or disable (0) re-routing of received DA data packets by a LL router|
+| default_da_follow_network | Enables (1) or disable (0) the use of automatic neighbour discovery|
 
 A separate build should be generated for anchor and tags with the corresponding parameters set.
 
@@ -133,6 +137,154 @@ seconds (default 60 sec) the node will be considered static.  Every time the mot
 The motion module assumes an interface to the accelerometer as defined in `acc_interface.h` and other accelerometers can be added by simply 
 implementing the interface.
 
+# Directed-advertiser and mini-beacons
+
+## Introduction
+
+### Directed-advertiser (DA) based tags
+
+Directed-advertiser is a Wirepas Massive (WM) non-connected communication node role.  A tag configured in DA mode can only communicate with low-latency (LL) routers with DA support enabled. However, it can get RSSI measurements from any low-latency or low-energy (LE) routers or from nodes with mini-beacons enabled (see next section).
+
+### Mini-beacons (MBCN)
+
+Mini-beacons are additional signals transmitted by an anchor to supplement the measurement and allow tag power optimization.
+
+DA positioning will include the following components:
+
+* DA tag: a tag running PosApp/Lib with DA support
+
+* DA WM infrastructure: a WM infrastructure composed of LL routers with DA support
+
+* Dedicated anchors: a LE non-router sending mini-beacons
+
+## Getting started
+
+### Building an router/anchor supporting DA tags
+
+For an anchor the `make` shall contain the following options set:
+
+| Parameter             | Description                                                    |
+|-----------------------|----------------------------------------------------------------|
+`default_poslib_device_mode=4`  | opportunistic anchor|
+`default_role=1` | router role|
+`default_role_flag=16`  | low-latency|
+`default_mbcn_enabled=1` | mini-beacons enabled|
+`default_mbcn_tx_interval_ms=1000` | mini-beacon transmit interval 1000ms|
+`default_da_routing_enabled=1` | DA data routing enabled|
+`default_da_follow_network=0` | Automatic neigbour discovery disabled|
+
+### Building an DA tag
+
+For an DA tag the `make` shall contain the following options set:
+
+| Parameter             | Description                                                    |
+|-----------------------|----------------------------------------------------------------|
+|`default_poslib_device_mode=5`  | DA tag|
+|`default_role=4` | advertiser role|
+|`default_role_flag=0`  | low-energy|
+|`default_mbcn_enabled=1` | mini-beacons enabled|
+|`default_mbcn_tx_interval_ms=1000` | mini-beacon transmit interval 1000ms|
+|`default_da_routing_enabled=1` | DA data routing disabled (no effect for tag)|
+|`default_da_follow_network=0` | Automatic neigbour discovery disabled|
+
+### Building a dedicated anchor
+
+A dedicated anchor is a WM node installed in fixed/known location sending mini-beacons.
+The node role can be either non-router/router/autorole in LL or LE. The typical setup is
+a LE non-router battery powered which will allow an easy and quick installation. 
+
+For a dedicated anchor the `make` shall contain the following options set:
+
+| Parameter             | Description                                                    |
+|-----------------------|----------------------------------------------------------------|
+|`default_poslib_device_mode=4`  | opportunistic anchor|
+|`default_role=2` | non-router role|
+|`default_role_flag=0`  | low-energy|
+|`default_mbcn_enabled=1` | mini-beacons enabled|
+|`default_mbcn_tx_interval_ms=1000` | mini-beacon transmit interval 1000ms|
+|`default_da_routing_enabled=0` | DA data routing not enabled|
+|`default_da_follow_network=0` | Automatic neighbour discovery disabled|
+
+## Sending data from a DA tag
+
+As a DA node can only communicate with a router sending data to the sink will require two parts:
+
+### DA tag data sending
+
+Sending data can be done through the new introduced API:
+```c
+ app_lib_data_send_res_e PosLib_sendData(app_lib_data_to_send_t * data, app_lib_data_data_sent_cb_f sent_cb);
+```
+
+The function prototype is identical with the Shared Data library `Shared_Data_sendData` (see the library documentation for details).
+Note that the DA tag source address will not be visible to the sink as the packet is re-routed by the router application.
+As a result, the DA tag address shall be embedded into data payload. 
+
+To send data to the sink set `data->dest_address = APP_ADDR_ANYSINK` in the call. If the node is DA tag the destination address
+will be changed to the best router with DA support (if available). In case the node is not in DA role the standard data sending will be used.
+
+Data sending can be done to any app allowed endpoints (EP) but don't use any of PosLib endpoints (238:238, 238:0)!
+
+Data sending shall be synchronized with PosLib positioning update. This can be done easily by registering for the
+`POSLIB_FLAG_EVENT_UPDATE_END` event using `PosLib_eventRegister` and sending the data in the provided callback. 
+
+If there is the need to prepare/acquire the data before this can be triggered by registering to `POSLIB_FLAG_EVENT_UPDATE_START` event.
+
+### DA data re-routing  
+ 
+The LL DA enabled router will receive the data packet sent by the tag and will have to re-route it to the sink.
+This is not done automatically and if the re-routing is not implemented the packed will be lost! 
+The router shall:
+
+* register a unicast data receive handler using the shared data library for the expected EP
+ 
+See `Shared_Data_addDataReceivedCb` and set:
+```c
+    item->filter.mode=SHARED_DATA_NET_MODE_UNICAST 
+    item->filter.src_endpoint=... 
+    item->filter.dest_endpoint= ...
+```
+* In the data received callback send the received data packet to sink.
+
+See `Shared_Data_sendData` 
+
+## Sending data to a DA tag from router/sink
+
+Currently not supported. 
+
+## Customizing mini-beacon payload
+
+Mini-beacons are owned by PosLib but their content can be customised by the application within limits.
+
+In the PosLib settings the `poslib_mbcn_config_t` defines the mini-beacon content.
+The content can be augmented by filling one or several records defined by:
+```c
+typedef struct
+{
+    uint8_t type;   // according to poslib_mbcn_record_types_e
+    uint8_t length;  // shall be <= POSLIB_MBCN_RECORD_MAX_SIZE, invalid record when 0
+    uint8_t value[POSLIB_MBCN_RECORD_MAX_SIZE];
+} poslib_mbcn_record_t;
+```
+
+Each record is a type-lenth-value (TLV) and there types are predefined in `poslib_mbcn_record_types_e`.
+Note that `POSLIB_MBCN_TX_INTERVAL` and `POSLIB_MBCN_FEATURES` are reserved for PosLib and shall not be used.
+
+It is important that the mini-beacon payload is kept to minimum posible and therefore only add strictly the 
+required records (i.e. not the ones good to have).
+
+## Receiving and decoding mini-beacons by the app
+
+To receive the mini-beacons in the app register a data receive handle using `Shared_Data_addDataReceivedCb`.
+```c
+    item->filter.mode=SHARED_DATA_NET_MODE_BROADCAST 
+    item->filter.src_endpoint=POSLIB_MBCN_SRC_EP
+    item->filter.dest_endpoint=POSLIB_MBCN_DEST_EP
+```
+The received payload can then be decoded using the `PosLib_decodeMbcn` PosLib API utility function.
+Mini-beacons are only received when PosLib makes a positioning update and there can be several or zero mini-beacons from 
+an anchor.
+
 # Other features
 
 ## LED notification
@@ -151,10 +303,3 @@ defined by `BUTTON_ID` (the button pin is defined to `BOARD_BUTTON_PIN_LIST` fro
 [1] [Wirepas Positioning Application Reference Manual v1.4](https://developer.wirepas.com/support/solutions/articles/77000498897)
 
 [2] [PosLib integration guide](../../../libraries/positioning/docs/PosLib_integration_guide.md)
-
-
-# Revision History
-
-| **Date**     | **Version** | **Notes** 
-|--------------|-------------|----------
-| 04 June 2021  | v1.0.0      | Initial version
