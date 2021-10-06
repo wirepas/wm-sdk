@@ -105,6 +105,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a3bf2fd589a5da57dad5e998cc08c8a23"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d90/poslib__tlv_8h.html#a65773aff3c69a4a09861eba245061b41">poslib_tlv_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d90/poslib__tlv_8h.html#a3bf2fd589a5da57dad5e998cc08c8a23">PosLibTlv_Decode_getNextItem</a> (<a class="el" href="../../dc/d90/poslib__tlv_8h.html#d9/dc8/structposlib__tlv__record">poslib_tlv_record</a> *rcd, <a class="el" href="../../dc/d90/poslib__tlv_8h.html#d4/d77/structposlib__tlv__item__t">poslib_tlv_item_t</a> *item)</td></tr>
 <tr class="memdesc:a3bf2fd589a5da57dad5e998cc08c8a23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decode the next tlv_item in the <a class="el" href="../../d7/dc3/tlv_8h.html#df/ddc/structtlv__record" title="This structure holds the buffer containing TLV items and data to manage it, max. buffer size and curr...">tlv_record</a> passed in parameter.  <a href="../../dc/d90/poslib__tlv_8h.html#a3bf2fd589a5da57dad5e998cc08c8a23">More...</a><br /></td></tr>
 <tr class="separator:a3bf2fd589a5da57dad5e998cc08c8a23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a519f0aa28e20e7a720798a996676b645"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d90/poslib__tlv_8h.html#a65773aff3c69a4a09861eba245061b41">poslib_tlv_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d90/poslib__tlv_8h.html#a519f0aa28e20e7a720798a996676b645">PosLibTlv_Encode_addItem</a> (<a class="el" href="../../dc/d90/poslib__tlv_8h.html#d9/dc8/structposlib__tlv__record">poslib_tlv_record</a> *rcd, <a class="el" href="../../dc/d90/poslib__tlv_8h.html#d4/d77/structposlib__tlv__item__t">poslib_tlv_item_t</a> *item)</td></tr>
+<tr class="memdesc:a519f0aa28e20e7a720798a996676b645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encode tlv_item in the <a class="el" href="../../d7/dc3/tlv_8h.html#df/ddc/structtlv__record" title="This structure holds the buffer containing TLV items and data to manage it, max. buffer size and curr...">tlv_record</a> passed as parameter.  <a href="../../dc/d90/poslib__tlv_8h.html#a519f0aa28e20e7a720798a996676b645">More...</a><br /></td></tr>
+<tr class="separator:a519f0aa28e20e7a720798a996676b645"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
@@ -160,6 +163,44 @@ Enumerations</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>POSLIB_TLV_RES_OK if OK, see poslib_tlv_res_e otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a519f0aa28e20e7a720798a996676b645"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a519f0aa28e20e7a720798a996676b645">&#9670;&nbsp;</a></span>PosLibTlv_Encode_addItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dc/d90/poslib__tlv_8h.html#a65773aff3c69a4a09861eba245061b41">poslib_tlv_res_e</a> PosLibTlv_Encode_addItem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dc/d90/poslib__tlv_8h.html#d9/dc8/structposlib__tlv__record">poslib_tlv_record</a> *&#160;</td>
+          <td class="paramname"><em>rcd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/d90/poslib__tlv_8h.html#d4/d77/structposlib__tlv__item__t">poslib_tlv_item_t</a> *&#160;</td>
+          <td class="paramname"><em>item</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Encode tlv_item in the <a class="el" href="../../d7/dc3/tlv_8h.html#df/ddc/structtlv__record" title="This structure holds the buffer containing TLV items and data to manage it, max. buffer size and curr...">tlv_record</a> passed as parameter. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">rcd</td><td>Pointer to a <a class="el" href="../../d7/dc3/tlv_8h.html#df/ddc/structtlv__record" title="This structure holds the buffer containing TLV items and data to manage it, max. buffer size and curr...">tlv_record</a> structure to encode items into. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">item</td><td>Pointer to a tlv_item to add. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>POSLIB_TLV_RES_OK if encoding possible, see poslib_tlv_res_e otherwise. </dd></dl>
 
 </div>
 </div>

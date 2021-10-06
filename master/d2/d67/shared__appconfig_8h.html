@@ -108,6 +108,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a754fd436f69b2c15e682cb380a732b72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7">shared_app_config_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d67/shared__appconfig_8h.html#a754fd436f69b2c15e682cb380a732b72">Shared_Appconfig_removeFilter</a> (uint16_t filter_id)</td></tr>
 <tr class="memdesc:a754fd436f69b2c15e682cb380a732b72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a received packet item from the list. Removed item fields are all set to 0.  <a href="../../d2/d67/shared__appconfig_8h.html#a754fd436f69b2c15e682cb380a732b72">More...</a><br /></td></tr>
 <tr class="separator:a754fd436f69b2c15e682cb380a732b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b9b6b55ab8541525d1eb2a5a73ed166"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7">shared_app_config_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d67/shared__appconfig_8h.html#a1b9b6b55ab8541525d1eb2a5a73ed166">Shared_Appconfig_setAppConfig</a> (const uint8_t *bytes)</td></tr>
+<tr class="memdesc:a1b9b6b55ab8541525d1eb2a5a73ed166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a new app config.  <a href="../../d2/d67/shared__appconfig_8h.html#a1b9b6b55ab8541525d1eb2a5a73ed166">More...</a><br /></td></tr>
+<tr class="separator:a1b9b6b55ab8541525d1eb2a5a73ed166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bc654cf08fd75563a51ef7a479f2e75"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7">shared_app_config_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d67/shared__appconfig_8h.html#a9bc654cf08fd75563a51ef7a479f2e75">Shared_Appconfig_notifyAppConfig</a> (const uint8_t *bytes)</td></tr>
+<tr class="memdesc:a9bc654cf08fd75563a51ef7a479f2e75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notify other modules of a new app config received.  <a href="../../d2/d67/shared__appconfig_8h.html#a9bc654cf08fd75563a51ef7a479f2e75">More...</a><br /></td></tr>
+<tr class="separator:a9bc654cf08fd75563a51ef7a479f2e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
@@ -123,7 +129,8 @@ Enumerations</h2></td></tr>
 <a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7aaa6084923d8ead8ca1fcafc5f56bcce9">SHARED_APP_CONFIG_RES_INVALID_PARAM</a> = 2, 
 <a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7a1d91f8b6cdb4ce940aabeaa0b7eb875f">SHARED_APP_CONFIG_RES_INVALID_FILTER</a> = 3, 
 <br />
-&#160;&#160;<a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7ae8b8145e6f5d802ab2acbe0f19672024">SHARED_APP_CONFIG_RES_UNINITIALIZED</a> = 4
+&#160;&#160;<a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7ae8b8145e6f5d802ab2acbe0f19672024">SHARED_APP_CONFIG_RES_UNINITIALIZED</a> = 4, 
+<a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7a1032f8c06838eabccbb1809fafd41e71">SHARED_APP_CONFIG_RES_INVALID_ROLE</a> = 5
 <br />
  }</td></tr>
 <tr class="memdesc:a4406bbc3ad70e4ace26b16a03c2005b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of return code.  <a href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7">More...</a><br /></td></tr>
@@ -162,7 +169,7 @@ Macros</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html#l00055">55</a> of file <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html">shared_appconfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html#l00057">57</a> of file <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html">shared_appconfig.h</a>.</p>
 
 </div>
 </div>
@@ -231,6 +238,34 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<a id="a9bc654cf08fd75563a51ef7a479f2e75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bc654cf08fd75563a51ef7a479f2e75">&#9670;&nbsp;</a></span>Shared_Appconfig_notifyAppConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7">shared_app_config_res_e</a> Shared_Appconfig_notifyAppConfig </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>bytes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Notify other modules of a new app config received. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bytes</td><td>Pointer to app config to notify. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7ab3d559c489f796eb840ce7fc90c27eb4">SHARED_APP_CONFIG_RES_OK</a> if ok. See <a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7">shared_app_config_res_e</a> for other result codes. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function must be used very carefully and is only needed on systems where the app config is received from a different path (like DA nodes) </dd></dl>
+
+</div>
+</div>
 <a id="a754fd436f69b2c15e682cb380a732b72"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a754fd436f69b2c15e682cb380a732b72">&#9670;&nbsp;</a></span>Shared_Appconfig_removeFilter()</h2>
 
@@ -258,6 +293,34 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<a id="a1b9b6b55ab8541525d1eb2a5a73ed166"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b9b6b55ab8541525d1eb2a5a73ed166">&#9670;&nbsp;</a></span>Shared_Appconfig_setAppConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7">shared_app_config_res_e</a> Shared_Appconfig_setAppConfig </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>bytes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set a new app config. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bytes</td><td>Pointer to app config data to write. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7ab3d559c489f796eb840ce7fc90c27eb4">SHARED_APP_CONFIG_RES_OK</a> if ok. See <a class="el" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7">shared_app_config_res_e</a> for other result codes. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function must be used on the node that set the app config (sink) in order for other local modules to be notified by the change. In fact, stack itself will not trigger an app config changed callback on the node that change it. </dd></dl>
+
+</div>
+</div>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
 <a name="d2/de1/structshared__app__config__filter__t" id="d2/de1/structshared__app__config__filter__t"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#d2/de1/structshared__app__config__filter__t">&#9670;&nbsp;</a></span>shared_app_config_filter_t</h2>
@@ -274,7 +337,7 @@ Macros</h2></td></tr>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d0/dd1/appconfig_2app_8c-example.html#_a19">appconfig/app.c</a>, and <a class="el" href="../../df/d91/inventory_app_router_2app_8c-example.html#_a31">inventory_app_router/app.c</a>.</dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html#l00060">60</a> of file <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html">shared_appconfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html#l00062">62</a> of file <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html">shared_appconfig.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -327,6 +390,8 @@ type</td>
 </td></tr>
 <tr><td class="fieldname"><a id="a4406bbc3ad70e4ace26b16a03c2005b7ae8b8145e6f5d802ab2acbe0f19672024"></a>SHARED_APP_CONFIG_RES_UNINITIALIZED&#160;</td><td class="fielddoc"><p>Using the library without previous initialization </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a4406bbc3ad70e4ace26b16a03c2005b7a1032f8c06838eabccbb1809fafd41e71"></a>SHARED_APP_CONFIG_RES_INVALID_ROLE&#160;</td><td class="fielddoc"><p>Invalid node role (not a sink) </p>
+</td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html#l00015">15</a> of file <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html">shared_appconfig.h</a>.</p>
@@ -335,8 +400,9 @@ type</td>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7aadf3681d203f5112f6d239a21091dfaf">SHARED_APP_CONFIG_RES_NO_FILTER</a> = 1,</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7aaa6084923d8ead8ca1fcafc5f56bcce9">SHARED_APP_CONFIG_RES_INVALID_PARAM</a> = 2,</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7a1d91f8b6cdb4ce940aabeaa0b7eb875f">SHARED_APP_CONFIG_RES_INVALID_FILTER</a> = 3,</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7ae8b8145e6f5d802ab2acbe0f19672024">SHARED_APP_CONFIG_RES_UNINITIALIZED</a> = 4</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;} <a class="code" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7">shared_app_config_res_e</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7ae8b8145e6f5d802ab2acbe0f19672024">SHARED_APP_CONFIG_RES_UNINITIALIZED</a> = 4,</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7a1032f8c06838eabccbb1809fafd41e71">SHARED_APP_CONFIG_RES_INVALID_ROLE</a> = 5,</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;} <a class="code" href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7">shared_app_config_res_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -355,7 +421,7 @@ type</td>
 
 <p>Value to use to receive all types. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html#l00032">32</a> of file <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html">shared_appconfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html#l00034">34</a> of file <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html">shared_appconfig.h</a>.</p>
 
 </div>
 </div>
@@ -375,7 +441,7 @@ type</td>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d0/dd1/appconfig_2app_8c-example.html#a17">appconfig/app.c</a>, and <a class="el" href="../../df/d91/inventory_app_router_2app_8c-example.html#a4">inventory_app_router/app.c</a>.</dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html#l00039">39</a> of file <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html">shared_appconfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html#l00041">41</a> of file <a class="el" href="../../d2/d67/shared__appconfig_8h_source.html">shared_appconfig.h</a>.</p>
 
 </div>
 </div>
@@ -386,6 +452,7 @@ type</td>
 <div class="ttc" id="ashared__appconfig_8h_html_a4406bbc3ad70e4ace26b16a03c2005b7aaa6084923d8ead8ca1fcafc5f56bcce9"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7aaa6084923d8ead8ca1fcafc5f56bcce9">SHARED_APP_CONFIG_RES_INVALID_PARAM</a></div><div class="ttdeci">@ SHARED_APP_CONFIG_RES_INVALID_PARAM</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00022">shared_appconfig.h:22</a></div></div>
 <div class="ttc" id="ashared__appconfig_8h_html_a4406bbc3ad70e4ace26b16a03c2005b7a1d91f8b6cdb4ce940aabeaa0b7eb875f"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7a1d91f8b6cdb4ce940aabeaa0b7eb875f">SHARED_APP_CONFIG_RES_INVALID_FILTER</a></div><div class="ttdeci">@ SHARED_APP_CONFIG_RES_INVALID_FILTER</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00024">shared_appconfig.h:24</a></div></div>
 <div class="ttc" id="ashared__appconfig_8h_html_a4406bbc3ad70e4ace26b16a03c2005b7"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7">shared_app_config_res_e</a></div><div class="ttdeci">shared_app_config_res_e</div><div class="ttdoc">List of return code.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00015">shared_appconfig.h:15</a></div></div>
+<div class="ttc" id="ashared__appconfig_8h_html_a4406bbc3ad70e4ace26b16a03c2005b7a1032f8c06838eabccbb1809fafd41e71"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7a1032f8c06838eabccbb1809fafd41e71">SHARED_APP_CONFIG_RES_INVALID_ROLE</a></div><div class="ttdeci">@ SHARED_APP_CONFIG_RES_INVALID_ROLE</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00028">shared_appconfig.h:28</a></div></div>
 <div class="ttc" id="ashared__appconfig_8h_html_a4406bbc3ad70e4ace26b16a03c2005b7ae8b8145e6f5d802ab2acbe0f19672024"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#a4406bbc3ad70e4ace26b16a03c2005b7ae8b8145e6f5d802ab2acbe0f19672024">SHARED_APP_CONFIG_RES_UNINITIALIZED</a></div><div class="ttdeci">@ SHARED_APP_CONFIG_RES_UNINITIALIZED</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00026">shared_appconfig.h:26</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

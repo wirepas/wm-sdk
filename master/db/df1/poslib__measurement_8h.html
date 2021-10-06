@@ -127,6 +127,8 @@ Data Structures</h2></td></tr>
 <tr class="memitem:d0/da8/structposlib__meas__record__header__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/df1/poslib__measurement_8h.html#d0/da8/structposlib__meas__record__header__t">poslib_meas_record_header_t</a></td></tr>
 <tr class="memdesc:d0/da8/structposlib__meas__record__header__t"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement record header.  <a href="../../db/df1/poslib__measurement_8h.html#d0/da8/structposlib__meas__record__header__t">More...</a><br /></td></tr>
 <tr class="separator:d0/da8/structposlib__meas__record__header__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:da/d0f/structposlib__meas__record__da__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/df1/poslib__measurement_8h.html#da/d0f/structposlib__meas__record__da__t">poslib_meas_record_da_t</a></td></tr>
+<tr class="separator:da/d0f/structposlib__meas__record__da__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:d1/d41/structposlib__meas__record__voltage__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/df1/poslib__measurement_8h.html#d1/d41/structposlib__meas__record__voltage__t">poslib_meas_record_voltage_t</a></td></tr>
 <tr class="memdesc:d1/d41/structposlib__meas__record__voltage__t"><td class="mdescLeft">&#160;</td><td class="mdescRight">Voltage record (header + payload)  <a href="../../db/df1/poslib__measurement_8h.html#d1/d41/structposlib__meas__record__voltage__t">More...</a><br /></td></tr>
 <tr class="separator:d1/d41/structposlib__meas__record__voltage__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,9 +149,10 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba263b20a6d8f01479aeb244811e8cdc3b">POSLIB_MEAS_VOLTAGE</a> = 0x04, 
 <a class="el" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba2f97b6373ffd3af75ecf08fa3ecb6c0c">POSLIB_MEAS_RSS_SR_4BYTE_ADDR</a> = 0x05, 
 <a class="el" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba6d267480bec9b84836c979377aea0d55">POSLIB_MEAS_NODE_INFO</a> = 0x06, 
-<a class="el" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeabafd76d0243f6cc9817b990504c67531fd">POSLIB_MEAS_RSS_SR_ANCHOR</a> = 0xF0, 
+<a class="el" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba20b983bf941cf3670a545807e738ba6a">POSLIB_MEAS_DA</a> = 0x07, 
 <br />
-&#160;&#160;<a class="el" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba73b81abcead5d6e91f7273635d04e7d9">POSLIB_MEAS_RSS_SR_ANCHOR_4BYTE_ADDR</a> = 0xF5
+&#160;&#160;<a class="el" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeabafd76d0243f6cc9817b990504c67531fd">POSLIB_MEAS_RSS_SR_ANCHOR</a> = 0xF0, 
+<a class="el" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba73b81abcead5d6e91f7273635d04e7d9">POSLIB_MEAS_RSS_SR_ANCHOR_4BYTE_ADDR</a> = 0xF5
 <br />
  }</td></tr>
 <tr class="memdesc:a1dbca1ddadfaf0b1c80ad498aa1cdeab"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines the device's positioning mode. The type is matched against the WPE proto definition.  <a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeab">More...</a><br /></td></tr>
@@ -160,7 +163,8 @@ Enumerations</h2></td></tr>
 <a class="el" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a5aae5d8f63292e99b9d63f8cf85179d7">POSLIB_NODE_INFO_FLAG_IS_STATIC</a> = 0x000000020, 
 <a class="el" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6ab4b495917684cc79b09580896500b3f6">POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON</a> = 0x00000040, 
 <br />
-&#160;&#160;<a class="el" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a685e34f0419178a36b55f7692d51c511">POSLIB_NODE_INFO_FLAG_IBEACON_ON</a> = 0x00000080
+&#160;&#160;<a class="el" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a685e34f0419178a36b55f7692d51c511">POSLIB_NODE_INFO_FLAG_IBEACON_ON</a> = 0x00000080, 
+<a class="el" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6aae5eb53b1bf5523519ac6dcb67bef4df">POSLIB_NODE_INFO_FLAG_MBCN_ON</a> = 0x00000100
 <br />
  }</td></tr>
 <tr class="memdesc:aacabd1d28f96943abb60f0652cf4d4e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Node active features (.  <a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6">More...</a><br /></td></tr>
@@ -173,7 +177,7 @@ Enumerations</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:aa7a7521abb3a3664218d8dc0e3759f0f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/df1/poslib__measurement_8h.html#aa7a7521abb3a3664218d8dc0e3759f0f">MAX_PAYLOAD</a>&#160;&#160;&#160;102</td></tr>
 <tr class="separator:aa7a7521abb3a3664218d8dc0e3759f0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82629da0b77dd188aa31e51bca0b8567"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/df1/poslib__measurement_8h.html#a82629da0b77dd188aa31e51bca0b8567">MAX_BEACONS</a>&#160;&#160;&#160;16</td></tr>
+<tr class="memitem:a82629da0b77dd188aa31e51bca0b8567"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/df1/poslib__measurement_8h.html#a82629da0b77dd188aa31e51bca0b8567">MAX_BEACONS</a>&#160;&#160;&#160;14</td></tr>
 <tr class="separator:a82629da0b77dd188aa31e51bca0b8567"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2f7918c7ca27d8e13d08acf1ff28c25"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/df1/poslib__measurement_8h.html#ad2f7918c7ca27d8e13d08acf1ff28c25">NODE_ADDRESS_LENGTH</a>&#160;&#160;&#160;4</td></tr>
 <tr class="separator:ad2f7918c7ca27d8e13d08acf1ff28c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,7 +187,7 @@ Macros</h2></td></tr>
 <tr class="separator:a22888f41a0e6b40242bde49b64a1a938"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa9179779c676eed926a35c4ab5fe5b5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/df1/poslib__measurement_8h.html#afa9179779c676eed926a35c4ab5fe5b5">PACKED_STRUCT</a>&#160;&#160;&#160;struct __attribute__((__packed__))</td></tr>
 <tr class="separator:afa9179779c676eed926a35c4ab5fe5b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab18eb0354c7f09f673b3a62d2734c4ac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/df1/poslib__measurement_8h.html#ab18eb0354c7f09f673b3a62d2734c4ac">POSLIB_NODE_INFO_FEATURES_VERSION</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memitem:ab18eb0354c7f09f673b3a62d2734c4ac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/df1/poslib__measurement_8h.html#ab18eb0354c7f09f673b3a62d2734c4ac">POSLIB_NODE_INFO_FEATURES_VERSION</a>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:ab18eb0354c7f09f673b3a62d2734c4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -377,7 +381,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00047">47</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00048">48</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -403,7 +407,7 @@ sequence</td>
 </div><div class="memdoc">
 <div class="textblock"><p>RSS measurement structure. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00055">55</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00056">56</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -435,7 +439,7 @@ norm_rss</td>
 </div><div class="memdoc">
 <div class="textblock"><p>Measurement record header. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00064">64</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00065">65</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -448,6 +452,37 @@ length</td>
 <a id="a1d127017fb298b889f4ba24752d08b8e"></a>uint8_t</td>
 <td class="fieldname">
 type</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<a name="da/d0f/structposlib__meas__record__da__t" id="da/d0f/structposlib__meas__record__da__t"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#da/d0f/structposlib__meas__record__da__t">&#9670;&nbsp;</a></span>poslib_meas_record_da_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct poslib_meas_record_da_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00071">71</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Data Fields</th></tr>
+<tr><td class="fieldtype">
+<a id="ab44585ba225b5f3fa05dc52ff69a4854"></a><a class="el" href="../../db/df1/poslib__measurement_8h.html#d0/da8/structposlib__meas__record__header__t">poslib_meas_record_header_t</a></td>
+<td class="fieldname">
+header</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="af2c29987228caf2ff73b7665eef50875"></a>uint32_t</td>
+<td class="fieldname">
+node_addr</td>
 <td class="fielddoc">
 </td></tr>
 </table>
@@ -467,7 +502,7 @@ type</td>
 </div><div class="memdoc">
 <div class="textblock"><p>Voltage record (header + payload) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00073">73</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00080">80</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -499,7 +534,7 @@ voltage</td>
 </div><div class="memdoc">
 <div class="textblock"><p>Node info record. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00101">101</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00110">110</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -545,7 +580,7 @@ update_s</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00118">118</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00127">127</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -587,6 +622,7 @@ mode</td>
 <tr><td class="fieldname"><a id="a1dbca1ddadfaf0b1c80ad498aa1cdeaba263b20a6d8f01479aeb244811e8cdc3b"></a>POSLIB_MEAS_VOLTAGE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a1dbca1ddadfaf0b1c80ad498aa1cdeaba2f97b6373ffd3af75ecf08fa3ecb6c0c"></a>POSLIB_MEAS_RSS_SR_4BYTE_ADDR&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a1dbca1ddadfaf0b1c80ad498aa1cdeaba6d267480bec9b84836c979377aea0d55"></a>POSLIB_MEAS_NODE_INFO&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a1dbca1ddadfaf0b1c80ad498aa1cdeaba20b983bf941cf3670a545807e738ba6a"></a>POSLIB_MEAS_DA&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a1dbca1ddadfaf0b1c80ad498aa1cdeabafd76d0243f6cc9817b990504c67531fd"></a>POSLIB_MEAS_RSS_SR_ANCHOR&#160;</td><td class="fielddoc"><p>0x70 - 0xEF : range reserved for customer Please notify Wirepas if a custom record ID is used by your customised positoning app 0xF0 - 0xFF : range reserved for Wirepas </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a1dbca1ddadfaf0b1c80ad498aa1cdeaba73b81abcead5d6e91f7273635d04e7d9"></a>POSLIB_MEAS_RSS_SR_ANCHOR_4BYTE_ADDR&#160;</td><td class="fielddoc"></td></tr>
@@ -601,9 +637,10 @@ mode</td>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba263b20a6d8f01479aeb244811e8cdc3b">POSLIB_MEAS_VOLTAGE</a> = 0x04,</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba2f97b6373ffd3af75ecf08fa3ecb6c0c">POSLIB_MEAS_RSS_SR_4BYTE_ADDR</a> = 0x05,</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba6d267480bec9b84836c979377aea0d55">POSLIB_MEAS_NODE_INFO</a> = 0x06,</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeabafd76d0243f6cc9817b990504c67531fd">POSLIB_MEAS_RSS_SR_ANCHOR</a> = 0xF0,</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba73b81abcead5d6e91f7273635d04e7d9">POSLIB_MEAS_RSS_SR_ANCHOR_4BYTE_ADDR</a> = 0xF5</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;} <a class="code" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeab">poslib_measurements_e</a>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba20b983bf941cf3670a545807e738ba6a">POSLIB_MEAS_DA</a> = 0x07,</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeabafd76d0243f6cc9817b990504c67531fd">POSLIB_MEAS_RSS_SR_ANCHOR</a> = 0xF0,</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba73b81abcead5d6e91f7273635d04e7d9">POSLIB_MEAS_RSS_SR_ANCHOR_4BYTE_ADDR</a> = 0xF5</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;} <a class="code" href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeab">poslib_measurements_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -622,25 +659,28 @@ mode</td>
 <p>Node active features (. </p>
 <dl class="section note"><dt>Note</dt><dd>this is a bit ) </dd></dl>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aacabd1d28f96943abb60f0652cf4d4e6a1dbe66cf0a6eb9503700f5c4e0cb0eb4"></a>POSLIB_NODE_INFO_MASK_VERSION&#160;</td><td class="fielddoc"><p>Features flags version mask Motion enabled </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aacabd1d28f96943abb60f0652cf4d4e6a1dbe66cf0a6eb9503700f5c4e0cb0eb4"></a>POSLIB_NODE_INFO_MASK_VERSION&#160;</td><td class="fielddoc"><p>Features flags version mask Motion enabled - valid from ver 0 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aacabd1d28f96943abb60f0652cf4d4e6ad9f312e82f4423ddebc18fe377d04feb"></a>POSLIB_NODE_INFO_FLAG_MOTION_EN&#160;</td><td class="fielddoc"><p>node was static since last measurement </p>
+<tr><td class="fieldname"><a id="aacabd1d28f96943abb60f0652cf4d4e6ad9f312e82f4423ddebc18fe377d04feb"></a>POSLIB_NODE_INFO_FLAG_MOTION_EN&#160;</td><td class="fielddoc"><p>node was static since last measurement - valid from ver 0 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aacabd1d28f96943abb60f0652cf4d4e6a5aae5d8f63292e99b9d63f8cf85179d7"></a>POSLIB_NODE_INFO_FLAG_IS_STATIC&#160;</td><td class="fielddoc"><p>Eddystone BLE beacon active </p>
+<tr><td class="fieldname"><a id="aacabd1d28f96943abb60f0652cf4d4e6a5aae5d8f63292e99b9d63f8cf85179d7"></a>POSLIB_NODE_INFO_FLAG_IS_STATIC&#160;</td><td class="fielddoc"><p>Eddystone BLE beacon active - valid from ver 0 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aacabd1d28f96943abb60f0652cf4d4e6ab4b495917684cc79b09580896500b3f6"></a>POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON&#160;</td><td class="fielddoc"><p>iBeacon BLE beacon active </p>
+<tr><td class="fieldname"><a id="aacabd1d28f96943abb60f0652cf4d4e6ab4b495917684cc79b09580896500b3f6"></a>POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON&#160;</td><td class="fielddoc"><p>iBeacon BLE beacon active - valid from ver 0 </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aacabd1d28f96943abb60f0652cf4d4e6a685e34f0419178a36b55f7692d51c511"></a>POSLIB_NODE_INFO_FLAG_IBEACON_ON&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aacabd1d28f96943abb60f0652cf4d4e6a685e34f0419178a36b55f7692d51c511"></a>POSLIB_NODE_INFO_FLAG_IBEACON_ON&#160;</td><td class="fielddoc"><p>Mini-beacon active - valid from ver 1 </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aacabd1d28f96943abb60f0652cf4d4e6aae5eb53b1bf5523519ac6dcb67bef4df"></a>POSLIB_NODE_INFO_FLAG_MBCN_ON&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00084">84</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;{</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a1dbe66cf0a6eb9503700f5c4e0cb0eb4">POSLIB_NODE_INFO_MASK_VERSION</a> = 0x0000000F,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6ad9f312e82f4423ddebc18fe377d04feb">POSLIB_NODE_INFO_FLAG_MOTION_EN</a> = 0x00000010,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a5aae5d8f63292e99b9d63f8cf85179d7">POSLIB_NODE_INFO_FLAG_IS_STATIC</a> = 0x000000020,</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6ab4b495917684cc79b09580896500b3f6">POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON</a> = 0x00000040,</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a685e34f0419178a36b55f7692d51c511">POSLIB_NODE_INFO_FLAG_IBEACON_ON</a> = 0x00000080</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;} <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6">poslib_node_info_features_e</a>;</div>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00091">91</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;{</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a1dbe66cf0a6eb9503700f5c4e0cb0eb4">POSLIB_NODE_INFO_MASK_VERSION</a> = 0x0000000F,</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6ad9f312e82f4423ddebc18fe377d04feb">POSLIB_NODE_INFO_FLAG_MOTION_EN</a> = 0x00000010,</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a5aae5d8f63292e99b9d63f8cf85179d7">POSLIB_NODE_INFO_FLAG_IS_STATIC</a> = 0x000000020,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6ab4b495917684cc79b09580896500b3f6">POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON</a> = 0x00000040,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a685e34f0419178a36b55f7692d51c511">POSLIB_NODE_INFO_FLAG_IBEACON_ON</a> = 0x00000080,</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6aae5eb53b1bf5523519ac6dcb67bef4df">POSLIB_NODE_INFO_FLAG_MBCN_ON</a> = 0x00000100,</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;} <a class="code" href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6">poslib_node_info_features_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -659,10 +699,10 @@ mode</td>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afa6db7c3910e0bf19d27f8ddbc3e8b01aaa5b90703c536fb4664426d074935e08"></a>SCAN_MODE_STANDARD&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00113">113</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;{</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#afa6db7c3910e0bf19d27f8ddbc3e8b01aaa5b90703c536fb4664426d074935e08">SCAN_MODE_STANDARD</a> = 1,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;} <a class="code" href="../../db/df1/poslib__measurement_8h.html#afa6db7c3910e0bf19d27f8ddbc3e8b01">poslib_scan_mode_e</a>;</div>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00122">122</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;{</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <a class="code" href="../../db/df1/poslib__measurement_8h.html#afa6db7c3910e0bf19d27f8ddbc3e8b01aaa5b90703c536fb4664426d074935e08">SCAN_MODE_STANDARD</a> = 1,</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;} <a class="code" href="../../db/df1/poslib__measurement_8h.html#afa6db7c3910e0bf19d27f8ddbc3e8b01">poslib_scan_mode_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -679,7 +719,7 @@ mode</td>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00041">41</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00042">42</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 
 </div>
 </div>
@@ -695,7 +735,7 @@ mode</td>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00040">40</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00041">41</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 
 </div>
 </div>
@@ -706,15 +746,15 @@ mode</td>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MAX_BEACONS&#160;&#160;&#160;16</td>
+          <td class="memname">#define MAX_BEACONS&#160;&#160;&#160;14</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>limited by internal memory </p>
+<p>limited by maximum payload size </p>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a0">inventory_app_tag/app.c</a>.</dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00037">37</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00038">38</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 
 </div>
 </div>
@@ -731,7 +771,7 @@ mode</td>
 </div><div class="memdoc">
 <p>2.4 profile - limited by internal memory </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00034">34</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00035">35</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 
 </div>
 </div>
@@ -748,7 +788,7 @@ mode</td>
 </div><div class="memdoc">
 <p>node address length in bytes </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00039">39</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00040">40</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 
 </div>
 </div>
@@ -765,7 +805,7 @@ mode</td>
 </div><div class="memdoc">
 <p>Definitions of positioning measurement message. !Note all structure definitions shall be packed </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00045">45</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00046">46</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 
 </div>
 </div>
@@ -776,36 +816,38 @@ mode</td>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define POSLIB_NODE_INFO_FEATURES_VERSION&#160;&#160;&#160;0</td>
+          <td class="memname">#define POSLIB_NODE_INFO_FEATURES_VERSION&#160;&#160;&#160;1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Defines the feature flags version, to be incremented when new flags are added </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00080">80</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/df1/poslib__measurement_8h_source.html#l00087">87</a> of file <a class="el" href="../../db/df1/poslib__measurement_8h_source.html">poslib_measurement.h</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6ab4b495917684cc79b09580896500b3f6"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6ab4b495917684cc79b09580896500b3f6">POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON</a></div><div class="ttdeci">@ POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00093">poslib_measurement.h:93</a></div></div>
+<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6ab4b495917684cc79b09580896500b3f6"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6ab4b495917684cc79b09580896500b3f6">POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON</a></div><div class="ttdeci">@ POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00100">poslib_measurement.h:100</a></div></div>
 <div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeaba263b20a6d8f01479aeb244811e8cdc3b"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba263b20a6d8f01479aeb244811e8cdc3b">POSLIB_MEAS_VOLTAGE</a></div><div class="ttdeci">@ POSLIB_MEAS_VOLTAGE</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00022">poslib_measurement.h:22</a></div></div>
 <div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeabaf9f8ff1a22ee4c5944fd3ced616a21dd"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeabaf9f8ff1a22ee4c5944fd3ced616a21dd">POSLIB_MEAS_TIME</a></div><div class="ttdeci">@ POSLIB_MEAS_TIME</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00020">poslib_measurement.h:20</a></div></div>
-<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6">poslib_node_info_features_e</a></div><div class="ttdeci">poslib_node_info_features_e</div><div class="ttdoc">Node active features (.</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00084">poslib_measurement.h:84</a></div></div>
-<div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeabafd76d0243f6cc9817b990504c67531fd"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeabafd76d0243f6cc9817b990504c67531fd">POSLIB_MEAS_RSS_SR_ANCHOR</a></div><div class="ttdeci">@ POSLIB_MEAS_RSS_SR_ANCHOR</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00029">poslib_measurement.h:29</a></div></div>
-<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6a685e34f0419178a36b55f7692d51c511"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a685e34f0419178a36b55f7692d51c511">POSLIB_NODE_INFO_FLAG_IBEACON_ON</a></div><div class="ttdeci">@ POSLIB_NODE_INFO_FLAG_IBEACON_ON</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00095">poslib_measurement.h:95</a></div></div>
-<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6ad9f312e82f4423ddebc18fe377d04feb"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6ad9f312e82f4423ddebc18fe377d04feb">POSLIB_NODE_INFO_FLAG_MOTION_EN</a></div><div class="ttdeci">@ POSLIB_NODE_INFO_FLAG_MOTION_EN</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00089">poslib_measurement.h:89</a></div></div>
+<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6">poslib_node_info_features_e</a></div><div class="ttdeci">poslib_node_info_features_e</div><div class="ttdoc">Node active features (.</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00091">poslib_measurement.h:91</a></div></div>
+<div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeabafd76d0243f6cc9817b990504c67531fd"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeabafd76d0243f6cc9817b990504c67531fd">POSLIB_MEAS_RSS_SR_ANCHOR</a></div><div class="ttdeci">@ POSLIB_MEAS_RSS_SR_ANCHOR</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00030">poslib_measurement.h:30</a></div></div>
+<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6a685e34f0419178a36b55f7692d51c511"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a685e34f0419178a36b55f7692d51c511">POSLIB_NODE_INFO_FLAG_IBEACON_ON</a></div><div class="ttdeci">@ POSLIB_NODE_INFO_FLAG_IBEACON_ON</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00102">poslib_measurement.h:102</a></div></div>
+<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6ad9f312e82f4423ddebc18fe377d04feb"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6ad9f312e82f4423ddebc18fe377d04feb">POSLIB_NODE_INFO_FLAG_MOTION_EN</a></div><div class="ttdeci">@ POSLIB_NODE_INFO_FLAG_MOTION_EN</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00096">poslib_measurement.h:96</a></div></div>
 <div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeaba9d4ef3d869877d2ee6e5167ead3d2c24"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba9d4ef3d869877d2ee6e5167ead3d2c24">POSLIB_MEAS_RSS_HR</a></div><div class="ttdeci">@ POSLIB_MEAS_RSS_HR</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00019">poslib_measurement.h:19</a></div></div>
 <div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeaba6031f774728c42b8eb55c965ee7ae1d9"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba6031f774728c42b8eb55c965ee7ae1d9">POSLIB_MEAS_SPACE</a></div><div class="ttdeci">@ POSLIB_MEAS_SPACE</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00021">poslib_measurement.h:21</a></div></div>
-<div class="ttc" id="aposlib__measurement_8h_html_afa6db7c3910e0bf19d27f8ddbc3e8b01"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#afa6db7c3910e0bf19d27f8ddbc3e8b01">poslib_scan_mode_e</a></div><div class="ttdeci">poslib_scan_mode_e</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00113">poslib_measurement.h:113</a></div></div>
-<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6a5aae5d8f63292e99b9d63f8cf85179d7"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a5aae5d8f63292e99b9d63f8cf85179d7">POSLIB_NODE_INFO_FLAG_IS_STATIC</a></div><div class="ttdeci">@ POSLIB_NODE_INFO_FLAG_IS_STATIC</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00091">poslib_measurement.h:91</a></div></div>
+<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6aae5eb53b1bf5523519ac6dcb67bef4df"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6aae5eb53b1bf5523519ac6dcb67bef4df">POSLIB_NODE_INFO_FLAG_MBCN_ON</a></div><div class="ttdeci">@ POSLIB_NODE_INFO_FLAG_MBCN_ON</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00104">poslib_measurement.h:104</a></div></div>
+<div class="ttc" id="aposlib__measurement_8h_html_afa6db7c3910e0bf19d27f8ddbc3e8b01"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#afa6db7c3910e0bf19d27f8ddbc3e8b01">poslib_scan_mode_e</a></div><div class="ttdeci">poslib_scan_mode_e</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00122">poslib_measurement.h:122</a></div></div>
+<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6a5aae5d8f63292e99b9d63f8cf85179d7"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a5aae5d8f63292e99b9d63f8cf85179d7">POSLIB_NODE_INFO_FLAG_IS_STATIC</a></div><div class="ttdeci">@ POSLIB_NODE_INFO_FLAG_IS_STATIC</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00098">poslib_measurement.h:98</a></div></div>
 <div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeab"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeab">poslib_measurements_e</a></div><div class="ttdeci">poslib_measurements_e</div><div class="ttdoc">defines the device's positioning mode. The type is matched against the WPE proto definition.</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00015">poslib_measurement.h:15</a></div></div>
 <div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeaba2f97b6373ffd3af75ecf08fa3ecb6c0c"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba2f97b6373ffd3af75ecf08fa3ecb6c0c">POSLIB_MEAS_RSS_SR_4BYTE_ADDR</a></div><div class="ttdeci">@ POSLIB_MEAS_RSS_SR_4BYTE_ADDR</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00023">poslib_measurement.h:23</a></div></div>
-<div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeaba73b81abcead5d6e91f7273635d04e7d9"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba73b81abcead5d6e91f7273635d04e7d9">POSLIB_MEAS_RSS_SR_ANCHOR_4BYTE_ADDR</a></div><div class="ttdeci">@ POSLIB_MEAS_RSS_SR_ANCHOR_4BYTE_ADDR</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00030">poslib_measurement.h:30</a></div></div>
+<div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeaba73b81abcead5d6e91f7273635d04e7d9"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba73b81abcead5d6e91f7273635d04e7d9">POSLIB_MEAS_RSS_SR_ANCHOR_4BYTE_ADDR</a></div><div class="ttdeci">@ POSLIB_MEAS_RSS_SR_ANCHOR_4BYTE_ADDR</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00031">poslib_measurement.h:31</a></div></div>
 <div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeaba6d267480bec9b84836c979377aea0d55"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba6d267480bec9b84836c979377aea0d55">POSLIB_MEAS_NODE_INFO</a></div><div class="ttdeci">@ POSLIB_MEAS_NODE_INFO</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00024">poslib_measurement.h:24</a></div></div>
-<div class="ttc" id="aposlib__measurement_8h_html_afa6db7c3910e0bf19d27f8ddbc3e8b01aaa5b90703c536fb4664426d074935e08"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#afa6db7c3910e0bf19d27f8ddbc3e8b01aaa5b90703c536fb4664426d074935e08">SCAN_MODE_STANDARD</a></div><div class="ttdeci">@ SCAN_MODE_STANDARD</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00115">poslib_measurement.h:115</a></div></div>
+<div class="ttc" id="aposlib__measurement_8h_html_afa6db7c3910e0bf19d27f8ddbc3e8b01aaa5b90703c536fb4664426d074935e08"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#afa6db7c3910e0bf19d27f8ddbc3e8b01aaa5b90703c536fb4664426d074935e08">SCAN_MODE_STANDARD</a></div><div class="ttdeci">@ SCAN_MODE_STANDARD</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00124">poslib_measurement.h:124</a></div></div>
 <div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeaba5403476c6024ceca8ea800c4ddf6aa1f"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba5403476c6024ceca8ea800c4ddf6aa1f">POSLIB_MEAS_RSS_SR</a></div><div class="ttdeci">@ POSLIB_MEAS_RSS_SR</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00018">poslib_measurement.h:18</a></div></div>
-<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6a1dbe66cf0a6eb9503700f5c4e0cb0eb4"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a1dbe66cf0a6eb9503700f5c4e0cb0eb4">POSLIB_NODE_INFO_MASK_VERSION</a></div><div class="ttdeci">@ POSLIB_NODE_INFO_MASK_VERSION</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00087">poslib_measurement.h:87</a></div></div>
+<div class="ttc" id="aposlib__measurement_8h_html_a1dbca1ddadfaf0b1c80ad498aa1cdeaba20b983bf941cf3670a545807e738ba6a"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba20b983bf941cf3670a545807e738ba6a">POSLIB_MEAS_DA</a></div><div class="ttdeci">@ POSLIB_MEAS_DA</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00025">poslib_measurement.h:25</a></div></div>
+<div class="ttc" id="aposlib__measurement_8h_html_aacabd1d28f96943abb60f0652cf4d4e6a1dbe66cf0a6eb9503700f5c4e0cb0eb4"><div class="ttname"><a href="../../db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a1dbe66cf0a6eb9503700f5c4e0cb0eb4">POSLIB_NODE_INFO_MASK_VERSION</a></div><div class="ttdeci">@ POSLIB_NODE_INFO_MASK_VERSION</div><div class="ttdef"><b>Definition:</b> <a href="../../db/df1/poslib__measurement_8h_source.html#l00094">poslib_measurement.h:94</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

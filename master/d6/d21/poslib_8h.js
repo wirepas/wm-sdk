@@ -1,5 +1,21 @@
 var poslib_8h =
 [
+    [ "poslib_mbcn_record_t", "d6/d21/poslib_8h.html#d9/d14/structposlib__mbcn__record__t", [
+      [ "length", "d6/d21/poslib_8h.html#ab2b3adeb2a67e656ff030b56727fd0ac", null ],
+      [ "type", "d6/d21/poslib_8h.html#a1d127017fb298b889f4ba24752d08b8e", null ],
+      [ "value", "d6/d21/poslib_8h.html#a0ab8d0dbfbc7a446d329f2c482678836", null ]
+    ] ],
+    [ "poslib_mbcn_config_t", "d6/d21/poslib_8h.html#d8/d4f/structposlib__mbcn__config__t", [
+      [ "enabled", "d6/d21/poslib_8h.html#a8740ba80e30dd75e71d09fa1dcf04f3d", null ],
+      [ "records", "d6/d21/poslib_8h.html#a8efeb5abe0dc903090680428508b0795", null ],
+      [ "tx_interval_ms", "d6/d21/poslib_8h.html#a290a9f0388e4f67825cf597044c839c8", null ]
+    ] ],
+    [ "poslib_mbcn_data_t", "d6/d21/poslib_8h.html#da/db7/structposlib__mbcn__data__t", [
+      [ "features", "d6/d21/poslib_8h.html#a05394e2501b222db77c3a39194523065", null ],
+      [ "records", "d6/d21/poslib_8h.html#a8efeb5abe0dc903090680428508b0795", null ],
+      [ "seq", "d6/d21/poslib_8h.html#a0a97914b75ed3ab7d0e13d8b200d758a", null ],
+      [ "tx_interval_ms", "d6/d21/poslib_8h.html#a290a9f0388e4f67825cf597044c839c8", null ]
+    ] ],
     [ "poslib_ble_mode_config_t", "d6/d21/poslib_8h.html#d7/d62/structposlib__ble__mode__config__t", [
       [ "channels", "d6/d21/poslib_8h.html#a8d91ba4782f95b418de22bbf3efb8c57", null ],
       [ "tx_interval_ms", "d6/d21/poslib_8h.html#a290a9f0388e4f67825cf597044c839c8", null ],
@@ -17,8 +33,14 @@ var poslib_8h =
       [ "enabled", "d6/d21/poslib_8h.html#a8740ba80e30dd75e71d09fa1dcf04f3d", null ],
       [ "threshold_mg", "d6/d21/poslib_8h.html#af14b1fb4639404df213fdcd8f85bc269", null ]
     ] ],
+    [ "poslib_da_settings_t", "d6/d21/poslib_8h.html#dc/d05/structposlib__da__settings__t", [
+      [ "follow_network", "d6/d21/poslib_8h.html#a82d268e0ec9302773959971a66823beb", null ],
+      [ "routing_enabled", "d6/d21/poslib_8h.html#a833f1e24511b23af94eae0fcf9523168", null ]
+    ] ],
     [ "poslib_settings_t", "d6/d21/poslib_8h.html#d4/d10/structposlib__settings__t", [
       [ "ble", "d6/d21/poslib_8h.html#a25701dbd5713e9946491f496b8793a39", null ],
+      [ "da", "d6/d21/poslib_8h.html#a11f4e8bfa247ab1ba65331a96b27a9b8", null ],
+      [ "mbcn", "d6/d21/poslib_8h.html#afa486d9c7e40abdad83df5541605e9f6", null ],
       [ "motion", "d6/d21/poslib_8h.html#a720619e6c061c2846c4a32829cd3f648", null ],
       [ "node_class", "d6/d21/poslib_8h.html#a589d50a191506a7e7bf3401612604602", null ],
       [ "node_mode", "d6/d21/poslib_8h.html#a14bbe79accf29228561338dcece2352e", null ],
@@ -37,10 +59,12 @@ var poslib_8h =
     ] ],
     [ "poslib_events_callback_f", "d6/d21/poslib_8h.html#aa55cb0e34335c6a01a3e26cc1ed2151f", null ],
     [ "poslib_events_listen_info_f", "d6/d21/poslib_8h.html#a8c8893dc6886f82c5c3da8816fb789dc", null ],
+    [ "PosLib_decodeMbcn", "d6/d21/poslib_8h.html#a9a074ca9e5f00358a5c025a4fc11b4e6", null ],
     [ "PosLib_eventDeregister", "d6/d21/poslib_8h.html#ae1f5ba1467653135307c16abd23f4c19", null ],
     [ "PosLib_eventRegister", "d6/d21/poslib_8h.html#abe0a8a35b6df046773253cf888bb0d0f", null ],
     [ "PosLib_getConfig", "d6/d21/poslib_8h.html#ad346d18e7c29a591fa8a4f78e4de5792", null ],
     [ "PosLib_motion", "d6/d21/poslib_8h.html#aab50cf9ddf10ac9526375bc0c282b6b9", null ],
+    [ "PosLib_sendData", "d6/d21/poslib_8h.html#a099b198c76f930f605d1cfe0720132f2", null ],
     [ "PosLib_setConfig", "d6/d21/poslib_8h.html#ae9d621179c75788632e3180438d84384", null ],
     [ "PosLib_startOneshot", "d6/d21/poslib_8h.html#a86d60f262f339365c5b50f04cbd9bccc", null ],
     [ "PosLib_startPeriodic", "d6/d21/poslib_8h.html#a25e325100a463c7f51cac612956f54f0", null ],
@@ -79,11 +103,32 @@ var poslib_8h =
       [ "POSLIB_FLAG_EVENT_LED_OFF", "d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa45b7e1a7225d8b5c6588bc07a8128bba", null ],
       [ "POSLIB_FLAG_EVENT_ALL", "d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7782d48899a4a48966a87946a19c9399", null ]
     ] ],
+    [ "poslib_mbcn_record_types_e", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6", [
+      [ "POSLIB_MBCN_INVALID_TYPE", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6acec8389e7b06e9b8c5f6a7d9e77b3c13", null ],
+      [ "POSLIB_MBCN_TX_INTERVAL", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a471cb38a91a4c1fd96ee6253f1804dff", null ],
+      [ "POSLIB_MBCN_FEATURES", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a1d9778bf9ee74a2407368460f0e7ead0", null ],
+      [ "POSLIB_MBCN_AREA_ID", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6ab298f2d10990fe47dcb2d63f6c8f8d7d", null ],
+      [ "POSLIB_MBCN_FLOOR_ID", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a6db6af6373cf4a1c5eaad325d4aa19d1", null ],
+      [ "POSLIB_MBCN_X", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a7db3e2ffc8f7dcc085ea55dc5453db0d", null ],
+      [ "POSLIB_MBCN_Y", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a7bfe0175266ca5df082d7c4e3662de5e", null ],
+      [ "POSLIB_MBCN_Z", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6acaf80b85ee1dcbbc7dbbb2eefb1a2c86", null ],
+      [ "POSLIB_MBCN_CUSTOM_1", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6ae02cc747b7b26792409a5721c4201922", null ],
+      [ "POSLIB_MBCN_CUSTOM_2", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6aa7468440a16a034c5254b3ba9ec6fa7d", null ],
+      [ "POSLIB_MBCN_CUSTOM_3", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a0b34d200f0e7fb155aab31bda7bb10ed", null ],
+      [ "POSLIB_MBCN_CUSTOM_4", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6ad8df72007f669d920f9d6d4fa1220cc8", null ],
+      [ "POSLIB_MBCN_MAX_TYPE", "d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a7c69e38a78793d076d45cfafc0464b08", null ]
+    ] ],
+    [ "poslib_mbcn_tx_interval_e", "d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7", [
+      [ "POSLIB_MBCN_TX_INTERVAL_DEFAULT", "d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7a4d4be2e96fd3e65dfdf51a4cb800840f", null ],
+      [ "POSLIB_MBCN_TX_INTERVAL_500", "d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7a92258d5201fe04d05352546ec453dbc3", null ],
+      [ "POSLIB_MBCN_TX_INTERVAL_250", "d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7a2227db94c4dd903281e6d3c6f2a9849a", null ]
+    ] ],
     [ "poslib_mode_e", "d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46", [
       [ "POSLIB_MODE_NRLS_TAG", "d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a87819d91929c9c1e6b5ff643d010157f", null ],
       [ "POSLIB_MODE_AUTOSCAN_TAG", "d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a8a17468ab54dcb499960570c0f37da43", null ],
       [ "POSLIB_MODE_AUTOSCAN_ANCHOR", "d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a358b565f980102cc2ec208e2b03dc557", null ],
       [ "POSLIB_MODE_OPPORTUNISTIC_ANCHOR", "d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a08c8461df841518cd8566f9bdf147523", null ],
+      [ "POSLIB_MODE_DA_TAG", "d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46ad7dbf80f57949a834958aa4970467658", null ],
       [ "POSLIB_MODE_ENDS", "d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46ab3b1dea384f495effc3af193a5b0bfd8", null ]
     ] ],
     [ "poslib_motion_mode_e", "d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831", [
@@ -110,6 +155,10 @@ var poslib_8h =
     [ "POS_SOURCE_ENDPOINT", "d6/d21/poslib_8h.html#a04643836163884cc6da06db1839ffdce", null ],
     [ "POSLIB_FLAG_EVENT_SUBSCRIBERS_MAX", "d6/d21/poslib_8h.html#a0da04c381f2ba9e6c6b317cf94df7869", null ],
     [ "POSLIB_MAX_MEAS_RATE_S", "d6/d21/poslib_8h.html#a6ff91cbf1732a7b8530166ace428d2ec", null ],
+    [ "POSLIB_MBCN_DEST_EP", "d6/d21/poslib_8h.html#a81d4cd6ef8ccbd6cd4dd1147a5b2f6c0", null ],
+    [ "POSLIB_MBCN_RECORD_MAX_SIZE", "d6/d21/poslib_8h.html#aae72706aae9e1c92cf6514d1c9b4aca5", null ],
+    [ "POSLIB_MBCN_RECORDS", "d6/d21/poslib_8h.html#a2253f166046dc27532b0f51aeee9110c", null ],
+    [ "POSLIB_MBCN_SRC_EP", "d6/d21/poslib_8h.html#a5d0675d5c215389b2bcb488c1d55fd64", null ],
     [ "POSLIB_MIN_MEAS_RATE_S", "d6/d21/poslib_8h.html#a75d520a2801a3c341a3eabbaf528d90e", null ],
     [ "POSLIB_VOLTAGE_FILTER_SAMPLES", "d6/d21/poslib_8h.html#ab1ac57e170fd59227d7fb97be9b7017d", null ],
     [ "POSLIB_VOLTAGE_SAMPLING_MAX_S", "d6/d21/poslib_8h.html#a752c08e493d94c2c3fec9a37e0e778c4", null ]

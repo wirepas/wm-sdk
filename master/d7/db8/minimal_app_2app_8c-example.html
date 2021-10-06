@@ -100,8 +100,10 @@ $(document).ready(function(){initNavTree('d7/db8/minimal_app_2app_8c-example.htm
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a0"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
 <div class="line">{</div>
+<div class="line">    <a class="code" href="../../de/d60/settings_8h.html#a6e80e9f924c933ad9e52603b56a3f82a">app_lib_settings_role_t</a> role = <a name="a1"></a><a class="code" href="../../de/d60/settings_8h.html#a4f7704544bbf5a456b9f21f55ca42822">app_lib_settings_create_role</a>(<a name="a2"></a><a class="code" href="../../de/d60/settings_8h.html#ab42b1333ea2649dfc695dfc0423f1184a45e9c1d12ed69997903750fd96b3a2e9">APP_LIB_SETTINGS_ROLE_HEADNODE</a>, <a name="a3"></a><a class="code" href="../../de/d60/settings_8h.html#ad60f684ddb64fff64bd9443bec7d6575a1c666e75ca58a10e249d2980b349a753">APP_LIB_SETTINGS_ROLE_FLAG_LL</a>);</div>
+<div class="line">    </div>
 <div class="line">    <span class="comment">// Basic configuration of the node with a unique node address</span></div>
-<div class="line">    <span class="keywordflow">if</span> (<a name="a1"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a name="a2"></a><a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (<a name="a4"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a name="a5"></a><a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="comment">// Could not configure the node</span></div>
 <div class="line">        <span class="comment">// It should not happen except if one of the config value is invalid</span></div>
@@ -114,15 +116,20 @@ $(document).ready(function(){initNavTree('d7/db8/minimal_app_2app_8c-example.htm
 <div class="line"><span class="comment">     * will not be part of any network. So the device will not be reachable</span></div>
 <div class="line"><span class="comment">     * without reflashing it</span></div>
 <div class="line"><span class="comment">     */</span></div>
+<div class="line">    lib_settings-&gt;setNodeRole(role);</div>
 <div class="line">    lib_state-&gt;startStack();</div>
 <div class="line">}</div>
 <div class="line"> </div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="anode__configuration_8h_html"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a></div></div>
+<div class="ttc" id="asettings_8h_html_ad60f684ddb64fff64bd9443bec7d6575a1c666e75ca58a10e249d2980b349a753"><div class="ttname"><a href="../../de/d60/settings_8h.html#ad60f684ddb64fff64bd9443bec7d6575a1c666e75ca58a10e249d2980b349a753">APP_LIB_SETTINGS_ROLE_FLAG_LL</a></div><div class="ttdeci">@ APP_LIB_SETTINGS_ROLE_FLAG_LL</div><div class="ttdef"><b>Definition:</b> <a href="../../de/d60/settings_8h_source.html#l00091">settings.h:91</a></div></div>
 <div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a></div><div class="ttdeci">@ APP_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00204">app.h:204</a></div></div>
 <div class="ttc" id="anode__configuration_8h_html_a2560821c66e34240aa698da5affba7c7"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a></div><div class="ttdeci">__STATIC_INLINE app_res_e configureNodeFromBuildParameters()</div><div class="ttdoc">Wrapper on top of configureNode to get parameters from build system and hardcoded values from chip (f...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d2e/node__configuration_8h_source.html#l00233">node_configuration.h:233</a></div></div>
+<div class="ttc" id="asettings_8h_html_a4f7704544bbf5a456b9f21f55ca42822"><div class="ttname"><a href="../../de/d60/settings_8h.html#a4f7704544bbf5a456b9f21f55ca42822">app_lib_settings_create_role</a></div><div class="ttdeci">static app_lib_settings_role_t app_lib_settings_create_role(app_lib_settings_base_role_e base, app_lib_settings_flag_role_e flags)</div><div class="ttdoc">Create a role.</div><div class="ttdef"><b>Definition:</b> <a href="../../de/d60/settings_8h_source.html#l00145">settings.h:145</a></div></div>
+<div class="ttc" id="asettings_8h_html_ab42b1333ea2649dfc695dfc0423f1184a45e9c1d12ed69997903750fd96b3a2e9"><div class="ttname"><a href="../../de/d60/settings_8h.html#ab42b1333ea2649dfc695dfc0423f1184a45e9c1d12ed69997903750fd96b3a2e9">APP_LIB_SETTINGS_ROLE_HEADNODE</a></div><div class="ttdeci">@ APP_LIB_SETTINGS_ROLE_HEADNODE</div><div class="ttdef"><b>Definition:</b> <a href="../../de/d60/settings_8h_source.html#l00074">settings.h:74</a></div></div>
 <div class="ttc" id="aapp_8h_html_d6/d81/structapp__global__functions__t"><div class="ttname"><a href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a></div><div class="ttdoc">List of global functions, passed to App_entrypoint()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00157">app.h:157</a></div></div>
+<div class="ttc" id="asettings_8h_html_a6e80e9f924c933ad9e52603b56a3f82a"><div class="ttname"><a href="../../de/d60/settings_8h.html#a6e80e9f924c933ad9e52603b56a3f82a">app_lib_settings_role_t</a></div><div class="ttdeci">uint8_t app_lib_settings_role_t</div><div class="ttdoc">Node role type.</div><div class="ttdef"><b>Definition:</b> <a href="../../de/d60/settings_8h_source.html#l00126">settings.h:126</a></div></div>
 <div class="ttc" id="aapi_8h_html"><div class="ttname"><a href="../../dc/d65/api_8h.html">api.h</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

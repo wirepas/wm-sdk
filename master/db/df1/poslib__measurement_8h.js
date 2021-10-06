@@ -11,6 +11,10 @@ var poslib__measurement_8h =
       [ "length", "db/df1/poslib__measurement_8h.html#ab2b3adeb2a67e656ff030b56727fd0ac", null ],
       [ "type", "db/df1/poslib__measurement_8h.html#a1d127017fb298b889f4ba24752d08b8e", null ]
     ] ],
+    [ "poslib_meas_record_da_t", "db/df1/poslib__measurement_8h.html#da/d0f/structposlib__meas__record__da__t", [
+      [ "header", "db/df1/poslib__measurement_8h.html#ab44585ba225b5f3fa05dc52ff69a4854", null ],
+      [ "node_addr", "db/df1/poslib__measurement_8h.html#af2c29987228caf2ff73b7665eef50875", null ]
+    ] ],
     [ "poslib_meas_record_voltage_t", "db/df1/poslib__measurement_8h.html#d1/d41/structposlib__meas__record__voltage__t", [
       [ "header", "db/df1/poslib__measurement_8h.html#ab44585ba225b5f3fa05dc52ff69a4854", null ],
       [ "voltage", "db/df1/poslib__measurement_8h.html#a8e84682150888ae78b9a41959ca02c7b", null ]
@@ -39,6 +43,7 @@ var poslib__measurement_8h =
       [ "POSLIB_MEAS_VOLTAGE", "db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba263b20a6d8f01479aeb244811e8cdc3b", null ],
       [ "POSLIB_MEAS_RSS_SR_4BYTE_ADDR", "db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba2f97b6373ffd3af75ecf08fa3ecb6c0c", null ],
       [ "POSLIB_MEAS_NODE_INFO", "db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba6d267480bec9b84836c979377aea0d55", null ],
+      [ "POSLIB_MEAS_DA", "db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba20b983bf941cf3670a545807e738ba6a", null ],
       [ "POSLIB_MEAS_RSS_SR_ANCHOR", "db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeabafd76d0243f6cc9817b990504c67531fd", null ],
       [ "POSLIB_MEAS_RSS_SR_ANCHOR_4BYTE_ADDR", "db/df1/poslib__measurement_8h.html#a1dbca1ddadfaf0b1c80ad498aa1cdeaba73b81abcead5d6e91f7273635d04e7d9", null ]
     ] ],
@@ -47,7 +52,8 @@ var poslib__measurement_8h =
       [ "POSLIB_NODE_INFO_FLAG_MOTION_EN", "db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6ad9f312e82f4423ddebc18fe377d04feb", null ],
       [ "POSLIB_NODE_INFO_FLAG_IS_STATIC", "db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a5aae5d8f63292e99b9d63f8cf85179d7", null ],
       [ "POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON", "db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6ab4b495917684cc79b09580896500b3f6", null ],
-      [ "POSLIB_NODE_INFO_FLAG_IBEACON_ON", "db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a685e34f0419178a36b55f7692d51c511", null ]
+      [ "POSLIB_NODE_INFO_FLAG_IBEACON_ON", "db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6a685e34f0419178a36b55f7692d51c511", null ],
+      [ "POSLIB_NODE_INFO_FLAG_MBCN_ON", "db/df1/poslib__measurement_8h.html#aacabd1d28f96943abb60f0652cf4d4e6aae5eb53b1bf5523519ac6dcb67bef4df", null ]
     ] ],
     [ "poslib_scan_mode_e", "db/df1/poslib__measurement_8h.html#afa6db7c3910e0bf19d27f8ddbc3e8b01", [
       [ "SCAN_MODE_STANDARD", "db/df1/poslib__measurement_8h.html#afa6db7c3910e0bf19d27f8ddbc3e8b01aaa5b90703c536fb4664426d074935e08", null ]

@@ -122,26 +122,34 @@ $(document).ready(function(){initNavTree('d3/d8f/tbsense2_2board_8h_source.html'
 <div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#ac311553d1163d408f5e9e0981b21d222">   44</a></span>&#160;<span class="preprocessor">#define BOARD_UART_INT_PIN              6</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#aca8fcd9d16228b415f8158d08dfa416e">   45</a></span>&#160;<span class="preprocessor">#define BOARD_UART_INT_PORT             GPIOF</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// List of GPIO ports and pins for the LEDs on the board: red LED, green LED</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#a8eefc53de69e1aea7376f76b67c6052a">   48</a></span>&#160;<span class="preprocessor">#define BOARD_LED_PIN_LIST              {{GPIOD, 8}, {GPIOD, 9}}</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// Active high polarity for LEDs</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#a43341ad5e17bb5d20c1e528bce7d6133">   51</a></span>&#160;<span class="preprocessor">#define BOARD_LED_ACTIVE_LOW            false</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// List of ext. ints, GPIO ports and pins for buttons on the board: BTN0, BTN1</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#ac206a3fdd4723341044664ddbf85f6d3">   54</a></span>&#160;<span class="preprocessor">#define BOARD_BUTTON_PIN_LIST           {{12, GPIOD, 14}, {14, GPIOD, 15}}</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// Active low polarity for buttons</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71">   57</a></span>&#160;<span class="preprocessor">#define BOARD_BUTTON_ACTIVE_LOW         true</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// Board has external pull-up for buttons</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a">   60</a></span>&#160;<span class="preprocessor">#define BOARD_BUTTON_INTERNAL_PULL false</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">// Buttons use even external interrupts</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#aa1002840655a30f1b3bef09d00e7d8ba">   63</a></span>&#160;<span class="preprocessor">#define BOARD_BUTTON_USE_EVEN_INT       true</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* BOARD_TBSENSE2_BOARD_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// I2C configuration: SDA on PC4, SCL on PC5 (ENV_I2C on Thunderboard Sense 2)</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#a0b4954f58fdaddf7d7468296f8fb9c9c">   48</a></span>&#160;<span class="preprocessor">#define USE_I2C1</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#ad040f55332feda958e433ae2c1f5bcd5">   49</a></span>&#160;<span class="preprocessor">#define BOARD_I2C_GPIO_PORT             GPIOC</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#a85ffcb831cf671e2d7420dfcb50f12d4">   50</a></span>&#160;<span class="preprocessor">#define BOARD_I2C_SDA_PIN               4</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#a23ceec4235fc4b415f54343cf96ad269">   51</a></span>&#160;<span class="preprocessor">#define BOARD_I2C_SCL_PIN               5</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#a5352ae70f167d76a644efea761ef0d95">   52</a></span>&#160;<span class="preprocessor">#define BOARD_I2C_ROUTELOC_SDALOC I2C_ROUTELOC0_SDALOC_LOC17</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#acb2895a9dbda55c7842898cd59a419ea">   53</a></span>&#160;<span class="preprocessor">#define BOARD_I2C_ROUTELOC_SCLLOC I2C_ROUTELOC0_SCLLOC_LOC17</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// List of GPIO ports and pins for the LEDs on the board: red LED, green LED</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#a8eefc53de69e1aea7376f76b67c6052a">   56</a></span>&#160;<span class="preprocessor">#define BOARD_LED_PIN_LIST              {{GPIOD, 8}, {GPIOD, 9}}</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// Active high polarity for LEDs</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#a43341ad5e17bb5d20c1e528bce7d6133">   59</a></span>&#160;<span class="preprocessor">#define BOARD_LED_ACTIVE_LOW            false</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">// List of ext. ints, GPIO ports and pins for buttons on the board: BTN0, BTN1</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#ac206a3fdd4723341044664ddbf85f6d3">   62</a></span>&#160;<span class="preprocessor">#define BOARD_BUTTON_PIN_LIST           {{12, GPIOD, 14}, {14, GPIOD, 15}}</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">// Active low polarity for buttons</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71">   65</a></span>&#160;<span class="preprocessor">#define BOARD_BUTTON_ACTIVE_LOW         true</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">// Board has external pull-up for buttons</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a">   68</a></span>&#160;<span class="preprocessor">#define BOARD_BUTTON_INTERNAL_PULL false</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">// Buttons use even external interrupts</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="../../d3/d8f/tbsense2_2board_8h.html#aa1002840655a30f1b3bef09d00e7d8ba">   71</a></span>&#160;<span class="preprocessor">#define BOARD_BUTTON_USE_EVEN_INT       true</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* BOARD_TBSENSE2_BOARD_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.17-->

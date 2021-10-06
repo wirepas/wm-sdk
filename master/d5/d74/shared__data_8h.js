@@ -21,6 +21,7 @@ var shared__data_8h =
       [ "SHARED_DATA_NET_MODE_UNICAST", "d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7abe7fd6617fa17f362c9dfd9e061a8b97", null ],
       [ "SHARED_DATA_NET_MODE_BROADCAST", "d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7aaa21a2d1938fd77076075f458eb0677f", null ],
       [ "SHARED_DATA_NET_MODE_MULTICAST", "d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c", null ],
+      [ "SHARED_DATA_NET_MODE_ACKDA", "d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7adc771bccff5c23fb29e95590ea7d519f", null ],
       [ "SHARED_DATA_NET_MODE_ALL", "d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5", null ]
     ] ],
     [ "SHARED_DATA_UNUSED_ENDPOINT", "d5/d74/shared__data_8h.html#a0e0d097ad405704cf8816af12099ed66", null ],

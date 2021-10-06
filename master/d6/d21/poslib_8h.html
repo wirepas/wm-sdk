@@ -130,11 +130,26 @@ Functions</h2></td></tr>
 <tr class="memitem:ae1f5ba1467653135307c16abd23f4c19"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#ae1f5ba1467653135307c16abd23f4c19">PosLib_eventDeregister</a> (uint8_t id)</td></tr>
 <tr class="memdesc:ae1f5ba1467653135307c16abd23f4c19"><td class="mdescLeft">&#160;</td><td class="mdescRight">De-register the event subscriber with the provided id.  <a href="../../d6/d21/poslib_8h.html#ae1f5ba1467653135307c16abd23f4c19">More...</a><br /></td></tr>
 <tr class="separator:ae1f5ba1467653135307c16abd23f4c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a074ca9e5f00358a5c025a4fc11b4e6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a9a074ca9e5f00358a5c025a4fc11b4e6">PosLib_decodeMbcn</a> (uint8_t *buf, uint8_t length, <a class="el" href="../../d6/d21/poslib_8h.html#da/db7/structposlib__mbcn__data__t">poslib_mbcn_data_t</a> *mbcn)</td></tr>
+<tr class="memdesc:a9a074ca9e5f00358a5c025a4fc11b4e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes the mini-beacon payload.  <a href="../../d6/d21/poslib_8h.html#a9a074ca9e5f00358a5c025a4fc11b4e6">More...</a><br /></td></tr>
+<tr class="separator:a9a074ca9e5f00358a5c025a4fc11b4e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a099b198c76f930f605d1cfe0720132f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/dbd/data_8h.html#ab53b6510f8ecb4a1621c905c15855164">app_lib_data_send_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a099b198c76f930f605d1cfe0720132f2">PosLib_sendData</a> (<a class="el" href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> *data, <a class="el" href="../../d2/dbd/data_8h.html#ad4532c2af19fb5161fd44dd3d806be38">app_lib_data_data_sent_cb_f</a> sent_cb)</td></tr>
+<tr class="memdesc:a099b198c76f930f605d1cfe0720132f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send data. The packet to send is represented as a <a class="el" href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> struct. In node has Advertiser role and dest_address is APP_ADDR_ANYSINK then the function will replace the destination with the address of the best found LL router supporting DA.  <a href="../../d6/d21/poslib_8h.html#a099b198c76f930f605d1cfe0720132f2">More...</a><br /></td></tr>
+<tr class="separator:a099b198c76f930f605d1cfe0720132f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:d9/d14/structposlib__mbcn__record__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#d9/d14/structposlib__mbcn__record__t">poslib_mbcn_record_t</a></td></tr>
+<tr class="memdesc:d9/d14/structposlib__mbcn__record__t"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines mini-beacon record.  <a href="../../d6/d21/poslib_8h.html#d9/d14/structposlib__mbcn__record__t">More...</a><br /></td></tr>
+<tr class="separator:d9/d14/structposlib__mbcn__record__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:d8/d4f/structposlib__mbcn__config__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#d8/d4f/structposlib__mbcn__config__t">poslib_mbcn_config_t</a></td></tr>
+<tr class="memdesc:d8/d4f/structposlib__mbcn__config__t"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines mini-beacon configuration.  <a href="../../d6/d21/poslib_8h.html#d8/d4f/structposlib__mbcn__config__t">More...</a><br /></td></tr>
+<tr class="separator:d8/d4f/structposlib__mbcn__config__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:da/db7/structposlib__mbcn__data__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#da/db7/structposlib__mbcn__data__t">poslib_mbcn_data_t</a></td></tr>
+<tr class="memdesc:da/db7/structposlib__mbcn__data__t"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines mini-beacon data payload.  <a href="../../d6/d21/poslib_8h.html#da/db7/structposlib__mbcn__data__t">More...</a><br /></td></tr>
+<tr class="separator:da/db7/structposlib__mbcn__data__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:d7/d62/structposlib__ble__mode__config__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#d7/d62/structposlib__ble__mode__config__t">poslib_ble_mode_config_t</a></td></tr>
-<tr class="memdesc:d7/d62/structposlib__ble__mode__config__t"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines BLE mode mode configration.  <a href="../../d6/d21/poslib_8h.html#d7/d62/structposlib__ble__mode__config__t">More...</a><br /></td></tr>
+<tr class="memdesc:d7/d62/structposlib__ble__mode__config__t"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines BLE mode mode configuration.  <a href="../../d6/d21/poslib_8h.html#d7/d62/structposlib__ble__mode__config__t">More...</a><br /></td></tr>
 <tr class="separator:d7/d62/structposlib__ble__mode__config__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:db/dbf/structble__beacon__settings__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#db/dbf/structble__beacon__settings__t">ble_beacon_settings_t</a></td></tr>
 <tr class="memdesc:db/dbf/structble__beacon__settings__t"><td class="mdescLeft">&#160;</td><td class="mdescRight">position library ble settings.  <a href="../../d6/d21/poslib_8h.html#db/dbf/structble__beacon__settings__t">More...</a><br /></td></tr>
@@ -142,6 +157,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:de/d0a/structposlib__motion__mon__settings__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#de/d0a/structposlib__motion__mon__settings__t">poslib_motion_mon_settings_t</a></td></tr>
 <tr class="memdesc:de/d0a/structposlib__motion__mon__settings__t"><td class="mdescLeft">&#160;</td><td class="mdescRight">position library motion settings.  <a href="../../d6/d21/poslib_8h.html#de/d0a/structposlib__motion__mon__settings__t">More...</a><br /></td></tr>
 <tr class="separator:de/d0a/structposlib__motion__mon__settings__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:dc/d05/structposlib__da__settings__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#dc/d05/structposlib__da__settings__t">poslib_da_settings_t</a></td></tr>
+<tr class="memdesc:dc/d05/structposlib__da__settings__t"><td class="mdescLeft">&#160;</td><td class="mdescRight">position library DA settings.  <a href="../../d6/d21/poslib_8h.html#dc/d05/structposlib__da__settings__t">More...</a><br /></td></tr>
+<tr class="separator:dc/d05/structposlib__da__settings__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:d4/d10/structposlib__settings__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#d4/d10/structposlib__settings__t">poslib_settings_t</a></td></tr>
 <tr class="memdesc:d4/d10/structposlib__settings__t"><td class="mdescLeft">&#160;</td><td class="mdescRight">position library settings.  <a href="../../d6/d21/poslib_8h.html#d4/d10/structposlib__settings__t">More...</a><br /></td></tr>
 <tr class="separator:d4/d10/structposlib__settings__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -175,7 +193,8 @@ Enumerations</h2></td></tr>
 <a class="el" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a358b565f980102cc2ec208e2b03dc557">POSLIB_MODE_AUTOSCAN_ANCHOR</a> = 3, 
 <a class="el" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a08c8461df841518cd8566f9bdf147523">POSLIB_MODE_OPPORTUNISTIC_ANCHOR</a> = 4, 
 <br />
-&#160;&#160;<a class="el" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46ab3b1dea384f495effc3af193a5b0bfd8">POSLIB_MODE_ENDS</a> = 5
+&#160;&#160;<a class="el" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46ad7dbf80f57949a834958aa4970467658">POSLIB_MODE_DA_TAG</a> = 5, 
+<a class="el" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46ab3b1dea384f495effc3af193a5b0bfd8">POSLIB_MODE_ENDS</a> = 5
 <br />
  }</td></tr>
 <tr class="memdesc:a901f2963fbf3a97cee5c1bf5335daf46"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines the device's positioning mode.  <a href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46">More...</a><br /></td></tr>
@@ -235,6 +254,32 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:af7bcbb744fc6710fbd8909b7932845a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines status returned in <a class="el" href="d6/d21/poslib_8h.html#a816a08a8eeb80b08ccb54371d956ea75" title="Returns the current status of PosLib.">PosLib_status()</a>.  <a href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6">More...</a><br /></td></tr>
 <tr class="separator:af7bcbb744fc6710fbd8909b7932845a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89554bb34dd57be7f2ca74314529dbb6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6">poslib_mbcn_record_types_e</a> { <br />
+&#160;&#160;<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6acec8389e7b06e9b8c5f6a7d9e77b3c13">POSLIB_MBCN_INVALID_TYPE</a> = 0, 
+<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a471cb38a91a4c1fd96ee6253f1804dff">POSLIB_MBCN_TX_INTERVAL</a> = 1, 
+<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a1d9778bf9ee74a2407368460f0e7ead0">POSLIB_MBCN_FEATURES</a> = 2, 
+<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6ab298f2d10990fe47dcb2d63f6c8f8d7d">POSLIB_MBCN_AREA_ID</a> = 3, 
+<br />
+&#160;&#160;<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a6db6af6373cf4a1c5eaad325d4aa19d1">POSLIB_MBCN_FLOOR_ID</a> = 4, 
+<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a7db3e2ffc8f7dcc085ea55dc5453db0d">POSLIB_MBCN_X</a> = 5, 
+<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a7bfe0175266ca5df082d7c4e3662de5e">POSLIB_MBCN_Y</a> = 6, 
+<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6acaf80b85ee1dcbbc7dbbb2eefb1a2c86">POSLIB_MBCN_Z</a> = 7, 
+<br />
+&#160;&#160;<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6ae02cc747b7b26792409a5721c4201922">POSLIB_MBCN_CUSTOM_1</a> = 16, 
+<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6aa7468440a16a034c5254b3ba9ec6fa7d">POSLIB_MBCN_CUSTOM_2</a> = 17, 
+<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a0b34d200f0e7fb155aab31bda7bb10ed">POSLIB_MBCN_CUSTOM_3</a> = 18, 
+<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6ad8df72007f669d920f9d6d4fa1220cc8">POSLIB_MBCN_CUSTOM_4</a> = 19, 
+<br />
+&#160;&#160;<a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a7c69e38a78793d076d45cfafc0464b08">POSLIB_MBCN_MAX_TYPE</a> = 31
+<br />
+ }</td></tr>
+<tr class="memdesc:a89554bb34dd57be7f2ca74314529dbb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">defines the mini-beacon payload records types  <a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6">More...</a><br /></td></tr>
+<tr class="separator:a89554bb34dd57be7f2ca74314529dbb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e4bc76af0826e0ce4700391fb7687f7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7">poslib_mbcn_tx_interval_e</a> { <a class="el" href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7a4d4be2e96fd3e65dfdf51a4cb800840f">POSLIB_MBCN_TX_INTERVAL_DEFAULT</a> = 1000, 
+<a class="el" href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7a92258d5201fe04d05352546ec453dbc3">POSLIB_MBCN_TX_INTERVAL_500</a> = 500, 
+<a class="el" href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7a2227db94c4dd903281e6d3c6f2a9849a">POSLIB_MBCN_TX_INTERVAL_250</a> = 250
+ }</td></tr>
+<tr class="separator:a3e4bc76af0826e0ce4700391fb7687f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
@@ -255,6 +300,14 @@ Macros</h2></td></tr>
 <tr class="separator:ab1ac57e170fd59227d7fb97be9b7017d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0da04c381f2ba9e6c6b317cf94df7869"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a0da04c381f2ba9e6c6b317cf94df7869">POSLIB_FLAG_EVENT_SUBSCRIBERS_MAX</a>&#160;&#160;&#160;8</td></tr>
 <tr class="separator:a0da04c381f2ba9e6c6b317cf94df7869"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae72706aae9e1c92cf6514d1c9b4aca5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#aae72706aae9e1c92cf6514d1c9b4aca5">POSLIB_MBCN_RECORD_MAX_SIZE</a>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:aae72706aae9e1c92cf6514d1c9b4aca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2253f166046dc27532b0f51aeee9110c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a2253f166046dc27532b0f51aeee9110c">POSLIB_MBCN_RECORDS</a>&#160;&#160;&#160;8</td></tr>
+<tr class="separator:a2253f166046dc27532b0f51aeee9110c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d0675d5c215389b2bcb488c1d55fd64"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a5d0675d5c215389b2bcb488c1d55fd64">POSLIB_MBCN_SRC_EP</a>&#160;&#160;&#160;238</td></tr>
+<tr class="separator:a5d0675d5c215389b2bcb488c1d55fd64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81d4cd6ef8ccbd6cd4dd1147a5b2f6c0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a81d4cd6ef8ccbd6cd4dd1147a5b2f6c0">POSLIB_MBCN_DEST_EP</a>&#160;&#160;&#160;238</td></tr>
+<tr class="separator:a81d4cd6ef8ccbd6cd4dd1147a5b2f6c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="aa55cb0e34335c6a01a3e26cc1ed2151f"></a>
@@ -277,7 +330,7 @@ Macros</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00241">241</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00329">329</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
 
 </div>
 </div>
@@ -301,11 +354,57 @@ Macros</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00234">234</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00322">322</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a9a074ca9e5f00358a5c025a4fc11b4e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a074ca9e5f00358a5c025a4fc11b4e6">&#9670;&nbsp;</a></span>PosLib_decodeMbcn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PosLib_decodeMbcn </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d6/d21/poslib_8h.html#da/db7/structposlib__mbcn__data__t">poslib_mbcn_data_t</a> *&#160;</td>
+          <td class="paramname"><em>mbcn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Decodes the mini-beacon payload. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">buf</td><td>pointer to MBCN payload </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>length of the MBCN payload </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mbcn</td><td>decoded minibeacon content <br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true: decoding sucessful, false: decode failed </dd></dl>
+
+</div>
+</div>
 <a id="ae1f5ba1467653135307c16abd23f4c19"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae1f5ba1467653135307c16abd23f4c19">&#9670;&nbsp;</a></span>PosLib_eventDeregister()</h2>
 
@@ -438,6 +537,45 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<a id="a099b198c76f930f605d1cfe0720132f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a099b198c76f930f605d1cfe0720132f2">&#9670;&nbsp;</a></span>PosLib_sendData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d2/dbd/data_8h.html#ab53b6510f8ecb4a1621c905c15855164">app_lib_data_send_res_e</a> PosLib_sendData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d2/dbd/data_8h.html#ad4532c2af19fb5161fd44dd3d806be38">app_lib_data_data_sent_cb_f</a>&#160;</td>
+          <td class="paramname"><em>sent_cb</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send data. The packet to send is represented as a <a class="el" href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> struct. In node has Advertiser role and dest_address is APP_ADDR_ANYSINK then the function will replace the destination with the address of the best found LL router supporting DA. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Data to send </td></tr>
+    <tr><td class="paramname">sent_cb</td><td>Callback function to be called when a packet has gone through local processing and has finally been sent or discarded. If NULL is passed, the callback is disabled. This callback replaces tracking_id and APP_LIB_DATA_SEND_FLAG_TRACK flag of data structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>tracking_id is managed by the library. When function return the data structure is modified to reflect id used to send the packet. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/dbd/data_8h.html#ab53b6510f8ecb4a1621c905c15855164acf63322bd1c34794b230e2120116cfbb">APP_LIB_DATA_SEND_RES_SUCCESS</a> means that data was accepted for sending. See <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80">app_res_e</a> for other result codes. </dd></dl>
+
+</div>
+</div>
 <a id="ae9d621179c75788632e3180438d84384"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9d621179c75788632e3180438d84384">&#9670;&nbsp;</a></span>PosLib_setConfig()</h2>
 
@@ -558,6 +696,126 @@ Macros</h2></td></tr>
 </div>
 </div>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
+<a name="d9/d14/structposlib__mbcn__record__t" id="d9/d14/structposlib__mbcn__record__t"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#d9/d14/structposlib__mbcn__record__t">&#9670;&nbsp;</a></span>poslib_mbcn_record_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct poslib_mbcn_record_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p>defines mini-beacon record. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00202">202</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Data Fields</th></tr>
+<tr><td class="fieldtype">
+<a id="ab2b3adeb2a67e656ff030b56727fd0ac"></a>uint8_t</td>
+<td class="fieldname">
+length</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a1d127017fb298b889f4ba24752d08b8e"></a>uint8_t</td>
+<td class="fieldname">
+type</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a0ab8d0dbfbc7a446d329f2c482678836"></a>uint8_t</td>
+<td class="fieldname">
+value[16]</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<a name="d8/d4f/structposlib__mbcn__config__t" id="d8/d4f/structposlib__mbcn__config__t"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#d8/d4f/structposlib__mbcn__config__t">&#9670;&nbsp;</a></span>poslib_mbcn_config_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct poslib_mbcn_config_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p>defines mini-beacon configuration. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00212">212</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Data Fields</th></tr>
+<tr><td class="fieldtype">
+<a id="a8740ba80e30dd75e71d09fa1dcf04f3d"></a>bool</td>
+<td class="fieldname">
+enabled</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a8efeb5abe0dc903090680428508b0795"></a><a class="el" href="../../d6/d21/poslib_8h.html#d9/d14/structposlib__mbcn__record__t">poslib_mbcn_record_t</a></td>
+<td class="fieldname">
+records[8]</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a290a9f0388e4f67825cf597044c839c8"></a>uint16_t</td>
+<td class="fieldname">
+tx_interval_ms</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<a name="da/db7/structposlib__mbcn__data__t" id="da/db7/structposlib__mbcn__data__t"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#da/db7/structposlib__mbcn__data__t">&#9670;&nbsp;</a></span>poslib_mbcn_data_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct poslib_mbcn_data_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p>defines mini-beacon data payload. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00223">223</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Data Fields</th></tr>
+<tr><td class="fieldtype">
+<a id="a05394e2501b222db77c3a39194523065"></a>uint16_t</td>
+<td class="fieldname">
+features</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a8efeb5abe0dc903090680428508b0795"></a><a class="el" href="../../d6/d21/poslib_8h.html#d9/d14/structposlib__mbcn__record__t">poslib_mbcn_record_t</a></td>
+<td class="fieldname">
+records[8]</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a0a97914b75ed3ab7d0e13d8b200d758a"></a>uint16_t</td>
+<td class="fieldname">
+seq</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a290a9f0388e4f67825cf597044c839c8"></a>uint16_t</td>
+<td class="fieldname">
+tx_interval_ms</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
 <a name="d7/d62/structposlib__ble__mode__config__t" id="d7/d62/structposlib__ble__mode__config__t"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#d7/d62/structposlib__ble__mode__config__t">&#9670;&nbsp;</a></span>poslib_ble_mode_config_t</h2>
 
@@ -569,9 +827,9 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p>defines BLE mode mode configration. </p>
+<div class="textblock"><p>defines BLE mode mode configuration. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00160">160</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00235">235</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -609,7 +867,7 @@ tx_power</td>
 </div><div class="memdoc">
 <div class="textblock"><p>position library ble settings. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00170">170</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00245">245</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -661,7 +919,7 @@ type</td>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#_a13">positioning_app/app.c</a>.</dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00182">182</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00257">257</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -686,6 +944,38 @@ threshold_mg</td>
 
 </div>
 </div>
+<a name="dc/d05/structposlib__da__settings__t" id="dc/d05/structposlib__da__settings__t"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#dc/d05/structposlib__da__settings__t">&#9670;&nbsp;</a></span>poslib_da_settings_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct poslib_da_settings_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p>position library DA settings. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00267">267</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Data Fields</th></tr>
+<tr><td class="fieldtype">
+<a id="a82d268e0ec9302773959971a66823beb"></a>bool</td>
+<td class="fieldname">
+follow_network</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a833f1e24511b23af94eae0fcf9523168"></a>bool</td>
+<td class="fieldname">
+routing_enabled</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
 <a name="d4/d10/structposlib__settings__t" id="d4/d10/structposlib__settings__t"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#d4/d10/structposlib__settings__t">&#9670;&nbsp;</a></span>poslib_settings_t</h2>
 
@@ -701,13 +991,25 @@ threshold_mg</td>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#_a9">positioning_app/app.c</a>.</dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00192">192</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00276">276</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
 <a id="a25701dbd5713e9946491f496b8793a39"></a><a class="el" href="../../d6/d21/poslib_8h.html#db/dbf/structble__beacon__settings__t">ble_beacon_settings_t</a></td>
 <td class="fieldname">
 ble</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a11f4e8bfa247ab1ba65331a96b27a9b8"></a><a class="el" href="../../d6/d21/poslib_8h.html#dc/d05/structposlib__da__settings__t">poslib_da_settings_t</a></td>
+<td class="fieldname">
+da</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="afa486d9c7e40abdad83df5541605e9f6"></a><a class="el" href="../../d6/d21/poslib_8h.html#d8/d4f/structposlib__mbcn__config__t">poslib_mbcn_config_t</a></td>
+<td class="fieldname">
+mbcn</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
@@ -763,7 +1065,7 @@ update_period_static_s</td>
 </div><div class="memdoc">
 <div class="textblock"><p>positioning library auxiliary settings </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00213">213</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00301">301</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -797,7 +1099,7 @@ led_on_duration_s</td>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#_a17">positioning_app/app.c</a>.</dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00222">222</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00310">310</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -842,12 +1144,12 @@ time_hp</td>
 <tr><td class="fieldname"><a id="abbebcd14bbb8b2b4cbf36d5a4cc60e8ba1dc7700afec3631a104fe038fcc37248"></a>POSLIB_BLE_ON_WHEN_OFFLINE&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00083">83</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;{</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8bafb080e2752a17baabb89e494f75a5fbf">POSLIB_BLE_OFF</a> = 0,             <span class="comment">// OFF</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8bac0fa34be28ab0a144a31124ac2ee2ed7">POSLIB_BLE_ON</a> = 1,              <span class="comment">// always ON</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8ba1dc7700afec3631a104fe038fcc37248">POSLIB_BLE_ON_WHEN_OFFLINE</a> = 2  <span class="comment">//activated when outside coverage</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8b">poslib_ble_mode_e</a>;</div>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00084">84</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;{</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8bafb080e2752a17baabb89e494f75a5fbf">POSLIB_BLE_OFF</a> = 0,             <span class="comment">// OFF</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8bac0fa34be28ab0a144a31124ac2ee2ed7">POSLIB_BLE_ON</a> = 1,              <span class="comment">// always ON</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8ba1dc7700afec3631a104fe038fcc37248">POSLIB_BLE_ON_WHEN_OFFLINE</a> = 2  <span class="comment">//activated when outside coverage</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8b">poslib_ble_mode_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -870,12 +1172,12 @@ time_hp</td>
 <tr><td class="fieldname"><a id="a0c8c804dbb60de28f97edc42a767be70adba423e6cfe4684904985c17b53781eb"></a>POSLIB_BEACON_ALL&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00108">108</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70ab3a29f2ed2c1d612d8cfe50a230c45bd">POSLIB_EDDYSTONE</a> = 1,</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70a95c4114a8a0ba8910838bc285b3475b8">POSLIB_IBEACON</a>,</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70adba423e6cfe4684904985c17b53781eb">POSLIB_BEACON_ALL</a>,</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70">poslib_ble_type_e</a>;</div>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00109">109</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;{</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70ab3a29f2ed2c1d612d8cfe50a230c45bd">POSLIB_EDDYSTONE</a> = 1,</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70a95c4114a8a0ba8910838bc285b3475b8">POSLIB_IBEACON</a>,</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70adba423e6cfe4684904985c17b53781eb">POSLIB_BEACON_ALL</a>,</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70">poslib_ble_type_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -903,17 +1205,17 @@ time_hp</td>
 <tr><td class="fieldname"><a id="a71ea4d521c064d18c2dcf4a96313ed66a276fd2c16421eca20f6735fc783e8ad8"></a>POSLIB_CLASS_F&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00093">93</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;{</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a5bcdde56bedb4c62d917c0c5b6696ad4">POSLIB_CLASS_NODE_SPECIFIC</a> = 0xF8,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a0225df23bf5afc01b913956eb193add3">POSLIB_CLASS_DEFAULT</a> = 0xF9,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66ab3500f7eec3dbba3b185dbc2d2d6912d">POSLIB_CLASS_A</a> = 0xFA,</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a2af12b6b5899c1da1306f0e50aa726f2">POSLIB_CLASS_B</a> = 0xFB,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a8c1c7c70d49b432264234c06d5e5457d">POSLIB_CLASS_C</a> = 0xFC,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a2e2776110c3421b67726b47fa1ce6ad0">POSLIB_CLASS_D</a> = 0xFD,</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a2ef3bb55ab648f1a1cfe66395b8f303e">POSLIB_CLASS_E</a> = 0xFE,</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a276fd2c16421eca20f6735fc783e8ad8">POSLIB_CLASS_F</a> = 0xFF</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66">poslib_class_e</a>;</div>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00094">94</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;{</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a5bcdde56bedb4c62d917c0c5b6696ad4">POSLIB_CLASS_NODE_SPECIFIC</a> = 0xF8,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a0225df23bf5afc01b913956eb193add3">POSLIB_CLASS_DEFAULT</a> = 0xF9,</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66ab3500f7eec3dbba3b185dbc2d2d6912d">POSLIB_CLASS_A</a> = 0xFA,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a2af12b6b5899c1da1306f0e50aa726f2">POSLIB_CLASS_B</a> = 0xFB,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a8c1c7c70d49b432264234c06d5e5457d">POSLIB_CLASS_C</a> = 0xFC,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a2e2776110c3421b67726b47fa1ce6ad0">POSLIB_CLASS_D</a> = 0xFD,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a2ef3bb55ab648f1a1cfe66395b8f303e">POSLIB_CLASS_E</a> = 0xFE,</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a276fd2c16421eca20f6735fc783e8ad8">POSLIB_CLASS_F</a> = 0xFF</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66">poslib_class_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -954,20 +1256,99 @@ time_hp</td>
 <tr><td class="fieldname"><a id="a484a3b39624f69a7f3ad187229f4371fa7782d48899a4a48966a87946a19c9399"></a>POSLIB_FLAG_EVENT_ALL&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00121">121</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;{</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa5c1733421ff0bd857ab47be9073e2a32">POSLIB_FLAG_EVENT_NONE</a> = 0,</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fab1d82afa60e5895964c929bcde5f1cda">POSLIB_FLAG_EVENT_UPDATE_START</a> = 1,</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7f420bf533bc6929811e28d11823ac33">POSLIB_FLAG_EVENT_UPDATE_END</a> = 2,</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa81f713791879b6a58a2ed04a4d2bc172">POSLIB_FLAG_EVENT_BLE_START</a> = 4,</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7f9cad792671256b01ee283629fb0236">POSLIB_FLAG_EVENT_BLE_STOP</a> = 8,</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa569bc70e60232da2c162a2b198b62fd2">POSLIB_FLAG_EVENT_OFLINE</a> = 16,</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa9927eda43930bd8eaa016c318b9c533b">POSLIB_FLAG_EVENT_ONLINE</a> = 32,</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa2c81f87d2e97c13dc7bb936cc12bf0fe">POSLIB_FLAG_EVENT_CONFIG_CHANGE</a> = 64,</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fae993be5e00ef95ba71e61b52916a521d">POSLIB_FLAG_EVENT_LED_ON</a> = 128,</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa45b7e1a7225d8b5c6588bc07a8128bba">POSLIB_FLAG_EVENT_LED_OFF</a> = 256,</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7782d48899a4a48966a87946a19c9399">POSLIB_FLAG_EVENT_ALL</a> = 511 <span class="comment">/* ! Update when adding a new event */</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371f">poslib_events_e</a>;</div>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00122">122</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;{</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa5c1733421ff0bd857ab47be9073e2a32">POSLIB_FLAG_EVENT_NONE</a> = 0,</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fab1d82afa60e5895964c929bcde5f1cda">POSLIB_FLAG_EVENT_UPDATE_START</a> = 1,</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7f420bf533bc6929811e28d11823ac33">POSLIB_FLAG_EVENT_UPDATE_END</a> = 2,</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa81f713791879b6a58a2ed04a4d2bc172">POSLIB_FLAG_EVENT_BLE_START</a> = 4,</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7f9cad792671256b01ee283629fb0236">POSLIB_FLAG_EVENT_BLE_STOP</a> = 8,</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa569bc70e60232da2c162a2b198b62fd2">POSLIB_FLAG_EVENT_OFLINE</a> = 16,</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa9927eda43930bd8eaa016c318b9c533b">POSLIB_FLAG_EVENT_ONLINE</a> = 32,</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa2c81f87d2e97c13dc7bb936cc12bf0fe">POSLIB_FLAG_EVENT_CONFIG_CHANGE</a> = 64,</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fae993be5e00ef95ba71e61b52916a521d">POSLIB_FLAG_EVENT_LED_ON</a> = 128,</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa45b7e1a7225d8b5c6588bc07a8128bba">POSLIB_FLAG_EVENT_LED_OFF</a> = 256,</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7782d48899a4a48966a87946a19c9399">POSLIB_FLAG_EVENT_ALL</a> = 511 <span class="comment">/* ! Update when adding a new event */</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371f">poslib_events_e</a>;</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a89554bb34dd57be7f2ca74314529dbb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89554bb34dd57be7f2ca74314529dbb6">&#9670;&nbsp;</a></span>poslib_mbcn_record_types_e</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6">poslib_mbcn_record_types_e</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>defines the mini-beacon payload records types </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6acec8389e7b06e9b8c5f6a7d9e77b3c13"></a>POSLIB_MBCN_INVALID_TYPE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6a471cb38a91a4c1fd96ee6253f1804dff"></a>POSLIB_MBCN_TX_INTERVAL&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6a1d9778bf9ee74a2407368460f0e7ead0"></a>POSLIB_MBCN_FEATURES&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6ab298f2d10990fe47dcb2d63f6c8f8d7d"></a>POSLIB_MBCN_AREA_ID&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6a6db6af6373cf4a1c5eaad325d4aa19d1"></a>POSLIB_MBCN_FLOOR_ID&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6a7db3e2ffc8f7dcc085ea55dc5453db0d"></a>POSLIB_MBCN_X&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6a7bfe0175266ca5df082d7c4e3662de5e"></a>POSLIB_MBCN_Y&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6acaf80b85ee1dcbbc7dbbb2eefb1a2c86"></a>POSLIB_MBCN_Z&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6ae02cc747b7b26792409a5721c4201922"></a>POSLIB_MBCN_CUSTOM_1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6aa7468440a16a034c5254b3ba9ec6fa7d"></a>POSLIB_MBCN_CUSTOM_2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6a0b34d200f0e7fb155aab31bda7bb10ed"></a>POSLIB_MBCN_CUSTOM_3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6ad8df72007f669d920f9d6d4fa1220cc8"></a>POSLIB_MBCN_CUSTOM_4&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a89554bb34dd57be7f2ca74314529dbb6a7c69e38a78793d076d45cfafc0464b08"></a>POSLIB_MBCN_MAX_TYPE&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00161">161</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;{</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6acec8389e7b06e9b8c5f6a7d9e77b3c13">POSLIB_MBCN_INVALID_TYPE</a> = 0, </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="comment">// Wirepas defined - required types</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a471cb38a91a4c1fd96ee6253f1804dff">POSLIB_MBCN_TX_INTERVAL</a> = 1,  </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a1d9778bf9ee74a2407368460f0e7ead0">POSLIB_MBCN_FEATURES</a> = 2,</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="comment">// Wirepas defined - optional types</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6ab298f2d10990fe47dcb2d63f6c8f8d7d">POSLIB_MBCN_AREA_ID</a> = 3,</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a6db6af6373cf4a1c5eaad325d4aa19d1">POSLIB_MBCN_FLOOR_ID</a> = 4,</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a7db3e2ffc8f7dcc085ea55dc5453db0d">POSLIB_MBCN_X</a> = 5,</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a7bfe0175266ca5df082d7c4e3662de5e">POSLIB_MBCN_Y</a> = 6,</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6acaf80b85ee1dcbbc7dbbb2eefb1a2c86">POSLIB_MBCN_Z</a> = 7,</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="comment">// 8-15 reserved</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="comment">// Application specific types (use only when standard records not available)</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6ae02cc747b7b26792409a5721c4201922">POSLIB_MBCN_CUSTOM_1</a> = 16,</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6aa7468440a16a034c5254b3ba9ec6fa7d">POSLIB_MBCN_CUSTOM_2</a> = 17,</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a0b34d200f0e7fb155aab31bda7bb10ed">POSLIB_MBCN_CUSTOM_3</a> = 18,</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6ad8df72007f669d920f9d6d4fa1220cc8">POSLIB_MBCN_CUSTOM_4</a> = 19,</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="comment">// 20-31 reserved.  !!! type cannot be &gt; 31</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a7c69e38a78793d076d45cfafc0464b08">POSLIB_MBCN_MAX_TYPE</a> = 31,</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6">poslib_mbcn_record_types_e</a>;</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a3e4bc76af0826e0ce4700391fb7687f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e4bc76af0826e0ce4700391fb7687f7">&#9670;&nbsp;</a></span>poslib_mbcn_tx_interval_e</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7">poslib_mbcn_tx_interval_e</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3e4bc76af0826e0ce4700391fb7687f7a4d4be2e96fd3e65dfdf51a4cb800840f"></a>POSLIB_MBCN_TX_INTERVAL_DEFAULT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3e4bc76af0826e0ce4700391fb7687f7a92258d5201fe04d05352546ec453dbc3"></a>POSLIB_MBCN_TX_INTERVAL_500&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3e4bc76af0826e0ce4700391fb7687f7a2227db94c4dd903281e6d3c6f2a9849a"></a>POSLIB_MBCN_TX_INTERVAL_250&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00192">192</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;{</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7a4d4be2e96fd3e65dfdf51a4cb800840f">POSLIB_MBCN_TX_INTERVAL_DEFAULT</a> = 1000,</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7a92258d5201fe04d05352546ec453dbc3">POSLIB_MBCN_TX_INTERVAL_500</a> = 500,</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7a2227db94c4dd903281e6d3c6f2a9849a">POSLIB_MBCN_TX_INTERVAL_250</a> = 250,</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7">poslib_mbcn_tx_interval_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -989,6 +1370,7 @@ time_hp</td>
 <tr><td class="fieldname"><a id="a901f2963fbf3a97cee5c1bf5335daf46a8a17468ab54dcb499960570c0f37da43"></a>POSLIB_MODE_AUTOSCAN_TAG&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a901f2963fbf3a97cee5c1bf5335daf46a358b565f980102cc2ec208e2b03dc557"></a>POSLIB_MODE_AUTOSCAN_ANCHOR&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a901f2963fbf3a97cee5c1bf5335daf46a08c8461df841518cd8566f9bdf147523"></a>POSLIB_MODE_OPPORTUNISTIC_ANCHOR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a901f2963fbf3a97cee5c1bf5335daf46ad7dbf80f57949a834958aa4970467658"></a>POSLIB_MODE_DA_TAG&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a901f2963fbf3a97cee5c1bf5335daf46ab3b1dea384f495effc3af193a5b0bfd8"></a>POSLIB_MODE_ENDS&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
@@ -998,8 +1380,9 @@ time_hp</td>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a8a17468ab54dcb499960570c0f37da43">POSLIB_MODE_AUTOSCAN_TAG</a> = 2,</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a358b565f980102cc2ec208e2b03dc557">POSLIB_MODE_AUTOSCAN_ANCHOR</a> = 3,</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a08c8461df841518cd8566f9bdf147523">POSLIB_MODE_OPPORTUNISTIC_ANCHOR</a> = 4,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46ab3b1dea384f495effc3af193a5b0bfd8">POSLIB_MODE_ENDS</a> = 5</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46">poslib_mode_e</a>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46ad7dbf80f57949a834958aa4970467658">POSLIB_MODE_DA_TAG</a> = 5,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46ab3b1dea384f495effc3af193a5b0bfd8">POSLIB_MODE_ENDS</a> = 5</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46">poslib_mode_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1021,11 +1404,11 @@ time_hp</td>
 <tr><td class="fieldname"><a id="a71ac844b00ab67916fb0c8e907fe5831a0d67bc3d5524ccbe74693ab3f652958b"></a>POSLIB_MOTION_DYNAMIC&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00074">74</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;{</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831a46d4288789f4540de388136aa2900abd">POSLIB_MOTION_STATIC</a> = 1,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831a0d67bc3d5524ccbe74693ab3f652958b">POSLIB_MOTION_DYNAMIC</a> = 2,</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831">poslib_motion_mode_e</a>;</div>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00075">75</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;{</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831a46d4288789f4540de388136aa2900abd">POSLIB_MOTION_STATIC</a> = 1,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831a0d67bc3d5524ccbe74693ab3f652958b">POSLIB_MOTION_DYNAMIC</a> = 2,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831">poslib_motion_mode_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1096,12 +1479,12 @@ time_hp</td>
 <tr><td class="fieldname"><a id="af7bcbb744fc6710fbd8909b7932845a6aacf52b673ab062bdb0eb56c123ec12be"></a>POSLIB_UPDATE_START&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00150">150</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;{</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6a43aacacd19fb969455ffb7fffc802a13">POSLIB_STOPPED</a> = 0,</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6a2671c2731927717017891531859d5e01">POSLIB_IDLE</a> = 1,</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6aacf52b673ab062bdb0eb56c123ec12be">POSLIB_UPDATE_START</a> = 2,</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6">poslib_status_e</a>;</div>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00151">151</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;{</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6a43aacacd19fb969455ffb7fffc802a13">POSLIB_STOPPED</a> = 0,</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6a2671c2731927717017891531859d5e01">POSLIB_IDLE</a> = 1,</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <a class="code" href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6aacf52b673ab062bdb0eb56c123ec12be">POSLIB_UPDATE_START</a> = 2,</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;} <a class="code" href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6">poslib_status_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1156,7 +1539,7 @@ time_hp</td>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a0">positioning_app/app.c</a>.</dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00115">115</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00116">116</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
 
 </div>
 </div>
@@ -1173,6 +1556,71 @@ time_hp</td>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00025">25</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+
+</div>
+</div>
+<a id="a81d4cd6ef8ccbd6cd4dd1147a5b2f6c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81d4cd6ef8ccbd6cd4dd1147a5b2f6c0">&#9670;&nbsp;</a></span>POSLIB_MBCN_DEST_EP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define POSLIB_MBCN_DEST_EP&#160;&#160;&#160;238</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00190">190</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+
+</div>
+</div>
+<a id="aae72706aae9e1c92cf6514d1c9b4aca5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae72706aae9e1c92cf6514d1c9b4aca5">&#9670;&nbsp;</a></span>POSLIB_MBCN_RECORD_MAX_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define POSLIB_MBCN_RECORD_MAX_SIZE&#160;&#160;&#160;16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Maximum optional records in mini-beacon payload </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00184">184</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+
+</div>
+</div>
+<a id="a2253f166046dc27532b0f51aeee9110c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2253f166046dc27532b0f51aeee9110c">&#9670;&nbsp;</a></span>POSLIB_MBCN_RECORDS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define POSLIB_MBCN_RECORDS&#160;&#160;&#160;8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00187">187</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
+
+</div>
+</div>
+<a id="a5d0675d5c215389b2bcb488c1d55fd64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d0675d5c215389b2bcb488c1d55fd64">&#9670;&nbsp;</a></span>POSLIB_MBCN_SRC_EP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define POSLIB_MBCN_SRC_EP&#160;&#160;&#160;238</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d6/d21/poslib_8h_source.html#l00189">189</a> of file <a class="el" href="../../d6/d21/poslib_8h_source.html">poslib.h</a>.</p>
 
 </div>
 </div>
@@ -1230,58 +1678,77 @@ time_hp</td>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa569bc70e60232da2c162a2b198b62fd2"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa569bc70e60232da2c162a2b198b62fd2">POSLIB_FLAG_EVENT_OFLINE</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_OFLINE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00134">poslib.h:134</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa7f420bf533bc6929811e28d11823ac33"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7f420bf533bc6929811e28d11823ac33">POSLIB_FLAG_EVENT_UPDATE_END</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_UPDATE_END</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00128">poslib.h:128</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a0c8c804dbb60de28f97edc42a767be70ab3a29f2ed2c1d612d8cfe50a230c45bd"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70ab3a29f2ed2c1d612d8cfe50a230c45bd">POSLIB_EDDYSTONE</a></div><div class="ttdeci">@ POSLIB_EDDYSTONE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00110">poslib.h:110</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a276fd2c16421eca20f6735fc783e8ad8"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a276fd2c16421eca20f6735fc783e8ad8">POSLIB_CLASS_F</a></div><div class="ttdeci">@ POSLIB_CLASS_F</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00102">poslib.h:102</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa2c81f87d2e97c13dc7bb936cc12bf0fe"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa2c81f87d2e97c13dc7bb936cc12bf0fe">POSLIB_FLAG_EVENT_CONFIG_CHANGE</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_CONFIG_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00138">poslib.h:138</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a71ac844b00ab67916fb0c8e907fe5831a46d4288789f4540de388136aa2900abd"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831a46d4288789f4540de388136aa2900abd">POSLIB_MOTION_STATIC</a></div><div class="ttdeci">@ POSLIB_MOTION_STATIC</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00076">poslib.h:76</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a0c8c804dbb60de28f97edc42a767be70a95c4114a8a0ba8910838bc285b3475b8"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70a95c4114a8a0ba8910838bc285b3475b8">POSLIB_IBEACON</a></div><div class="ttdeci">@ POSLIB_IBEACON</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00111">poslib.h:111</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa9927eda43930bd8eaa016c318b9c533b"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa9927eda43930bd8eaa016c318b9c533b">POSLIB_FLAG_EVENT_ONLINE</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_ONLINE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00136">poslib.h:136</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa569bc70e60232da2c162a2b198b62fd2"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa569bc70e60232da2c162a2b198b62fd2">POSLIB_FLAG_EVENT_OFLINE</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_OFLINE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00135">poslib.h:135</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa7f420bf533bc6929811e28d11823ac33"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7f420bf533bc6929811e28d11823ac33">POSLIB_FLAG_EVENT_UPDATE_END</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_UPDATE_END</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00129">poslib.h:129</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a3e4bc76af0826e0ce4700391fb7687f7a92258d5201fe04d05352546ec453dbc3"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7a92258d5201fe04d05352546ec453dbc3">POSLIB_MBCN_TX_INTERVAL_500</a></div><div class="ttdeci">@ POSLIB_MBCN_TX_INTERVAL_500</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00195">poslib.h:195</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a0c8c804dbb60de28f97edc42a767be70ab3a29f2ed2c1d612d8cfe50a230c45bd"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70ab3a29f2ed2c1d612d8cfe50a230c45bd">POSLIB_EDDYSTONE</a></div><div class="ttdeci">@ POSLIB_EDDYSTONE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00111">poslib.h:111</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6a7db3e2ffc8f7dcc085ea55dc5453db0d"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a7db3e2ffc8f7dcc085ea55dc5453db0d">POSLIB_MBCN_X</a></div><div class="ttdeci">@ POSLIB_MBCN_X</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00170">poslib.h:170</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a276fd2c16421eca20f6735fc783e8ad8"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a276fd2c16421eca20f6735fc783e8ad8">POSLIB_CLASS_F</a></div><div class="ttdeci">@ POSLIB_CLASS_F</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00103">poslib.h:103</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6a7bfe0175266ca5df082d7c4e3662de5e"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a7bfe0175266ca5df082d7c4e3662de5e">POSLIB_MBCN_Y</a></div><div class="ttdeci">@ POSLIB_MBCN_Y</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00171">poslib.h:171</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa2c81f87d2e97c13dc7bb936cc12bf0fe"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa2c81f87d2e97c13dc7bb936cc12bf0fe">POSLIB_FLAG_EVENT_CONFIG_CHANGE</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_CONFIG_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00139">poslib.h:139</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a71ac844b00ab67916fb0c8e907fe5831a46d4288789f4540de388136aa2900abd"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831a46d4288789f4540de388136aa2900abd">POSLIB_MOTION_STATIC</a></div><div class="ttdeci">@ POSLIB_MOTION_STATIC</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00077">poslib.h:77</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a3e4bc76af0826e0ce4700391fb7687f7"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7">poslib_mbcn_tx_interval_e</a></div><div class="ttdeci">poslib_mbcn_tx_interval_e</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00192">poslib.h:192</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6ad8df72007f669d920f9d6d4fa1220cc8"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6ad8df72007f669d920f9d6d4fa1220cc8">POSLIB_MBCN_CUSTOM_4</a></div><div class="ttdeci">@ POSLIB_MBCN_CUSTOM_4</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00178">poslib.h:178</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a0c8c804dbb60de28f97edc42a767be70a95c4114a8a0ba8910838bc285b3475b8"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70a95c4114a8a0ba8910838bc285b3475b8">POSLIB_IBEACON</a></div><div class="ttdeci">@ POSLIB_IBEACON</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00112">poslib.h:112</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6a0b34d200f0e7fb155aab31bda7bb10ed"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a0b34d200f0e7fb155aab31bda7bb10ed">POSLIB_MBCN_CUSTOM_3</a></div><div class="ttdeci">@ POSLIB_MBCN_CUSTOM_3</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00177">poslib.h:177</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa9927eda43930bd8eaa016c318b9c533b"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa9927eda43930bd8eaa016c318b9c533b">POSLIB_FLAG_EVENT_ONLINE</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_ONLINE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00137">poslib.h:137</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6">POS_RET_OK</a></div><div class="ttdeci">@ POS_RET_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00040">poslib.h:40</a></div></div>
-<div class="ttc" id="aposlib_8h_html_abbebcd14bbb8b2b4cbf36d5a4cc60e8bafb080e2752a17baabb89e494f75a5fbf"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8bafb080e2752a17baabb89e494f75a5fbf">POSLIB_BLE_OFF</a></div><div class="ttdeci">@ POSLIB_BLE_OFF</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00085">poslib.h:85</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a71ac844b00ab67916fb0c8e907fe5831"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831">poslib_motion_mode_e</a></div><div class="ttdeci">poslib_motion_mode_e</div><div class="ttdoc">defines the position motion mode.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00074">poslib.h:74</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a2af12b6b5899c1da1306f0e50aa726f2"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a2af12b6b5899c1da1306f0e50aa726f2">POSLIB_CLASS_B</a></div><div class="ttdeci">@ POSLIB_CLASS_B</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00098">poslib.h:98</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa45b7e1a7225d8b5c6588bc07a8128bba"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa45b7e1a7225d8b5c6588bc07a8128bba">POSLIB_FLAG_EVENT_LED_OFF</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_LED_OFF</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00142">poslib.h:142</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6a471cb38a91a4c1fd96ee6253f1804dff"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a471cb38a91a4c1fd96ee6253f1804dff">POSLIB_MBCN_TX_INTERVAL</a></div><div class="ttdeci">@ POSLIB_MBCN_TX_INTERVAL</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00165">poslib.h:165</a></div></div>
+<div class="ttc" id="aposlib_8h_html_abbebcd14bbb8b2b4cbf36d5a4cc60e8bafb080e2752a17baabb89e494f75a5fbf"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8bafb080e2752a17baabb89e494f75a5fbf">POSLIB_BLE_OFF</a></div><div class="ttdeci">@ POSLIB_BLE_OFF</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00086">poslib.h:86</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a71ac844b00ab67916fb0c8e907fe5831"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831">poslib_motion_mode_e</a></div><div class="ttdeci">poslib_motion_mode_e</div><div class="ttdoc">defines the position motion mode.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00075">poslib.h:75</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a2af12b6b5899c1da1306f0e50aa726f2"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a2af12b6b5899c1da1306f0e50aa726f2">POSLIB_CLASS_B</a></div><div class="ttdeci">@ POSLIB_CLASS_B</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00099">poslib.h:99</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa45b7e1a7225d8b5c6588bc07a8128bba"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa45b7e1a7225d8b5c6588bc07a8128bba">POSLIB_FLAG_EVENT_LED_OFF</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_LED_OFF</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00143">poslib.h:143</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0">poslib_ret_e</a></div><div class="ttdeci">poslib_ret_e</div><div class="ttdoc">Return codes of positioning functions.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00037">poslib.h:37</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66ab3500f7eec3dbba3b185dbc2d2d6912d"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66ab3500f7eec3dbba3b185dbc2d2d6912d">POSLIB_CLASS_A</a></div><div class="ttdeci">@ POSLIB_CLASS_A</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00097">poslib.h:97</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a0225df23bf5afc01b913956eb193add3"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a0225df23bf5afc01b913956eb193add3">POSLIB_CLASS_DEFAULT</a></div><div class="ttdeci">@ POSLIB_CLASS_DEFAULT</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00096">poslib.h:96</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66ab3500f7eec3dbba3b185dbc2d2d6912d"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66ab3500f7eec3dbba3b185dbc2d2d6912d">POSLIB_CLASS_A</a></div><div class="ttdeci">@ POSLIB_CLASS_A</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00098">poslib.h:98</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6acaf80b85ee1dcbbc7dbbb2eefb1a2c86"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6acaf80b85ee1dcbbc7dbbb2eefb1a2c86">POSLIB_MBCN_Z</a></div><div class="ttdeci">@ POSLIB_MBCN_Z</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00172">poslib.h:172</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a0225df23bf5afc01b913956eb193add3"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a0225df23bf5afc01b913956eb193add3">POSLIB_CLASS_DEFAULT</a></div><div class="ttdeci">@ POSLIB_CLASS_DEFAULT</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00097">poslib.h:97</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a901f2963fbf3a97cee5c1bf5335daf46"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46">poslib_mode_e</a></div><div class="ttdeci">poslib_mode_e</div><div class="ttdoc">defines the device's positioning mode.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00062">poslib.h:62</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0a3366e5471ccc84350b4a2cb64d0a4693"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a3366e5471ccc84350b4a2cb64d0a4693">POS_RET_INVALID_STATE</a></div><div class="ttdeci">@ POS_RET_INVALID_STATE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00042">poslib.h:42</a></div></div>
-<div class="ttc" id="aposlib_8h_html_abbebcd14bbb8b2b4cbf36d5a4cc60e8b"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8b">poslib_ble_mode_e</a></div><div class="ttdeci">poslib_ble_mode_e</div><div class="ttdoc">defines the state (started/stopped) of the BLE beacon sent by PosLib</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00083">poslib.h:83</a></div></div>
-<div class="ttc" id="aposlib_8h_html_abbebcd14bbb8b2b4cbf36d5a4cc60e8bac0fa34be28ab0a144a31124ac2ee2ed7"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8bac0fa34be28ab0a144a31124ac2ee2ed7">POSLIB_BLE_ON</a></div><div class="ttdeci">@ POSLIB_BLE_ON</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00086">poslib.h:86</a></div></div>
+<div class="ttc" id="aposlib_8h_html_abbebcd14bbb8b2b4cbf36d5a4cc60e8b"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8b">poslib_ble_mode_e</a></div><div class="ttdeci">poslib_ble_mode_e</div><div class="ttdoc">defines the state (started/stopped) of the BLE beacon sent by PosLib</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00084">poslib.h:84</a></div></div>
+<div class="ttc" id="aposlib_8h_html_abbebcd14bbb8b2b4cbf36d5a4cc60e8bac0fa34be28ab0a144a31124ac2ee2ed7"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8bac0fa34be28ab0a144a31124ac2ee2ed7">POSLIB_BLE_ON</a></div><div class="ttdeci">@ POSLIB_BLE_ON</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00087">poslib.h:87</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a901f2963fbf3a97cee5c1bf5335daf46a87819d91929c9c1e6b5ff643d010157f"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a87819d91929c9c1e6b5ff643d010157f">POSLIB_MODE_NRLS_TAG</a></div><div class="ttdeci">@ POSLIB_MODE_NRLS_TAG</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00064">poslib.h:64</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a901f2963fbf3a97cee5c1bf5335daf46a358b565f980102cc2ec208e2b03dc557"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a358b565f980102cc2ec208e2b03dc557">POSLIB_MODE_AUTOSCAN_ANCHOR</a></div><div class="ttdeci">@ POSLIB_MODE_AUTOSCAN_ANCHOR</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00066">poslib.h:66</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6aa7468440a16a034c5254b3ba9ec6fa7d"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6aa7468440a16a034c5254b3ba9ec6fa7d">POSLIB_MBCN_CUSTOM_2</a></div><div class="ttdeci">@ POSLIB_MBCN_CUSTOM_2</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00176">poslib.h:176</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0a61cc5be91746f78acaea9b77f29e85c3"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a61cc5be91746f78acaea9b77f29e85c3">POS_RET_EVENT_REG_ERROR</a></div><div class="ttdeci">@ POS_RET_EVENT_REG_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00054">poslib.h:54</a></div></div>
-<div class="ttc" id="aposlib_8h_html_abbebcd14bbb8b2b4cbf36d5a4cc60e8ba1dc7700afec3631a104fe038fcc37248"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8ba1dc7700afec3631a104fe038fcc37248">POSLIB_BLE_ON_WHEN_OFFLINE</a></div><div class="ttdeci">@ POSLIB_BLE_ON_WHEN_OFFLINE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00087">poslib.h:87</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a71ac844b00ab67916fb0c8e907fe5831a0d67bc3d5524ccbe74693ab3f652958b"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831a0d67bc3d5524ccbe74693ab3f652958b">POSLIB_MOTION_DYNAMIC</a></div><div class="ttdeci">@ POSLIB_MOTION_DYNAMIC</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00077">poslib.h:77</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371f"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371f">poslib_events_e</a></div><div class="ttdeci">poslib_events_e</div><div class="ttdoc">Defines the events triggered by PosLib.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00121">poslib.h:121</a></div></div>
+<div class="ttc" id="aposlib_8h_html_abbebcd14bbb8b2b4cbf36d5a4cc60e8ba1dc7700afec3631a104fe038fcc37248"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#abbebcd14bbb8b2b4cbf36d5a4cc60e8ba1dc7700afec3631a104fe038fcc37248">POSLIB_BLE_ON_WHEN_OFFLINE</a></div><div class="ttdeci">@ POSLIB_BLE_ON_WHEN_OFFLINE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00088">poslib.h:88</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6a1d9778bf9ee74a2407368460f0e7ead0"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a1d9778bf9ee74a2407368460f0e7ead0">POSLIB_MBCN_FEATURES</a></div><div class="ttdeci">@ POSLIB_MBCN_FEATURES</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00166">poslib.h:166</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6ae02cc747b7b26792409a5721c4201922"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6ae02cc747b7b26792409a5721c4201922">POSLIB_MBCN_CUSTOM_1</a></div><div class="ttdeci">@ POSLIB_MBCN_CUSTOM_1</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00175">poslib.h:175</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a71ac844b00ab67916fb0c8e907fe5831a0d67bc3d5524ccbe74693ab3f652958b"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831a0d67bc3d5524ccbe74693ab3f652958b">POSLIB_MOTION_DYNAMIC</a></div><div class="ttdeci">@ POSLIB_MOTION_DYNAMIC</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00078">poslib.h:78</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371f"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371f">poslib_events_e</a></div><div class="ttdeci">poslib_events_e</div><div class="ttdoc">Defines the events triggered by PosLib.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00122">poslib.h:122</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a901f2963fbf3a97cee5c1bf5335daf46a08c8461df841518cd8566f9bdf147523"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a08c8461df841518cd8566f9bdf147523">POSLIB_MODE_OPPORTUNISTIC_ANCHOR</a></div><div class="ttdeci">@ POSLIB_MODE_OPPORTUNISTIC_ANCHOR</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00067">poslib.h:67</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a8c1c7c70d49b432264234c06d5e5457d"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a8c1c7c70d49b432264234c06d5e5457d">POSLIB_CLASS_C</a></div><div class="ttdeci">@ POSLIB_CLASS_C</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00099">poslib.h:99</a></div></div>
-<div class="ttc" id="aposlib_8h_html_af7bcbb744fc6710fbd8909b7932845a6a2671c2731927717017891531859d5e01"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6a2671c2731927717017891531859d5e01">POSLIB_IDLE</a></div><div class="ttdeci">@ POSLIB_IDLE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00153">poslib.h:153</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a8c1c7c70d49b432264234c06d5e5457d"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a8c1c7c70d49b432264234c06d5e5457d">POSLIB_CLASS_C</a></div><div class="ttdeci">@ POSLIB_CLASS_C</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00100">poslib.h:100</a></div></div>
+<div class="ttc" id="aposlib_8h_html_af7bcbb744fc6710fbd8909b7932845a6a2671c2731927717017891531859d5e01"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6a2671c2731927717017891531859d5e01">POSLIB_IDLE</a></div><div class="ttdeci">@ POSLIB_IDLE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00154">poslib.h:154</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0aa2faa9fe383f6f28757c4dab6fc8d669"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0aa2faa9fe383f6f28757c4dab6fc8d669">POS_RET_MOTION_NOT_ENABLED</a></div><div class="ttdeci">@ POS_RET_MOTION_NOT_ENABLED</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00056">poslib.h:56</a></div></div>
-<div class="ttc" id="aposlib_8h_html_af7bcbb744fc6710fbd8909b7932845a6aacf52b673ab062bdb0eb56c123ec12be"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6aacf52b673ab062bdb0eb56c123ec12be">POSLIB_UPDATE_START</a></div><div class="ttdeci">@ POSLIB_UPDATE_START</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00154">poslib.h:154</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa5c1733421ff0bd857ab47be9073e2a32"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa5c1733421ff0bd857ab47be9073e2a32">POSLIB_FLAG_EVENT_NONE</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_NONE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00124">poslib.h:124</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa7782d48899a4a48966a87946a19c9399"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7782d48899a4a48966a87946a19c9399">POSLIB_FLAG_EVENT_ALL</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_ALL</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00144">poslib.h:144</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66">poslib_class_e</a></div><div class="ttdeci">poslib_class_e</div><div class="ttdoc">defines the device's operational class.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00093">poslib.h:93</a></div></div>
+<div class="ttc" id="aposlib_8h_html_af7bcbb744fc6710fbd8909b7932845a6aacf52b673ab062bdb0eb56c123ec12be"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6aacf52b673ab062bdb0eb56c123ec12be">POSLIB_UPDATE_START</a></div><div class="ttdeci">@ POSLIB_UPDATE_START</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00155">poslib.h:155</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa5c1733421ff0bd857ab47be9073e2a32"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa5c1733421ff0bd857ab47be9073e2a32">POSLIB_FLAG_EVENT_NONE</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_NONE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00125">poslib.h:125</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa7782d48899a4a48966a87946a19c9399"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7782d48899a4a48966a87946a19c9399">POSLIB_FLAG_EVENT_ALL</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_ALL</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00145">poslib.h:145</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66">poslib_class_e</a></div><div class="ttdeci">poslib_class_e</div><div class="ttdoc">defines the device's operational class.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00094">poslib.h:94</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0a53a54c355b9ad51ece8f6bbf0de222d4"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a53a54c355b9ad51ece8f6bbf0de222d4">POS_RET_INVALID_DATA</a></div><div class="ttdeci">@ POS_RET_INVALID_DATA</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00046">poslib.h:46</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a5bcdde56bedb4c62d917c0c5b6696ad4"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a5bcdde56bedb4c62d917c0c5b6696ad4">POSLIB_CLASS_NODE_SPECIFIC</a></div><div class="ttdeci">@ POSLIB_CLASS_NODE_SPECIFIC</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00095">poslib.h:95</a></div></div>
-<div class="ttc" id="aposlib_8h_html_af7bcbb744fc6710fbd8909b7932845a6a43aacacd19fb969455ffb7fffc802a13"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6a43aacacd19fb969455ffb7fffc802a13">POSLIB_STOPPED</a></div><div class="ttdeci">@ POSLIB_STOPPED</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00152">poslib.h:152</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a5bcdde56bedb4c62d917c0c5b6696ad4"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a5bcdde56bedb4c62d917c0c5b6696ad4">POSLIB_CLASS_NODE_SPECIFIC</a></div><div class="ttdeci">@ POSLIB_CLASS_NODE_SPECIFIC</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00096">poslib.h:96</a></div></div>
+<div class="ttc" id="aposlib_8h_html_af7bcbb744fc6710fbd8909b7932845a6a43aacacd19fb969455ffb7fffc802a13"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6a43aacacd19fb969455ffb7fffc802a13">POSLIB_STOPPED</a></div><div class="ttdeci">@ POSLIB_STOPPED</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00153">poslib.h:153</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a901f2963fbf3a97cee5c1bf5335daf46ad7dbf80f57949a834958aa4970467658"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46ad7dbf80f57949a834958aa4970467658">POSLIB_MODE_DA_TAG</a></div><div class="ttdeci">@ POSLIB_MODE_DA_TAG</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00068">poslib.h:68</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0abfd4614c5256ab3588573909ae882891"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0abfd4614c5256ab3588573909ae882891">POS_RET_NOT_CONFIGURED</a></div><div class="ttdeci">@ POS_RET_NOT_CONFIGURED</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00052">poslib.h:52</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a901f2963fbf3a97cee5c1bf5335daf46ab3b1dea384f495effc3af193a5b0bfd8"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46ab3b1dea384f495effc3af193a5b0bfd8">POSLIB_MODE_ENDS</a></div><div class="ttdeci">@ POSLIB_MODE_ENDS</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00068">poslib.h:68</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a0c8c804dbb60de28f97edc42a767be70"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70">poslib_ble_type_e</a></div><div class="ttdeci">poslib_ble_type_e</div><div class="ttdoc">Beacon devices types.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00108">poslib.h:108</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a2ef3bb55ab648f1a1cfe66395b8f303e"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a2ef3bb55ab648f1a1cfe66395b8f303e">POSLIB_CLASS_E</a></div><div class="ttdeci">@ POSLIB_CLASS_E</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00101">poslib.h:101</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6acec8389e7b06e9b8c5f6a7d9e77b3c13"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6acec8389e7b06e9b8c5f6a7d9e77b3c13">POSLIB_MBCN_INVALID_TYPE</a></div><div class="ttdeci">@ POSLIB_MBCN_INVALID_TYPE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00163">poslib.h:163</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6ab298f2d10990fe47dcb2d63f6c8f8d7d"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6ab298f2d10990fe47dcb2d63f6c8f8d7d">POSLIB_MBCN_AREA_ID</a></div><div class="ttdeci">@ POSLIB_MBCN_AREA_ID</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00168">poslib.h:168</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a901f2963fbf3a97cee5c1bf5335daf46ab3b1dea384f495effc3af193a5b0bfd8"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46ab3b1dea384f495effc3af193a5b0bfd8">POSLIB_MODE_ENDS</a></div><div class="ttdeci">@ POSLIB_MODE_ENDS</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00069">poslib.h:69</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a0c8c804dbb60de28f97edc42a767be70"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70">poslib_ble_type_e</a></div><div class="ttdeci">poslib_ble_type_e</div><div class="ttdoc">Beacon devices types.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00109">poslib.h:109</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6">poslib_mbcn_record_types_e</a></div><div class="ttdeci">poslib_mbcn_record_types_e</div><div class="ttdoc">defines the mini-beacon payload records types</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00161">poslib.h:161</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a2ef3bb55ab648f1a1cfe66395b8f303e"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a2ef3bb55ab648f1a1cfe66395b8f303e">POSLIB_CLASS_E</a></div><div class="ttdeci">@ POSLIB_CLASS_E</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00102">poslib.h:102</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a901f2963fbf3a97cee5c1bf5335daf46a8a17468ab54dcb499960570c0f37da43"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a8a17468ab54dcb499960570c0f37da43">POSLIB_MODE_AUTOSCAN_TAG</a></div><div class="ttdeci">@ POSLIB_MODE_AUTOSCAN_TAG</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00065">poslib.h:65</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a2e2776110c3421b67726b47fa1ce6ad0"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a2e2776110c3421b67726b47fa1ce6ad0">POSLIB_CLASS_D</a></div><div class="ttdeci">@ POSLIB_CLASS_D</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00100">poslib.h:100</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a0c8c804dbb60de28f97edc42a767be70adba423e6cfe4684904985c17b53781eb"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70adba423e6cfe4684904985c17b53781eb">POSLIB_BEACON_ALL</a></div><div class="ttdeci">@ POSLIB_BEACON_ALL</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00112">poslib.h:112</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a71ea4d521c064d18c2dcf4a96313ed66a2e2776110c3421b67726b47fa1ce6ad0"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ea4d521c064d18c2dcf4a96313ed66a2e2776110c3421b67726b47fa1ce6ad0">POSLIB_CLASS_D</a></div><div class="ttdeci">@ POSLIB_CLASS_D</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00101">poslib.h:101</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a0c8c804dbb60de28f97edc42a767be70adba423e6cfe4684904985c17b53781eb"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a0c8c804dbb60de28f97edc42a767be70adba423e6cfe4684904985c17b53781eb">POSLIB_BEACON_ALL</a></div><div class="ttdeci">@ POSLIB_BEACON_ALL</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00113">poslib.h:113</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a3e4bc76af0826e0ce4700391fb7687f7a4d4be2e96fd3e65dfdf51a4cb800840f"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7a4d4be2e96fd3e65dfdf51a4cb800840f">POSLIB_MBCN_TX_INTERVAL_DEFAULT</a></div><div class="ttdeci">@ POSLIB_MBCN_TX_INTERVAL_DEFAULT</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00194">poslib.h:194</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0a6a6d26aadc5d672ed41a7373599d9ef2"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a6a6d26aadc5d672ed41a7373599d9ef2">POS_RET_INVALID_PARAM</a></div><div class="ttdeci">@ POS_RET_INVALID_PARAM</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00044">poslib.h:44</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fab1d82afa60e5895964c929bcde5f1cda"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fab1d82afa60e5895964c929bcde5f1cda">POSLIB_FLAG_EVENT_UPDATE_START</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_UPDATE_START</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00126">poslib.h:126</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa7f9cad792671256b01ee283629fb0236"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7f9cad792671256b01ee283629fb0236">POSLIB_FLAG_EVENT_BLE_STOP</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_BLE_STOP</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00132">poslib.h:132</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fab1d82afa60e5895964c929bcde5f1cda"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fab1d82afa60e5895964c929bcde5f1cda">POSLIB_FLAG_EVENT_UPDATE_START</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_UPDATE_START</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00127">poslib.h:127</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa7f9cad792671256b01ee283629fb0236"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa7f9cad792671256b01ee283629fb0236">POSLIB_FLAG_EVENT_BLE_STOP</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_BLE_STOP</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00133">poslib.h:133</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0a3f995fd38202c16037d875117277664a"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a3f995fd38202c16037d875117277664a">POS_RET_LIB_ERROR</a></div><div class="ttdeci">@ POS_RET_LIB_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00048">poslib.h:48</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa81f713791879b6a58a2ed04a4d2bc172"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa81f713791879b6a58a2ed04a4d2bc172">POSLIB_FLAG_EVENT_BLE_START</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_BLE_START</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00130">poslib.h:130</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa81f713791879b6a58a2ed04a4d2bc172"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa81f713791879b6a58a2ed04a4d2bc172">POSLIB_FLAG_EVENT_BLE_START</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_BLE_START</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00131">poslib.h:131</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6a7c69e38a78793d076d45cfafc0464b08"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a7c69e38a78793d076d45cfafc0464b08">POSLIB_MBCN_MAX_TYPE</a></div><div class="ttdeci">@ POSLIB_MBCN_MAX_TYPE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00180">poslib.h:180</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a89554bb34dd57be7f2ca74314529dbb6a6db6af6373cf4a1c5eaad325d4aa19d1"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a89554bb34dd57be7f2ca74314529dbb6a6db6af6373cf4a1c5eaad325d4aa19d1">POSLIB_MBCN_FLOOR_ID</a></div><div class="ttdeci">@ POSLIB_MBCN_FLOOR_ID</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00169">poslib.h:169</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0a6c8008f19a10ff2a23a1e1d3e586afa6"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a6c8008f19a10ff2a23a1e1d3e586afa6">POS_RET_INTERNAL_ERROR</a></div><div class="ttdeci">@ POS_RET_INTERNAL_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00050">poslib.h:50</a></div></div>
-<div class="ttc" id="aposlib_8h_html_af7bcbb744fc6710fbd8909b7932845a6"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6">poslib_status_e</a></div><div class="ttdeci">poslib_status_e</div><div class="ttdoc">defines status returned in PosLib_status().</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00150">poslib.h:150</a></div></div>
-<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fae993be5e00ef95ba71e61b52916a521d"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fae993be5e00ef95ba71e61b52916a521d">POSLIB_FLAG_EVENT_LED_ON</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_LED_ON</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00140">poslib.h:140</a></div></div>
+<div class="ttc" id="aposlib_8h_html_af7bcbb744fc6710fbd8909b7932845a6"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#af7bcbb744fc6710fbd8909b7932845a6">poslib_status_e</a></div><div class="ttdeci">poslib_status_e</div><div class="ttdoc">defines status returned in PosLib_status().</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00151">poslib.h:151</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a3e4bc76af0826e0ce4700391fb7687f7a2227db94c4dd903281e6d3c6f2a9849a"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a3e4bc76af0826e0ce4700391fb7687f7a2227db94c4dd903281e6d3c6f2a9849a">POSLIB_MBCN_TX_INTERVAL_250</a></div><div class="ttdeci">@ POSLIB_MBCN_TX_INTERVAL_250</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00196">poslib.h:196</a></div></div>
+<div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fae993be5e00ef95ba71e61b52916a521d"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fae993be5e00ef95ba71e61b52916a521d">POSLIB_FLAG_EVENT_LED_ON</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_LED_ON</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00141">poslib.h:141</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

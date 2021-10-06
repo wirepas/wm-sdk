@@ -134,10 +134,14 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a2e6186783b7766ef287959ae36ccc3d7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7">shared_data_net_mode_e</a> { <a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7abe7fd6617fa17f362c9dfd9e061a8b97">SHARED_DATA_NET_MODE_UNICAST</a> = 0, 
+<tr class="memitem:a2e6186783b7766ef287959ae36ccc3d7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7">shared_data_net_mode_e</a> { <br />
+&#160;&#160;<a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7abe7fd6617fa17f362c9dfd9e061a8b97">SHARED_DATA_NET_MODE_UNICAST</a> = 0, 
 <a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7aaa21a2d1938fd77076075f458eb0677f">SHARED_DATA_NET_MODE_BROADCAST</a> = 1, 
 <a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c">SHARED_DATA_NET_MODE_MULTICAST</a> = 2, 
-<a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a> = 3
+<a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7adc771bccff5c23fb29e95590ea7d519f">SHARED_DATA_NET_MODE_ACKDA</a> = 3, 
+<br />
+&#160;&#160;<a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a> = 4
+<br />
  }</td></tr>
 <tr class="memdesc:a2e6186783b7766ef287959ae36ccc3d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select what type of packet to receive.  <a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7">More...</a><br /></td></tr>
 <tr class="separator:a2e6186783b7766ef287959ae36ccc3d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,7 +178,7 @@ Macros</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554b">app_lib_data_receive_res_e</a>. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>APP_LIB_DATA_RECEIVE_RES_NO_SPACE is not managed and will result in a dropped packet (APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d74/shared__data_8h_source.html#l00096">96</a> of file <a class="el" href="../../d5/d74/shared__data_8h_source.html">shared_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d74/shared__data_8h_source.html#l00097">97</a> of file <a class="el" href="../../d5/d74/shared__data_8h_source.html">shared_data.h</a>.</p>
 
 </div>
 </div>
@@ -313,7 +317,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 <div class="textblock"><p>Structure holding all parameters for packet filtering. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d74/shared__data_8h_source.html#l00053">53</a> of file <a class="el" href="../../d5/d74/shared__data_8h_source.html">shared_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d74/shared__data_8h_source.html#l00054">54</a> of file <a class="el" href="../../d5/d74/shared__data_8h_source.html">shared_data.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -362,7 +366,7 @@ src_endpoint</td>
 <div class="textblock"><p>Item containing filters and callback to call. This structure describe a callback to call when a packet is received if it is allowed by the associated filter. </p>
 <p>Forward declaration of shared_data_item_t. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d74/shared__data_8h_source.html#l00104">104</a> of file <a class="el" href="../../d5/d74/shared__data_8h_source.html">shared_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d74/shared__data_8h_source.html#l00105">105</a> of file <a class="el" href="../../d5/d74/shared__data_8h_source.html">shared_data.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -418,6 +422,7 @@ reserved2</td>
 </td></tr>
 <tr><td class="fieldname"><a id="a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c"></a>SHARED_DATA_NET_MODE_MULTICAST&#160;</td><td class="fielddoc"><p>Only receive Multicast packets. </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a2e6186783b7766ef287959ae36ccc3d7adc771bccff5c23fb29e95590ea7d519f"></a>SHARED_DATA_NET_MODE_ACKDA&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5"></a>SHARED_DATA_NET_MODE_ALL&#160;</td><td class="fielddoc"><p>Accept all type of packets (ignore filtering packet by type). </p>
 </td></tr>
 </table>
@@ -427,8 +432,9 @@ reserved2</td>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7abe7fd6617fa17f362c9dfd9e061a8b97">SHARED_DATA_NET_MODE_UNICAST</a> = 0,</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7aaa21a2d1938fd77076075f458eb0677f">SHARED_DATA_NET_MODE_BROADCAST</a> = 1,</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c">SHARED_DATA_NET_MODE_MULTICAST</a> = 2,</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a> = 3</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;} <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7">shared_data_net_mode_e</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7adc771bccff5c23fb29e95590ea7d519f">SHARED_DATA_NET_MODE_ACKDA</a> = 3,</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a> = 4</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;} <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7">shared_data_net_mode_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -472,7 +478,8 @@ reserved2</td>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7">shared_data_net_mode_e</a></div><div class="ttdeci">shared_data_net_mode_e</div><div class="ttdoc">Select what type of packet to receive.</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00040">shared_data.h:40</a></div></div>
-<div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_ALL</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00049">shared_data.h:49</a></div></div>
+<div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7adc771bccff5c23fb29e95590ea7d519f"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7adc771bccff5c23fb29e95590ea7d519f">SHARED_DATA_NET_MODE_ACKDA</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_ACKDA</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00048">shared_data.h:48</a></div></div>
+<div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_ALL</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00050">shared_data.h:50</a></div></div>
 <div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c">SHARED_DATA_NET_MODE_MULTICAST</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_MULTICAST</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00047">shared_data.h:47</a></div></div>
 <div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7abe7fd6617fa17f362c9dfd9e061a8b97"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7abe7fd6617fa17f362c9dfd9e061a8b97">SHARED_DATA_NET_MODE_UNICAST</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_UNICAST</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00043">shared_data.h:43</a></div></div>
 <div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7aaa21a2d1938fd77076075f458eb0677f"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7aaa21a2d1938fd77076075f458eb0677f">SHARED_DATA_NET_MODE_BROADCAST</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_BROADCAST</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00045">shared_data.h:45</a></div></div>

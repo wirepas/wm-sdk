@@ -122,6 +122,11 @@ Functions</h2></td></tr>
 <tr class="memitem:abbc1f156affb30a05addd96a33373936"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d16/poslib__control_8h.html#abbc1f156affb30a05addd96a33373936">PosLibCtrl_processEvent</a> (<a class="el" href="../../d4/d70/poslib__event_8h.html#d0/d88/structposlib__internal__event__t">poslib_internal_event_t</a> *event)</td></tr>
 <tr class="memdesc:abbc1f156affb30a05addd96a33373936"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process the internal event.  <a href="../../df/d16/poslib__control_8h.html#abbc1f156affb30a05addd96a33373936">More...</a><br /></td></tr>
 <tr class="separator:abbc1f156affb30a05addd96a33373936"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6413854707819396ea46faa2d7b8d41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d16/poslib__control_8h.html#aa6413854707819396ea46faa2d7b8d41">PosLibCtrl_getAppConfig</a> (uint8_t **cfg, uint8_t *len)</td></tr>
+<tr class="memdesc:aa6413854707819396ea46faa2d7b8d41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current app config payload.  <a href="../../df/d16/poslib__control_8h.html#aa6413854707819396ea46faa2d7b8d41">More...</a><br /></td></tr>
+<tr class="separator:aa6413854707819396ea46faa2d7b8d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95d262549fe2f2ba0332f45fe05d96dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d16/poslib__control_8h.html#a95d262549fe2f2ba0332f45fe05d96dd">PosLibCtrl_setAppConfig</a> (const uint8_t *cfg, uint8_t len)</td></tr>
+<tr class="separator:a95d262549fe2f2ba0332f45fe05d96dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -133,6 +138,45 @@ Enumerations</h2></td></tr>
 <tr class="separator:a9159a04ef891d0b8b8e057a9e930516d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="aa6413854707819396ea46faa2d7b8d41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6413854707819396ea46faa2d7b8d41">&#9670;&nbsp;</a></span>PosLibCtrl_getAppConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PosLibCtrl_getAppConfig </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t **&#160;</td>
+          <td class="paramname"><em>cfg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the current app config payload. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">cfg</td><td>pointer to the app config array </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">len</td><td>the length of the app config, 0 no configuration valid <br  />
+ </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
 <a id="ac9cb1b1635b95d2f71bdd0c5c929ef24"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac9cb1b1635b95d2f71bdd0c5c929ef24">&#9670;&nbsp;</a></span>PosLibCtrl_getConfig()</h2>
 
@@ -211,6 +255,34 @@ Enumerations</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a id="a95d262549fe2f2ba0332f45fe05d96dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95d262549fe2f2ba0332f45fe05d96dd">&#9670;&nbsp;</a></span>PosLibCtrl_setAppConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PosLibCtrl_setAppConfig </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>cfg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
