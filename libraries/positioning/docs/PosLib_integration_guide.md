@@ -257,6 +257,6 @@ To instantiate PosLib in an application the following three steps must be follow
 
 # References
 
-[1] [Wirepas Positioning Application Reference Manual v1.4](https://developer.wirepas.com/support/solutions/articles/77000498897)
+[1] [Wirepas Positioning Application Reference Manual v1.5](https://developer.wirepas.com/support/solutions/articles/77000508783-wirepas-positioning-application-reference-manual-v1-5)
 
 [2] [Non-Router Long Sleep (NRLS)](https://developer.wirepas.com/a/solutions/articles/77000406955?portalId=77000019115) 
