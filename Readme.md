@@ -9,7 +9,7 @@ This application is often referred as a _Single-MCU application_.
 >
 > _To use the SDK, you need to have access to the Wirepas binaries. You need to have a
 > software license agreement (SLA) with Wirepas to get them. If you would like to become
-> a SLA licensee, please contact sales@wirepas.com_
+> a SLA licensee, please see the right contact from www.wirepas.com/contact_
 >
 
 - [Overview](#overview)
