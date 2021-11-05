@@ -13,6 +13,8 @@
 #include "waddr.h"
 #include "lock_bits.h"
 #include "api.h"
+#include "shared_data.h"
+#include "waps.h"
 
 /**
  * \brief   Called when a WAPS data packet should be created.
@@ -115,6 +117,16 @@ void Dsap_packetReceived(const app_lib_data_received_t * data,
     ind_ptr->apdu_len = data->num_bytes;
 }
 
+static void dataSentCb(const app_lib_data_sent_status_t * status)
+{
+    Waps_packetSent(status->tracking_id,
+                    status->src_endpoint,
+                    status->dest_endpoint,
+                    status->queue_time,
+                    status->dest_address,
+                    status->success);
+}
+
 static bool sendPacketWithTT(waps_item_t * item)
 {
     app_lib_data_to_send_t data;
@@ -190,7 +202,7 @@ static bool sendPacketWithTT(waps_item_t * item)
     data.dest_endpoint = req->dst_endpoint;
 
     // Send packet
-    result = lib_data->sendData(&data);
+    result = Shared_Data_sendData(&data, dataSentCb);
 
     // TODO Attr_manager_getPduBuffCapacity check this
     // Get remaining buffer capacity (do not pre-check and decrement = lie)

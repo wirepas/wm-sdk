@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := pca10040 pca10056 pca10100 promistel_rpi_hat silabs_brd4254a tbsense2 ublox_b204 
+TARGET_BOARDS := tbsense2 ublox_b204 pca10100 pca10056 promistel_rpi_hat silabs_brd4254a pca10040 
 #
 # Network default settings configuration
 #

@@ -5,7 +5,7 @@
  */
 
 /**
- * \file api/app.h
+ * \file app.h
  *
  * The global macros, types and functions available to applications can be found
  * in the app.h header.
@@ -66,7 +66,7 @@ typedef struct
     uint32_t start_address;
     /** Total number of bytes used in the application memory area */
     uint32_t length;
-    /** First address used in RAM area */
+    /** First address used in RAM area (was forced to be 0 before) */
     uint32_t start_ram_address;
 } app_information_header_t;
 
@@ -113,9 +113,9 @@ typedef app_firmware_version_t (*app_get_stack_firmware_version_f)(void);
  * This is the most important function of the Single-MCU API. All other
  * functions are in libraries, opened using the this function. Parameters are
  * the name and version of the library. The name is actually a 32-bit value,
- * which is defined in each library header as a macro named
+ * which is defined in each library header as a macro: \ref
  * APP_LIB_LIBRARY_NAME. The library version is also a macro defined in the same
- * library header named APP_LIB_LIBRARY_VERSION.
+ * library header: \ref APP_LIB_LIBRARY_VERSION.
  *
  * Example of opening a library:
  *
@@ -249,6 +249,9 @@ typedef enum
      * packet to the multicast group #2.
      */
     APP_ADDR_MULTICAST   = 0x80000000u,
+    /** This is last valid multicast address. Addresses larger than this (until
+     * @ref APP_ADDR_ANYSINK) are unicast addresses. */
+    APP_ADDR_MULTICAST_LAST = 0x80ffffffu,
 } app_special_addr_e;
 
 #endif  /* APP_H_ */

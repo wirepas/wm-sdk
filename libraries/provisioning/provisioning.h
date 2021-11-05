@@ -200,10 +200,6 @@ typedef struct
  *          State library MUST NOT be used outside of this module.
  * \note    When using provisioning application must use Shared_data
  *          instead of data library for sending and receiving packets.
- * \note    Provisioning module needs 2 tasks from App_scheduler. Maximum
- *          execution time of provisioning tasks is 250µS excluding user
- *          callback. This must be taken in consideration when setting
- *          \ref APP_SCHEDULER_MAX_EXEC_TIME_US.
  * \param   conf
  *          Configuration for the provisioning.
  * \return  Result code, \ref PROV_RET_OK if provisioning is initialized.

@@ -45,9 +45,8 @@ typedef enum
     SHARED_DATA_NET_MODE_BROADCAST = 1,
     /** Only receive Multicast packets. */
     SHARED_DATA_NET_MODE_MULTICAST = 2,
-    SHARED_DATA_NET_MODE_ACKDA = 3,
     /** Accept all type of packets (ignore filtering packet by type). */
-    SHARED_DATA_NET_MODE_ALL = 4
+    SHARED_DATA_NET_MODE_ALL = 3
 } shared_data_net_mode_e;
 
 /** @brief Structure holding all parameters for packet filtering. */
@@ -90,8 +89,9 @@ typedef struct shared_data_item_s shared_data_item_t;
  * @param   data
  *          Pointer to the received data.
  * @return  Result code, @ref app_lib_data_receive_res_e.
- * @note    APP_LIB_DATA_RECEIVE_RES_NO_SPACE is not managed and will result in
- *          a dropped packet (APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP).
+ * @note    If APP_LIB_DATA_RECEIVE_RES_NO_SPACE is returned, the whole data
+ *          is blocked for all the app. App will start receiving data once
+ *          this filter has called @ref Shared_Data_readyToReceive
  */
 typedef app_lib_data_receive_res_e
     (*shared_data_received_cb_f)(const shared_data_item_t * item,
@@ -108,6 +108,8 @@ struct shared_data_item_s
     void * reserved;
     /** Reserved for shared_data use (DO NOT MODIFY). */
     bool reserved2;
+    /** Reserved for built-in pause mechanism (DO NOT MODIFY). */
+    bool reserved3;
     /** Function to call if the received packet is allowed. */
     shared_data_received_cb_f cb;
     /** Packet filter parameters. */
@@ -116,6 +118,7 @@ struct shared_data_item_s
 
 /**
  * @brief   Initialize the shared data library.
+ * @note    This function is automatically called if library is enabled.
  * @note    If Shared data module is used in application, the
  *          @ref app_lib_data_set_data_received_cb_f "lib_data->setDataReceivedCb()",
  *          @ref app_lib_data_set_data_received_cb_f "lib_data->setBcastDataReceivedCb()"
@@ -139,6 +142,24 @@ app_res_e Shared_Data_init(void);
 app_res_e Shared_Data_addDataReceivedCb(shared_data_item_t * item);
 
 /**
+ * @brief   Enable back the reception for an item.
+ *          Reception is automatically paused when an item returns
+ *          APP_LIB_DATA_RECEIVE_RES_NO_SPACE from its registered callback
+ *          @ref shared_data_received_cb_f
+ *          Only way to allow the reception is to call this function.
+ * @note    Reception is paused for all items at the same time. All the items
+ *          that pause the reception must explicitly reanable it. Otherwise
+ *          reception will stay in pause mode. In fact, in pause mode messages
+ *          are buffered on stack side and cannot be accepted individually based
+ *          on filter set.
+ * @param   item
+ *          Item that is now ready
+ * @return  APP_RES_OK if ok. See @ref app_res_e for
+ *          other result codes.
+ */
+app_res_e Shared_Data_readyToReceive(shared_data_item_t * item);
+
+/**
  * @brief   Remove a received packet item from the list.
  *          Removed item fields are all set to 0.
  * @param   item
@@ -155,10 +176,7 @@ void Shared_Data_removeDataReceivedCb(shared_data_item_t * item);
  *          Callback function to be called when a packet has gone through local
  *          processing and has finally been sent or discarded. If NULL is
  *          passed, the callback is disabled. This callback replaces
- *          tracking_id and APP_LIB_DATA_SEND_FLAG_TRACK flag of data
- *          structure.
- * @note    tracking_id is managed by the library. When function return the
- *          data structure is modified to reflect id used to send the packet.
+ *          APP_LIB_DATA_SEND_FLAG_TRACK flag of data structure.
  * @return  Result code, @ref APP_LIB_DATA_SEND_RES_SUCCESS means that data
  *          was accepted for sending. See @ref app_res_e for
  *          other result codes.

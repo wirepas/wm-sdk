@@ -1,3 +1,6 @@
+# This definition describes mcu family.
+MCU_FAMILY=efr
+
 # This definition describes processor architecture.
 # Valid value: efr32 for EFR32 based boards
 MCU=efr32
@@ -14,6 +17,12 @@ MCU_SUB=xg12
 # - <code>pxxxf1024</code> For 1024 kB flash memory variant (xg12)
 # - <code>xxxxf1024</code> For 1024 kB flash memory variant (xg21)
 MCU_MEM_VAR=pxxxf1024
+
+# Which radio version to use (different stack binary)
+# Must be set only for xg21 and xg22 only
+# Allowed values are following for xg21: efr32xg21, bgm210pa22jia
+# Allowed values are following for xg22: efr32xg22, bgm220pc22hna
+# radio=
 
 # This describes the hardware capabilities of the board
 # (this is used to customize the hardware service of the bootloader).

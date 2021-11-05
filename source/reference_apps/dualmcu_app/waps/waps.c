@@ -22,19 +22,23 @@
 
 #include "api.h"
 #include "app_scheduler.h"
+#include "shared_data.h"
+#include "shared_appconfig.h"
+#include "shared_neighbors.h"
+#include "stack_state.h"
 
 /** Define safety margin for processing WAPS */
 #define WAPS_SAFETY_MARGIN_US  8000u
 
 /** Max timeout to handle a request queued from uart
- *  API says 200ms
+ *  API says 300ms
  */
-#define WAPS_MAX_REQUEST_QUEUING_TIME_MS    200
+#define WAPS_MAX_REQUEST_QUEUING_TIME_MS    300
 
 /** Convert MS to coarse
  *  Because of 1/128s granularity and way it is measured, delay can be shorter but it is not an issue.
- *  It is better to delete a request that is 190ms old instead of playing one that is
- *  210ms old. On the other side, the second one will already be replayed.
+ *  It is better to delete a request that is 290ms old instead of playing one that is
+ *  310ms old. On the other side, the second one will already be replayed.
  */
 #define WAPS_MAX_REQUEST_QUEUING_TIME_COARSE ((WAPS_MAX_REQUEST_QUEUING_TIME_MS * 128 / 1000))
 
@@ -65,6 +69,13 @@ static waps_item_t * read_request(void);
 /** New request callback from lower layer */
 static void receive_request(waps_item_t * item);
 
+static void app_config_received_cb(uint16_t type,
+                                   uint8_t length,
+                                   uint8_t * value_p);
+
+/** Callback when a neighbor scan is done */
+static void on_scanned_nbors_cb(void);
+
 /**
  * \brief   Process request and generate reply
  * \return  True, if a reply was generated
@@ -89,8 +100,68 @@ static uint32_t             m_signal;
 // Number of channels, cached for get_num_channels()
 static app_lib_settings_net_channel_t num_channels;
 
+static app_lib_data_receive_res_e data_cb(
+                    const shared_data_item_t * shared_data_item,
+                    const app_lib_data_received_t * data)
+{
+    w_addr_t dst;
+    waps_item_t * item = Waps_itemReserve(WAPS_ITEM_TYPE_INDICATION);
+    if(item)
+    {
+        if (data->dest_address == APP_ADDR_BROADCAST)
+        {
+            dst = WADDR_BCAST;
+        }
+        else if ((data->dest_address & 0xff000000) == APP_ADDR_MULTICAST)
+        {
+            dst = data->dest_address;
+        }
+        else
+        {
+            // Destination is obviously self
+            app_addr_t addr;
+            lib_settings->getNodeAddress(&addr);
+            dst = Addr_to_Waddr(addr);
+        }
+        Dsap_packetReceived(data, dst, item);
+        add_indication(item);
+        return APP_LIB_DATA_RECEIVE_RES_HANDLED;
+    }
+    return APP_LIB_DATA_RECEIVE_RES_NO_SPACE;
+}
+
+static shared_data_item_t m_waps_data_filter =
+{
+    .cb = data_cb,
+    .filter = {
+                .mode = SHARED_DATA_NET_MODE_ALL,
+                .src_endpoint = -1,
+                .dest_endpoint = -1,
+                .multicast_cb = Multicast_isGroupCb,
+              }
+};
+
+static void item_free_threshold_cb(void)
+{
+    Shared_Data_readyToReceive(&m_waps_data_filter);
+}
+
 bool Waps_init(void)
 {
+    uint16_t id;
+    shared_app_config_filter_t app_config_filter = {
+        // Any type is fine, just used to know app config is received
+        .type = 1,
+        .cb = app_config_received_cb,
+        .call_cb_always = true,
+    };
+
+    // id is not persistent as we never release it (for now)
+    Shared_Neighbors_addScanNborsCb(on_scanned_nbors_cb, &id);
+    //register callbacks
+    Shared_Data_addDataReceivedCb(&m_waps_data_filter);
+    Shared_Appconfig_addFilter(&app_config_filter, &id);
+
     sl_list_init(&waps_request_queue);
     sl_list_init(&waps_ind_queue);
     sl_list_init(&waps_reply_queue);
@@ -103,16 +174,15 @@ bool Waps_init(void)
     Persistent_init();
     if (Waps_prot_init(receive_request))
     {
-        Waps_itemInit();
+        // Initialize item pool with a threshold to 50%
+        Waps_itemInit(item_free_threshold_cb, 50);
         // Check autostart
-        app_lib_state_stack_state_e state = lib_state->getStackState();
         bool autostart;
-        if((state == APP_LIB_STATE_STOPPED) &&
+        if((!Stack_State_isStarted()) &&
            Persistent_getAutostart(&autostart) == APP_RES_OK &&
            autostart)
         {
-            // Start the stack
-            lib_state->startStack();
+            Stack_State_startStack();
         }
         // Queue indication to show that stack has started (or waiting to start)
         add_indication(Msap_getStackStatusIndication());
@@ -173,9 +243,20 @@ send_reply:
     }
 }
 
-void Waps_sinkUpdated(uint8_t seq, const uint8_t * config, uint16_t interval)
+static void app_config_received_cb(uint16_t type,
+                                   uint8_t length,
+                                   uint8_t * value_p)
 {
+    uint8_t appconfig[APP_LIB_DATA_MAX_APP_CONFIG_NUM_BYTES];
+    uint8_t appconfig_seq;
+    uint16_t appconfig_interval;
     bool is_new = false;
+
+    /* Our filter was called but we don't need particular info so
+       read it from stack */
+    lib_data->readAppConfig(&appconfig[0],
+                            &appconfig_seq,
+                            &appconfig_interval);
 
     // Seek if there is existing APP_CONFIG_RX_IND. If so, reuse it
     waps_item_t * item = find_indication(WAPS_FUNC_MSAP_APP_CONFIG_RX_IND);
@@ -188,7 +269,10 @@ void Waps_sinkUpdated(uint8_t seq, const uint8_t * config, uint16_t interval)
     }
 
     // This might overwrite the old indication
-    Msap_handleAppConfig(seq, config, interval, item);
+    Msap_handleAppConfig(appconfig_seq,
+                         appconfig,
+                         appconfig_interval,
+                         item);
 
     // Add indication if new
     if (is_new)
@@ -197,8 +281,15 @@ void Waps_sinkUpdated(uint8_t seq, const uint8_t * config, uint16_t interval)
     }
 }
 
-void Waps_onScannedNbors(void)
+static void on_scanned_nbors_cb(void)
 {
+// The next block is under ifdef has dualmcu has never generated
+// Neighbors indication. It was only registering for requested scans
+// result that are requested by app, but dualmcu cannot ask for scans.
+// Since Sharedd_neighbors libs is in use, scan result from stack will
+// trigger this callback and Wirepas Terminal doesn't handle it (stay stuck).
+// So for now, it has to be explicitly enabled.
+#ifdef GENERATE_NEIGHBORS_INDICATION
     // Find similar indication and re-use ite
     waps_item_t * item = find_indication(WAPS_FUNC_MSAP_SCAN_NBORS_IND);
     bool is_new = false;
@@ -215,47 +306,7 @@ void Waps_onScannedNbors(void)
     {
         add_indication(item);
     }
-}
-
-app_lib_data_receive_res_e
-Waps_receiveUnicast(const app_lib_data_received_t * data)
-{
-    waps_item_t * item = Waps_itemReserve(WAPS_ITEM_TYPE_INDICATION);
-    if(item)
-    {
-        // Destination is obviously self
-        app_addr_t addr;
-        lib_settings->getNodeAddress(&addr);
-        w_addr_t dst = Addr_to_Waddr(addr);
-        Dsap_packetReceived(data, dst, item);
-        add_indication(item);
-        return APP_LIB_DATA_RECEIVE_RES_HANDLED;
-    }
-    return APP_LIB_DATA_RECEIVE_RES_NO_SPACE;
-}
-
-app_lib_data_receive_res_e
-Waps_receiveBcast(const app_lib_data_received_t * data)
-{
-    waps_item_t * item = Waps_itemReserve(WAPS_ITEM_TYPE_INDICATION);
-    if(item)
-    {
-        w_addr_t dst;
-        // Destination is either broadcast or multicast
-        if (data->dest_address == APP_ADDR_BROADCAST)
-        {
-            dst = WADDR_BCAST;
-        }
-        else
-        {
-            // Copy multicast group address to target
-            dst = data->dest_address;
-        }
-        Dsap_packetReceived(data, dst, item);
-        add_indication(item);
-        return APP_LIB_DATA_RECEIVE_RES_HANDLED;
-    }
-    return APP_LIB_DATA_RECEIVE_RES_NO_SPACE;
+#endif
 }
 
 void Waps_packetSent(app_lib_data_tracking_id_t tracking_id,

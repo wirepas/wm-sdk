@@ -22,7 +22,7 @@
 #include "app_scheduler.h"
 #include "poslib.h"
 #include "shared_neighbors.h"
-#include "shared_shutdown.h"
+#include "stack_state.h"
 #include "shared_data.h"
 #include "shared_appconfig.h"
 #include "shared_offline.h"
@@ -163,7 +163,7 @@ static void App_posLib_event(POSLIB_FLAG_EVENT_info_t * msg)
  
 #ifdef CONF_USE_PERSISTENT_MEMORY
     /** Writing to memory takes time, do it in own task - not in callback */
-    App_Scheduler_addTask(App_persistent_data_write, APP_SCHEDULER_SCHEDULE_ASAP);
+    App_Scheduler_addTask_execTime(App_persistent_data_write, APP_SCHEDULER_SCHEDULE_ASAP, 500);
 #endif
     }
 }
@@ -275,19 +275,9 @@ static poslib_ret_e App_start_positioning(void)
 void App_init(const app_global_functions_t* functions)
 {
     LOG_INIT();
-#ifdef CONF_USE_PERSISTENT_MEMORY
-    App_Persistent_init();
-#endif
     PosApp_Settings_configureNode();
-    App_Scheduler_init();
 
     /** Initialization of shared libraries */
-    Shared_Data_init();
-    Shared_Appconfig_init();
-    Shared_Neighbors_init();
-    Shared_Shutdown_init();
-    Shared_Beacon_init();
-    Shared_Offline_init();
     enable_button();
 
 #ifdef CONF_USE_LED_NOTIFICATION

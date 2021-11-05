@@ -77,7 +77,8 @@ typedef struct
 } shared_app_config_filter_t;
 
 /**
- * \brief   Initialize the shared app config library library.
+ * \brief   Initialize the shared app config library.
+ * \note    This function is automatically called if library is enabled.
  * \note    If Shared app config module is used in application, the
  *          @ref app_lib_data_set_new_app_config_cb_f "lib_data->setNewAppConfigCb()"
  *          function offered by data library MUST NOT be

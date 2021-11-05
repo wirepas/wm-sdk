@@ -6,8 +6,10 @@ WAPS_PREFIX := $(SRCS_PATH)waps/
 # 14 -> 15 (- add Read/Write Target OTAP
 #           - remove deprecated otap services (remote)
 #           - add quality indicator)
+# 15 -> 16 (- use new single mcu api to set app config diag interval
+#             so sequence become obsolete)
 
-CFLAGS += -DWAPS_VERSION=15
+CFLAGS += -DWAPS_VERSION=16
 
 INCLUDES += -I$(WAPS_PREFIX)
 

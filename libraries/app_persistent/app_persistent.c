@@ -76,6 +76,11 @@ static bool read(void * to,  uint32_t from, size_t amount)
  */
 app_persistent_res_e App_Persistent_init(void)
 {
+    if (m_initialized)
+    {
+        return APP_PERSISTENT_RES_OK;
+    }
+
     if (lib_memory_area->getAreaInfo(APP_PERSISTENT_MEMORY_AREA_ID, &m_memory_area) != APP_LIB_MEM_AREA_RES_OK)
     {
         return APP_PERSISTENT_RES_NO_AREA;

@@ -265,7 +265,7 @@ Octets are transferred most significant bit first.
 ## Timing
 
 There is a reception timeout for received UART frames. A transmission of
-complete API frame to the stack MCU shall take no longer than 200 ms.
+complete API frame to the stack MCU shall take no longer than 300 ms.
 
 ## CRC Calculation (CRC-16-CCITT)
 
@@ -782,7 +782,7 @@ described in the table below.
 |----------------|----------|------------------|----------------
 | *Primitive ID* | 1        | 0x3A             | Identifier of MSAP-APP_CONFIG_DATA_WRITE.request primitive
 | *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
-| *SequenceNumber* | 1      | 0 – 254, default value is 0   | Sequence number for filtering old and already received application configuration data packets at the nodes.  The sequence number must be increment by 1 every time new configuration is written, i.e. new diagnostic data interval and/or new application configuration data is updated. See section [Sequence Numbers](#Sequence-Numbers) for details.  A sequence number that is the current value of existing application configuration data is invalid. A value of 255 is invalid. Therefore, after value of 254, the next valid value is 0.
+| *SequenceNumber* | 1      | NA   | Sequence number is not needed anymore from this API, and is managed automatically by the stack in order to propagate correctly the new information set. This value is just ignored and can be anything.
 | *DiagnosticDataInterval* | 2  | 0, 30, 60, 120, 300, 600, 1800, default value is 0 | Diagnostic data transmission interval in seconds, i.e. how often the nodes on the network should send diagnostic PDUs.  If the value is 0, diagnostic data transmission is disabled.
 | *AppConfigData* | X  | Raw hex data, default value is filled with 0x00    | Application configuration data. The format can be decided by the application.  Size of the field is defined by CSAP attribute cAppConfigDataSize (see section [cAppConfigDataSize](#cAppConfigDataSize))
 | *CRC*           | 2  | \-                                                 | See section [General Frame Format](#General-Frame-Format)
@@ -803,7 +803,7 @@ below.
 |----------------|----------|------------------|----------------
 | *Primitive ID* | 1        | 0xBA             | Identifier of MSAP-APP_CONFIG_DATA_WRITE.confirm primitive
 | *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
-| *Result*       | 1        | 0 – 4            | The return result of the corresponding MSAP-APP_CONFIG_DATA_WRITE.request. The different values are defined as follows: <p> - 0 = Success: New configuration written to sink's non-volatile memory and scheduled for transmission <p> - 1 = Failure: The node is not a sink  <p> - 2 = Failure: Invalid DiagnosticDataInterval value <p> - 3 = Failure: Invalid SequenceNumber value  <p> - 4 = Failure: Access denied (see section [cFeatureLockBits](#cFeatureLockBits))
+| *Result*       | 1        | 0 – 4            | The return result of the corresponding MSAP-APP_CONFIG_DATA_WRITE.request. The different values are defined as follows: <p> - 0 = Success: New configuration written to sink's non-volatile memory and scheduled for transmission <p> - 1 = Failure: The node is not a sink  <p> - 2 = Failure: Invalid DiagnosticDataInterval value  <p> - 4 = Failure: Access denied (see section [cFeatureLockBits](#cFeatureLockBits))
 | *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
 
 ### MSAP-APP_CONFIG_DATA_READ Service

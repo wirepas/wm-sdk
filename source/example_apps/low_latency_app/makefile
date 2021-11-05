@@ -23,7 +23,8 @@ SHARED_DATA=yes
 
 # Use App Scheduler and configure it
 APP_SCHEDULER=yes
-CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=1
+APP_SCHEDULER_TASKS=1
+
 APP_PRINTING=yes
 # This application use HAL for buttons and leds
 HAL_BUTTON=yes

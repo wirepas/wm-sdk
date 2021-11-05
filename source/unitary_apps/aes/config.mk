@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := mdbt50q_rx nrf52832_mdk_v2 pca10040 pca10056 pca10059 pca10100 pca10112 promistel_rpi_hat ruuvitag silabs_brd4180b silabs_brd4181b silabs_brd4184a silabs_brd4253a silabs_brd4254a tbsense2 ublox_b204 wuerth_261101102 
+TARGET_BOARDS := silabs_brd4312a nrf52832_mdk_v2 tbsense2 nrf52_template pca10112 bgm220-ek4314a efr32_template silabs_brd4253a silabs_brd4180b pca10059 silabs_brd4184a ublox_b204 pca10100 mdbt50q_rx pca10056 silabs_brd4181b ruuvitag promistel_rpi_hat silabs_brd4254a pca10040 pca10090 wuerth_261101102 
 # Define a specific application area_id
 app_specific_area_id=0x8cad1b
 

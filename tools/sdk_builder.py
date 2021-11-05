@@ -8,6 +8,8 @@ import sys
 import argparse
 import multiprocessing
 import subprocess
+import os
+import hashlib
 from sdk_explorer import SDKExplorer
 
 
@@ -42,8 +44,31 @@ def build_single_app(root_folder, app_name, board, app_only=False, extra_build_a
                                 cwd=root_folder)
     assert(_process.wait() == 0)
 
+def remove_duplicate_boards(all_boards, dup_boards):
+    """Remove duplicated boards from list. Only one board from dup_board should remain
+       in initial list
 
-def build_all_apps(root_folder, boards_subset=None, apps_subset=None, app_only=False, extra_build_args=None):
+    Args:
+        all_boards: initial list of boards
+        dup_boards: duplicated boards
+    """
+    # Only one from dup_boards list should remain
+    found = False
+    for dup in dup_boards:
+        if dup in all_boards:
+            if not found:
+                # One found so others can be deleted
+                found = True
+            else:
+                all_boards.remove(dup)
+
+def get_number_of_combination(matrix):
+    count = 0
+    for key, value in matrix.items():
+        count += len(value)
+    return count
+
+def build_all_apps(root_folder, boards_subset=None, apps_subset=None, app_only=False, extra_build_args=None, file_aliases=None):
     """Build all possible apps for all boards within the defined subsets
 
     Args:
@@ -52,8 +77,29 @@ def build_all_apps(root_folder, boards_subset=None, apps_subset=None, app_only=F
         boards_subset: subset of boards to build
         app_only: True to build app binaries. False for all final images and otap files.
         extra_build_args: list of args to append to the make cmd
+        file_aliases: file path for alias list
     """
     sdk_matrix = SDKExplorer(root_folder).get_app_board_matrix()
+
+    if file_aliases is not None:
+        before = get_number_of_combination(sdk_matrix)
+        # Cleanup the full list by removing aliases
+        try:
+            with open(file_aliases, "r") as f:
+                for line in f.readlines():
+                    app, boards = line.split(':')
+                    duplicate_boards = boards.rstrip('\n').split(',')
+
+                    try:
+                        remove_duplicate_boards(sdk_matrix[app], duplicate_boards)
+                    except KeyError:
+                        continue
+        except FileNotFoundError:
+            print("Cannot open file for aliases")
+
+        after = get_number_of_combination(sdk_matrix)
+        print("Duplicate removal from ", before, " to ", after, " combinations")
+
     for app_name, compatible_boards in sdk_matrix.items():
         if apps_subset is not None and app_name not in apps_subset:
             continue
@@ -69,13 +115,57 @@ def build_all_apps(root_folder, boards_subset=None, apps_subset=None, app_only=F
             # App must be built
             build_single_app(root_folder, app_name, board, app_only, extra_build_args)
 
+def generate_alias_matrix(root_folder, file):
+    """
+
+    Args:
+        root_folder: root_folder of sdk
+    """
+    aliases_dic = {}
+    build_folder = os.path.join(root_folder, 'build')
+    for board in os.listdir(build_folder):
+
+        board_folder = os.path.join(build_folder, board)
+        for app in os.listdir(board_folder):
+            # Make app hex sha256 to compare
+            app_folder = os.path.join(board_folder, app)
+            app_hex = os.path.join(app_folder, "{}.hex".format(app))
+            try:
+                with open(app_hex, 'rb') as f:
+                    file_hash = hashlib.sha256(f.read()).hexdigest()
+            except FileNotFoundError:
+                print("Cannot find app: app_hex")
+                continue
+
+            try:
+                aliases_dic[file_hash].append((board, app))
+            except KeyError:
+                # New digest => add entry
+                aliases_dic[file_hash] = [(board, app)]
+
+    all = 0
+    with open(file, "w") as f:
+        for key, value in aliases_dic.items():
+            #print(key, ' -> ', value)
+            all += len(value)
+
+            if len(value) == 1:
+                continue
+
+            alias = "{}:".format(value[0][1])
+            for v in value:
+                alias += ("{},".format(v[0]))
+
+            print(alias)
+            f.write(alias)
+
+    print("Before: ", all, " After: ", len(aliases_dic))
 
 def main():
     """Main program
 
     This utility script alllows to build multiples apps
     """
-
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter)
 
@@ -95,16 +185,27 @@ def main():
 
     parser.add_argument("--app_only", "-ao",
                         action='store_true',
-                        help="Should final config be checked")
+                        help="Build only for apps")
 
     parser.add_argument("--extra_build_args", "-e",
                         help="List of extra build args",
                         nargs='*',
                         default=None)
 
+    parser.add_argument("--alias_apps", "-aa",
+                        help="File with list of duplicated app/board combination (alias app)",
+                        default=None)
+
+    parser.add_argument("--generate_alias_list", "-gal",
+                        help="Generate the alias list",
+                        default=None)
+
     args = parser.parse_args()
 
-    build_all_apps(args.root_folder, args.boards, args.apps, args.app_only, args.extra_build_args)
+    build_all_apps(args.root_folder, args.boards, args.apps, args.app_only, args.extra_build_args, args.alias_apps)
+
+    if args.generate_alias_list != None:
+        generate_alias_matrix(args.root_folder, args.generate_alias_list)
 
 
 if __name__ == '__main__':

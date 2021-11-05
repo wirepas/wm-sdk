@@ -30,7 +30,25 @@ endif
 
 # Use App Scheduler and configure it
 APP_SCHEDULER=yes
-CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=3
+APP_SCHEDULER_TASKS=3
+
+# Enable Shared app config
+SHARED_APP_CONFIG=yes
+SHARED_APP_CONFIG_FILTERS=1
+
+SHARED_NEIGHBORS=yes
+SHARED_NEIGHBORS_CBS=1
+
+# Enable shared data module
+SHARED_DATA=yes
+
+# Enable stack state lib
+STACK_STATE_LIB=yes
+STACK_STATE_CBS=0
+
+# Enable local provisioning
+LOCAL_PROVISIONING=yes
+
 
 include $(SRCS_PATH)waps/makefile
 include $(SRCS_PATH)drivers/makefile

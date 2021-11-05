@@ -10,15 +10,6 @@
 #include "debug_log.h"
 #include "tlv.h"
 
-/**
- * Maximum filter that can be registered at the same time
- * It is application specific
- */
-#ifndef SHARED_APP_CONFIG_MAX_FILTER
-// Must be defined from application
-#error "Please define SHARED_APP_CONFIG_MAX_FILTER from your application makefile"
-#endif
-
 /** Tag that must be present at the beginning of app config */
 #define APP_CONFIG_V1_TLV   0x7EF6
 
@@ -164,6 +155,12 @@ static void new_app_config_cb(const uint8_t * bytes,
 
 shared_app_config_res_e Shared_Appconfig_init(void)
 {
+    if (m_initialized)
+    {
+        // Library is already initialized
+        return SHARED_APP_CONFIG_RES_OK;
+    }
+
     /* Set callback for received unicast and broadcast messages. */
     lib_data->setNewAppConfigCb(new_app_config_cb);
 
@@ -174,7 +171,7 @@ shared_app_config_res_e Shared_Appconfig_init(void)
 
     m_initialized = true;
 
-    return APP_RES_OK;
+    return SHARED_APP_CONFIG_RES_OK;
 }
 
 shared_app_config_res_e Shared_Appconfig_addFilter(

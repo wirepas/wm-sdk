@@ -20,8 +20,7 @@ HAL_SPI=yes
 
 # Use App Scheduler and configure it
 APP_SCHEDULER=yes
-CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=4
-CFLAGS += -DAPP_SCHEDULER_MAX_EXEC_TIME_US=100
+APP_SCHEDULER_TASKS=4
 
 # Use the 32bits integer data format for BME280 driver.
 CFLAGS += -DBME280_32BIT_ENABLE

@@ -132,7 +132,7 @@ static void t2_callback(t2_emu_event_e event)
     if ((!m_field_on) && (m_data_written))
     {
         m_data_written = false;
-        App_Scheduler_addTask(process_ndef, 0);
+        App_Scheduler_addTask_execTime(process_ndef, APP_SCHEDULER_SCHEDULE_ASAP, 350);
     }
 }
 
@@ -205,8 +205,6 @@ void App_init(const app_global_functions_t * functions)
 
     /* Check if NFC power-up the board */
     nfc_hw_is_nfc_reset_reason();
-
-    App_Scheduler_init();
 
     /* Init Type II Tag Emulator with T2_RAM_SIZE bytes */
     /* t2_callback will be called, from IRQ context on every Read/Write and Field event */
