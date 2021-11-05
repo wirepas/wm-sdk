@@ -20,7 +20,7 @@ BOOTLOADER_ELF := $(BL_BUILDPREFIX)bootloader.elf
 -include bootloader/makefile
 
 # Include board part (for BOARD_HW_xx defines)
--include board/makefile
+-include $(BOARDS_PATH)makefile
 
 # Include HAL drivers code (needed to build power.c (DCDC))
 -include $(HAL_API_PATH)makefile

@@ -127,7 +127,7 @@ need_board:
 	        A default value can be set in main config.mk file))
 
 	# Check if board really exist
-	@test -s board/$(target_board)/config.mk || \
+	@test -s $(BOARD_CONFIG) || \
 		   { echo "Specified target board $(target_board) doesn't exist. Available boards are: $(AVAILABLE_BOARDS)"; exit 1; }
 
 initial_setup: $(LICENSE_ACCEPTED) $(KEY_FILE)

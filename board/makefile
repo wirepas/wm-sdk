@@ -1,6 +1,6 @@
-INCLUDES += -Iboard/
+INCLUDES += -I$(BOARDS_PATH)
 
-SRCS += board/board_init.c
+SRCS += $(BOARDS_PATH)board_init.c
 
 # Include custom board makefile, where board specific source files can be added
 # Does nothing, if file does not exist
