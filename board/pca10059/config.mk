@@ -8,6 +8,9 @@ board_hw_crystal_32k=yes
 ## Is DCDC used on this board.
 board_hw_dcdc=yes
 
+usb_vid=0x0430
+usb_pid=0x0212
+
 # Uncomment, and set path to custom power table here, if set, the custom power
 # table will be set during application startup, and the stack will use that
 # instead of the default

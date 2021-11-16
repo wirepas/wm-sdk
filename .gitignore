@@ -13,4 +13,9 @@ build/
 #don't commit sensitive bootoader keys
 custom_bootloader_keys.ini
 
+mcu/nrf52/hal/usb_uart
+
+#for now until properties are sorted
+.vscode
+
 *.pyc
