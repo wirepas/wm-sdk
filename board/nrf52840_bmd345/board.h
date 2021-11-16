@@ -7,11 +7,10 @@
 /**
  * @file
  *
- * Board definition for the
- * <a href="https://www.nordicsemi.com/Software-and-tools/Development-Kits/nRF52840-DK">Nordic semiconductor PCA10056 evaluation board</a>
+ * Board definition for the BMD345 in the Cascade 500 and 500W
  */
-#ifndef BOARD_PCA10056_BOARD_H_
-#define BOARD_PCA10056_BOARD_H_
+#ifndef BOARD_NRF52840_BMD345_BOARD_H_
+#define BOARD_NRF52840_BMD345_BOARD_H_
 
 // NRF_GPIO is mapped to NRF_P0 , for pins P0.00 ... P0.31
 // Use NRF_P1 for pins P1.00 ... P1.15

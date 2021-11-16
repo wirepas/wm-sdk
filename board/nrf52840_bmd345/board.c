@@ -30,7 +30,7 @@ static inline void amp_nrf_gpio_cfg_out(uint32_t pin_number, uint8_t pin_state)
 }
 
 /**
- * \brief   Set up the built-in antenna front end (bypass mode)
+ * \brief   Set up the PCB antenna for bypass mode
  */
 void Board_custom_init()
 {
