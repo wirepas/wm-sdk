@@ -75,7 +75,7 @@ static uint32_t send_data(void)
 
     led_toggle(LED_1_PIN);
     if(get_wrp_print_msg_st())
-        uart_fprintf("Send data - %08x\r\n", data);
+        uart_fprintf("Send data - %02x%02x%02x%02x\r\n", data[3], data[2], data[1], data[0]);
 
     // Inform the stack that this function should be called again in
     // period_us microseconds. By returning APP_LIB_SYSTEM_STOP_PERIODIC,
