@@ -13,12 +13,7 @@
 
 static inline void amp_nrf_gpio_cfg_out(uint32_t pin_number, uint8_t pin_state)
 {
-    nrf_gpio_cfg(pin_number,
-                 NRF_GPIO_PIN_DIR_OUTPUT,
-                 NRF_GPIO_PIN_INPUT_DISCONNECT,
-                 NRF_GPIO_PIN_NOPULL,
-                 NRF_GPIO_PIN_S0S1,
-                 NRF_GPIO_PIN_NOSENSE);
+    nrf_gpio_cfg_output(pin_number);
     if(pin_state == AMP_NRF_GPIO_PIN_RESET)
     {
         nrf_gpio_pin_clear(pin_number);

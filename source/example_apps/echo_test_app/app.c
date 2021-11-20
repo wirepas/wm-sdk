@@ -65,13 +65,13 @@ static uint32_t send_data(void)
     data_to_send.dest_address = APP_ADDR_ANYSINK;
     data_to_send.src_endpoint = DATA_EP;
     data_to_send.dest_endpoint = DATA_EP;
-    data_to_send.qos = APP_LIB_DATA_QOS_HIGH;
+    data_to_send.qos = APP_LIB_DATA_QOS_NORMAL;
     data_to_send.delay = 0;
     data_to_send.flags = APP_LIB_DATA_SEND_FLAG_NONE;
     data_to_send.tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 
     // Send the data packet
-    lib_data->sendData(&data_to_send);
+    (void)lib_data->sendData(&data_to_send);
 
     led_toggle(LED_1_PIN);
     if(get_wrp_print_msg_st())
