@@ -25,6 +25,8 @@ int8_t Storage_getUID(const uint8_t ** uid)
 {
 #if defined(NRF52_PLATFORM)
     *uid = (uint8_t *)&NRF_FICR->DEVICEID[0];
+#elif defined(NRF91_PLATFORM)
+    *uid = (uint8_t *)&NRF_FICR->DEVICEID[0];
 #elif defined (EFR32MG21) || defined (EFR32MG22)
     *uid = (uint8_t *)DEVINFO->EUI64L;
 #elif defined (EFR32FG12) || defined (EFR32FG13)

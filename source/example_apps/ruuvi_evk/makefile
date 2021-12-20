@@ -1,27 +1,17 @@
-# You can add more sources here and libraries if needed
-SRCS += $(SRCS_PATH)BME280_driver/bme280.c
-SRCS += $(SRCS_PATH)bme280_wrapper.c
-SRCS += $(SRCS_PATH)LIS2DH12_driver/lis2dh12_STdC/driver/lis2dh12_reg.c
-SRCS += $(SRCS_PATH)lis2dh12_wrapper.c
-SRCS += $(SRCS_PATH)app_config.c
-SRCS += $(SRCS_PATH)format_data.c
-INCLUDES += -I$(SRCS_PATH)BME280_driver/
-INCLUDES += -I$(SRCS_PATH)LIS2DH12_driver/lis2dh12_STdC/driver/
-LIBS +=
-LDFLAGS +=
-
-# Example:
-# SRCS += $(SRCS_PATH)my_driver.c
-# LIBS += my_lib.a
-# include math.h lib
-# LDFLAGS += -lm
+SRCS += $(APP_SRCS_PATH)BME280_driver/bme280.c
+SRCS += $(APP_SRCS_PATH)bme280_wrapper.c
+SRCS += $(APP_SRCS_PATH)LIS2DH12_driver/lis2dh12_STdC/driver/lis2dh12_reg.c
+SRCS += $(APP_SRCS_PATH)lis2dh12_wrapper.c
+SRCS += $(APP_SRCS_PATH)app_config.c
+SRCS += $(APP_SRCS_PATH)format_data.c
+INCLUDES += -I$(APP_SRCS_PATH)BME280_driver/
+INCLUDES += -I$(APP_SRCS_PATH)LIS2DH12_driver/lis2dh12_STdC/driver/
 
 HAL_SPI=yes
 
 # Use App Scheduler and configure it
 APP_SCHEDULER=yes
-CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=4
-CFLAGS += -DAPP_SCHEDULER_MAX_EXEC_TIME_US=100
+APP_SCHEDULER_TASKS=4
 
 # Use the 32bits integer data format for BME280 driver.
 CFLAGS += -DBME280_32BIT_ENABLE

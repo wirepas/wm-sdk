@@ -10,8 +10,8 @@ API is split into following areas:
 
 - @subpage stack_api "Stack Libraries". These are
   implemented in stack and header files are offered to access those.
-- @subpage libraries_api "SDK internal API". These are given
-  as source code in SDK.
+- @subpage libraries_api "SDK Libraries". These are given
+  as source code in SDK under libraries folder.
 - @subpage board_api "Board definitions", i.e. pinout mappings
   for various boards
 - @subpage bootloader_api "Bootloader configuration", i.e.
@@ -19,7 +19,7 @@ API is split into following areas:
 - @subpage mcu_api "Low level hardware services (HAL)", i.e.
   low level routines, such as access to peripherals
 - @subpage util_api "Utility and helper services", i.e.
-  various utility- type functions, not related to stack operations as such, such
+  various utility type functions, not related to stack operations as such, such
   as random number generation.
 
 @section stack_api Stack Libraries
@@ -117,30 +117,33 @@ there to indicate which version of the low-level application API the application
 supports. If there is a mismatch between the low-level API versions of the stack
 and the application, the stack may choose to not run the application.
 
-@section libraries_api SDK Internal API
+@section libraries_api SDK Libraries
 
 There are numerous services that are given as a source code as part of the SDK.
-They are for various purposes, like easier access for low level hardware (HAL)
-routines. They are only present in the generated binaries if they are used.
+They are for various purposes, like higher API level or application services
+implemented by Wirepas. They are only present in the generated binaries if they are used.
 
-First group of services is Wirepas wrapper services. They are abstractions of
-single mcu api to ease the implementation. They are located in @ref libraries
-"libraries" folder.
+They are abstractions of single mcu api to ease the implementation.
+They are located in @ref libraries "libraries" folder.
 
-Following table, summarize these services and files by:
-- Name and path of the header file
-- Short description
+@note When a library is enabled, some single mcu api cannot be used anymore directly from
+application. It would result in undefined behavior. Those api are listed in each library
+init function description.
+
+Following table, summarize these libraries:
 
 <table>
 <tr><th>Name</th><th>Description</th></tr>
-<tr><td>@ref app_scheduler.h "app_scheduler.h"</td><td>Scheduling of
-multiple application tasks</td></tr>
-<tr><td>@ref shared_data.h "shared_data.h"</td><td>Handling of data
-packets</td></tr>
-<tr><td>@ref uart_print.h "uart_print.h"</td><td>UART print module
-</td></tr>
-<tr><td>@ref libraries/provisioning/provisioning.h "provisioning/provisioning.h"
-</td><td>Provisioning</td></tr>
+<tr><td>@ref app_persistent.h "app_persistent"</td><td>Managing persistent data area</td></tr>
+<tr><td>@ref dualmcu_lib.h "dualmcu"</td><td>Scheduling of multiple application tasks</td></tr>
+<tr><td>@ref local_provisioning.h "local_provisioning"</td><td>Local provisioning feature built on top of more generic provisioning library</td></tr>
+<tr><td>@ref poslib.h "positioning"</td><td>Positioning related logic for anchor and tags</td></tr>
+<tr><td>@ref libraries/provisioning/provisioning.h "provisioning"</td><td>Provisioning</td></tr>
+<tr><td>@ref app_scheduler.h "scheduler"</td><td>Scheduling of multiple application tasks</td></tr>
+<tr><td>@ref shared_data.h "shared_data"</td><td>Handling of data packets between different modules</td></tr>
+<tr><td>@ref shared_appconfig.h "shared_appconfig"</td><td>Register for app config following Wirepas TLV format</td></tr>
+<tr><td>@ref shared_offline.h "shared_offline"</td><td>Manages the NRLS setting between different modules</td></tr>
+<tr><td>@ref stack_state.h "stack_state"</td><td>Allows module to start/stop stack and be notified when such event happens</td></tr>
 </table>
 
 @section board_api Board definitions
@@ -279,8 +282,6 @@ are following:
 <tr><td>@ref hw_delay.h "hw_delay.h"</td><td>Hardware delay module</td></tr>
 <tr><td>@ref i2c.h "i2c.h"</td><td>Simple minimal I2C master driver</td></tr>
 <tr><td>@ref led.h "led.h"</td><td>LED functions</td></tr>
-<tr><td>@ref persistent.h "persistent.h"</td><td>Hardware-specific persistant
-memory area</td></tr>
 <tr><td>@ref power.h "power.h"</td><td>Enabling of DCDC converter</td></tr>
 <tr><td>@ref spi.h "spi.h"</td><td>Simple minimal SPI master driver</td></tr>
 <tr><td>@ref usart.h "usart.h"</td><td>USART block handling</td>

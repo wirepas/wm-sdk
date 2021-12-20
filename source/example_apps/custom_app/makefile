@@ -5,7 +5,16 @@ LIBS +=
 LDFLAGS +=
 
 # Example:
-# SRCS += $(SRCS_PATH)my_driver.c
+# SRCS += $(APP_SRCS_PATH)my_driver.c
 # LIBS += my_lib.a
 # include math.h lib
 # LDFLAGS += -lm
+
+# Use Shared Data
+SHARED_DATA=yes
+
+APP_PRINTING=yes
+
+# Use App Scheduler and configure it
+APP_SCHEDULER=yes
+APP_SCHEDULER_TASKS=1

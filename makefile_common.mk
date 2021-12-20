@@ -1,9 +1,9 @@
 # Version of GCC used for Wirepas testing
-GCC_TESTED_VERSIONS := 4.8.4, 7.2.1
+GCC_TESTED_VERSION := 7.2.1
 
 # Minimum binaries version required by this SDK version
 MIN_BOOTLOADER_VERSION := 7
-MIN_STACK_VERSION := 5.1.0.0
+MIN_STACK_VERSION := 5.2.0.0
 
 # SDK itself
 SDK_PATH := .
@@ -16,6 +16,7 @@ HAL_API_PATH := mcu/hal_api/
 WP_LIB_PATH := libraries/
 GLOBAL_BUILD := build/
 BOARDS_PATH := board/
+BOARDS_PATH_INTERNAL := board_internal/
 MCU_PATH := mcu/
 
 # General compiler flags (Define it before specific makefile in order to allow app to overwrite it)
@@ -80,10 +81,10 @@ MAKE        := make
 
 # Check the toolchain version with GCC
 GCC_VERSION := $(shell $(CC) -dumpversion)
-ifneq ($(GCC_VERSION), $(findstring $(GCC_VERSION), $(GCC_TESTED_VERSIONS)))
+ifneq ($(GCC_VERSION), $(findstring $(GCC_VERSION), $(GCC_TESTED_VERSION)))
 $(warning ***********************************************************************)
-$(warning "GCC version used is not one of the versions recommended and tested by Wirepas )
-$(warning "Recommended versions are: $(GCC_TESTED_VERSIONS))
+$(warning "GCC version used is not the recommended and tested by Wirepas )
+$(warning "Recommended version is : $(GCC_TESTED_VERSION))
 $(warning ***********************************************************************)
 endif
 
@@ -102,16 +103,20 @@ AVAILABLE_BOARDS := $(patsubst $(BOARDS_PATH)%/,%,$(sort $(dir $(wildcard $(BOAR
 FIRMWARE_NAME := wpc_stack
 
 
+BOARD_FOLDER := $(BOARDS_PATH)$(target_board)
+
+ifeq (,$(wildcard $(BOARD_FOLDER)))
+$(error Board $(target_board) doesn't exist. Available boards are: $(AVAILABLE_BOARDS))
+endif
+
 # Board config file
-BOARD_CONFIG := board/$(target_board)/config.mk
+BOARD_CONFIG := $(BOARD_FOLDER)/config.mk
 
 # Include board specific config
 -include $(BOARD_CONFIG)
 
-MCU_CONFIG := mcu/$(MCU)/config.mk
-# Include mcu specific config
-
--include $(MCU_CONFIG)
+# Include makefile for mcu family
+include $(MCU_PATH)$(MCU_FAMILY)/makefile
 
 # Folder for Wirepas stack binary image
 IMAGE_PATH := image/
@@ -126,7 +131,7 @@ CFLAGS += -D$(MCU_UPPER)
 
 CFLAGS += -march=$(ARCH)
 
-INCLUDES += -Imcu/$(MCU) -Imcu/$(MCU)/hal -Imcu/$(MCU)/vendor -Imcu/$(MCU)/cmsis -Iboard/$(target_board)
+INCLUDES += -I$(MCU_PATH)common/cmsis -I$(BOARD_FOLDER)
 
 # Folder where the application sources are located (and config file)
 # Can be in different folders, try them one by one

@@ -15,7 +15,7 @@
 #include <string.h>
 #include "api.h"
 #include "posapp_settings.h"
-#include "shared_shutdown.h"
+#include "stack_state.h"
 
 /*
  *  Network keys define in mcu/common/start.c and
@@ -26,8 +26,6 @@ extern const uint8_t * authen_key_p;
 extern const uint8_t * cipher_key_p;
 
 static app_lib_settings_role_t m_new_role;
-static uint16_t m_shared_shutdown_id;
-
 
 void get_default_settings(poslib_settings_t * settings)
 {
@@ -74,9 +72,16 @@ void get_default_settings(poslib_settings_t * settings)
     settings->da.follow_network = POSLIB_DA_FOLLOW_NETWORK;
 }
 
-static void shutdown_cb()
+static void stack_state_cb(stack_state_event_e event)
 {
-    app_res_e res = lib_settings->setNodeRole(m_new_role);
+    app_res_e res;
+    if (event != STACK_STATE_STOPPED_EVENT)
+    {
+        // only interested by stopped event
+        return;
+    }
+    res = lib_settings->setNodeRole(m_new_role);
+
     if (res == APP_RES_OK)
     {
         LOG(LVL_INFO, "New role %u set", m_new_role);
@@ -203,11 +208,11 @@ static void check_role(poslib_settings_t * settings, bool force_set_role)
     if (force_set_role && role != new_role)
     {
         app_res_e res;
-        res = Shared_Shutdown_addShutDownCb(shutdown_cb,&m_shared_shutdown_id);
+        res = Stack_State_addEventCb(stack_state_cb);
 
         if (res != APP_RES_OK)
         {
-            LOG(LVL_ERROR, "Cannot register shutdown CB. res: %u", res);
+            LOG(LVL_ERROR, "Cannot register stack state CB. res: %u", res);
             return;
         }
 

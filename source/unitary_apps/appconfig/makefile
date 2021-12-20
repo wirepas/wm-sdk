@@ -1,11 +1,12 @@
-# You can add more sources here and libraries if needed
-SRCS +=
-INCLUDES +=
-LIBS +=
-LDFLAGS +=
+# Use App Scheduler and configure it
+APP_SCHEDULER=yes
+APP_SCHEDULER_TASKS=1
 
 SHARED_APP_CONFIG=yes
-CFLAGS += -DSHARED_APP_CONFIG_MAX_FILTER=2
+SHARED_APP_CONFIG_FILTERS=3
+
+# Use Shared Data
+SHARED_DATA=yes
 
 # Enable the debug logs (has no effect on board without serial port)
 APP_PRINTING=yes

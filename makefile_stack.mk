@@ -4,6 +4,7 @@ include makefile_common.mk
 
 
 stack_mode?=normal
+mac_profile?=ism_24_ghz
 
 $(STACK_HEX): FORCE
 	# Get the right stack from the image folder

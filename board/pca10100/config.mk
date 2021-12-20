@@ -1,4 +1,5 @@
 # Mcu of the board
+MCU_FAMILY=nrf
 MCU=nrf52
 MCU_SUB=833
 

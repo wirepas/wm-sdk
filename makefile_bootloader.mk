@@ -12,7 +12,7 @@ BOOTLOADER_SRC :=  $(BUILDPREFIX_BOOTLOADER)bootloader.a
 BL_BUILDPREFIX := $(BUILDPREFIX_BOOTLOADER)
 
 # Linker for the bootloader
-LDSCRIPT := mcu/$(MCU)/linker/gcc_bl_$(MCU)$(MCU_SUB)$(MCU_MEM_VAR).ld
+LDSCRIPT := $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/linker/gcc_bl_$(MCU)$(MCU_SUB)$(MCU_MEM_VAR).ld
 
 BOOTLOADER_ELF := $(BL_BUILDPREFIX)bootloader.elf
 

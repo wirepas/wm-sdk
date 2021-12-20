@@ -124,9 +124,9 @@ static void joining_beacon_rx_cb(
 
     m_num_beacons = num_beacons;
     m_events.scan_end = 1;
-    if (App_Scheduler_addTask(run_state_machine,
-                              APP_SCHEDULER_SCHEDULE_ASAP) !=
-                                                        APP_SCHEDULER_RES_OK)
+    if (App_Scheduler_addTask_execTime(run_state_machine,
+                              APP_SCHEDULER_SCHEDULE_ASAP,
+                              500) != APP_SCHEDULER_RES_OK)
     {
         reset_joining(true);
         m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
@@ -141,9 +141,9 @@ void route_changed_cb(void)
 {
     LOG(LVL_INFO, "Event : ROUTE CHANGE.");
     m_events.route_change = 1;
-    if (App_Scheduler_addTask(run_state_machine,
-                              APP_SCHEDULER_SCHEDULE_ASAP) !=
-                                                        APP_SCHEDULER_RES_OK)
+    if (App_Scheduler_addTask_execTime(run_state_machine,
+                              APP_SCHEDULER_SCHEDULE_ASAP,
+                              500) != APP_SCHEDULER_RES_OK)
     {
         reset_joining(true);
         m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
@@ -158,9 +158,9 @@ static uint32_t timeout_task(void)
 {
     LOG(LVL_INFO, "Event : TIMEOUT.");
     m_events.timeout = 1;
-    if (App_Scheduler_addTask(run_state_machine,
-                              APP_SCHEDULER_SCHEDULE_ASAP) !=
-                                                        APP_SCHEDULER_RES_OK)
+    if (App_Scheduler_addTask_execTime(run_state_machine,
+                              APP_SCHEDULER_SCHEDULE_ASAP,
+                              500) != APP_SCHEDULER_RES_OK)
     {
         reset_joining(true);
         m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
@@ -260,7 +260,7 @@ static uint32_t state_start(void)
     }
     else
     {
-        if (App_Scheduler_addTask(timeout_task,DELAY_WAIT_END_SCAN_MS) !=
+        if (App_Scheduler_addTask_execTime(timeout_task, DELAY_WAIT_END_SCAN_MS, 500) !=
                                                         APP_SCHEDULER_RES_OK)
         {
             reset_joining(true);
@@ -333,9 +333,9 @@ static uint32_t state_wait_scan_end(void)
                     {
                         lib_state->setRouteCb(route_changed_cb, 0);
                         m_state = JOIN_STATE_WAIT_ROUTE_CHANGE;
-                        if (App_Scheduler_addTask(timeout_task,
-                                                  DELAY_WAIT_END_JOINING_MS) !=
-                                                        APP_SCHEDULER_RES_OK)
+                        if (App_Scheduler_addTask_execTime(timeout_task,
+                                                  DELAY_WAIT_END_JOINING_MS,
+                                                  500) != APP_SCHEDULER_RES_OK)
                         {
                             reset_joining(true);
                             m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
@@ -353,9 +353,9 @@ static uint32_t state_wait_scan_end(void)
                     m_events.route_change = 1;
                     m_state = JOIN_STATE_WAIT_ROUTE_CHANGE;
                     new_delay_ms = APP_SCHEDULER_SCHEDULE_ASAP;
-                    if (App_Scheduler_addTask(timeout_task,
-                                              DELAY_WAIT_END_JOINING_MS) !=
-                                                        APP_SCHEDULER_RES_OK)
+                    if (App_Scheduler_addTask_execTime(timeout_task,
+                                              DELAY_WAIT_END_JOINING_MS,
+                                              500) != APP_SCHEDULER_RES_OK)
                     {
                         reset_joining(true);
                         m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
@@ -566,9 +566,9 @@ provisioning_ret_e Provisioning_Joining_start()
     }
 
     m_events.start = 1;
-    if (App_Scheduler_addTask(run_state_machine,
-                              APP_SCHEDULER_SCHEDULE_ASAP) !=
-                                                        APP_SCHEDULER_RES_OK)
+    if (App_Scheduler_addTask_execTime(run_state_machine,
+                              APP_SCHEDULER_SCHEDULE_ASAP,
+                              500) != APP_SCHEDULER_RES_OK)
     {
         reset_joining(true);
         m_conf.end_cb(PROV_RES_ERROR_INTERNAL);

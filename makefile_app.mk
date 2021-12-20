@@ -3,8 +3,7 @@ include makefile_common.mk
 .DEFAULT_GOAL := all
 
 # Linker script
-LDSCRIPT = mcu/$(MCU)/linker/gcc_app_$(MCU)$(MCU_SUB)$(MCU_MEM_VAR).ld
-
+LDSCRIPT = $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/linker/gcc_app_$(MCU)$(MCU_SUB)$(MCU_MEM_VAR).ld
 LIBS :=
 
 ifeq ($(filter $(TARGET_BOARDS),$(target_board)),)
@@ -35,6 +34,8 @@ endif
 ifneq ($(default_network_authen_key),)
 CFLAGS += -DNET_AUTHEN_KEY=$(default_network_authen_key)
 endif
+# And version numbers
+CFLAGS += -DVER_MAJOR=$(app_major) -DVER_MINOR=$(app_minor) -DVER_MAINT=$(app_maintenance) -DVER_DEV=$(app_development)
 
 # Include board init part
 -include board/makefile
@@ -42,6 +43,9 @@ endif
 # Include app specific makefile
 -include $(APP_SRCS_PATH)makefile
 
+
+# Include Libraries config first (dependencies)
+-include $(WP_LIB_PATH)config.mk
 
 # Generic util functions are needed for all apps (api.c)
 -include $(UTIL_PATH)makefile
@@ -86,7 +90,7 @@ $(BUILDPREFIX_APP)%.o : %.s
 $(APP_ELF): $(OBJS) $(LIBS)
 	$(CC) $(CFLAGS) -o $@ $^ \
 	      -Wl,-Map=$(BUILDPREFIX_APP)$(APP_NAME).map \
-	      -Wl,-T,$(LDSCRIPT) $(LIBS) $(LDFLAGS)
+	      -Wl,-T,$(LDSCRIPT),--print-memory-usage $(LIBS) $(LDFLAGS)
 
 $(APP_HEX): $(APP_ELF)
 	@echo "Generating $(APP_HEX)"

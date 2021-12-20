@@ -17,6 +17,8 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "shared_data.h"
+#include "app_scheduler.h"
 
 #include "mcu.h"
 
@@ -62,10 +64,11 @@ uint32_t send_temperature(void)
     data_to_send.flags = APP_LIB_DATA_SEND_FLAG_NONE;
     data_to_send.tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 
-    lib_data->sendData(&data_to_send);
+    Shared_Data_sendData(&data_to_send, NULL);
 
     return APP_LIB_SYSTEM_STOP_PERIODIC;
 }
+
 
 static void temp_interrupt_handler(void)
 {
@@ -79,9 +82,9 @@ static void temp_interrupt_handler(void)
         temperature = 0;
     }
 
-    lib_system->setPeriodicCb((app_lib_system_periodic_cb_f) send_temperature,
-                              0,
-                              EXECUTION_TIME_US);
+    App_Scheduler_addTask_execTime(send_temperature,
+                                    APP_SCHEDULER_SCHEDULE_ASAP,
+                                    EXECUTION_TIME_US);
 }
 
 static void start_temperature_measurement()
@@ -91,16 +94,25 @@ static void start_temperature_measurement()
     NRF_TEMP->INTENSET = 1;
 }
 
-static app_lib_data_receive_res_e unicastDataReceivedCb(const app_lib_data_received_t * data)
+static app_lib_data_receive_res_e unicastDataReceivedCb(
+                        const shared_data_item_t * item,
+                        const app_lib_data_received_t * data )
 {
-    if (data->dest_endpoint == GET_TEMPERATURE_EP)
-    {
-        start_temperature_measurement();
-        return APP_LIB_DATA_RECEIVE_RES_HANDLED;
-    }
-
+    start_temperature_measurement();
     return APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP;
 }
+
+/** Unicast messages filter */
+static shared_data_item_t unicast_packets_filter =
+{
+    .cb = unicastDataReceivedCb,
+    .filter = {
+        .mode = SHARED_DATA_NET_MODE_UNICAST,
+        /* Filtering by destination endpoint. */
+        .dest_endpoint = GET_TEMPERATURE_EP,
+        .multicast_cb = NULL
+    }
+};
 
 /**
  * \brief   Initialization callback for application
@@ -123,7 +135,7 @@ void App_init(const app_global_functions_t * functions)
     lib_system->enableAppIrq(false, TEMP_IRQn, APP_LIB_SYSTEM_IRQ_PRIO_LO, temp_interrupt_handler);
 
     // Register for unicast messages
-    lib_data->setDataReceivedCb(unicastDataReceivedCb);
+    Shared_Data_addDataReceivedCb(&unicast_packets_filter);
 
     // Start the stack
     lib_state->startStack();

@@ -100,6 +100,12 @@ finish its work in the corresponding allocated window. Being late can
 </I>. The scheduler cannot pre-empt a task. Thus, special care must be taken
 to guarantee that a task finishes on time.
 
+Moreover as it is a cooperative scheduler, application must not ask to
+be scheduled all the time. It would prevent Wirepas tasks with a lower
+priority from getting access to the MCU. It may result with stack not being
+able to generate diagnostics or process OTAP commands. Even if their is no
+exact figure, Application must ensure a fair access to the MCU ressource.
+
 An application task can get run-time in basically three different ways:
 
 -# via \ref periodic_application "periodic application callback function"

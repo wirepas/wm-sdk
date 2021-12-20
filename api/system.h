@@ -83,6 +83,18 @@ typedef enum
     APP_LIB_SYSTEM_HARDWARE_MAGIC_EFR32XG13     = 8,
     /** Nordic Semiconductor nRF52833 */
     APP_LIB_SYSTEM_HARDWARE_MAGIC_NRF52833      = 9,
+    /** Silicon Labs EFR32xG21 */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_EFR32XG21     = 10,
+    /** Silicon Labs EFR32xG22, 512 kB Flash, 32 kB RAM */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_EFR32XG22     = 11,
+    /** Reserved */
+    APP_LIB_SYSTEM_HARDWARE_RESERVED_5          = 12,
+    /** Silicon Labs BGM220PC22HNA */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_BGM220PC22HNA = 13,
+    /** Silicon Labs BGM220SC22HNA */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_BGM220SC22HNA = 14,
+    /** Nordic Semiconductor nRF9160 */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_NRF9160       = 15,
 } app_lib_system_hardware_magic_e;
 
 /**

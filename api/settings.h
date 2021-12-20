@@ -32,7 +32,7 @@
 #define APP_LIB_SETTINGS_NAME 0x74ced676 //!< "SETTIN"
 
 /** @brief Maximum supported library version */
-#define APP_LIB_SETTINGS_VERSION 0x205
+#define APP_LIB_SETTINGS_VERSION 0x206
 
 /**
  * @brief AES key size in bytes
@@ -433,10 +433,11 @@ typedef app_res_e
  * The @p key_p parameter is ignored.
  *
  * @param   key_p
- *          A dummy parameter, reserved for future, set to NULL
+ *          If NULL, key is not return but return code will inform if keys are set or not.
+ *          Otherwise, pointer to a ram area of 16 bytes where the key can be copied.
+ *          It is updated only if return value is APP_RES_OK.
  * @return  Result code, @ref APP_RES_OK if a key set,
  *          APP_RES_INVALID_CONFIGURATION if the key is all 0xff, i.e. not set
- * @note    Reading the actual key value is not possible, for security reasons
  */
 typedef app_res_e
     (*app_lib_settings_get_authentication_key_f)(uint8_t * key_p);
@@ -470,10 +471,11 @@ typedef app_res_e
  * The @p key_p parameter is ignored.
  *
  * @param   key_p
- *          A dummy parameter, reserved for future, set to NULL
+ *          If NULL, key is not return but return code will inform if keys are set or not.
+ *          Otherwise, pointer to a ram area of 16 bytes where the key can be copied.
+ *          It is updated only if return value is APP_RES_OK.
  * @return  Result code, @ref APP_RES_OK if a key set,
  *          APP_RES_INVALID_CONFIGURATION if the key is all 0xff, i.e. not set
- * @note    Reading the actual key value is not possible, for security reasons
  */
 typedef app_res_e
     (*app_lib_settings_get_encryption_key_f)(uint8_t * key_p);

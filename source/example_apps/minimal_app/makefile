@@ -5,7 +5,7 @@ LIBS +=
 LDFLAGS +=
 
 # Example:
-# SRCS += $(SRCS_PATH)my_driver.c
+# SRCS += $(APP_SRCS_PATH)my_driver.c
 # LIBS += my_lib.a
 # include math.h lib
 # LDFLAGS += -lm

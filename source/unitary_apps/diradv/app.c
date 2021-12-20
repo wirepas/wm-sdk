@@ -28,9 +28,11 @@
 #include "node_configuration.h"
 #include "led.h"
 #include "button.h"
+#include "shared_data.h"
+#include "app_scheduler.h"
 
 // How often diradv scans and sends data (in useconds)
-#define SCAN_PERIOD_US (60*1000000)
+#define SCAN_PERIOD_MS (60*1000)
 
 // Transmission from advertiser
 const uint8_t m_adv_tx_data[] = "Hello from advertiser!";
@@ -109,7 +111,7 @@ static void beacon_listen_cb(const app_lib_state_beacon_rx_t * beacon)
         app_lib_data_send_res_e res;
         m_tx_def_adv.dest_address = beacon->address;
         m_tx_def_adv.tracking_id = m_tracking_id++;
-        res = lib_data->sendData(&m_tx_def_adv);
+        res = Shared_Data_sendData(&m_tx_def_adv, NULL);
         if (res == APP_LIB_DATA_SEND_RES_SUCCESS)
         {
             // Only send one device.
@@ -131,7 +133,7 @@ static uint32_t start_scan(void)
     // Enable led
     Led_set(0, true);
     // And try again later
-    return SCAN_PERIOD_US;
+    return SCAN_PERIOD_MS;
 }
 
 /**
@@ -168,7 +170,7 @@ static bool acklistener_cb(const ack_gen_input_t * in,
     m_adv_address = in->sender;
 
     // Send packet to sink
-    lib_data->sendData(&m_tx_def_hn);
+    Shared_Data_sendData(&m_tx_def_hn, NULL);
 
     out->data = (void *) &m_ack_content;
     out->length = sizeof(m_ack_content);
@@ -209,7 +211,9 @@ void App_init(const app_global_functions_t * functions)
         // Set scan callback to find CSMA-CA headnode (with route)
         lib_state->setOnBeaconCb(beacon_listen_cb);
         // Set periodic callback when do scan+transmission
-        lib_system->setPeriodicCb(start_scan, SCAN_PERIOD_US, 1000);
+        App_Scheduler_addTask_execTime(start_scan,
+                                       SCAN_PERIOD_MS,
+                                       1000);
         // Set scan end callback. Turns off the led if nothing was found
         lib_state->setOnScanNborsCb(scan_ended,
                                     APP_LIB_STATE_SCAN_NBORS_ONLY_REQUESTED);

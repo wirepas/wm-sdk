@@ -30,6 +30,8 @@ typedef enum
 
 /**
  * \brief   Value to use to receive all types
+ * \note    Callback will also be called with type @ref SHARED_APP_CONFIG_INCOMPATIBLE_FILTER
+ *          if app config doesn't follow Wirepas TLV format
  */
 #define SHARED_APP_CONFIG_ALL_TYPE_FILTER   0xFFFF
 
@@ -77,7 +79,8 @@ typedef struct
 } shared_app_config_filter_t;
 
 /**
- * \brief   Initialize the shared app config library library.
+ * \brief   Initialize the shared app config library.
+ * \note    This function is automatically called if library is enabled.
  * \note    If Shared app config module is used in application, the
  *          @ref app_lib_data_set_new_app_config_cb_f "lib_data->setNewAppConfigCb()"
  *          function offered by data library MUST NOT be

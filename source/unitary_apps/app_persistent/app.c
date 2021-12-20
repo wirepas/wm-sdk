@@ -53,16 +53,14 @@ void App_init(const app_global_functions_t * functions)
 
     LOG(LVL_INFO, "App_persistent example started\n");
 
-    res = App_Persistent_init();
-    if (res != APP_PERSISTENT_RES_OK)
-    {
-        LOG(LVL_ERROR, "Cannot initialize persistent\n");
-    }
-
     res = App_Persistent_read((uint8_t *) my_data, sizeof(my_data));
     if (res == APP_PERSISTENT_RES_INVALID_CONTENT)
     {
         LOG(LVL_INFO, "First initialization\n");
+    }
+    else if (res == APP_PERSISTENT_RES_UNINITIALIZED)
+    {
+        LOG(LVL_ERROR, "Persistent unitialized => Data area not present\n");
     }
 
     // Fill our data with PATTERN_BYTE
