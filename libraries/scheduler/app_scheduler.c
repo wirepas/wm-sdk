@@ -9,17 +9,6 @@
 #include <string.h>
 
 /**
- * Maximum periodic task that can be registered at the same time
- * It is application specific
- */
-#ifndef APP_SCHEDULER_MAX_TASKS
-// Must be defined from application
-#error "Please define APP_SCHEDULER_MAX_TASKS from your application makefile"
-#endif
-
-#define APP_SCHEDULER_ALL_TASKS (APP_SCHEDULER_LIBRARY_TASKS + APP_SCHEDULER_MAX_TASKS)
-
-/**
  * Maximum time in ms for periodic work  to be scheduled due to internal
  * stack maximum delay comparison (~30 minutes). Computed in init function
  */
@@ -420,6 +409,12 @@ static task_t * remove_task_from_table_locked(task_cb_f cb)
 
 void App_Scheduler_init()
 {
+    if (m_initialized)
+    {
+        // Library already initialized
+        return;
+    }
+
     // Maximum time to postpone the periodic work
     m_max_time_ms = lib_time->getMaxHpDelay() / 1000;
     m_next_task_p = NULL;

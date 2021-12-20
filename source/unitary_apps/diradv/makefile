@@ -1,14 +1,9 @@
-# You can add more sources here and libraries if needed
-SRCS +=
-INCLUDES +=
-LIBS +=
-LDFLAGS +=
+# Use App Scheduler and configure it
+APP_SCHEDULER=yes
+APP_SCHEDULER_TASKS=1
 
-# Example:
-# SRCS += $(SRCS_PATH)my_driver.c
-# LIBS += my_lib.a
-# include math.h lib
-# LDFLAGS += -lm
+#Use Shared data
+SHARED_DATA=yes
 
 # This application use HAL for buttons and leds
 HAL_BUTTON=yes

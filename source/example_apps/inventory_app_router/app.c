@@ -422,11 +422,9 @@ void App_init(const app_global_functions_t * functions)
     m_settings.send_timeout_us = TYPE0_TIMEOUT_US;
     m_settings.payload_type = ADV_TYPE2;
 
-    App_Scheduler_init();
-    App_Scheduler_addTask(send_data, SEND_CHECK_PERIOD_MS);
+    App_Scheduler_addTask_execTime(send_data, SEND_CHECK_PERIOD_MS, 100);
     set_callbacks();
 
-    Shared_Appconfig_init();
     app_config_filter.type = INVENTORY_APPCFG_TLV_TYPE;
     app_config_filter.cb = appCfgDataCb;
     app_config_filter.call_cb_always = false;

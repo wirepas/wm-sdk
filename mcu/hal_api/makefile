@@ -1,6 +1,6 @@
 CFLAGS	+= -I$(HAL_API_PATH)
 
-MCU_PREFIX := mcu/$(MCU)/
-
 # include drivers
-include $(MCU_PREFIX)hal/makefile
+#MCU_PREFIX := $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/
+#include $(MCU_PREFIX)hal/makefile
+include $(MCU_PATH)$(MCU_FAMILY)/makefile

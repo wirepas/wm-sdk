@@ -20,6 +20,8 @@
 #include "shared_appconfig.h"
 #include "api.h"
 #include "node_configuration.h"
+#include "shared_data.h"
+#include "app_scheduler.h"
 
 #define DEBUG_LOG_MODULE_NAME "MAIN_APP"
 #define DEBUG_LOG_MAX_LEVEL LVL_INFO
@@ -27,7 +29,7 @@
 
 /** Period to send data */
 #define DEFAULT_PERIOD_S    10
-#define DEFAULT_PERIOD_US   (DEFAULT_PERIOD_S*1000*1000)
+#define DEFAULT_PERIOD_MS   (DEFAULT_PERIOD_S*1000)
 
 /** Time needed to execute the periodic work, in us */
 #define EXECUTION_TIME_US   500
@@ -36,7 +38,7 @@
 #define DATA_EP             1
 
 /** Period to send measurements, in us */
-static uint32_t m_period_us;
+static uint32_t m_period_ms;
 
 /** In this example the app will register for this random type
  *  for sub app config content */
@@ -47,6 +49,9 @@ static uint16_t m_filter_id;
 
 /** Filter id for raw app_config */
 static uint16_t m_raw_filter_id;
+
+/** Filter id for all app_config */
+static uint16_t m_all_filter_id;
 
 /**
  *  In this example the periodic data transfer interval is changed according
@@ -86,7 +91,7 @@ static uint32_t send_data(void)
     data_to_send.tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 
     // Send the data packet
-    lib_data->sendData(&data_to_send);
+    Shared_Data_sendData(&data_to_send, NULL);
 
     // Increment value to send
     id++;
@@ -94,7 +99,7 @@ static uint32_t send_data(void)
     // Inform the stack that this function should be called again in
     // period_us microseconds. By returning APP_LIB_SYSTEM_STOP_PERIODIC,
     // the stack won't call this function again.
-    return m_period_us;
+    return m_period_ms;
 }
 
 /**
@@ -119,6 +124,12 @@ static void appConfigTLVReceivedCb(uint16_t type,
         return;
     }
 
+    if (length == 0)
+    {
+        LOG(LVL_INFO, "App config received but not for us");
+        return;
+    }
+
     if (length != sizeof(custom_app_config_t))
     {
         // Wrong size
@@ -134,7 +145,7 @@ static void appConfigTLVReceivedCb(uint16_t type,
         config->interval);
 
     // Set new periodic data transfer interval
-    m_period_us = config->interval * 1000 * 1000;
+    m_period_ms = config->interval * 1000;
 }
 
 static void appConfigRawReceivedCb(uint16_t type,
@@ -149,6 +160,14 @@ static void appConfigRawReceivedCb(uint16_t type,
     }
 
     LOG(LVL_INFO, "New RAW app configuration len=%d\n", length);
+}
+
+static void appConfigTLVAllReceivedCb(uint16_t type,
+                                      uint8_t length,
+                                      uint8_t * value_p)
+{
+
+    LOG(LVL_INFO, "New app configuration all filters type=%d len=%d\n", type, length);
 }
 
 /**
@@ -174,8 +193,6 @@ void App_init(const app_global_functions_t * functions)
 
     LOG(LVL_DEBUG, "App starting");
 
-    Shared_Appconfig_init();
-
     // Prepare the app_config filter
     app_config_filter.type = CUSTOM_TLV_TYPE;
     app_config_filter.cb = appConfigTLVReceivedCb;
@@ -192,12 +209,20 @@ void App_init(const app_global_functions_t * functions)
     Shared_Appconfig_addFilter(&app_config_filter, &m_raw_filter_id);
     LOG(LVL_INFO, "Filter added for TLV with id=%d\n", m_raw_filter_id);
 
-    // Set a periodic callback to be called after DEFAULT_PERIOD_US
-    m_period_us = DEFAULT_PERIOD_US;
-    lib_system->setPeriodicCb(send_data,
-                              m_period_us,
-                              EXECUTION_TIME_US);
+    // Prepare a third app_config filter
+    app_config_filter.type = SHARED_APP_CONFIG_ALL_TYPE_FILTER;
+    app_config_filter.cb = appConfigTLVAllReceivedCb;
+    app_config_filter.call_cb_always = false;
 
+    Shared_Appconfig_addFilter(&app_config_filter, &m_all_filter_id);
+    LOG(LVL_INFO, "Filter added for TLV with id=%d\n", m_all_filter_id);
+
+    // Set a periodic callback to be called after DEFAULT_PERIOD_MS
+    m_period_ms = DEFAULT_PERIOD_MS;
+
+    App_Scheduler_addTask_execTime(send_data,
+                                  m_period_ms,
+                                  EXECUTION_TIME_US);
     // Start the stack
     lib_state->startStack();
 }

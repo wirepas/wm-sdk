@@ -39,9 +39,11 @@ class SDKExplorer(object):
                                      os.path.isdir(os.path.join(board_folder, x)) and not "_template" in x,
                                      os.listdir(board_folder)))
 
+            print(all_boards)
+
             return all_boards
 
-        print("No folder %s (is root folder the right one? (-r option)" % folder)
+        print("No folder %s (is root folder the right one? (-r option)" % board_folder)
         return None
 
     def get_all_apps(self, folder):

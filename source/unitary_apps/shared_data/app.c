@@ -21,12 +21,17 @@
 #include "api.h"
 #include "node_configuration.h"
 #include "shared_data.h"
+#include "app_scheduler.h"
 
 #define DEBUG_LOG_MODULE_NAME "DATA APP"
 #define DEBUG_LOG_MAX_LEVEL LVL_INFO
 #include "debug_log.h"
 
 static app_lib_data_receive_res_e shared_data_cb(
+                                            const shared_data_item_t * item,
+                                            const app_lib_data_received_t * data);
+
+static app_lib_data_receive_res_e shared_data_cb_filter4(
                                             const shared_data_item_t * item,
                                             const app_lib_data_received_t * data);
 
@@ -68,6 +73,18 @@ static shared_data_item_t packet_3 =
               }
 };
 
+/** Allow unicast packet on endpoint [11, 11] to demonstrate full buffer */
+static shared_data_item_t packet_4 =
+{
+    .cb = shared_data_cb_filter4,
+    .filter = {
+                .mode = SHARED_DATA_NET_MODE_UNICAST,
+                .src_endpoint = 11,
+                .dest_endpoint = 11,
+                .multicast_cb = NULL
+              }
+};
+
 static void sent_cb(const app_lib_data_sent_status_t * status)
 {
     LOG(LVL_INFO, "Packet sent (src ep: %u, dest ep: %u, tracking_id: %d, "
@@ -76,6 +93,39 @@ static void sent_cb(const app_lib_data_sent_status_t * status)
                   status->dest_endpoint,
                   status->tracking_id,
                   (uint8_t)status->success);
+}
+
+static uint32_t enable_reception()
+{
+    LOG(LVL_INFO, "Enable reception again");
+    Shared_Data_readyToReceive(&packet_4);
+    return APP_SCHEDULER_STOP_TASK;
+}
+
+static app_lib_data_receive_res_e shared_data_cb_filter4(
+                                            const shared_data_item_t * item,
+                                            const app_lib_data_received_t * data)
+{
+    /* Messages will be offered two times the message
+     *  - First refuse it no space
+     *  - Second, handle it
+     */
+    static bool blocked = false;
+    if (blocked)
+    {
+        blocked = false;
+        return APP_LIB_DATA_RECEIVE_RES_HANDLED;
+    }
+    else
+    {
+        blocked = true;
+        LOG(LVL_INFO, "Block reception");
+        /*
+        * Any received packet on this EP will block reception for 30s
+        */
+        App_Scheduler_addTask_execTime(enable_reception, 30 * 1000, 100);
+        return APP_LIB_DATA_RECEIVE_RES_NO_SPACE;
+    }
 }
 
 static app_lib_data_receive_res_e shared_data_cb(
@@ -164,11 +214,10 @@ void App_init(const app_global_functions_t * functions)
         return;
     }
 
-    Shared_Data_init();
-
     Shared_Data_addDataReceivedCb(&packet_1);
     Shared_Data_addDataReceivedCb(&packet_2);
     Shared_Data_addDataReceivedCb(&packet_3);
+    Shared_Data_addDataReceivedCb(&packet_4);
 
     // Start the stack
     lib_state->startStack();

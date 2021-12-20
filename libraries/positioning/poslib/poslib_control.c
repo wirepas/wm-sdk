@@ -23,7 +23,6 @@
 #include "poslib_measurement.h"
 #include "poslib_decode.h"
 #include "poslib_da.h"
-#include "shared_shutdown.h"
 #include "shared_data.h"
 #include "shared_appconfig.h"
 #include "shared_offline.h"
@@ -184,7 +183,7 @@ static void process_led_status(poslib_aux_settings_t * aux)
     {
         PosLibEvent_add(POSLIB_CTRL_EVENT_LED_ON);
         LOG(LVL_DEBUG,"LED on. Duration (s): %d", aux->led_on_duration_s);
-        App_Scheduler_addTask(led_off_cb, TIME_SEC_TO_MS(aux->led_on_duration_s));
+        App_Scheduler_addTask_execTime(led_off_cb, TIME_SEC_TO_MS(aux->led_on_duration_s), 500);
     }
 }
 
@@ -658,7 +657,7 @@ poslib_ret_e PosLibCtrl_startPeriodic(void)
 
     m_ctrl.state = POSLIB_STATE_IDLE;
     m_poslib_started = true;
-    App_Scheduler_addTask(delayed_start, 5000);  //FixME: this is needed to prevent a race condition in NRLS
+    App_Scheduler_addTask_execTime(delayed_start, 5000, 500);  //FixME: this is needed to prevent a race condition in NRLS
     
     PosLibBle_start(&m_pos_settings.ble);
 
@@ -956,7 +955,7 @@ static uint32_t timeout_task()
 static void set_timeout(poslib_internal_event_type_e type, uint32_t timeout_ms)
 {
     m_timeout_event_type = type;
-    App_Scheduler_addTask(timeout_task, timeout_ms);
+    App_Scheduler_addTask_execTime(timeout_task, timeout_ms, 500);
 }
 
 static void clear_timeout(void)
@@ -976,7 +975,7 @@ static bool update_autoscan(uint32_t delta_s)
 
     next_update_ms = (delta_s == 0) ? APP_SCHEDULER_SCHEDULE_ASAP : TIME_SEC_TO_MS(delta_s);
 
-    if (App_Scheduler_addTask(trigger_update_task, next_update_ms) != APP_SCHEDULER_RES_OK)
+    if (App_Scheduler_addTask_execTime(trigger_update_task, next_update_ms, 500) != APP_SCHEDULER_RES_OK)
     {
         LOG(LVL_ERROR, "Cannot add trigger_update task");
         return false;

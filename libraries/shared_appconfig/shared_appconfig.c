@@ -10,15 +10,6 @@
 #include "debug_log.h"
 #include "tlv.h"
 
-/**
- * Maximum filter that can be registered at the same time
- * It is application specific
- */
-#ifndef SHARED_APP_CONFIG_MAX_FILTER
-// Must be defined from application
-#error "Please define SHARED_APP_CONFIG_MAX_FILTER from your application makefile"
-#endif
-
 /** Tag that must be present at the beginning of app config */
 #define APP_CONFIG_V1_TLV   0x7EF6
 
@@ -29,6 +20,16 @@ typedef struct __attribute__((packed))
     uint8_t entry_number;
 } tlv_app_config_header_t;
 
+typedef struct
+{
+    /** The filter set by app
+     */
+    shared_app_config_filter_t filter;
+    /** Internal state to know if filter was called
+     */
+    bool called;
+} shared_app_config_internal_filter_t;
+
 /**
  * Is library initialized
  */
@@ -37,7 +38,7 @@ static bool m_initialized = false;
 /**  List of filters */
 static shared_app_config_filter_t m_filter[SHARED_APP_CONFIG_MAX_FILTER];
 
-static void dispatch_to_modules(shared_app_config_filter_t filters[],
+static void dispatch_to_modules(shared_app_config_internal_filter_t filters[],
                                 uint16_t num_filters,
                                 uint16_t type,
                                 uint8_t len,
@@ -45,32 +46,31 @@ static void dispatch_to_modules(shared_app_config_filter_t filters[],
 {
     for (uint8_t i = 0; i < num_filters; i++)
     {
-        if ((filters[i].type == type) ||
-            (filters[i].type == SHARED_APP_CONFIG_ALL_TYPE_FILTER))
+        if ((filters[i].filter.type == type) ||
+            (filters[i].filter.type == SHARED_APP_CONFIG_ALL_TYPE_FILTER))
         {
-            filters[i].cb(type, len, (uint8_t *) val);
+            filters[i].filter.cb(type, len, (uint8_t *) val);
             /* If filter is called, remember it by modyfing the working copy*/
-            filters[i].cb = NULL;
+            filters[i].called = true;
         }
     }
 }
 
-static void inform_other_modules(shared_app_config_filter_t filters[],
+static void inform_other_modules(shared_app_config_internal_filter_t filters[],
                                  uint16_t num_filters)
 {
     for (uint8_t i = 0; i < num_filters; i++)
     {
-        // Cb is still in the list so was not called yet
-        // Check if filter is interested by information
-        if (filters[i].cb != NULL && filters[i].call_cb_always)
+        // Check if filter is interested by information and not already called
+        if (filters[i].called == false && filters[i].filter.call_cb_always)
         {
-            filters[i].cb(filters[i].type, 0, NULL);
+            filters[i].filter.cb(filters[i].filter.type, 0, NULL);
         }
     }
 }
 
 static void inform_filters(const uint8_t * bytes,
-                           shared_app_config_filter_t * filters,
+                           shared_app_config_internal_filter_t * filters,
                            uint16_t num_filters)
 {
     tlv_record record;
@@ -138,7 +138,7 @@ static void new_app_config_cb(const uint8_t * bytes,
     // Allocate on stack the filter. A filter is only 8 bytes and
     // SHARED_APP_CONFIG_MAX_FILTER should remain relatively small.
     // Even if it is 10, it will be only 80 bytes allocated on stack
-    shared_app_config_filter_t current_filters[SHARED_APP_CONFIG_MAX_FILTER];
+    shared_app_config_internal_filter_t current_filters[SHARED_APP_CONFIG_MAX_FILTER];
 
     // Before iterating filters, make a copy of them to avoid any
     // update of them. It also ease the way to know which filter were called
@@ -148,7 +148,8 @@ static void new_app_config_cb(const uint8_t * bytes,
     {
         if (m_filter[i].cb != NULL)
         {
-            memcpy(&(current_filters[i]), &(m_filter[i]), sizeof(shared_app_config_filter_t));
+            memcpy(&(current_filters[i].filter), &(m_filter[i]), sizeof(shared_app_config_filter_t));
+            current_filters[i].called = false;
             nb_filter++;
         }
     }
@@ -164,6 +165,12 @@ static void new_app_config_cb(const uint8_t * bytes,
 
 shared_app_config_res_e Shared_Appconfig_init(void)
 {
+    if (m_initialized)
+    {
+        // Library is already initialized
+        return SHARED_APP_CONFIG_RES_OK;
+    }
+
     /* Set callback for received unicast and broadcast messages. */
     lib_data->setNewAppConfigCb(new_app_config_cb);
 
@@ -174,7 +181,7 @@ shared_app_config_res_e Shared_Appconfig_init(void)
 
     m_initialized = true;
 
-    return APP_RES_OK;
+    return SHARED_APP_CONFIG_RES_OK;
 }
 
 shared_app_config_res_e Shared_Appconfig_addFilter(
@@ -229,7 +236,11 @@ shared_app_config_res_e Shared_Appconfig_addFilter(
         if (lib_data->readAppConfig(appconfig, &seq, &interval)
              == APP_LIB_DATA_APP_CONFIG_RES_SUCCESS)
         {
-            inform_filters(appconfig, filter, 1);
+            // Convert it to an internal filter
+            shared_app_config_internal_filter_t internal_filter;
+            memcpy(&internal_filter.filter, filter, sizeof(shared_app_config_filter_t));
+            internal_filter.called = false;
+            inform_filters(appconfig, &internal_filter, 1);
         }
     }
     else

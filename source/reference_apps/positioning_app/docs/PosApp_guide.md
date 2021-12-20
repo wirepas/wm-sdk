@@ -300,6 +300,6 @@ defined by `BUTTON_ID` (the button pin is defined to `BOARD_BUTTON_PIN_LIST` fro
 
 # References
 
-[1] [Wirepas Positioning Application Reference Manual v1.5](https://developer.wirepas.com/support/solutions/articles/77000508783-wirepas-positioning-application-reference-manual-v1-5)
+[1] [Wirepas Positioning Application Reference Manual v1.4](https://developer.wirepas.com/support/solutions/articles/77000498897)
 
 [2] [PosLib integration guide](../../../libraries/positioning/docs/PosLib_integration_guide.md)

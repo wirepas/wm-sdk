@@ -15,11 +15,13 @@
 #include "node_configuration.h"
 #include "led.h"
 #include "button.h"
+#include "app_scheduler.h"
+
 
 
 /** Duration between timer callbacks */
 #define CALLBACK_PERIOD_S   1
-#define CALLBACK_PERIOD_US  (CALLBACK_PERIOD_S * 1000000UL)
+#define CALLBACK_PERIOD_MS  (CALLBACK_PERIOD_S * 1000)
 
 /** Time spent in timer callback */
 #define EXECUTION_TIME_US   100
@@ -57,7 +59,7 @@ static uint32_t blink_func(void)
         counter++;
     }
 
-    return CALLBACK_PERIOD_US;
+    return CALLBACK_PERIOD_MS;
 }
 
 /**
@@ -136,7 +138,10 @@ void App_init(const app_global_functions_t * functions)
     // Set the blink callback to be called
     // immediately after the stack is started
     blink_holdoff = 0;
-    lib_system->setPeriodicCb(blink_func, 0, EXECUTION_TIME_US);
+
+    App_Scheduler_addTask_execTime(blink_func,
+                                   APP_SCHEDULER_SCHEDULE_ASAP,
+                                   EXECUTION_TIME_US);
 
     // Start the stack
     lib_state->startStack();

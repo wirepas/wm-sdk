@@ -230,14 +230,8 @@ the PosApp.
 
 To instantiate PosLib in an application the following three steps must be followed:
 
-1. initialize the application scheduler the shared libraries used by PosLib
-```c     
-    App_Scheduler_init();
-    Shared_Data_init();
-    Shared_Appconfig_init();
-    Shared_Neighbors_init();
-    Shared_Beacon_init();
-    Shared_Offline_init();
+1. initialize the libraries used by PosLib
+```c
     Mcu_voltageInit();
 ```
 2. configure PosLib
@@ -257,6 +251,6 @@ To instantiate PosLib in an application the following three steps must be follow
 
 # References
 
-[1] [Wirepas Positioning Application Reference Manual v1.5](https://developer.wirepas.com/support/solutions/articles/77000508783-wirepas-positioning-application-reference-manual-v1-5)
+[1] [Wirepas Positioning Application Reference Manual v1.4](https://developer.wirepas.com/support/solutions/articles/77000498897)
 
 [2] [Non-Router Long Sleep (NRLS)](https://developer.wirepas.com/a/solutions/articles/77000406955?portalId=77000019115) 
