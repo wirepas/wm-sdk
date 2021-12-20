@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d6/d21/poslib_8h.html">poslib.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d7/ded/shared__neighbors_8h.html">shared_neighbors.h</a>&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d0/de4/shared__shutdown_8h.html">shared_shutdown.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d5/dab/stack__state_8h.html">stack_state.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d74/shared__data_8h.html">shared_data.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d2/d67/shared__appconfig_8h.html">shared_appconfig.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d9/d7b/shared__offline_8h.html">shared_offline.h</a>&quot;</span></div>
@@ -133,9 +133,9 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> enable_button(<span class="keywordtype">void</span>)</div>
 <div class="line">{</div>
 <div class="line">    gpio_res_e res;</div>
-<div class="line">    uint8_t buttons_pins[] = <a name="a4"></a><a class="code" href="../../d9/df8/efr32__template_2board_8h.html#ac206a3fdd4723341044664ddbf85f6d3">BOARD_BUTTON_PIN_LIST</a>;</div>
-<div class="line">    gpio_pull_e pull = <a name="a5"></a><a class="code" href="../../d9/df8/efr32__template_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a">BOARD_BUTTON_INTERNAL_PULL</a> ? GPIO_PULLUP: GPIO_PULLDOWN;</div>
-<div class="line">    gpio_event_e <span class="keyword">event</span> = <a name="a6"></a><a class="code" href="../../d9/df8/efr32__template_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71">BOARD_BUTTON_ACTIVE_LOW</a> ? GPIO_EVENT_HL : GPIO_EVENT_LH;</div>
+<div class="line">    uint8_t buttons_pins[] = <a name="a4"></a><a class="code" href="../../df/d27/bgm220-ek4314a_2board_8h.html#ac206a3fdd4723341044664ddbf85f6d3">BOARD_BUTTON_PIN_LIST</a>;</div>
+<div class="line">    gpio_pull_e pull = <a name="a5"></a><a class="code" href="../../df/d27/bgm220-ek4314a_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a">BOARD_BUTTON_INTERNAL_PULL</a> ? GPIO_PULLUP: GPIO_PULLDOWN;</div>
+<div class="line">    gpio_event_e <span class="keyword">event</span> = <a name="a6"></a><a class="code" href="../../df/d27/bgm220-ek4314a_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71">BOARD_BUTTON_ACTIVE_LOW</a> ? GPIO_EVENT_HL : GPIO_EVENT_LH;</div>
 <div class="line"><span class="preprocessor">    #define DEBOUNCE_MS 100  //FixME: move to general definitions</span></div>
 <div class="line"><span class="preprocessor">    #define BUTTON_ID 0 //FixME: move to general definitions</span></div>
 <div class="line"> </div>
@@ -218,7 +218,7 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#ifdef CONF_USE_PERSISTENT_MEMORY</span></div>
 <div class="line"> </div>
-<div class="line">    App_Scheduler_addTask(App_persistent_data_write, <a name="a22"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
+<div class="line">    <a name="a22"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(App_persistent_data_write, <a name="a23"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>, 500);</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
@@ -227,9 +227,9 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="line">{</div>
 <div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;PosLib led on public event. Id: %u, time: %u&quot;</span>, msg-&gt;<a class="code" href="../../d6/d21/poslib_8h.html#aee539108cc019b56d4b942795e7f79f8">event_id</a>, msg-&gt;<a class="code" href="../../d6/d21/poslib_8h.html#a0725552d7a30db5983fb2a47183ce4af">time_hp</a>)</div>
 <div class="line"><span class="preprocessor">#ifdef CONF_USE_LED_NOTIFICATION</span></div>
-<div class="line">    <a class="code" href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8">led_res_e</a> res = <a name="a23"></a><a class="code" href="../../db/da0/led_8h.html#a09b4763e1f0d3a26bfed612e84b6c749">Led_set</a>(LED_ID, LED_ON);</div>
+<div class="line">    <a class="code" href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8">led_res_e</a> res = <a name="a24"></a><a class="code" href="../../db/da0/led_8h.html#a09b4763e1f0d3a26bfed612e84b6c749">Led_set</a>(LED_ID, LED_ON);</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (res != <a name="a24"></a><a class="code" href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8a50edf7ed8dca6a0eabe6d386b0c68771">LED_RES_OK</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (res != <a name="a25"></a><a class="code" href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8a50edf7ed8dca6a0eabe6d386b0c68771">LED_RES_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a80fe8a6a673728cc8d8b2a90742b46b7">LVL_ERROR</a>, <span class="stringliteral">&quot;Led set failed with led_id:  %d&quot;</span>, LED_ID)</div>
 <div class="line">    }</div>
@@ -258,16 +258,16 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="line"> </div>
 <div class="line">    PosApp_Settings_get(&amp;settings);</div>
 <div class="line"> </div>
-<div class="line">    res = <a name="a25"></a><a class="code" href="../../d6/d21/poslib_8h.html#ae9d621179c75788632e3180438d84384">PosLib_setConfig</a>(&amp;settings);</div>
+<div class="line">    res = <a name="a26"></a><a class="code" href="../../d6/d21/poslib_8h.html#ae9d621179c75788632e3180438d84384">PosLib_setConfig</a>(&amp;settings);</div>
 <div class="line">    </div>
-<div class="line">    <span class="keywordflow">if</span> (res != <a name="a26"></a><a class="code" href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6">POS_RET_OK</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (res != <a name="a27"></a><a class="code" href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6">POS_RET_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a80fe8a6a673728cc8d8b2a90742b46b7">LVL_ERROR</a>, <span class="stringliteral">&quot;PosLib configuration fail. res: %d&quot;</span>, res);</div>
 <div class="line">        <span class="keywordflow">return</span> res;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371f">poslib_events_e</a> <span class="keyword">event</span> = <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa2c81f87d2e97c13dc7bb936cc12bf0fe">POSLIB_FLAG_EVENT_CONFIG_CHANGE</a>;</div>
-<div class="line">    res = <a name="a27"></a><a class="code" href="../../d6/d21/poslib_8h.html#abe0a8a35b6df046773253cf888bb0d0f">PosLib_eventRegister</a>(event, App_posLib_event, &amp;m_event_config_change_id);</div>
+<div class="line">    res = <a name="a28"></a><a class="code" href="../../d6/d21/poslib_8h.html#abe0a8a35b6df046773253cf888bb0d0f">PosLib_eventRegister</a>(event, App_posLib_event, &amp;m_event_config_change_id);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (res != <a class="code" href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6">POS_RET_OK</a>)</div>
 <div class="line">    {</div>
@@ -275,14 +275,14 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="line">        <span class="keywordflow">return</span> res;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371f">poslib_events_e</a> event_led_on = <a name="a28"></a><a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fae993be5e00ef95ba71e61b52916a521d">POSLIB_FLAG_EVENT_LED_ON</a>;</div>
+<div class="line">    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371f">poslib_events_e</a> event_led_on = <a name="a29"></a><a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fae993be5e00ef95ba71e61b52916a521d">POSLIB_FLAG_EVENT_LED_ON</a>;</div>
 <div class="line">    res = <a class="code" href="../../d6/d21/poslib_8h.html#abe0a8a35b6df046773253cf888bb0d0f">PosLib_eventRegister</a>(event_led_on, App_posLib_led_on_event, &amp;m_event_led_on_id);</div>
 <div class="line">    <span class="keywordflow">if</span> (res != <a class="code" href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6">POS_RET_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a80fe8a6a673728cc8d8b2a90742b46b7">LVL_ERROR</a>, <span class="stringliteral">&quot;PosLib cannot register event %u failed. res: %d&quot;</span>, event, res);</div>
 <div class="line">        <span class="keywordflow">return</span> res;</div>
 <div class="line">    }</div>
-<div class="line">    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371f">poslib_events_e</a> event_led_off = <a name="a29"></a><a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa45b7e1a7225d8b5c6588bc07a8128bba">POSLIB_FLAG_EVENT_LED_OFF</a>;</div>
+<div class="line">    <a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371f">poslib_events_e</a> event_led_off = <a name="a30"></a><a class="code" href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa45b7e1a7225d8b5c6588bc07a8128bba">POSLIB_FLAG_EVENT_LED_OFF</a>;</div>
 <div class="line">    res = <a class="code" href="../../d6/d21/poslib_8h.html#abe0a8a35b6df046773253cf888bb0d0f">PosLib_eventRegister</a>(event_led_off, App_posLib_led_off_event, &amp;m_event_led_off_id);</div>
 <div class="line">    <span class="keywordflow">if</span> (res != <a class="code" href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6">POS_RET_OK</a>)</div>
 <div class="line">    {</div>
@@ -294,7 +294,7 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="line">    update_motion(&amp;settings.<a class="code" href="../../d6/d21/poslib_8h.html#a720619e6c061c2846c4a32829cd3f648">motion</a>);</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line"> </div>
-<div class="line">    res = <a name="a30"></a><a class="code" href="../../d6/d21/poslib_8h.html#a25e325100a463c7f51cac612956f54f0">PosLib_startPeriodic</a>();</div>
+<div class="line">    res = <a name="a31"></a><a class="code" href="../../d6/d21/poslib_8h.html#a25e325100a463c7f51cac612956f54f0">PosLib_startPeriodic</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (res !=<a class="code" href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6">POS_RET_OK</a>)</div>
 <div class="line">    {</div>
@@ -304,26 +304,16 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="line">    <span class="keywordflow">return</span> res;</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a31"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a>* functions)</div>
+<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a32"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a>* functions)</div>
 <div class="line">{</div>
-<div class="line">    <a name="a32"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a062ce2496c8e47adec91c0d11744a7a7">LOG_INIT</a>();</div>
-<div class="line"><span class="preprocessor">#ifdef CONF_USE_PERSISTENT_MEMORY</span></div>
-<div class="line">    <a name="a33"></a><a class="code" href="../../dc/db1/app__persistent_8h.html#a274adbf4c348cbb22caf3e57ff87d178">App_Persistent_init</a>();</div>
-<div class="line"><span class="preprocessor">#endif</span></div>
+<div class="line">    <a name="a33"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a062ce2496c8e47adec91c0d11744a7a7">LOG_INIT</a>();</div>
 <div class="line">    PosApp_Settings_configureNode();</div>
-<div class="line">    <a name="a34"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a>();</div>
 <div class="line"> </div>
-<div class="line">    <a name="a35"></a><a class="code" href="../../d5/d74/shared__data_8h.html#ae4c8e98d1b0f33bf18414441f72dc270">Shared_Data_init</a>();</div>
-<div class="line">    <a name="a36"></a><a class="code" href="../../d2/d67/shared__appconfig_8h.html#aec6dd99594beb669cb5e1a200a09bf6b">Shared_Appconfig_init</a>();</div>
-<div class="line">    <a name="a37"></a><a class="code" href="../../d7/ded/shared__neighbors_8h.html#a005f16fc05b1aac1c98e5f599f7105c6">Shared_Neighbors_init</a>();</div>
-<div class="line">    <a name="a38"></a><a class="code" href="../../d0/de4/shared__shutdown_8h.html#aca22ac0578ba1609ec2aa7f18938b2e3">Shared_Shutdown_init</a>();</div>
-<div class="line">    <a name="a39"></a><a class="code" href="../../d2/d3b/shared__beacon_8h.html#ae78612ba7fcbd7044abc69e8d7bb1992">Shared_Beacon_init</a>();</div>
-<div class="line">    <a name="a40"></a><a class="code" href="../../d9/d7b/shared__offline_8h.html#a68ab2b3d1b3904f7a6109b9f4e80f412">Shared_Offline_init</a>();</div>
 <div class="line">    enable_button();</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#ifdef CONF_USE_LED_NOTIFICATION</span></div>
 <div class="line"> </div>
-<div class="line">    <a name="a41"></a><a class="code" href="../../db/da0/led_8h.html#a040c02c99d35c3ee1fe6ae56bd8a8646">Led_init</a>();</div>
+<div class="line">    <a name="a34"></a><a class="code" href="../../db/da0/led_8h.html#a040c02c99d35c3ee1fe6ae56bd8a8646">Led_init</a>();</div>
 <div class="line"><span class="preprocessor">#endif</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Initialize motion sensor if enabled */</span></div>
@@ -333,7 +323,7 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">    #ifdef CONF_VOLTAGE_REPORT</span></div>
 <div class="line">    <span class="comment">/* Initialize voltage measurement. */</span></div>
-<div class="line">    <a name="a42"></a><a class="code" href="../../d0/d27/voltage_8h.html#afe76c9159898c9213eae9aba631d4db3">Mcu_voltageInit</a>();</div>
+<div class="line">    <a name="a35"></a><a class="code" href="../../d0/d27/voltage_8h.html#afe76c9159898c9213eae9aba631d4db3">Mcu_voltageInit</a>();</div>
 <div class="line"><span class="preprocessor">    #endif</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// start the stack</span></div>
@@ -355,24 +345,19 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="ttc" id="aposlib_8h_html_aab50cf9ddf10ac9526375bc0c282b6b9"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#aab50cf9ddf10ac9526375bc0c282b6b9">PosLib_motion</a></div><div class="ttdeci">poslib_ret_e PosLib_motion(poslib_motion_mode_e mode)</div><div class="ttdoc">Used to indicate that the tag is static or dynamic. The update rate used will be adjusted according t...</div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_a52e39bcd9fb750ac5001e4e6b8de21c4"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a52e39bcd9fb750ac5001e4e6b8de21c4">APP_SCHEDULER_STOP_TASK</a></div><div class="ttdeci">#define APP_SCHEDULER_STOP_TASK</div><div class="ttdoc">Value to return from task to remove it.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00037">app_scheduler.h:37</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa2c81f87d2e97c13dc7bb936cc12bf0fe"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa2c81f87d2e97c13dc7bb936cc12bf0fe">POSLIB_FLAG_EVENT_CONFIG_CHANGE</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_CONFIG_CHANGE</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00139">poslib.h:139</a></div></div>
-<div class="ttc" id="aapp__scheduler_8h_html_aadb275bc1de9c05d677ab56117535802"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a></div><div class="ttdeci">void App_Scheduler_init(void)</div><div class="ttdoc">Initialize scheduler.</div></div>
+<div class="ttc" id="abgm220-ek4314a_2board_8h_html_ac206a3fdd4723341044664ddbf85f6d3"><div class="ttname"><a href="../../df/d27/bgm220-ek4314a_2board_8h.html#ac206a3fdd4723341044664ddbf85f6d3">BOARD_BUTTON_PIN_LIST</a></div><div class="ttdeci">#define BOARD_BUTTON_PIN_LIST</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d27/bgm220-ek4314a_2board_8h_source.html#l00033">board.h:33</a></div></div>
+<div class="ttc" id="astack__state_8h_html"><div class="ttname"><a href="../../d5/dab/stack__state_8h.html">stack_state.h</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6">POS_RET_OK</a></div><div class="ttdeci">@ POS_RET_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00040">poslib.h:40</a></div></div>
-<div class="ttc" id="ashared__beacon_8h_html_ae78612ba7fcbd7044abc69e8d7bb1992"><div class="ttname"><a href="../../d2/d3b/shared__beacon_8h.html#ae78612ba7fcbd7044abc69e8d7bb1992">Shared_Beacon_init</a></div><div class="ttdeci">shared_beacon_res_e Shared_Beacon_init(void)</div><div class="ttdoc">Initialize the Shared_Beacon library.</div></div>
-<div class="ttc" id="ashared__appconfig_8h_html_aec6dd99594beb669cb5e1a200a09bf6b"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#aec6dd99594beb669cb5e1a200a09bf6b">Shared_Appconfig_init</a></div><div class="ttdeci">shared_app_config_res_e Shared_Appconfig_init(void)</div><div class="ttdoc">Initialize the shared app config library library.</div></div>
 <div class="ttc" id="aled_8h_html_aa8fb1f4b9ec78bfc448496565e6f91c8a50edf7ed8dca6a0eabe6d386b0c68771"><div class="ttname"><a href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8a50edf7ed8dca6a0eabe6d386b0c68771">LED_RES_OK</a></div><div class="ttdeci">@ LED_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../db/da0/led_8h_source.html#l00020">led.h:20</a></div></div>
-<div class="ttc" id="aapp__persistent_8h_html_a274adbf4c348cbb22caf3e57ff87d178"><div class="ttname"><a href="../../dc/db1/app__persistent_8h.html#a274adbf4c348cbb22caf3e57ff87d178">App_Persistent_init</a></div><div class="ttdeci">app_persistent_res_e App_Persistent_init(void)</div><div class="ttdoc">Initialize app persistent module.</div></div>
-<div class="ttc" id="ashared__shutdown_8h_html_aca22ac0578ba1609ec2aa7f18938b2e3"><div class="ttname"><a href="../../d0/de4/shared__shutdown_8h.html#aca22ac0578ba1609ec2aa7f18938b2e3">Shared_Shutdown_init</a></div><div class="ttdeci">app_res_e Shared_Shutdown_init(void)</div><div class="ttdoc">Initialize the shared Shutdown library.</div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_a71e4c4c0dfd5649947194df11af4fe17"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_ms, uint32_t exec_time_us)</div><div class="ttdoc">Add a task.</div></div>
 <div class="ttc" id="aposlib_8h_html_a71ac844b00ab67916fb0c8e907fe5831"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a71ac844b00ab67916fb0c8e907fe5831">poslib_motion_mode_e</a></div><div class="ttdeci">poslib_motion_mode_e</div><div class="ttdoc">defines the position motion mode.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00075">poslib.h:75</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371fa45b7e1a7225d8b5c6588bc07a8128bba"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371fa45b7e1a7225d8b5c6588bc07a8128bba">POSLIB_FLAG_EVENT_LED_OFF</a></div><div class="ttdeci">@ POSLIB_FLAG_EVENT_LED_OFF</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00143">poslib.h:143</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a5e4d8a9e71deab9296ce60867adfbbc0"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0">poslib_ret_e</a></div><div class="ttdeci">poslib_ret_e</div><div class="ttdoc">Return codes of positioning functions.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00037">poslib.h:37</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a86d60f262f339365c5b50f04cbd9bccc"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a86d60f262f339365c5b50f04cbd9bccc">PosLib_startOneshot</a></div><div class="ttdeci">poslib_ret_e PosLib_startOneshot(void)</div><div class="ttdoc">Triggers one position update. If PosLib is started the scheduled operation will continue after the on...</div></div>
 <div class="ttc" id="aposlib_8h_html_ae9d621179c75788632e3180438d84384"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#ae9d621179c75788632e3180438d84384">PosLib_setConfig</a></div><div class="ttdeci">poslib_ret_e PosLib_setConfig(poslib_settings_t *settings)</div><div class="ttdoc">Sets PosLib configuration.</div></div>
-<div class="ttc" id="aefr32__template_2board_8h_html_ac206a3fdd4723341044664ddbf85f6d3"><div class="ttname"><a href="../../d9/df8/efr32__template_2board_8h.html#ac206a3fdd4723341044664ddbf85f6d3">BOARD_BUTTON_PIN_LIST</a></div><div class="ttdeci">#define BOARD_BUTTON_PIN_LIST</div><div class="ttdoc">Button definitions.</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/df8/efr32__template_2board_8h_source.html#l00106">board.h:106</a></div></div>
 <div class="ttc" id="ashared__offline_8h_html"><div class="ttname"><a href="../../d9/d7b/shared__offline_8h.html">shared_offline.h</a></div></div>
-<div class="ttc" id="aefr32__template_2board_8h_html_a8f91fc44ad1f0b5ab77c76564145318a"><div class="ttname"><a href="../../d9/df8/efr32__template_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a">BOARD_BUTTON_INTERNAL_PULL</a></div><div class="ttdeci">#define BOARD_BUTTON_INTERNAL_PULL</div><div class="ttdoc">Button GPIO internal pull up/down.</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/df8/efr32__template_2board_8h_source.html#l00126">board.h:126</a></div></div>
 <div class="ttc" id="aposlib_8h_html_ad346d18e7c29a591fa8a4f78e4de5792"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#ad346d18e7c29a591fa8a4f78e4de5792">PosLib_getConfig</a></div><div class="ttdeci">poslib_ret_e PosLib_getConfig(poslib_settings_t *settings)</div><div class="ttdoc">Gets PosLib configuration.</div></div>
-<div class="ttc" id="ashared__neighbors_8h_html_a005f16fc05b1aac1c98e5f599f7105c6"><div class="ttname"><a href="../../d7/ded/shared__neighbors_8h.html#a005f16fc05b1aac1c98e5f599f7105c6">Shared_Neighbors_init</a></div><div class="ttdeci">app_res_e Shared_Neighbors_init(void)</div><div class="ttdoc">Initialize the shared neighbors library.</div></div>
-<div class="ttc" id="aefr32__template_2board_8h_html_a22dc8bf341319e58e0377f0a58770d71"><div class="ttname"><a href="../../d9/df8/efr32__template_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71">BOARD_BUTTON_ACTIVE_LOW</a></div><div class="ttdeci">#define BOARD_BUTTON_ACTIVE_LOW</div><div class="ttdoc">Button GPIO polarity.</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/df8/efr32__template_2board_8h_source.html#l00116">board.h:116</a></div></div>
+<div class="ttc" id="abgm220-ek4314a_2board_8h_html_a22dc8bf341319e58e0377f0a58770d71"><div class="ttname"><a href="../../df/d27/bgm220-ek4314a_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71">BOARD_BUTTON_ACTIVE_LOW</a></div><div class="ttdeci">#define BOARD_BUTTON_ACTIVE_LOW</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d27/bgm220-ek4314a_2board_8h_source.html#l00036">board.h:36</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a484a3b39624f69a7f3ad187229f4371f"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a484a3b39624f69a7f3ad187229f4371f">poslib_events_e</a></div><div class="ttdeci">poslib_events_e</div><div class="ttdoc">Defines the events triggered by PosLib.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00122">poslib.h:122</a></div></div>
 <div class="ttc" id="aposlib_8h_html_aee539108cc019b56d4b942795e7f79f8"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#aee539108cc019b56d4b942795e7f79f8">POSLIB_FLAG_EVENT_info_t::event_id</a></div><div class="ttdeci">uint8_t event_id</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00312">poslib.h:312</a></div></div>
 <div class="ttc" id="aapp__scheduler_8h_html"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a></div></div>
@@ -380,14 +365,13 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="ttc" id="adebug__log_8h_html"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html">debug_log.h</a></div></div>
 <div class="ttc" id="aapp__persistent_8h_html"><div class="ttname"><a href="../../dc/db1/app__persistent_8h.html">app_persistent.h</a></div></div>
 <div class="ttc" id="aled_8h_html"><div class="ttname"><a href="../../db/da0/led_8h.html">led.h</a></div><div class="ttdoc">Board-independent LED functions.</div></div>
-<div class="ttc" id="ashared__shutdown_8h_html"><div class="ttname"><a href="../../d0/de4/shared__shutdown_8h.html">shared_shutdown.h</a></div></div>
 <div class="ttc" id="avoltage_8h_html_afe76c9159898c9213eae9aba631d4db3"><div class="ttname"><a href="../../d0/d27/voltage_8h.html#afe76c9159898c9213eae9aba631d4db3">Mcu_voltageInit</a></div><div class="ttdeci">void Mcu_voltageInit(void)</div><div class="ttdoc">Initialize voltage measurement mechanisms. Need to do once before measurements.</div></div>
 <div class="ttc" id="ashared__appconfig_8h_html"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html">shared_appconfig.h</a></div></div>
 <div class="ttc" id="aposlib_8h_html_abe0a8a35b6df046773253cf888bb0d0f"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#abe0a8a35b6df046773253cf888bb0d0f">PosLib_eventRegister</a></div><div class="ttdeci">poslib_ret_e PosLib_eventRegister(poslib_events_e event, poslib_events_listen_info_f cb, uint8_t *id)</div><div class="ttdoc">Register an event subscriber.</div></div>
 <div class="ttc" id="adebug__log_8h_html_a2325454fac7906237ece595f2f257083"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a2325454fac7906237ece595f2f257083">LVL_DEBUG</a></div><div class="ttdeci">#define LVL_DEBUG</div><div class="ttdoc">Macros to define several log levels: Debug, Info, Warning, Error.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00082">debug_log.h:82</a></div></div>
+<div class="ttc" id="abgm220-ek4314a_2board_8h_html_a8f91fc44ad1f0b5ab77c76564145318a"><div class="ttname"><a href="../../df/d27/bgm220-ek4314a_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a">BOARD_BUTTON_INTERNAL_PULL</a></div><div class="ttdeci">#define BOARD_BUTTON_INTERNAL_PULL</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d27/bgm220-ek4314a_2board_8h_source.html#l00039">board.h:39</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a0725552d7a30db5983fb2a47183ce4af"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a0725552d7a30db5983fb2a47183ce4af">POSLIB_FLAG_EVENT_info_t::time_hp</a></div><div class="ttdeci">app_lib_time_timestamp_hp_t time_hp</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00313">poslib.h:313</a></div></div>
 <div class="ttc" id="ashared__beacon_8h_html"><div class="ttname"><a href="../../d2/d3b/shared__beacon_8h.html">shared_beacon.h</a></div></div>
-<div class="ttc" id="ashared__data_8h_html_ae4c8e98d1b0f33bf18414441f72dc270"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#ae4c8e98d1b0f33bf18414441f72dc270">Shared_Data_init</a></div><div class="ttdeci">app_res_e Shared_Data_init(void)</div><div class="ttdoc">Initialize the shared data library.</div></div>
 <div class="ttc" id="aposlib_8h_html_d4/d10/structposlib__settings__t"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#d4/d10/structposlib__settings__t">poslib_settings_t</a></div><div class="ttdoc">position library settings.</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00276">poslib.h:276</a></div></div>
 <div class="ttc" id="aled_8h_html_a040c02c99d35c3ee1fe6ae56bd8a8646"><div class="ttname"><a href="../../db/da0/led_8h.html#a040c02c99d35c3ee1fe6ae56bd8a8646">Led_init</a></div><div class="ttdeci">void Led_init(void)</div><div class="ttdoc">Initialize Led module.</div></div>
 <div class="ttc" id="adebug__log_8h_html_a062ce2496c8e47adec91c0d11744a7a7"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a062ce2496c8e47adec91c0d11744a7a7">LOG_INIT</a></div><div class="ttdeci">#define LOG_INIT()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00066">debug_log.h:66</a></div></div>
@@ -397,7 +381,6 @@ $(document).ready(function(){initNavTree('d2/d7a/positioning_app_2app_8c-example
 <div class="ttc" id="adebug__log_8h_html_a94e6401c9e46b35182d9dbbce6b99be5"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a></div><div class="ttdeci">#define LOG(level, fmt,...)</div><div class="ttdoc">Print a log message if its severity is lower or equal to DEBUG_LOG_MAX_LEVEL.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00172">debug_log.h:172</a></div></div>
 <div class="ttc" id="aposlib_8h_html"><div class="ttname"><a href="../../d6/d21/poslib_8h.html">poslib.h</a></div></div>
 <div class="ttc" id="aposlib_8h_html_a8740ba80e30dd75e71d09fa1dcf04f3d"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#a8740ba80e30dd75e71d09fa1dcf04f3d">poslib_motion_mon_settings_t::enabled</a></div><div class="ttdeci">bool enabled</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00259">poslib.h:259</a></div></div>
-<div class="ttc" id="ashared__offline_8h_html_a68ab2b3d1b3904f7a6109b9f4e80f412"><div class="ttname"><a href="../../d9/d7b/shared__offline_8h.html#a68ab2b3d1b3904f7a6109b9f4e80f412">Shared_Offline_init</a></div><div class="ttdeci">shared_offline_res_e Shared_Offline_init(void)</div><div class="ttdoc">Initialize shared offline module.</div></div>
 <div class="ttc" id="aapp_8h_html_d6/d81/structapp__global__functions__t"><div class="ttname"><a href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a></div><div class="ttdoc">List of global functions, passed to App_entrypoint()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00157">app.h:157</a></div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_ae49a1abde6843cb44c37e47616d2a810"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a></div><div class="ttdeci">#define APP_SCHEDULER_SCHEDULE_ASAP</div><div class="ttdoc">Value to return from task or as initial time to be executed ASAP.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00042">app_scheduler.h:42</a></div></div>
 <div class="ttc" id="aposlib_8h_html_af14b1fb4639404df213fdcd8f85bc269"><div class="ttname"><a href="../../d6/d21/poslib_8h.html#af14b1fb4639404df213fdcd8f85bc269">poslib_motion_mon_settings_t::threshold_mg</a></div><div class="ttdeci">uint16_t threshold_mg</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d21/poslib_8h_source.html#l00260">poslib.h:260</a></div></div>

@@ -114,6 +114,12 @@ $(document).ready(function(){initNavTree('globals_s.html',''); initResizable(); 
 <li>SCAN_MODE_STANDARD
 : <a class="el" href="db/df1/poslib__measurement_8h.html#afa6db7c3910e0bf19d27f8ddbc3e8b01aaa5b90703c536fb4664426d074935e08">poslib_measurement.h</a>
 </li>
+<li>SCAN_TYPE_APP_ORIGINATED
+: <a class="el" href="db/d3b/state_8h.html#abdb207e11a6bcc7bc7f2d30124bdb3a3a804573aa3dd49efad3334d1c3e1bc968">state.h</a>
+</li>
+<li>SCAN_TYPE_STACK_ORIGINATED
+: <a class="el" href="db/d3b/state_8h.html#abdb207e11a6bcc7bc7f2d30124bdb3a3ae9a042ce29617adae1c6414bca32562f">state.h</a>
+</li>
 <li>serial_rx_callback_f
 : <a class="el" href="d3/dfa/mcu_2hal__api_2usart_8h.html#ae09c6e0da85cc67c6dc6a9310ca50bdf">usart.h</a>
 </li>
@@ -195,9 +201,6 @@ $(document).ready(function(){initNavTree('globals_s.html',''); initResizable(); 
 <li>Shared_Data_init()
 : <a class="el" href="d5/d74/shared__data_8h.html#ae4c8e98d1b0f33bf18414441f72dc270">shared_data.h</a>
 </li>
-<li>SHARED_DATA_NET_MODE_ACKDA
-: <a class="el" href="d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7adc771bccff5c23fb29e95590ea7d519f">shared_data.h</a>
-</li>
 <li>SHARED_DATA_NET_MODE_ALL
 : <a class="el" href="d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">shared_data.h</a>
 </li>
@@ -212,6 +215,9 @@ $(document).ready(function(){initNavTree('globals_s.html',''); initResizable(); 
 </li>
 <li>SHARED_DATA_NET_MODE_UNICAST
 : <a class="el" href="d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7abe7fd6617fa17f362c9dfd9e061a8b97">shared_data.h</a>
+</li>
+<li>Shared_Data_readyToReceive()
+: <a class="el" href="d5/d74/shared__data_8h.html#acb7ba592e08dce3af791bc83e4a3b7a4">shared_data.h</a>
 </li>
 <li>shared_data_received_cb_f
 : <a class="el" href="d5/d74/shared__data_8h.html#a36fa713bcbf9a40aa7ad3a73c8463cc8">shared_data.h</a>
@@ -294,15 +300,6 @@ $(document).ready(function(){initNavTree('globals_s.html',''); initResizable(); 
 <li>Shared_Offline_unregister()
 : <a class="el" href="d9/d7b/shared__offline_8h.html#a88b5c098611632556cf56e5803cd008b">shared_offline.h</a>
 </li>
-<li>Shared_Shutdown_addShutDownCb()
-: <a class="el" href="d0/de4/shared__shutdown_8h.html#a0868d9acb27ae5673deaf5a5f1670226">shared_shutdown.h</a>
-</li>
-<li>Shared_Shutdown_init()
-: <a class="el" href="d0/de4/shared__shutdown_8h.html#aca22ac0578ba1609ec2aa7f18938b2e3">shared_shutdown.h</a>
-</li>
-<li>Shared_Shutdown_removeShutDownCb()
-: <a class="el" href="d0/de4/shared__shutdown_8h.html#a926182d1103bf3857b2b0026946bb149">shared_shutdown.h</a>
-</li>
 <li>SimpleTypeInNextByte
 : <a class="el" href="d9/d2c/cborinternal__p_8h.html#a8d7056f42637468688b461d7bb3e5125a7fe8a5bbb82e702f2be6504ae10ab38e">cborinternal_p.h</a>
 </li>
@@ -373,10 +370,10 @@ $(document).ready(function(){initNavTree('globals_s.html',''); initResizable(); 
 : <a class="el" href="da/dc2/sl__list_8h.html#a8498a334d1248f2e8c8ebef53d18bb7b">sl_list.h</a>
 </li>
 <li>SmallValueBitLength
-: <a class="el" href="d9/d2c/cborinternal__p_8h.html#ab04a0655cd1e3bcac5e8f48c18df1a57a1cabc887a5c8c2d42b188c1f1b01ef46">cborinternal_p.h</a>
+: <a class="el" href="d9/d2c/cborinternal__p_8h.html#abc5c98fcc1211af2b80116dd6e0a035da1cabc887a5c8c2d42b188c1f1b01ef46">cborinternal_p.h</a>
 </li>
 <li>SmallValueMask
-: <a class="el" href="d9/d2c/cborinternal__p_8h.html#ab04a0655cd1e3bcac5e8f48c18df1a57ac9eed58eaed6a6e2eb118b7914d5b9b4">cborinternal_p.h</a>
+: <a class="el" href="d9/d2c/cborinternal__p_8h.html#abc5c98fcc1211af2b80116dd6e0a035dac9eed58eaed6a6e2eb118b7914d5b9b4">cborinternal_p.h</a>
 </li>
 <li>spi_bit_order_e
 : <a class="el" href="da/d87/spi_8h.html#ae4797b549e4bf5bb099063dbc87764b9">spi.h</a>
@@ -440,6 +437,36 @@ $(document).ready(function(){initNavTree('globals_s.html',''); initResizable(); 
 </li>
 <li>SPI_transfer()
 : <a class="el" href="da/d87/spi_8h.html#a1c23c503a8b0e13eb15a66a48a3ca4f0">spi.h</a>
+</li>
+<li>Stack_State_addEventCb()
+: <a class="el" href="d5/dab/stack__state_8h.html#a4038e307df1f037beab0f3d10718a1e5">stack_state.h</a>
+</li>
+<li>stack_state_event_cb_f
+: <a class="el" href="d5/dab/stack__state_8h.html#a46fe407b87c5fc258ae2265a0f42ab11">stack_state.h</a>
+</li>
+<li>stack_state_event_e
+: <a class="el" href="d5/dab/stack__state_8h.html#ac390e02041168d4e517f959fc2382124">stack_state.h</a>
+</li>
+<li>Stack_State_init()
+: <a class="el" href="d5/dab/stack__state_8h.html#a9c8bdbe116f673f3570f10c85fc9447b">stack_state.h</a>
+</li>
+<li>Stack_State_isStarted()
+: <a class="el" href="d5/dab/stack__state_8h.html#a330c0e2db0ef1c3243dcad3e472350b0">stack_state.h</a>
+</li>
+<li>Stack_State_removeEventCb()
+: <a class="el" href="d5/dab/stack__state_8h.html#afda70727e62fa842479d1ea8e66e10a6">stack_state.h</a>
+</li>
+<li>STACK_STATE_STARTED_EVENT
+: <a class="el" href="d5/dab/stack__state_8h.html#ac390e02041168d4e517f959fc2382124a2b9c673dec0f13b22729d3bbcfd555d7">stack_state.h</a>
+</li>
+<li>Stack_State_startStack()
+: <a class="el" href="d5/dab/stack__state_8h.html#a4a722bdc55bff65676efd1e38a2e4ed1">stack_state.h</a>
+</li>
+<li>STACK_STATE_STOPPED_EVENT
+: <a class="el" href="d5/dab/stack__state_8h.html#ac390e02041168d4e517f959fc2382124a9ec9ed90e839e00976982a89975b53f0">stack_state.h</a>
+</li>
+<li>Stack_State_stopStack()
+: <a class="el" href="d5/dab/stack__state_8h.html#a5dd13d3ebdefa0d2110c4d0d7cea577e">stack_state.h</a>
 </li>
 <li>START_TEST
 : <a class="el" href="d2/ddc/test_8h.html#a1cb9a1201e485b65b1094bbd95942a29">test.h</a>

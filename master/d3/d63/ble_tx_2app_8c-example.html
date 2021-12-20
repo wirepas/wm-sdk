@@ -107,6 +107,10 @@ $(document).ready(function(){initNavTree('d3/d63/ble_tx_2app_8c-example.html','.
 <div class="line"><span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;inttypes.h&gt;</span></div>
 <div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d74/shared__data_8h.html">shared_data.h</a>&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#define DATA_EP 5</span></div>
+<div class="line"> </div>
 <div class="line"><span class="keyword">static</span> <span class="keyword">const</span> uint8_t beacon_hdr[] =</div>
 <div class="line">{</div>
 <div class="line">    0x42,                                   <span class="comment">/* Non-connectable beacon */</span></div>
@@ -156,7 +160,9 @@ $(document).ready(function(){initNavTree('d3/d63/ble_tx_2app_8c-example.html','.
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">sizeof</span>(beacon_hdr) + (<span class="keywordtype">size_t</span>)url_num_bytes;</div>
 <div class="line">}</div>
 <div class="line"> </div>
+<div class="line"><span class="comment">/* Generic callback function */</span></div>
 <div class="line"><span class="keyword">static</span> <a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554b">app_lib_data_receive_res_e</a> dataReceivedFunc(</div>
+<div class="line">    <span class="keyword">const</span> shared_data_item_t * item,</div>
 <div class="line">    <span class="keyword">const</span> <a name="_a2"></a><a class="code" href="../../d2/dbd/data_8h.html#d7/df3/structapp__lib__data__received__t">app_lib_data_received_t</a> * data)</div>
 <div class="line">{</div>
 <div class="line">    <a name="_a3"></a><a class="code" href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> data_to_send;</div>
@@ -214,24 +220,38 @@ $(document).ready(function(){initNavTree('d3/d63/ble_tx_2app_8c-example.html','.
 <div class="line">    data_to_send.<a class="code" href="../../d2/dbd/data_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">flags</a> = <a class="code" href="../../d2/dbd/data_8h.html#a45089cc0ed8195699c2cb52c160e9b44a35ac295081a6f0df8a7fb599d890993f">APP_LIB_DATA_SEND_FLAG_NONE</a>;</div>
 <div class="line">    data_to_send.<a class="code" href="../../d2/dbd/data_8h.html#a7f43082a8111a69a9189426ea4fb9987">tracking_id</a> = <a class="code" href="../../d2/dbd/data_8h.html#a6a2e44ccee2f7e4393d38f9072bd1841">APP_LIB_DATA_NO_TRACKING_ID</a>;</div>
 <div class="line"> </div>
-<div class="line">    lib_data-&gt;sendData(&amp;data_to_send);</div>
+<div class="line">    <a name="a22"></a><a class="code" href="../../d5/d74/shared__data_8h.html#a639c2cd4c2ad7deba30bf25dc9c03043">Shared_Data_sendData</a>(&amp;data_to_send, NULL);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> <a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba5eb2a589b49f72b477f0cbf5deba552a">APP_LIB_DATA_RECEIVE_RES_HANDLED</a>;</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a22"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> shared_data_item_t all_packets_filter =</div>
+<div class="line">{</div>
+<div class="line">    .cb = dataReceivedFunc,</div>
+<div class="line">    .filter = {</div>
+<div class="line">        .mode = <a name="a23"></a><a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a>,</div>
+<div class="line">        <span class="comment">/* Filtering by source endpoint. */</span></div>
+<div class="line">        .src_endpoint = DATA_EP,</div>
+<div class="line">        <span class="comment">/* Filtering by destination endpoint. */</span></div>
+<div class="line">        .dest_endpoint = DATA_EP,</div>
+<div class="line">        .multicast_cb = NULL</div>
+<div class="line">    }</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a24"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
 <div class="line">{</div>
 <div class="line">    <span class="comment">// Basic configuration of the node with a unique node address</span></div>
-<div class="line">    <span class="keywordflow">if</span> (<a name="a23"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (<a name="a25"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="comment">// Could not configure the node</span></div>
 <div class="line">        <span class="comment">// It should not happen except if one of the config value is invalid</span></div>
 <div class="line">        <span class="keywordflow">return</span>;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    lib_data-&gt;setDataReceivedCb(dataReceivedFunc);</div>
-<div class="line">    lib_data-&gt;setBcastDataReceivedCb(dataReceivedFunc);</div>
-<div class="line"> </div>
+<div class="line">    <a name="a26"></a><a class="code" href="../../d5/d74/shared__data_8h.html#af5983ac588df8ae846597bf0b98d86d8">Shared_Data_addDataReceivedCb</a>(&amp;all_packets_filter);</div>
 <div class="line">    lib_state-&gt;startStack();</div>
 <div class="line">}</div>
 </div><!-- fragment --> </div><!-- contents -->
@@ -240,10 +260,12 @@ $(document).ready(function(){initNavTree('d3/d63/ble_tx_2app_8c-example.html','.
 <div class="ttc" id="adata_8h_html_af7dcc80b7a3cab03843f5bdff120f452"><div class="ttname"><a href="../../d2/dbd/data_8h.html#af7dcc80b7a3cab03843f5bdff120f452">app_lib_data_received_t::num_bytes</a></div><div class="ttdeci">size_t num_bytes</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00249">data.h:249</a></div></div>
 <div class="ttc" id="abeacon__tx_8h_html_a30a12c45866d1166e6e58e6266b5812da0e37cfaf2787afe08a7b88f3b7b0123e"><div class="ttname"><a href="../../d4/d48/beacon__tx_8h.html#a30a12c45866d1166e6e58e6266b5812da0e37cfaf2787afe08a7b88f3b7b0123e">APP_LIB_BEACON_TX_CHANNELS_ALL</a></div><div class="ttdeci">@ APP_LIB_BEACON_TX_CHANNELS_ALL</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d48/beacon__tx_8h_source.html#l00109">beacon_tx.h:109</a></div></div>
 <div class="ttc" id="adata_8h_html_d7/d10/structapp__lib__data__to__send__t"><div class="ttname"><a href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a></div><div class="ttdoc">A struct for lib_data-&gt;sendData().</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00288">data.h:288</a></div></div>
+<div class="ttc" id="ashared__data_8h_html_af5983ac588df8ae846597bf0b98d86d8"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#af5983ac588df8ae846597bf0b98d86d8">Shared_Data_addDataReceivedCb</a></div><div class="ttdeci">app_res_e Shared_Data_addDataReceivedCb(shared_data_item_t *item)</div><div class="ttdoc">Add a new packet received item to the list. If the item is already in the list it is only updated.</div></div>
 <div class="ttc" id="anode__configuration_8h_html"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a></div></div>
 <div class="ttc" id="aapp_8h_html_ad019ddac3feea21ca0548bced1c9e501"><div class="ttname"><a href="../../d2/d39/app_8h.html#ad019ddac3feea21ca0548bced1c9e501">app_addr_t</a></div><div class="ttdeci">uint32_t app_addr_t</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00228">app.h:228</a></div></div>
 <div class="ttc" id="adata_8h_html_abe388560a25c7690c48b6f3e20a32278"><div class="ttname"><a href="../../d2/dbd/data_8h.html#abe388560a25c7690c48b6f3e20a32278">app_lib_data_to_send_t::dest_address</a></div><div class="ttdeci">app_addr_t dest_address</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00295">data.h:295</a></div></div>
 <div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a></div><div class="ttdeci">@ APP_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00204">app.h:204</a></div></div>
+<div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_ALL</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00049">shared_data.h:49</a></div></div>
 <div class="ttc" id="adata_8h_html_a7f43082a8111a69a9189426ea4fb9987"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a7f43082a8111a69a9189426ea4fb9987">app_lib_data_to_send_t::tracking_id</a></div><div class="ttdeci">app_lib_data_tracking_id_t tracking_id</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00303">data.h:303</a></div></div>
 <div class="ttc" id="adata_8h_html_a962b319bd5ca8ebbb1b358e84f48382f"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a962b319bd5ca8ebbb1b358e84f48382f">app_lib_data_to_send_t::qos</a></div><div class="ttdeci">app_lib_data_qos_e qos</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00305">data.h:305</a></div></div>
 <div class="ttc" id="adata_8h_html_ad3aa19c96da7da312cd8fe99ea34554ba982c231319cbb17347b7a0964988b855"><div class="ttname"><a href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba982c231319cbb17347b7a0964988b855">APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP</a></div><div class="ttdeci">@ APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00191">data.h:191</a></div></div>
@@ -254,8 +276,10 @@ $(document).ready(function(){initNavTree('d3/d63/ble_tx_2app_8c-example.html','.
 <div class="ttc" id="adata_8h_html_ad3aa19c96da7da312cd8fe99ea34554b"><div class="ttname"><a href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554b">app_lib_data_receive_res_e</a></div><div class="ttdeci">app_lib_data_receive_res_e</div><div class="ttdoc">Return value of data reception callback.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00184">data.h:184</a></div></div>
 <div class="ttc" id="adata_8h_html_a2f980290790d1fecb3764ef797c03335"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a2f980290790d1fecb3764ef797c03335">app_lib_data_to_send_t::src_endpoint</a></div><div class="ttdeci">uint8_t src_endpoint</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00309">data.h:309</a></div></div>
 <div class="ttc" id="adata_8h_html_aa03fbf2cdb28616e79aca69710c8b134a50d99e5f118f1d4293ef31094831678f"><div class="ttname"><a href="../../d2/dbd/data_8h.html#aa03fbf2cdb28616e79aca69710c8b134a50d99e5f118f1d4293ef31094831678f">APP_LIB_DATA_QOS_NORMAL</a></div><div class="ttdeci">@ APP_LIB_DATA_QOS_NORMAL</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00090">data.h:90</a></div></div>
+<div class="ttc" id="ashared__data_8h_html"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html">shared_data.h</a></div></div>
 <div class="ttc" id="adata_8h_html_a0992896b3999455a300e8ba25c368ae8"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a0992896b3999455a300e8ba25c368ae8">app_lib_data_to_send_t::dest_endpoint</a></div><div class="ttdeci">uint8_t dest_endpoint</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00311">data.h:311</a></div></div>
 <div class="ttc" id="adata_8h_html_acc7ee0a7ec28292d2c1be47c4a23f78d"><div class="ttname"><a href="../../d2/dbd/data_8h.html#acc7ee0a7ec28292d2c1be47c4a23f78d">app_lib_data_received_t::bytes</a></div><div class="ttdeci">const uint8_t * bytes</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00247">data.h:247</a></div></div>
+<div class="ttc" id="ashared__data_8h_html_a639c2cd4c2ad7deba30bf25dc9c03043"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a639c2cd4c2ad7deba30bf25dc9c03043">Shared_Data_sendData</a></div><div class="ttdeci">app_lib_data_send_res_e Shared_Data_sendData(app_lib_data_to_send_t *data, app_lib_data_data_sent_cb_f sent_cb)</div><div class="ttdoc">Send data. The packet to send is represented as a app_lib_data_to_send_t struct.</div></div>
 <div class="ttc" id="aapp_8h_html_a2fe888af6a0b27cd2455757d0823a313a1d64d118fbd3df68c8ab52ce6fd94c6c"><div class="ttname"><a href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a1d64d118fbd3df68c8ab52ce6fd94c6c">APP_ADDR_ANYSINK</a></div><div class="ttdeci">@ APP_ADDR_ANYSINK</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00236">app.h:236</a></div></div>
 <div class="ttc" id="adata_8h_html_a6a2e44ccee2f7e4393d38f9072bd1841"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a6a2e44ccee2f7e4393d38f9072bd1841">APP_LIB_DATA_NO_TRACKING_ID</a></div><div class="ttdeci">#define APP_LIB_DATA_NO_TRACKING_ID</div><div class="ttdoc">When sending data and no tracking of packet is requested, this ID may be used.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00060">data.h:60</a></div></div>
 <div class="ttc" id="adata_8h_html_d7/df3/structapp__lib__data__received__t"><div class="ttname"><a href="../../d2/dbd/data_8h.html#d7/df3/structapp__lib__data__received__t">app_lib_data_received_t</a></div><div class="ttdoc">Struct passed to data reception callback functions.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00244">data.h:244</a></div></div>

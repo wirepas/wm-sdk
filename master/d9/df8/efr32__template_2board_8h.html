@@ -150,8 +150,6 @@ Macros</h2></td></tr>
 
 <p>Button GPIO polarity. </p>
 <p>If a button press pulls the GPIO pin low, this setting is true. This is the case for many EFR32 boards, such as the Thunderboard Sense 2 and the BRD4001 Evaluation Board. Otherwise, if a button press pulls the GPIO pin high, this setting should be set to false. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a6">positioning_app/app.c</a>.</dd>
-</dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html#l00116">116</a> of file <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html">board.h</a>.</p>
 
@@ -171,8 +169,6 @@ Macros</h2></td></tr>
 
 <p>Button GPIO internal pull up/down. </p>
 <p>Some buttons don't have any pull-up or pull-down resistor installed on the board. They need it to be setup in software. Set <a class="el" href="../../d3/d8f/tbsense2_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a">BOARD_BUTTON_INTERNAL_PULL</a> to true to enable internal pull-up(down). Pull-up(down) is enabled when <a class="el" href="../../d9/da7/wuerth__261101102_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71">BOARD_BUTTON_ACTIVE_LOW</a> is true(false). </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a5">positioning_app/app.c</a>.</dd>
-</dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html#l00126">126</a> of file <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html">board.h</a>.</p>
 
@@ -194,8 +190,6 @@ Macros</h2></td></tr>
 <p>Any buttons present on the board are defined here. If not defined, a dummy button driver is compiled, so that applications can use the button driver unconditionally.</p>
 <p>For Silabs EFR32 family, the list contains GPIO external interrupt numbers, GPIO ports and pins. See <a class="el" href="../../d3/d8f/tbsense2_2board_8h.html#aa1002840655a30f1b3bef09d00e7d8ba">BOARD_BUTTON_USE_EVEN_INT</a> below for extra considerations when selecting external interrupt numbers.</p>
 <dl class="section note"><dt>Note</dt><dd>in order for application to use buttons, see <a class="el" href="../../d5/d7b/application_examples.html#source_makefile_hal_button">here</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a4">positioning_app/app.c</a>.</dd>
-</dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html#l00106">106</a> of file <a class="el" href="../../d9/df8/efr32__template_2board_8h_source.html">board.h</a>.</p>
 

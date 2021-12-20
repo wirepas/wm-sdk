@@ -99,10 +99,12 @@ $(document).ready(function(){initNavTree('d3/d9c/blink_2app_8c-example.html','..
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../db/da0/led_8h.html">led.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d7/d0e/button_8h.html">button.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a>&quot;</span></div>
+<div class="line"> </div>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define CALLBACK_PERIOD_S   1</span></div>
-<div class="line"><span class="preprocessor">#define CALLBACK_PERIOD_US  (CALLBACK_PERIOD_S * 1000000UL)</span></div>
+<div class="line"><span class="preprocessor">#define CALLBACK_PERIOD_MS  (CALLBACK_PERIOD_S * 1000)</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define EXECUTION_TIME_US   100</span></div>
 <div class="line"> </div>
@@ -130,7 +132,7 @@ $(document).ready(function(){initNavTree('d3/d9c/blink_2app_8c-example.html','..
 <div class="line">        counter++;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">return</span> CALLBACK_PERIOD_US;</div>
+<div class="line">    <span class="keywordflow">return</span> CALLBACK_PERIOD_MS;</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> button_press_func(uint8_t button_id, <a class="code" href="../../d7/d0e/button_8h.html#a4e97005308962643f6d98e25de373ebe">button_event_e</a> event)</div>
@@ -184,7 +186,10 @@ $(document).ready(function(){initNavTree('d3/d9c/blink_2app_8c-example.html','..
 <div class="line">    <span class="comment">// Set the blink callback to be called</span></div>
 <div class="line">    <span class="comment">// immediately after the stack is started</span></div>
 <div class="line">    blink_holdoff = 0;</div>
-<div class="line">    lib_system-&gt;setPeriodicCb(blink_func, 0, EXECUTION_TIME_US);</div>
+<div class="line"> </div>
+<div class="line">    <a name="a11"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(blink_func,</div>
+<div class="line">                                   <a name="a12"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>,</div>
+<div class="line">                                   EXECUTION_TIME_US);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Start the stack</span></div>
 <div class="line">    lib_state-&gt;startStack();</div>
@@ -194,8 +199,10 @@ $(document).ready(function(){initNavTree('d3/d9c/blink_2app_8c-example.html','..
 <div class="ttc" id="aled_8h_html_a09b4763e1f0d3a26bfed612e84b6c749"><div class="ttname"><a href="../../db/da0/led_8h.html#a09b4763e1f0d3a26bfed612e84b6c749">Led_set</a></div><div class="ttdeci">led_res_e Led_set(uint8_t led_id, bool state)</div><div class="ttdoc">Turn the given LED on or off.</div></div>
 <div class="ttc" id="abutton_8h_html"><div class="ttname"><a href="../../d7/d0e/button_8h.html">button.h</a></div><div class="ttdoc">Board-independent button functions.</div></div>
 <div class="ttc" id="anode__configuration_8h_html"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_a71e4c4c0dfd5649947194df11af4fe17"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_ms, uint32_t exec_time_us)</div><div class="ttdoc">Add a task.</div></div>
 <div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a></div><div class="ttdeci">@ APP_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00204">app.h:204</a></div></div>
 <div class="ttc" id="abutton_8h_html_a4e97005308962643f6d98e25de373ebea666f5349284be6384467ac357ec7d461"><div class="ttname"><a href="../../d7/d0e/button_8h.html#a4e97005308962643f6d98e25de373ebea666f5349284be6384467ac357ec7d461">BUTTON_RELEASED</a></div><div class="ttdeci">@ BUTTON_RELEASED</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/d0e/button_8h_source.html#l00019">button.h:19</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a></div></div>
 <div class="ttc" id="abutton_8h_html_a596cb0cee5b599be3365860954b164b5"><div class="ttname"><a href="../../d7/d0e/button_8h.html#a596cb0cee5b599be3365860954b164b5">Button_register_for_event</a></div><div class="ttdeci">button_res_e Button_register_for_event(uint8_t button_id, button_event_e event, on_button_event_cb cb)</div><div class="ttdoc">Register for a button event.</div></div>
 <div class="ttc" id="aled_8h_html"><div class="ttname"><a href="../../db/da0/led_8h.html">led.h</a></div><div class="ttdoc">Board-independent LED functions.</div></div>
 <div class="ttc" id="anode__configuration_8h_html_a2560821c66e34240aa698da5affba7c7"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a></div><div class="ttdeci">__STATIC_INLINE app_res_e configureNodeFromBuildParameters()</div><div class="ttdoc">Wrapper on top of configureNode to get parameters from build system and hardcoded values from chip (f...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d2e/node__configuration_8h_source.html#l00233">node_configuration.h:233</a></div></div>
@@ -205,6 +212,7 @@ $(document).ready(function(){initNavTree('d3/d9c/blink_2app_8c-example.html','..
 <div class="ttc" id="abutton_8h_html_a4e97005308962643f6d98e25de373ebeabd19dea9e19d02d7d39464dfdde1e48b"><div class="ttname"><a href="../../d7/d0e/button_8h.html#a4e97005308962643f6d98e25de373ebeabd19dea9e19d02d7d39464dfdde1e48b">BUTTON_PRESSED</a></div><div class="ttdeci">@ BUTTON_PRESSED</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/d0e/button_8h_source.html#l00018">button.h:18</a></div></div>
 <div class="ttc" id="aapp_8h_html_d6/d81/structapp__global__functions__t"><div class="ttname"><a href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a></div><div class="ttdoc">List of global functions, passed to App_entrypoint()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00157">app.h:157</a></div></div>
 <div class="ttc" id="abutton_8h_html_ae4af98525c67299edd8eff7bc84ef38b"><div class="ttname"><a href="../../d7/d0e/button_8h.html#ae4af98525c67299edd8eff7bc84ef38b">Button_get_number</a></div><div class="ttdeci">uint8_t Button_get_number(void)</div><div class="ttdoc">Get number of buttons.</div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_ae49a1abde6843cb44c37e47616d2a810"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a></div><div class="ttdeci">#define APP_SCHEDULER_SCHEDULE_ASAP</div><div class="ttdoc">Value to return from task or as initial time to be executed ASAP.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00042">app_scheduler.h:42</a></div></div>
 <div class="ttc" id="aapi_8h_html"><div class="ttname"><a href="../../dc/d65/api_8h.html">api.h</a></div></div>
 <div class="ttc" id="abutton_8h_html_a4e97005308962643f6d98e25de373ebe"><div class="ttname"><a href="../../d7/d0e/button_8h.html#a4e97005308962643f6d98e25de373ebe">button_event_e</a></div><div class="ttdeci">button_event_e</div><div class="ttdoc">Different events for a button.</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/d0e/button_8h_source.html#l00017">button.h:17</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->

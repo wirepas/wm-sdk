@@ -116,6 +116,9 @@ Functions</h2></td></tr>
 <tr class="memitem:af5983ac588df8ae846597bf0b98d86d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80">app_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d74/shared__data_8h.html#af5983ac588df8ae846597bf0b98d86d8">Shared_Data_addDataReceivedCb</a> (shared_data_item_t *item)</td></tr>
 <tr class="memdesc:af5983ac588df8ae846597bf0b98d86d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new packet received item to the list. If the item is already in the list it is only updated.  <a href="../../d5/d74/shared__data_8h.html#af5983ac588df8ae846597bf0b98d86d8">More...</a><br /></td></tr>
 <tr class="separator:af5983ac588df8ae846597bf0b98d86d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb7ba592e08dce3af791bc83e4a3b7a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80">app_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d74/shared__data_8h.html#acb7ba592e08dce3af791bc83e4a3b7a4">Shared_Data_readyToReceive</a> (shared_data_item_t *item)</td></tr>
+<tr class="memdesc:acb7ba592e08dce3af791bc83e4a3b7a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable back the reception for an item. Reception is automatically paused when an item returns APP_LIB_DATA_RECEIVE_RES_NO_SPACE from its registered callback <a class="el" href="../../d5/d74/shared__data_8h.html#a36fa713bcbf9a40aa7ad3a73c8463cc8">shared_data_received_cb_f</a> Only way to allow the reception is to call this function.  <a href="../../d5/d74/shared__data_8h.html#acb7ba592e08dce3af791bc83e4a3b7a4">More...</a><br /></td></tr>
+<tr class="separator:acb7ba592e08dce3af791bc83e4a3b7a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac491a551ae86053475ae72428e17fb78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d74/shared__data_8h.html#ac491a551ae86053475ae72428e17fb78">Shared_Data_removeDataReceivedCb</a> (shared_data_item_t *item)</td></tr>
 <tr class="memdesc:ac491a551ae86053475ae72428e17fb78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a received packet item from the list. Removed item fields are all set to 0.  <a href="../../d5/d74/shared__data_8h.html#ac491a551ae86053475ae72428e17fb78">More...</a><br /></td></tr>
 <tr class="separator:ac491a551ae86053475ae72428e17fb78"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -134,14 +137,10 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a2e6186783b7766ef287959ae36ccc3d7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7">shared_data_net_mode_e</a> { <br />
-&#160;&#160;<a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7abe7fd6617fa17f362c9dfd9e061a8b97">SHARED_DATA_NET_MODE_UNICAST</a> = 0, 
+<tr class="memitem:a2e6186783b7766ef287959ae36ccc3d7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7">shared_data_net_mode_e</a> { <a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7abe7fd6617fa17f362c9dfd9e061a8b97">SHARED_DATA_NET_MODE_UNICAST</a> = 0, 
 <a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7aaa21a2d1938fd77076075f458eb0677f">SHARED_DATA_NET_MODE_BROADCAST</a> = 1, 
 <a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c">SHARED_DATA_NET_MODE_MULTICAST</a> = 2, 
-<a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7adc771bccff5c23fb29e95590ea7d519f">SHARED_DATA_NET_MODE_ACKDA</a> = 3, 
-<br />
-&#160;&#160;<a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a> = 4
-<br />
+<a class="el" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a> = 3
  }</td></tr>
 <tr class="memdesc:a2e6186783b7766ef287959ae36ccc3d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select what type of packet to receive.  <a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7">More...</a><br /></td></tr>
 <tr class="separator:a2e6186783b7766ef287959ae36ccc3d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,7 +175,7 @@ Macros</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554b">app_lib_data_receive_res_e</a>. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>APP_LIB_DATA_RECEIVE_RES_NO_SPACE is not managed and will result in a dropped packet (APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If APP_LIB_DATA_RECEIVE_RES_NO_SPACE is returned, the whole data is blocked for all the app. App will start receiving data once this filter has called <a class="el" href="../../d5/d74/shared__data_8h.html#acb7ba592e08dce3af791bc83e4a3b7a4">Shared_Data_readyToReceive</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d5/d74/shared__data_8h_source.html#l00097">97</a> of file <a class="el" href="../../d5/d74/shared__data_8h_source.html">shared_data.h</a>.</p>
 
@@ -207,7 +206,7 @@ Macros</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>APP_RES_OK if ok. See <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80">app_res_e</a> for other result codes. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d5/d87/shared_data_2app_8c-example.html#a13">shared_data/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d1/dac/basic_interrupt_2app_8c-example.html#a25">basic_interrupt/app.c</a>, <a class="el" href="../../d7/d1c/ble_scanner_2app_8c-example.html#a25">ble_scanner/app.c</a>, <a class="el" href="../../d3/d63/ble_tx_2app_8c-example.html#a26">ble_tx/app.c</a>, <a class="el" href="../../db/d83/custom_app_2app_8c-example.html#a29">custom_app/app.c</a>, and <a class="el" href="../../d5/d87/shared_data_2app_8c-example.html#a18">shared_data/app.c</a>.</dd>
 </dl>
 
 </div>
@@ -229,9 +228,39 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initialize the shared data library. </p>
-<dl class="section note"><dt>Note</dt><dd>If Shared data module is used in application, the <a class="el" href="../../d2/dbd/data_8h.html#a108548eef01aa6b4e3db667ef3c1c780">lib_data-&gt;setDataReceivedCb()</a>, <a class="el" href="../../d2/dbd/data_8h.html#a108548eef01aa6b4e3db667ef3c1c780">lib_data-&gt;setBcastDataReceivedCb()</a> <a class="el" href="../../d2/dbd/data_8h.html#a602aad54057eaa2a5afb26888e9b1298">lib_data-&gt;setDataSentCb()</a> and <a class="el" href="../../d2/dbd/data_8h.html#a9ae6095889898db72257eeca385eee7b">lib_data-&gt;sendData()</a> functions offered by data library MUST NOT be used outside of this module. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function is automatically called if library is enabled. </dd>
+<dd>
+If Shared data module is used in application, the <a class="el" href="../../d2/dbd/data_8h.html#a108548eef01aa6b4e3db667ef3c1c780">lib_data-&gt;setDataReceivedCb()</a>, <a class="el" href="../../d2/dbd/data_8h.html#a108548eef01aa6b4e3db667ef3c1c780">lib_data-&gt;setBcastDataReceivedCb()</a> <a class="el" href="../../d2/dbd/data_8h.html#a602aad54057eaa2a5afb26888e9b1298">lib_data-&gt;setDataSentCb()</a> and <a class="el" href="../../d2/dbd/data_8h.html#a9ae6095889898db72257eeca385eee7b">lib_data-&gt;sendData()</a> functions offered by data library MUST NOT be used outside of this module. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a35">positioning_app/app.c</a>, <a class="el" href="../../d5/da9/provisioning_joining_node_2app_8c-example.html#a15">provisioning_joining_node/app.c</a>, <a class="el" href="../../db/d30/provisioning_proxy_2app_8c-example.html#a19">provisioning_proxy/app.c</a>, and <a class="el" href="../../d5/d87/shared_data_2app_8c-example.html#a36">shared_data/app.c</a>.</dd>
+
+</div>
+</div>
+<a id="acb7ba592e08dce3af791bc83e4a3b7a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb7ba592e08dce3af791bc83e4a3b7a4">&#9670;&nbsp;</a></span>Shared_Data_readyToReceive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80">app_res_e</a> Shared_Data_readyToReceive </td>
+          <td>(</td>
+          <td class="paramtype">shared_data_item_t *&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable back the reception for an item. Reception is automatically paused when an item returns APP_LIB_DATA_RECEIVE_RES_NO_SPACE from its registered callback <a class="el" href="../../d5/d74/shared__data_8h.html#a36fa713bcbf9a40aa7ad3a73c8463cc8">shared_data_received_cb_f</a> Only way to allow the reception is to call this function. </p>
+<dl class="section note"><dt>Note</dt><dd>Reception is paused for all items at the same time. All the items that pause the reception must explicitly reanable it. Otherwise reception will stay in pause mode. In fact, in pause mode messages are buffered on stack side and cannot be accepted individually based on filter set. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>Item that is now ready </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>APP_RES_OK if ok. See <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80">app_res_e</a> for other result codes. </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d5/d87/shared_data_2app_8c-example.html#a12">shared_data/app.c</a>.</dd>
 </dl>
 
 </div>
@@ -292,13 +321,12 @@ Macros</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>Data to send </td></tr>
-    <tr><td class="paramname">sent_cb</td><td>Callback function to be called when a packet has gone through local processing and has finally been sent or discarded. If NULL is passed, the callback is disabled. This callback replaces tracking_id and APP_LIB_DATA_SEND_FLAG_TRACK flag of data structure. </td></tr>
+    <tr><td class="paramname">sent_cb</td><td>Callback function to be called when a packet has gone through local processing and has finally been sent or discarded. If NULL is passed, the callback is disabled. This callback replaces APP_LIB_DATA_SEND_FLAG_TRACK flag of data structure. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>tracking_id is managed by the library. When function return the data structure is modified to reflect id used to send the packet. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/dbd/data_8h.html#ab53b6510f8ecb4a1621c905c15855164acf63322bd1c34794b230e2120116cfbb">APP_LIB_DATA_SEND_RES_SUCCESS</a> means that data was accepted for sending. See <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80">app_res_e</a> for other result codes. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d5/d87/shared_data_2app_8c-example.html#a29">shared_data/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d0/dd1/appconfig_2app_8c-example.html#a14">appconfig/app.c</a>, <a class="el" href="../../d1/dac/basic_interrupt_2app_8c-example.html#a14">basic_interrupt/app.c</a>, <a class="el" href="../../d7/d1c/ble_scanner_2app_8c-example.html#a14">ble_scanner/app.c</a>, <a class="el" href="../../d3/d63/ble_tx_2app_8c-example.html#a22">ble_tx/app.c</a>, <a class="el" href="../../db/d83/custom_app_2app_8c-example.html#a14">custom_app/app.c</a>, and <a class="el" href="../../d5/d87/shared_data_2app_8c-example.html#a34">shared_data/app.c</a>.</dd>
 </dl>
 
 </div>
@@ -317,7 +345,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 <div class="textblock"><p>Structure holding all parameters for packet filtering. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d74/shared__data_8h_source.html#l00054">54</a> of file <a class="el" href="../../d5/d74/shared__data_8h_source.html">shared_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d74/shared__data_8h_source.html#l00053">53</a> of file <a class="el" href="../../d5/d74/shared__data_8h_source.html">shared_data.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -397,6 +425,13 @@ reserved2</td>
 <td class="fielddoc">
 <p>Reserved for shared_data use (DO NOT MODIFY). </p>
 </td></tr>
+<tr><td class="fieldtype">
+<a id="a2eda38a0251b6eb514df97bca2028898"></a>bool</td>
+<td class="fieldname">
+reserved3</td>
+<td class="fielddoc">
+<p>Reserved for built-in pause mechanism (DO NOT MODIFY). </p>
+</td></tr>
 </table>
 
 </div>
@@ -422,7 +457,6 @@ reserved2</td>
 </td></tr>
 <tr><td class="fieldname"><a id="a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c"></a>SHARED_DATA_NET_MODE_MULTICAST&#160;</td><td class="fielddoc"><p>Only receive Multicast packets. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a2e6186783b7766ef287959ae36ccc3d7adc771bccff5c23fb29e95590ea7d519f"></a>SHARED_DATA_NET_MODE_ACKDA&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5"></a>SHARED_DATA_NET_MODE_ALL&#160;</td><td class="fielddoc"><p>Accept all type of packets (ignore filtering packet by type). </p>
 </td></tr>
 </table>
@@ -432,9 +466,8 @@ reserved2</td>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7abe7fd6617fa17f362c9dfd9e061a8b97">SHARED_DATA_NET_MODE_UNICAST</a> = 0,</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7aaa21a2d1938fd77076075f458eb0677f">SHARED_DATA_NET_MODE_BROADCAST</a> = 1,</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c">SHARED_DATA_NET_MODE_MULTICAST</a> = 2,</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7adc771bccff5c23fb29e95590ea7d519f">SHARED_DATA_NET_MODE_ACKDA</a> = 3,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a> = 4</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;} <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7">shared_data_net_mode_e</a>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a> = 3</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;} <a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7">shared_data_net_mode_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -478,8 +511,7 @@ reserved2</td>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7">shared_data_net_mode_e</a></div><div class="ttdeci">shared_data_net_mode_e</div><div class="ttdoc">Select what type of packet to receive.</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00040">shared_data.h:40</a></div></div>
-<div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7adc771bccff5c23fb29e95590ea7d519f"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7adc771bccff5c23fb29e95590ea7d519f">SHARED_DATA_NET_MODE_ACKDA</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_ACKDA</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00048">shared_data.h:48</a></div></div>
-<div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_ALL</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00050">shared_data.h:50</a></div></div>
+<div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_ALL</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00049">shared_data.h:49</a></div></div>
 <div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c">SHARED_DATA_NET_MODE_MULTICAST</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_MULTICAST</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00047">shared_data.h:47</a></div></div>
 <div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7abe7fd6617fa17f362c9dfd9e061a8b97"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7abe7fd6617fa17f362c9dfd9e061a8b97">SHARED_DATA_NET_MODE_UNICAST</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_UNICAST</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00043">shared_data.h:43</a></div></div>
 <div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7aaa21a2d1938fd77076075f458eb0677f"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7aaa21a2d1938fd77076075f458eb0677f">SHARED_DATA_NET_MODE_BROADCAST</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_BROADCAST</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00045">shared_data.h:45</a></div></div>

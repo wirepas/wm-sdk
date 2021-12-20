@@ -103,6 +103,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a09b4763e1f0d3a26bfed612e84b6c749"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8">led_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da0/led_8h.html#a09b4763e1f0d3a26bfed612e84b6c749">Led_set</a> (uint8_t led_id, bool state)</td></tr>
 <tr class="memdesc:a09b4763e1f0d3a26bfed612e84b6c749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turn the given LED on or off.  <a href="../../db/da0/led_8h.html#a09b4763e1f0d3a26bfed612e84b6c749">More...</a><br /></td></tr>
 <tr class="separator:a09b4763e1f0d3a26bfed612e84b6c749"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ef67ca29685c3f92d278d8e5712ef7b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da0/led_8h.html#a1ef67ca29685c3f92d278d8e5712ef7b">Led_get</a> (uint8_t led_id)</td></tr>
+<tr class="memdesc:a1ef67ca29685c3f92d278d8e5712ef7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the given LED current state.  <a href="../../db/da0/led_8h.html#a1ef67ca29685c3f92d278d8e5712ef7b">More...</a><br /></td></tr>
+<tr class="separator:a1ef67ca29685c3f92d278d8e5712ef7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06ea59c242323b5e32a567d244c0ea8b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8">led_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da0/led_8h.html#a06ea59c242323b5e32a567d244c0ea8b">Led_toggle</a> (uint8_t led_id)</td></tr>
 <tr class="memdesc:a06ea59c242323b5e32a567d244c0ea8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle the given LED.  <a href="../../db/da0/led_8h.html#a06ea59c242323b5e32a567d244c0ea8b">More...</a><br /></td></tr>
 <tr class="separator:a06ea59c242323b5e32a567d244c0ea8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,6 +122,33 @@ Enumerations</h2></td></tr>
 <tr class="separator:aa8fb1f4b9ec78bfc448496565e6f91c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a1ef67ca29685c3f92d278d8e5712ef7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ef67ca29685c3f92d278d8e5712ef7b">&#9670;&nbsp;</a></span>Led_get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Led_get </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>led_id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the given LED current state. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led_id</td><td>Id of the led </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if ON , false if OFF </dd></dl>
+
+</div>
+</div>
 <a id="ae6e8fa2e23d13592b01d12eb62c95a7e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae6e8fa2e23d13592b01d12eb62c95a7e">&#9670;&nbsp;</a></span>Led_getNumber()</h2>
 
@@ -166,7 +196,7 @@ Enumerations</h2></td></tr>
 <div class="line">    <a class="code" href="../../db/da0/led_8h.html#a040c02c99d35c3ee1fe6ae56bd8a8646">Led_init</a>();</div>
 <div class="line">    ...</div>
 <div class="line">}</div>
-</div><!-- fragment --> <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d9c/blink_2app_8c-example.html#a5">blink/app.c</a>, <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a41">positioning_app/app.c</a>, and <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a10">scheduler/app.c</a>.</dd>
+</div><!-- fragment --> <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d7/d1c/ble_scanner_2app_8c-example.html#a24">ble_scanner/app.c</a>, <a class="el" href="../../d3/d9c/blink_2app_8c-example.html#a5">blink/app.c</a>, <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a34">positioning_app/app.c</a>, and <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a10">scheduler/app.c</a>.</dd>
 </dl>
 
 </div>
@@ -216,7 +246,7 @@ Enumerations</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if successful, false otherwise </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d9c/blink_2app_8c-example.html#a1">blink/app.c</a>, and <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a23">positioning_app/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d9c/blink_2app_8c-example.html#a1">blink/app.c</a>, and <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a24">positioning_app/app.c</a>.</dd>
 </dl>
 
 </div>
@@ -245,7 +275,7 @@ Enumerations</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if successful, false otherwise </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a0">scheduler/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d7/d1c/ble_scanner_2app_8c-example.html#a17">ble_scanner/app.c</a>, and <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a0">scheduler/app.c</a>.</dd>
 </dl>
 
 </div>

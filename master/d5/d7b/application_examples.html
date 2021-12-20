@@ -286,16 +286,14 @@ APP_PRINTING</h2>
 </div><!-- fragment --><h2><a class="anchor" id="source_makefile_app_scheduler"></a>
 APP_SCHEDULER</h2>
 <p>Using of <a class="el" href="../../dd/ddc/app__scheduler_8h.html">app scheduler</a> can be done by using this flag.</p>
-<dl class="section note"><dt>Note</dt><dd>You also need to enable two compilation flags by using <a class="el" href="../../d5/d7b/application_examples.html#source_makefile_cflags">CFLAGS</a> option</dd></dl>
-<p>Example: </p><div class="fragment"><div class="line"><span class="preprocessor"># Use App Scheduler. Declare 4 tasks with maximum execution time of 100 us each</span></div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="preprocessor"># Use App Scheduler. Declare 4 tasks</span></div>
 <div class="line">APP_SCHEDULER=yes</div>
-<div class="line">CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=4</div>
-<div class="line">CFLAGS += -DAPP_SCHEDULER_MAX_EXEC_TIME_US=100</div>
+<div class="line">APP_SCHEDULER_TASKS=4</div>
 </div><!-- fragment --><h2><a class="anchor" id="source_makefile_cflags"></a>
 CFLAGS</h2>
 <p>Introducing custom compilation flags for compilation can be done by extending this list.</p>
 <p>Example: </p><div class="fragment"><div class="line">CFLAGS += -DOWN_FLAG</div>
-</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>Commonly this is used in many applications to propagate network address and network channel defined in <a class="el" href="../../d6/d6f/config_8mk.html">config.mk</a> file to compilation flags: <div class="fragment"><div class="line"><span class="preprocessor"># Define default network settings</span></div>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>Commonly this is used in many applications to propagate network address and network channel defined in <a class="el" href="../../d8/d1f/libraries_2config_8mk.html">config.mk</a> file to compilation flags: <div class="fragment"><div class="line"><span class="preprocessor"># Define default network settings</span></div>
 <div class="line">CFLAGS += -DNETWORK_ADDRESS=$(default_network_address)</div>
 <div class="line">CFLAGS += -DNETWORK_CHANNEL=$(default_network_channel)</div>
 </div><!-- fragment --></dd></dl>
@@ -324,7 +322,7 @@ HAL_LED</h2>
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>: in order for application to be able to drive LEDs, they must be defined in specific board.</dd></dl>
 <h2><a class="anchor" id="source_makefile_hal_persistent_memory"></a>
 HAL_PERSISTENT_MEMORY</h2>
-<p>Using of <a class="el" href="../../de/de8/persistent_8h.html">HAL for persistent memory</a> can be done by this flag.</p>
+<p>Using of <a class="el" href="../../dd/d36/mcu_2hal__api_2persistent_8h.html">HAL for persistent memory</a> can be done by this flag.</p>
 <dl class="section note"><dt>Note</dt><dd>You need to define <code>-DUSE_PERSISTENT_MEMORY</code> by using <a class="el" href="../../d5/d7b/application_examples.html#source_makefile_cflags">CLAGS</a> option.</dd></dl>
 <p>Example: </p><div class="fragment"><div class="line"><span class="preprocessor"># Use persistent memeory</span></div>
 <div class="line">HAL_PERSISTENT_MEMORY=yes</div>

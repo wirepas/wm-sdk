@@ -87,8 +87,32 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>sby_to_tx
 : <a class="el" href="de/d1c/radio__config_8h.html#ab0b852f49c49a92a3817d248fbfebd77">app_lib_radio_cfg_fem_timings_t</a>
 </li>
+<li>scan_ready
+: <a class="el" href="d8/d21/msap__frames_8h.html#aac0f2703cddfb2fdb7fad6488d9f5bbc">msap_on_scanned_nbors_ind_t</a>
+</li>
+<li>scan_type
+: <a class="el" href="db/d3b/state_8h.html#a57a519a271e7536e2f588cc43b5f39c7">app_lib_state_on_scan_start_info_t</a>
+</li>
+<li>scratchpad_block_req
+: <a class="el" href="d8/d21/msap__frames_8h.html#aa361e97977e762ba7662f1f496f46d02">frame_msap</a>
+</li>
 <li>scratchpad_services_p
 : <a class="el" href="dd/d2c/bl__interface_8h.html#a618c3916d715a1709848abadfb64bd21">bl_interface_t</a>
+</li>
+<li>scratchpad_start_req
+: <a class="el" href="d8/d21/msap__frames_8h.html#ab6767b8f23d9d577ecccd7de73bb8fb2">frame_msap</a>
+</li>
+<li>scratchpad_status_cnf
+: <a class="el" href="d8/d21/msap__frames_8h.html#a551d630ba2ebc0099b9c827e2158c3e9">frame_msap</a>
+</li>
+<li>scratchpad_target_read_cnf
+: <a class="el" href="d8/d21/msap__frames_8h.html#ad3c703a288679c02c874d9e3c21a5d22">frame_msap</a>
+</li>
+<li>scratchpad_target_write_req
+: <a class="el" href="d8/d21/msap__frames_8h.html#a4c8f9f7a7310e919b1aeabb03dc7747c">frame_msap</a>
+</li>
+<li>seconds
+: <a class="el" href="d8/d21/msap__frames_8h.html#a6d5694839ec935781627e5c52de21fda">msap_sleep_start_req_t</a>
 </li>
 <li>sector_erase_call_time
 : <a class="el" href="df/d08/memory__area_8h.html#ad16d4dc3fe2433035df69fc4359355fe">app_lib_mem_area_flash_info_t</a>
@@ -100,6 +124,9 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 , <a class="el" href="dd/d2c/bl__interface_8h.html#ad8bef042481e7be25f2152ae5fcb025b">bl_flash_info_t</a>
 , <a class="el" href="d3/d53/external__flash_8h.html#ad8bef042481e7be25f2152ae5fcb025b">flash_info_t</a>
 </li>
+<li>send_reply
+: <a class="el" href="d1/d3f/structwaps__prot__t.html#aeca3f07873135dc5fa7e1590117a866c">waps_prot_t</a>
+</li>
 <li>sendData
 : <a class="el" href="d2/dbd/data_8h.html#ae5430956321eb31f198b6e2e85c327ed">app_lib_data_t</a>
 </li>
@@ -109,6 +136,13 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>seq
 : <a class="el" href="dd/d2c/bl__interface_8h.html#a3f47451edd2274525a52e40f4e26c399">bl_memory_area_header_t</a>
 , <a class="el" href="dd/d2c/bl__interface_8h.html#a3f47451edd2274525a52e40f4e26c399">bl_scrat_info_t</a>
+, <a class="el" href="d8/d21/msap__frames_8h.html#a3f47451edd2274525a52e40f4e26c399">msap_int_ind_t</a>
+, <a class="el" href="d8/d21/msap__frames_8h.html#a3f47451edd2274525a52e40f4e26c399">msap_int_read_cnf_t</a>
+, <a class="el" href="d8/d21/msap__frames_8h.html#a3f47451edd2274525a52e40f4e26c399">msap_int_write_req_t</a>
+, <a class="el" href="d8/d21/msap__frames_8h.html#a3f47451edd2274525a52e40f4e26c399">msap_remote_status_ind_t</a>
+, <a class="el" href="d8/d21/msap__frames_8h.html#a75eb540f1ada0e00406eff512dbb7529">msap_remote_update_req_t</a>
+, <a class="el" href="d8/d21/msap__frames_8h.html#a75eb540f1ada0e00406eff512dbb7529">msap_scratchpad_start_req_t</a>
+, <a class="el" href="d8/d21/msap__frames_8h.html#a3f47451edd2274525a52e40f4e26c399">msap_scratchpad_status_cnf_t</a>
 , <a class="el" href="d6/d21/poslib_8h.html#a0a97914b75ed3ab7d0e13d8b200d758a">poslib_mbcn_data_t</a>
 , <a class="el" href="d4/d60/poslib__mbcn_8h.html#a0a97914b75ed3ab7d0e13d8b200d758a">poslib_mbcn_payload_t</a>
 </li>
@@ -196,6 +230,12 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>setOnScanNborsCb
 : <a class="el" href="db/d3b/state_8h.html#ad714526ae1f1bf0d8cd0effcd1f5848f">app_lib_state_t</a>
 </li>
+<li>setOnScanStartCb
+: <a class="el" href="db/d3b/state_8h.html#a22a6b8e134d3025d5d556ca81ccf5496">app_lib_state_t</a>
+</li>
+<li>setOnSleepCb
+: <a class="el" href="d9/d81/sleep_8h.html#afd7040a2cc9d21a9bb0daa269795c14b">app_lib_sleep_t</a>
+</li>
 <li>setOnWakeupCb
 : <a class="el" href="d9/d81/sleep_8h.html#ac64cb93973d4b86b989af1e0baf97b8e">app_lib_sleep_t</a>
 </li>
@@ -238,14 +278,50 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>setToBeProcessed
 : <a class="el" href="db/de4/otap_8h.html#abeb0545e49eadf68c73085dcb9be307b">app_lib_otap_t</a>
 </li>
+<li>sfid
+: <a class="el" href="db/db1/waps__frames_8h.html#a8bfbf1e81a7eaefcc0300b7f51a97bf4">frame_header_t</a>
+, <a class="el" href="db/db1/waps__frames_8h.html#a8bfbf1e81a7eaefcc0300b7f51a97bf4">waps_frame_t</a>
+</li>
+<li>sfunc
+: <a class="el" href="db/db1/waps__frames_8h.html#afac9616c72bfaf29b3b1502792102821">frame_header_t</a>
+, <a class="el" href="db/db1/waps__frames_8h.html#afac9616c72bfaf29b3b1502792102821">waps_frame_t</a>
+</li>
+<li>simple_cnf
+: <a class="el" href="db/db1/waps__frames_8h.html#a5e2da1fde93de1f11c66671007ac452c">waps_frame_payload_t</a>
+</li>
 <li>sink
 : <a class="el" href="db/d3b/state_8h.html#a47db745cdbea97be8e0a296e33fadfc7">app_lib_state_route_info_t</a>
 </li>
 <li>size
 : <a class="el" href="da/dc2/sl__list_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">sl_list_head_t</a>
 </li>
+<li>sleep_gotosleep_rsp_t
+: <a class="el" href="d8/d21/msap__frames_8h.html#a77f63dfb6aaefac0aa8e10c268b0439d">frame_msap</a>
+</li>
+<li>sleep_seconds
+: <a class="el" href="d8/d21/msap__frames_8h.html#a42ff2e1f75c3c48dfe084623082abfb0">msap_sleep_state_rsp_t</a>
+</li>
+<li>sleep_start_req
+: <a class="el" href="d8/d21/msap__frames_8h.html#aa10f8b4a425a353322e3183c0fab9823">frame_msap</a>
+</li>
+<li>sleep_started
+: <a class="el" href="d8/d21/msap__frames_8h.html#aa7ade04b2ff2a90225a6d6c4bc33ed43">msap_sleep_state_rsp_t</a>
+</li>
+<li>sleep_state_rsp
+: <a class="el" href="d8/d21/msap__frames_8h.html#a16a678b93e8300f844ff63bf558ef413">frame_msap</a>
+</li>
 <li>sleepStackforTime
 : <a class="el" href="d9/d81/sleep_8h.html#ad33684ef1960c8c4c5cff08823be02b3">app_lib_sleep_t</a>
+</li>
+<li>source
+: <a class="el" href="d8/d21/msap__frames_8h.html#aaeb82afb5f6cf64e6dee8f62a44b4cf7">msap_remote_status_ind_t</a>
+</li>
+<li>splen
+: <a class="el" href="db/db1/waps__frames_8h.html#aa014186b836ca0589945706229ae9fec">frame_header_t</a>
+, <a class="el" href="db/db1/waps__frames_8h.html#aa014186b836ca0589945706229ae9fec">waps_frame_t</a>
+</li>
+<li>src_addr
+: <a class="el" href="d5/d53/dsap__frames_8h.html#a008990100a26edf900028b85c6d3cb42">dsap_data_rx_ind_t</a>
 </li>
 <li>src_address
 : <a class="el" href="d2/dbd/data_8h.html#a96f74e481c0d4d610c5f0ba780fb2138">app_lib_data_received_t</a>
@@ -255,11 +331,18 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 , <a class="el" href="d2/dbd/data_8h.html#a2f980290790d1fecb3764ef797c03335">app_lib_data_received_t</a>
 , <a class="el" href="d2/dbd/data_8h.html#a2f980290790d1fecb3764ef797c03335">app_lib_data_sent_status_t</a>
 , <a class="el" href="d2/dbd/data_8h.html#a2f980290790d1fecb3764ef797c03335">app_lib_data_to_send_t</a>
+, <a class="el" href="d5/d53/dsap__frames_8h.html#a29c1d371b8223440e07c87704e14ecaf">dsap_data_rx_ind_t</a>
+, <a class="el" href="d5/d53/dsap__frames_8h.html#a29c1d371b8223440e07c87704e14ecaf">dsap_data_tx_ind_t</a>
+, <a class="el" href="d5/d53/dsap__frames_8h.html#a29c1d371b8223440e07c87704e14ecaf">dsap_data_tx_req_t</a>
+, <a class="el" href="d5/d53/dsap__frames_8h.html#a29c1d371b8223440e07c87704e14ecaf">dsap_data_tx_tt_req_t</a>
 , <a class="el" href="d5/d74/shared__data_8h.html#ab1446eb8532a6cfaf46f7470dafa2059">shared_data_filter_t</a>
 </li>
 <li>start
 : <a class="el" href="d9/d27/provisioning__int_8h.html#aeb3962d795492f1f5f7b1b905bb1aca6">pdu_prov_t</a>
 , <a class="el" href="db/d41/timing_8h.html#a61eb63d26b2fa6c2971603ceccffb14b">timing_handle_t</a>
+</li>
+<li>start_addr
+: <a class="el" href="d8/d21/msap__frames_8h.html#a94ee8b3c3c313a37430d52949bd0e8cb">msap_scratchpad_block_req_t</a>
 </li>
 <li>start_address
 : <a class="el" href="d2/d39/app_8h.html#abe5b74a6bf41557a5ae72460fa563219">app_information_header_t</a>
@@ -267,8 +350,14 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>start_cb
 : <a class="el" href="d0/dae/provisioning_8h.html#a522dd091d64e6871bedc5f496a03f3b5">provisioning_proxy_conf_t</a>
 </li>
+<li>start_options
+: <a class="el" href="d8/d21/msap__frames_8h.html#a06bce792f4c6b7eff3745a75583399bf">msap_start_req_t</a>
+</li>
 <li>start_ram_address
 : <a class="el" href="d2/d39/app_8h.html#a3e0749b6bf3181ce33619581d8e180ab">app_information_header_t</a>
+</li>
+<li>start_req
+: <a class="el" href="d8/d21/msap__frames_8h.html#a51fb0361e6ceaff3b64caac87df946e0">frame_msap</a>
 </li>
 <li>startErase
 : <a class="el" href="df/d08/memory__area_8h.html#a06a1b388b6cdde85da24fd08be4c8569">app_lib_memory_area_t</a>
@@ -303,8 +392,13 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 <li>state
 : <a class="el" href="db/d3b/state_8h.html#a42584f0a814c647a1d733326491a5e43">app_lib_state_route_info_t</a>
 </li>
+<li>state_ind
+: <a class="el" href="d8/d21/msap__frames_8h.html#a832a35a5ee59f5a1d8e99df60e1fb80d">frame_msap</a>
+</li>
 <li>status
 : <a class="el" href="dd/d2c/bl__interface_8h.html#ade20423e91627f07e610924cb0081623">bl_scrat_info_t</a>
+, <a class="el" href="d8/d21/msap__frames_8h.html#ade818037fd6c985038ff29656089758d">msap_remote_status_ind_t</a>
+, <a class="el" href="d8/d21/msap__frames_8h.html#ade818037fd6c985038ff29656089758d">msap_scratchpad_status_cnf_t</a>
 </li>
 <li>stop
 : <a class="el" href="db/d41/timing_8h.html#ab62795d0dce17019b8037b19185c21b1">timing_handle_t</a>
@@ -329,6 +423,9 @@ $(document).ready(function(){initNavTree('functions_s.html',''); initResizable()
 </li>
 <li>stored_otap_seq
 : <a class="el" href="d6/d0d/control__node__int_8h.html#a6c5f409917e71e857cd325f55b11e84f">control_diag_t</a>
+</li>
+<li>STRUCT_ALIGN_4()
+: <a class="el" href="d5/d7e/structwaps__item__t.html#a37f101617c86931f364f129388702feb">waps_item_t</a>
 </li>
 <li>success
 : <a class="el" href="d2/dbd/data_8h.html#a7960f9c558f9ee2c3d4a8fdea096fb56">app_lib_data_sent_status_t</a>

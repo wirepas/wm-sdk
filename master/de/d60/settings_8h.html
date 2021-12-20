@@ -245,7 +245,7 @@ Macros</h2></td></tr>
 <tr class="memitem:a839e417649c2a4f3410be75a1098cf34"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d60/settings_8h.html#a839e417649c2a4f3410be75a1098cf34">APP_LIB_SETTINGS_NAME</a>&#160;&#160;&#160;0x74ced676</td></tr>
 <tr class="memdesc:a839e417649c2a4f3410be75a1098cf34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Library symbolic name.  <a href="../../de/d60/settings_8h.html#a839e417649c2a4f3410be75a1098cf34">More...</a><br /></td></tr>
 <tr class="separator:a839e417649c2a4f3410be75a1098cf34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0030037c33657de1d8bf7bfaf074f9d4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d60/settings_8h.html#a0030037c33657de1d8bf7bfaf074f9d4">APP_LIB_SETTINGS_VERSION</a>&#160;&#160;&#160;0x205</td></tr>
+<tr class="memitem:a0030037c33657de1d8bf7bfaf074f9d4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d60/settings_8h.html#a0030037c33657de1d8bf7bfaf074f9d4">APP_LIB_SETTINGS_VERSION</a>&#160;&#160;&#160;0x206</td></tr>
 <tr class="memdesc:a0030037c33657de1d8bf7bfaf074f9d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum supported library version.  <a href="../../de/d60/settings_8h.html#a0030037c33657de1d8bf7bfaf074f9d4">More...</a><br /></td></tr>
 <tr class="separator:a0030037c33657de1d8bf7bfaf074f9d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c6561f73e83af4857749db05caac45c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d60/settings_8h.html#a6c6561f73e83af4857749db05caac45c">APP_LIB_SETTINGS_AES_KEY_NUM_BYTES</a>&#160;&#160;&#160;16</td></tr>
@@ -284,7 +284,7 @@ Macros</h2></td></tr>
 <p>Example: </p><div class="fragment"><div class="line">uint16_t min,max;</div>
 <div class="line">lib_settings-&gt;getAcRange(&amp;min, &amp;max);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00525">525</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00527">527</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -311,7 +311,7 @@ Macros</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if successful, APP_RES_INVALID_NULL_POINTER if min_value_p or max_value_p is NULL </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00696">696</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00698">698</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -331,14 +331,13 @@ Macros</h2></td></tr>
 <p>It is not possible to actually read the key from the stack. The <code>key_p</code> parameter is ignored.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">key_p</td><td>A dummy parameter, reserved for future, set to NULL </td></tr>
+    <tr><td class="paramname">key_p</td><td>If NULL, key is not return but return code will inform if keys are set or not. Otherwise, pointer to a ram area of 16 bytes where the key can be copied. It is updated only if return value is APP_RES_OK. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if a key set, APP_RES_INVALID_CONFIGURATION if the key is all 0xff, i.e. not set </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Reading the actual key value is not possible, for security reasons </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00442">442</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00443">443</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -365,7 +364,7 @@ Macros</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if successful, APP_RES_INVALID_NULL_POINTER if <code>channelmap_p</code> is NULL </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>WM FW releases 3.5 and onwards calling this functions will return an error code. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00640">640</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00642">642</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -385,14 +384,13 @@ Macros</h2></td></tr>
 <p>It is not possible to actually read the key from the stack. The <code>key_p</code> parameter is ignored.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">key_p</td><td>A dummy parameter, reserved for future, set to NULL </td></tr>
+    <tr><td class="paramname">key_p</td><td>If NULL, key is not return but return code will inform if keys are set or not. Otherwise, pointer to a ram area of 16 bytes where the key can be copied. It is updated only if return value is APP_RES_OK. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if a key set, APP_RES_INVALID_CONFIGURATION if the key is all 0xff, i.e. not set </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Reading the actual key value is not possible, for security reasons </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00479">479</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00481">481</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -522,7 +520,7 @@ Macros</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if successful, APP_RES_INVALID_NULL_POINTER if min_value_p or max_value_p is NULL </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00678">678</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00680">680</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -597,7 +595,7 @@ Macros</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if successful, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80acf4d6254abe9760ec1ad9403b4af6cdc">APP_RES_INVALID_STACK_STATE</a> if stack is not running, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a64ef78c2608dd65baaf789968c3b39b2">APP_RES_INVALID_NULL_POINTER</a> if <code>max_scan_p</code> is NULL </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00592">592</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00594">594</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -625,7 +623,7 @@ Macros</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if successful, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a64ef78c2608dd65baaf789968c3b39b2">APP_RES_INVALID_NULL_POINTER</a> if <code>channels_p</code> is NULL, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a3003711bc2e65045853433dacc324767">APP_RES_INVALID_VALUE</a> if last reserved channel does not fit in <code>num_bytes</code> </dd></dl>
 <dl class="section note"><dt>Note</dt><dd><code>channels_p</code> bit array can be longer than the maximum reserved channel. Remaining channels are marked as not reserved </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00755">755</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00757">757</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -679,7 +677,7 @@ Macros</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if network address is valid. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00807">807</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00809">809</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -704,7 +702,7 @@ Macros</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if network channel is valid. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00815">815</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00817">817</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -729,7 +727,7 @@ Macros</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if node address is valid. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00823">823</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00825">825</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -754,7 +752,7 @@ Macros</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if node role is valid. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00831">831</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00833">833</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -772,7 +770,7 @@ Macros</h2></td></tr>
 
 <p>Network address type definition. </p>
 <p>All nodes on the network must have the same network address. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a32">inventory_app_tag/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a33">inventory_app_tag/app.c</a>.</dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00053">53</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
@@ -793,7 +791,7 @@ Macros</h2></td></tr>
 
 <p>Network channel type definition. </p>
 <p>All nodes on the network must have the same network channel. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a33">inventory_app_tag/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a34">inventory_app_tag/app.c</a>.</dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00060">60</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
@@ -886,7 +884,7 @@ Macros</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if successful, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a3003711bc2e65045853433dacc324767">APP_RES_INVALID_VALUE</a> if <code>ac_min_value</code> or <code>ac_max_value</code> is invalid</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This setting is not possible when device role has flag <a class="el" href="../../de/d60/settings_8h.html#ad60f684ddb64fff64bd9443bec7d6575a1c666e75ca58a10e249d2980b349a753">APP_LIB_SETTINGS_ROLE_FLAG_LL</a> mode set. Instead, those devices always have automatic access cycle selection enabled. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00576">576</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00578">578</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -914,7 +912,7 @@ Macros</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if successful, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80acf4d6254abe9760ec1ad9403b4af6cdc">APP_RES_INVALID_STACK_STATE</a> if stack is running, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a64ef78c2608dd65baaf789968c3b39b2">APP_RES_INVALID_NULL_POINTER</a> if <code>key_p</code> is NULL </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Note that both the encryption and authentication keys must be set for the encryption or authentication to be enabled. It is NOT enough to set just one key. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00464">464</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00465">465</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -942,7 +940,7 @@ Macros</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if successful, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a3003711bc2e65045853433dacc324767">APP_RES_INVALID_VALUE</a> if <code>channelmap</code> is invalid, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80acf4d6254abe9760ec1ad9403b4af6cdc">APP_RES_INVALID_STACK_STATE</a> if stack is running </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>WM FW releases 3.5 and onwards calling this functions will return an error code. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00661">661</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00663">663</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -970,7 +968,7 @@ Macros</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if successful, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80acf4d6254abe9760ec1ad9403b4af6cdc">APP_RES_INVALID_STACK_STATE</a> if stack is running, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a64ef78c2608dd65baaf789968c3b39b2">APP_RES_INVALID_NULL_POINTER</a> if <code>key_p</code> is NULL </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Note that both the encryption and authentication keys must be set for the encryption or authentication to be enabled. It is NOT enough to set just one key. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00501">501</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00503">503</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -1063,7 +1061,7 @@ Macros</h2></td></tr>
 <div class="line">    lib_state-&gt;startStack();</div>
 <div class="line">}</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00729">729</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00731">731</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -1219,7 +1217,7 @@ Macros</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> if successful, <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a3003711bc2e65045853433dacc324767">APP_RES_INVALID_VALUE</a> if <code>max_scan</code> is invalid </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00620">620</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00622">622</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -1251,7 +1249,7 @@ Macros</h2></td></tr>
 <dd>
 In the current implementation, reserved channels are not stored in persistent memory. Application must call setReservedChannels() in App_init() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00797">797</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00799">799</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 
 </div>
 </div>
@@ -1409,7 +1407,7 @@ In the current implementation, reserved channels are not stored in persistent me
 </div><div class="memdoc">
 <div class="textblock"><p>The function table returned from <a class="el" href="../../d2/d39/app_8h.html#a5495b6de969dc78cabb55001ba9da2ad">app_open_library_f</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00837">837</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../de/d60/settings_8h_source.html#l00839">839</a> of file <a class="el" href="../../de/d60/settings_8h_source.html">settings.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -1762,7 +1760,7 @@ setReservedChannels</td>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define APP_LIB_SETTINGS_VERSION&#160;&#160;&#160;0x205</td>
+          <td class="memname">#define APP_LIB_SETTINGS_VERSION&#160;&#160;&#160;0x206</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -88,9 +88,9 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div>
 <p>Main components are following:</p><ul>
 <li><a class="el" href="index.html#application">Application</a></li>
-<li><a class="el" href="index.html#sdk_hal">Application-specific Hardware Abstraction Layer (HAL)</a></li>
 <li><a class="el" href="index.html#single_mcu_api">Wirepas Mesh Single MCU API</a></li>
-<li><a class="el" href="index.html#sdk_libraries">Wirepas Mesh Single MCU libraries wrapper</a></li>
+<li><a class="el" href="index.html#sdk_libraries">SDK libraries</a></li>
+<li><a class="el" href="index.html#sdk_hal">Application-specific Hardware Abstraction Layer (HAL)</a></li>
 <li><a class="el" href="index.html#wirepas_firmware">Wirepas Mesh Stack</a></li>
 <li><a class="el" href="index.html#bootloader">Wirepas Mesh Bootloader</a></li>
 <li><a class="el" href="index.html#bootloader_extension">Custom bootloader extension</a></li>
@@ -103,17 +103,16 @@ Application</h1>
 <p><a class="el" href="d7/d28/application_operation.html">Single-MCU API Operation Principle</a> describes the operation principle of the interface between the application and Wirepas Mesh stack. Memory partitioning and different regions are explained. The different ways the application is scheduled is also described.</p>
 <p><a class="el" href="dd/d6a/sdk_environment.html">SDK Environment</a> describes the SDK package contents and available free processor resources for application.</p>
 <p><a class="el" href="de/d7a/how_to_develop.html">How to develop applications with Single-MCU SDK</a> describes guidance to write first application and various tips and recommendations for application development.</p>
-<h1><a class="anchor" id="sdk_hal"></a>
-Application-specific Hardware Abstraction Layer (HAL)</h1>
-<p>This is commonly various software components for peripheral usage, such as sensors/actuators and communication interfaces. Some of those are delivered as part of the SDK. This also contains drivers made by user of the SDKs, commonly shared between different _applications.</p>
-<p>For HAL services offered by the SDK, see API services by SDK.</p>
 <h1><a class="anchor" id="single_mcu_api"></a>
 Wirepas Mesh Single MCU API</h1>
-<p>Wirepas Mesh stack provides Wirepas Mesh Single-MCU API for application to use <em>stack services</em> and run tasks on the MCU.</p>
-<p><a class="el" href="dd/d9c/programming_interface.html">Application API</a> describes the programming interface.</p>
+<p>Wirepas Mesh Stack provides Wirepas Mesh Single-MCU API for application to use <a class="el" href="dd/d9c/programming_interface.html#stack_api">stack libraries</a>. This low level API is designed to be backward compatible between version to allow application running on newer stack compare to the one used when development (it allows updating stack independently of the application).</p>
 <h1><a class="anchor" id="sdk_libraries"></a>
-Wirepas Mesh Single MCU libraries wrapper</h1>
-<p>These libraries are wrappers on top of the <a class="el" href="index.html#single_mcu_api">single MCU api</a>. Some services offered by the stack are quite low level and these wrapper libraries offer a higher abstraction level. Main example is the app_scheduler abstracting the single periodic work offered by stack.</p>
+SDK libraries</h1>
+<p>These <a class="el" href="dd/d9c/programming_interface.html#libraries_api">libraries</a> are wrappers on top of the <a class="el" href="index.html#single_mcu_api">single MCU api</a>. Some services offered by the stack are quite low level and these wrapper libraries offer a higher abstraction level. This higher level of api allows to write more modular component that can be reused between different applications. In fact, callbacks from single mcu api can only be registered one time by the application, making it more complex to share between two independent modules from same application. Main example is the app_scheduler abstracting the single periodic work offered by the stack into an arbitrary number of tasks in the application. Similar case with the shared_data library allowing multiple independent modules to be notified when a message is received matching their own criteria.</p>
+<h1><a class="anchor" id="sdk_hal"></a>
+Application-specific Hardware Abstraction Layer (HAL)</h1>
+<p>This is commonly various software components for peripheral usage, such as sensors/actuators and communication interfaces. Some of those are delivered as part of the SDK. This also contains drivers made by user of the SDKs, commonly shared between different applications.</p>
+<p>For HAL services offered by the SDK, see <a class="el" href="dd/d9c/programming_interface.html#mcu_api">API services by SDK</a>.</p>
 <h1><a class="anchor" id="wirepas_firmware"></a>
 Wirepas Mesh Stack</h1>
 <p>Stack includes the Wirepas Mesh communication stack and Wirepas scheduler for enabling the application operation in the same MCU. Wirepas Mesh HAL includes all hardware abstractions and drivers <em>needed by the stack</em>, such as a radio driver. Note that drivers for peripherals that are not needed by the stack itself, are not implemented in stack.</p>
@@ -132,7 +131,7 @@ The physical Hardware</h1>
 <li>Peripherals used solely by the application and</li>
 <li>Peripherals shared between Wirepas Mesh Stack and application.</li>
 </ol>
-<p>For details on this, check <a class="el" href="dd/d6a/sdk_environment.html#efr32xg12">EFR32 resources</a> or <a class="el" href="dd/d6a/sdk_environment.html#nordic_nrf52832_nrf52840">Nordic nRF52XXX resources</a> according to your architecture. </p>
+<p>For details on this, check <a class="el" href="dd/d6a/sdk_environment.html#efr32_resources">EFR32 resources</a> or <a class="el" href="dd/d6a/sdk_environment.html#nordic_resources">Nordic nRF52XXX resources</a> according to your architecture. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -127,6 +127,7 @@ Application Detection</h1>
 Cooperative MCU Access</h1>
 <p>Wirepas Mesh stack is a real-time system and is based on a cooperative scheduler. Tasks are scheduled based on their priorities and their execution times. To operate correctly, all the deadlines must be respected and each task must complete within the duration reported to the scheduler.</p>
 <p>If a task asks the scheduler to execute for a given period, it must finish its work in the corresponding allocated window. Being late can <em>affect the whole system performance and may result in incorrect operation </em>. The scheduler cannot pre-empt a task. Thus, special care must be taken to guarantee that a task finishes on time.</p>
+<p>Moreover as it is a cooperative scheduler, application must not ask to be scheduled all the time. It would prevent Wirepas tasks with a lower priority from getting access to the MCU. It may result with stack not being able to generate diagnostics or process OTAP commands. Even if their is no exact figure, Application must ensure a fair access to the MCU ressource.</p>
 <p>An application task can get run-time in basically three different ways:</p>
 <ol type="1">
 <li>via <a class="el" href="../../d7/d28/application_operation.html#periodic_application">periodic application callback function</a></li>

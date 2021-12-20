@@ -82,35 +82,44 @@ $(document).ready(function(){initNavTree('d4/d72/board_2efr32__template_2config_
 <div class="title">config.mk</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="../../d4/d72/board_2efr32__template_2config_8mk.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;# This definition describes processor architecture.</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;# Valid value: efr32 for EFR32 based boards</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;MCU=efr32</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;# This describes the sub-architecture of the processor. Allowed values are</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;# following: xg12,xg21,xg22</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;MCU_SUB=xg12</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;# This definitions describes the processor memory variant. It is only used when</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;# &lt;code&gt;@ref config_mk_mcu &quot;MCU&quot;&lt;/code&gt; is &lt;code&gt;efr32&lt;/code&gt;.</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;# Valid values are following:</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;# - &lt;code&gt;pxxxf512&lt;/code&gt; For 512 kB flash memory variant (xg12)</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;# - &lt;code&gt;xxxxf512&lt;/code&gt; For 512 kB flash memory variant (xg22)</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;# - &lt;code&gt;pxxxf1024&lt;/code&gt; For 1024 kB flash memory variant (xg12)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;# - &lt;code&gt;xxxxf1024&lt;/code&gt; For 1024 kB flash memory variant (xg21)</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;MCU_MEM_VAR=pxxxf1024</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;# This describes the hardware capabilities of the board</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;# (this is used to customize the hardware service of the bootloader).</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;## Is 32kHz crystal mounted on the board? default:yes, possible values:yes, no</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;board_hw_crystal_32k=yes</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;## Is DCDC to be enabled on the board? default:yes, possible values:yes, no</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;## (it replaces MCU_NO_DCDC define in ./board/bootlaoder/early_init_efr32.c)</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;board_hw_dcdc=yes</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;## HFXO crystal characteristics</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;board_hw_hfxo_ctune=322</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;## LFXO crystal characteristics</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;board_hw_lfxo_ctune=68</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;board_hw_lfxo_gain=2</div>
+<a href="../../d4/d72/board_2efr32__template_2config_8mk.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;# This definition describes mcu family.</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;MCU_FAMILY=efr</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;# This definition describes processor architecture.</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;# Valid value: efr32 for EFR32 based boards</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;MCU=efr32</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;# This describes the sub-architecture of the processor. Allowed values are</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;# following: xg12,xg21,xg22</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;MCU_SUB=xg12</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;# This definitions describes the processor memory variant. It is only used when</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;# &lt;code&gt;@ref config_mk_mcu &quot;MCU&quot;&lt;/code&gt; is &lt;code&gt;efr32&lt;/code&gt;.</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;# Valid values are following:</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;# - &lt;code&gt;pxxxf512&lt;/code&gt; For 512 kB flash memory variant (xg12)</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;# - &lt;code&gt;xxxxf512&lt;/code&gt; For 512 kB flash memory variant (xg22)</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;# - &lt;code&gt;pxxxf1024&lt;/code&gt; For 1024 kB flash memory variant (xg12)</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;# - &lt;code&gt;xxxxf1024&lt;/code&gt; For 1024 kB flash memory variant (xg21)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;MCU_MEM_VAR=pxxxf1024</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;# Which radio version to use (different stack binary)</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;# Must be set only for xg21 and xg22 only</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;# Allowed values are following for xg21: efr32xg21, bgm210pa22jia</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;# Allowed values are following for xg22: efr32xg22, bgm220pc22hna</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;# radio=</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;# This describes the hardware capabilities of the board</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;# (this is used to customize the hardware service of the bootloader).</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;## Is 32kHz crystal mounted on the board? default:yes, possible values:yes, no</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;board_hw_crystal_32k=yes</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;## Is DCDC to be enabled on the board? default:yes, possible values:yes, no</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;## (it replaces MCU_NO_DCDC define in ./board/bootlaoder/early_init_efr32.c)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;board_hw_dcdc=yes</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;## HFXO crystal characteristics</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;board_hw_hfxo_ctune=322</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;## LFXO crystal characteristics</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;board_hw_lfxo_ctune=68</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;board_hw_lfxo_gain=2</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.8.17-->

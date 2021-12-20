@@ -218,16 +218,13 @@ $(document).ready(function(){initNavTree('d6/da1/scheduler_2app_8c-example.html'
 <div class="line">    <a name="a10"></a><a class="code" href="../../db/da0/led_8h.html#a040c02c99d35c3ee1fe6ae56bd8a8646">Led_init</a>();</div>
 <div class="line">    <a name="a11"></a><a class="code" href="../../d7/d0e/button_8h.html#a52c2ed5f21cc02ad048cb9ab96b07aa9">Button_init</a>();</div>
 <div class="line"> </div>
-<div class="line">    <a name="a12"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a>();</div>
-<div class="line"> </div>
 <div class="line">    <span class="comment">// Launch two periodic task with different period</span></div>
 <div class="line">    <a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(periodic_task_50ms, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>, 5);</div>
 <div class="line">    <a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(periodic_task_500ms, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>, 5);</div>
 <div class="line"> </div>
-<div class="line"> </div>
 <div class="line">    <span class="comment">// Register to button 0 event that will triger a single shot task</span></div>
 <div class="line">    <span class="comment">// Will work only if target board support buttons</span></div>
-<div class="line">    <a name="a13"></a><a class="code" href="../../d7/d0e/button_8h.html#a596cb0cee5b599be3365860954b164b5">Button_register_for_event</a>(0, <a name="a14"></a><a class="code" href="../../d7/d0e/button_8h.html#a4e97005308962643f6d98e25de373ebeabd19dea9e19d02d7d39464dfdde1e48b">BUTTON_PRESSED</a>, button_handler);</div>
+<div class="line">    <a name="a12"></a><a class="code" href="../../d7/d0e/button_8h.html#a596cb0cee5b599be3365860954b164b5">Button_register_for_event</a>(0, <a name="a13"></a><a class="code" href="../../d7/d0e/button_8h.html#a4e97005308962643f6d98e25de373ebeabd19dea9e19d02d7d39464dfdde1e48b">BUTTON_PRESSED</a>, button_handler);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Register to button 1 event that will start/stop a state machine</span></div>
 <div class="line">    <span class="comment">// Will work only if target board support buttons</span></div>
@@ -236,14 +233,13 @@ $(document).ready(function(){initNavTree('d6/da1/scheduler_2app_8c-example.html'
 <div class="line">    <span class="comment">// Start the stack</span></div>
 <div class="line">    lib_state-&gt;startStack();</div>
 <div class="line"> </div>
-<div class="line">    <a name="a15"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a name="a16"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;Scheduler example app started&quot;</span>);</div>
+<div class="line">    <a name="a14"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a name="a15"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;Scheduler example app started&quot;</span>);</div>
 <div class="line">}</div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aapp__scheduler_8h_html_a245a7f2a478b72e2d4a43b3c18676ab3a52e992fd53f13b7a664b47e8884b936b"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3a52e992fd53f13b7a664b47e8884b936b">APP_SCHEDULER_RES_OK</a></div><div class="ttdeci">@ APP_SCHEDULER_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00050">app_scheduler.h:50</a></div></div>
 <div class="ttc" id="adebug__log_8h_html_a589372d7f7cc36183e6c19752a7df474"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a></div><div class="ttdeci">#define LVL_INFO</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00083">debug_log.h:83</a></div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_a52e39bcd9fb750ac5001e4e6b8de21c4"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a52e39bcd9fb750ac5001e4e6b8de21c4">APP_SCHEDULER_STOP_TASK</a></div><div class="ttdeci">#define APP_SCHEDULER_STOP_TASK</div><div class="ttdoc">Value to return from task to remove it.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00037">app_scheduler.h:37</a></div></div>
-<div class="ttc" id="aapp__scheduler_8h_html_aadb275bc1de9c05d677ab56117535802"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a></div><div class="ttdeci">void App_Scheduler_init(void)</div><div class="ttdoc">Initialize scheduler.</div></div>
 <div class="ttc" id="abutton_8h_html"><div class="ttname"><a href="../../d7/d0e/button_8h.html">button.h</a></div><div class="ttdoc">Board-independent button functions.</div></div>
 <div class="ttc" id="anode__configuration_8h_html"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a></div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_a71e4c4c0dfd5649947194df11af4fe17"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_ms, uint32_t exec_time_us)</div><div class="ttdoc">Add a task.</div></div>

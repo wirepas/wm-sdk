@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('d0/dd0/makefile__bootloader_8mk_source
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;BL_BUILDPREFIX := $(BUILDPREFIX_BOOTLOADER)</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;# Linker for the bootloader</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;LDSCRIPT := mcu/$(MCU)/linker/gcc_bl_$(MCU)$(MCU_SUB)$(MCU_MEM_VAR).ld</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;LDSCRIPT := $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/linker/gcc_bl_$(MCU)$(MCU_SUB)$(MCU_MEM_VAR).ld</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;BOOTLOADER_ELF := $(BL_BUILDPREFIX)bootloader.elf</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>

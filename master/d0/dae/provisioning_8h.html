@@ -281,9 +281,7 @@ Variables</h2></td></tr>
 <p>Initialize the provisioning process. </p>
 <dl class="section note"><dt>Note</dt><dd>If Provisioning is used, App_scheduler and Shared_data MUST BE initialized in App_Init of the application. Also <a class="el" href="../../dc/db2/system_8h.html#a0bd4d808fdb1ae364a59b30330d19a70">lib_system-&gt;setShutdownCb</a>() function offered by system library MUST NOT be used outside of this module. If Joining is used, <a class="el" href="../../dd/dc6/joining_8h.html#a8b9363f464604cbe35d7b3fd55517efb">lib_joining-&gt;startJoiningBeaconRx()</a> function offered by Joining library and <a class="el" href="../../db/d3b/state_8h.html#a828287002dce7a99dca31ac61093db3c">lib_state-&gt;setRouteCb</a>() function offered by State library MUST NOT be used outside of this module. </dd>
 <dd>
-When using provisioning application must use Shared_data instead of data library for sending and receiving packets. </dd>
-<dd>
-Provisioning module needs 2 tasks from App_scheduler. Maximum execution time of provisioning tasks is 250µS excluding user callback. This must be taken in consideration when setting APP_SCHEDULER_MAX_EXEC_TIME_US. </dd></dl>
+When using provisioning application must use Shared_data instead of data library for sending and receiving packets. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">conf</td><td>Configuration for the provisioning. </td></tr>
@@ -291,7 +289,7 @@ Provisioning module needs 2 tasks from App_scheduler. Maximum execution time of 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d0/dae/provisioning_8h.html#a0f5bfd9ec0327dadfd77b7982129c4a6a07bd8a0d138f700e67947a3550de61c9">PROV_RET_OK</a> if provisioning is initialized. See <a class="el" href="../../d0/dae/provisioning_8h.html#a0f5bfd9ec0327dadfd77b7982129c4a6">provisioning_ret_e</a> for other return codes. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d5/da9/provisioning_joining_node_2app_8c-example.html#a25">provisioning_joining_node/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d5/da9/provisioning_joining_node_2app_8c-example.html#a23">provisioning_joining_node/app.c</a>.</dd>
 </dl>
 
 </div>
@@ -323,7 +321,7 @@ If local provisioing is enabled, provisioning request sent by new node will be t
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d0/dae/provisioning_8h.html#a0f5bfd9ec0327dadfd77b7982129c4a6a07bd8a0d138f700e67947a3550de61c9">PROV_RET_OK</a> if proxy is initialized. See <a class="el" href="../../d0/dae/provisioning_8h.html#a0f5bfd9ec0327dadfd77b7982129c4a6">provisioning_ret_e</a> for other return codes. </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../db/d30/provisioning_proxy_2app_8c-example.html#a20">provisioning_proxy/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../db/d30/provisioning_proxy_2app_8c-example.html#a19">provisioning_proxy/app.c</a>.</dd>
 </dl>
 
 </div>

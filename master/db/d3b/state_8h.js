@@ -41,6 +41,9 @@ var state_8h =
       [ "error_codes", "db/d3b/state_8h.html#aeff42d1f38bf04ae7254dce88b37801d", null ],
       [ "quality", "db/d3b/state_8h.html#a0b48c8041be823080e6346c1731a54ed", null ]
     ] ],
+    [ "app_lib_state_on_scan_start_info_t", "db/d3b/state_8h.html#d2/db6/structapp__lib__state__on__scan__start__info__t", [
+      [ "scan_type", "db/d3b/state_8h.html#a57a519a271e7536e2f588cc43b5f39c7", null ]
+    ] ],
     [ "app_lib_state_t", "db/d3b/state_8h.html#d6/d1c/structapp__lib__state__t", [
       [ "getAccessCycle", "db/d3b/state_8h.html#a102ebd48fb4fe9465cb0be239b6c6131", null ],
       [ "getDiagInterval", "db/d3b/state_8h.html#a9d5a8caf2ff52aa8bde8c4efc6f4e7dd", null ],
@@ -55,6 +58,7 @@ var state_8h =
       [ "setHopsLeftCb", "db/d3b/state_8h.html#aeb72d6f4f5c8d6e9bd5721386afc28ee", null ],
       [ "setOnBeaconCb", "db/d3b/state_8h.html#a209670d47cfe0e627f4abd3b5dc2d9cb", null ],
       [ "setOnScanNborsCb", "db/d3b/state_8h.html#ad714526ae1f1bf0d8cd0effcd1f5848f", null ],
+      [ "setOnScanStartCb", "db/d3b/state_8h.html#a22a6b8e134d3025d5d556ca81ccf5496", null ],
       [ "setRouteCb", "db/d3b/state_8h.html#ac513718a2b4a24ee87b6111ba5380462", null ],
       [ "setScanDuration", "db/d3b/state_8h.html#aaa523ba51271f4e657fa510e8a4fafc7", null ],
       [ "setSinkCost", "db/d3b/state_8h.html#ad387be6eccd064044799cf2fecaab303", null ],
@@ -75,12 +79,14 @@ var state_8h =
     [ "app_lib_state_get_stack_state_f", "db/d3b/state_8h.html#a4fe40f470377e62840ef486a6487bbf8", null ],
     [ "app_lib_state_on_beacon_cb_f", "db/d3b/state_8h.html#a782056251116f37a1ee0f731d2cfd864", null ],
     [ "app_lib_state_on_scan_nbors_cb_f", "db/d3b/state_8h.html#afb6cbd7d805f4f02f6adce60a2639549", null ],
+    [ "app_lib_state_on_scan_start_cb_f", "db/d3b/state_8h.html#a902cdc626b8cd4e8bcb472203a2746f0", null ],
     [ "app_lib_state_route_changed_cb_f", "db/d3b/state_8h.html#a852c311feba83121773686ae871a89d1", null ],
     [ "app_lib_state_scan_stop_f", "db/d3b/state_8h.html#aedc5487434ea12d2ce490c0c630651ab", null ],
     [ "app_lib_state_set_adjust_hops_cb_f", "db/d3b/state_8h.html#a5ae00c16838dd21ddc7e3560b4283b9c", null ],
     [ "app_lib_state_set_energy_f", "db/d3b/state_8h.html#ac0ce120cbfb8f7e5ba1acad712279d6a", null ],
     [ "app_lib_state_set_on_beacon_cb_f", "db/d3b/state_8h.html#af0ab19ea11433eac7456960b7652e323", null ],
     [ "app_lib_state_set_on_scan_nbors_with_type_cb_f", "db/d3b/state_8h.html#abdcd384dad0742bd6716564f8d67240e", null ],
+    [ "app_lib_state_set_on_scan_start_cb_f", "db/d3b/state_8h.html#af0d4024bb08a0b4071560c90365978d3", null ],
     [ "app_lib_state_set_route_cb_f", "db/d3b/state_8h.html#a828287002dce7a99dca31ac61093db3c", null ],
     [ "app_lib_state_set_scan_dur_f", "db/d3b/state_8h.html#a8569ac1808149866016bc5997996647e", null ],
     [ "app_lib_state_set_sink_cost_f", "db/d3b/state_8h.html#a391c58a53ecd5239664488e9c01dfc72", null ],
@@ -109,6 +115,10 @@ var state_8h =
     [ "app_lib_state_scan_nbors_type_e", "db/d3b/state_8h.html#ae829d4242b3afe89f01822fe660b62b7", [
       [ "APP_LIB_STATE_SCAN_NBORS_ALL", "db/d3b/state_8h.html#ae829d4242b3afe89f01822fe660b62b7a26113ac18cb4f59d9ba0fa0c9119adcc", null ],
       [ "APP_LIB_STATE_SCAN_NBORS_ONLY_REQUESTED", "db/d3b/state_8h.html#ae829d4242b3afe89f01822fe660b62b7a8bad4deb7660820ff7dbfdd36a87e675", null ]
+    ] ],
+    [ "app_lib_state_scan_type_e", "db/d3b/state_8h.html#abdb207e11a6bcc7bc7f2d30124bdb3a3", [
+      [ "SCAN_TYPE_APP_ORIGINATED", "db/d3b/state_8h.html#abdb207e11a6bcc7bc7f2d30124bdb3a3a804573aa3dd49efad3334d1c3e1bc968", null ],
+      [ "SCAN_TYPE_STACK_ORIGINATED", "db/d3b/state_8h.html#abdb207e11a6bcc7bc7f2d30124bdb3a3ae9a042ce29617adae1c6414bca32562f", null ]
     ] ],
     [ "app_lib_state_stack_state_e", "db/d3b/state_8h.html#ab534305bdd66195140b3f750b9fdf21d", [
       [ "APP_LIB_STATE_STARTED", "db/d3b/state_8h.html#ab534305bdd66195140b3f750b9fdf21dab3f2f3f400130619e71f1790296841b8", null ],

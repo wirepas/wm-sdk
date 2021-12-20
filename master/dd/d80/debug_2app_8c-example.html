@@ -100,9 +100,11 @@ $(document).ready(function(){initNavTree('dd/d80/debug_2app_8c-example.html','..
 <div class="line"><span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d65/api_8h.html">api.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a>&quot;</span></div>
+<div class="line"> </div>
 <div class="line"> </div>
 <div class="line"><span class="comment">/* The module name to be printed each lines. */</span></div>
-<div class="line"><span class="preprocessor">#define DEBUG_LOG_MODULE_NAME &quot;DBUG APP&quot;</span></div>
+<div class="line"><span class="preprocessor">#define DEBUG_LOG_MODULE_NAME &quot;DEBUG APP&quot;</span></div>
 <div class="line"><span class="comment">/* The maximum log level printed for this module. */</span></div>
 <div class="line"><span class="preprocessor">#define DEBUG_LOG_MAX_LEVEL LVL_INFO</span></div>
 <div class="line"><span class="comment">/* debug_log.h can be included in multiple c files with an other name or log</span></div>
@@ -112,18 +114,18 @@ $(document).ready(function(){initNavTree('dd/d80/debug_2app_8c-example.html','..
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define DEFAULT_PERIOD_S    10</span></div>
-<div class="line"><span class="preprocessor">#define DEFAULT_PERIOD_US   (DEFAULT_PERIOD_S*1000*1000)</span></div>
+<div class="line"><span class="preprocessor">#define DEFAULT_PERIOD_MS   (DEFAULT_PERIOD_S*1000)</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define EXECUTION_TIME_US   500</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">static</span> uint32_t period_us;</div>
+<div class="line"><span class="keyword">static</span> uint32_t period_ms;</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> uint32_t send_data(<span class="keywordtype">void</span>)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">static</span> uint8_t cntr = 0;</div>
 <div class="line">    <a name="a0"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a name="a1"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;TX: Periodic data = %d&quot;</span>, cntr);</div>
 <div class="line">    cntr++;</div>
-<div class="line">    <span class="keywordflow">return</span> period_us;</div>
+<div class="line">    <span class="keywordflow">return</span> period_ms;</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a2"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
@@ -144,11 +146,11 @@ $(document).ready(function(){initNavTree('dd/d80/debug_2app_8c-example.html','..
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Set a periodic callback to be called after DEFAULT_PERIOD_US</span></div>
-<div class="line">    period_us = DEFAULT_PERIOD_US;</div>
-<div class="line">    lib_system-&gt;setPeriodicCb(send_data,</div>
-<div class="line">                              period_us,</div>
-<div class="line">                              EXECUTION_TIME_US);</div>
+<div class="line">    period_ms = DEFAULT_PERIOD_MS;</div>
 <div class="line"> </div>
+<div class="line">    <a name="a8"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(send_data,</div>
+<div class="line">                                    <a name="a9"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>,</div>
+<div class="line">                                    EXECUTION_TIME_US);</div>
 <div class="line">    <span class="comment">// Start the stack</span></div>
 <div class="line">    lib_state-&gt;startStack();</div>
 <div class="line">}</div>
@@ -157,13 +159,16 @@ $(document).ready(function(){initNavTree('dd/d80/debug_2app_8c-example.html','..
 <div class="ttc" id="adebug__log_8h_html_a589372d7f7cc36183e6c19752a7df474"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a></div><div class="ttdeci">#define LVL_INFO</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00083">debug_log.h:83</a></div></div>
 <div class="ttc" id="adebug__log_8h_html_a80fe8a6a673728cc8d8b2a90742b46b7"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a80fe8a6a673728cc8d8b2a90742b46b7">LVL_ERROR</a></div><div class="ttdeci">#define LVL_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00085">debug_log.h:85</a></div></div>
 <div class="ttc" id="anode__configuration_8h_html"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_a71e4c4c0dfd5649947194df11af4fe17"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_ms, uint32_t exec_time_us)</div><div class="ttdoc">Add a task.</div></div>
 <div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a></div><div class="ttdeci">@ APP_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00204">app.h:204</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a></div></div>
 <div class="ttc" id="adebug__log_8h_html"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html">debug_log.h</a></div></div>
 <div class="ttc" id="anode__configuration_8h_html_a2560821c66e34240aa698da5affba7c7"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a></div><div class="ttdeci">__STATIC_INLINE app_res_e configureNodeFromBuildParameters()</div><div class="ttdoc">Wrapper on top of configureNode to get parameters from build system and hardcoded values from chip (f...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d2e/node__configuration_8h_source.html#l00233">node_configuration.h:233</a></div></div>
 <div class="ttc" id="adebug__log_8h_html_a2325454fac7906237ece595f2f257083"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a2325454fac7906237ece595f2f257083">LVL_DEBUG</a></div><div class="ttdeci">#define LVL_DEBUG</div><div class="ttdoc">Macros to define several log levels: Debug, Info, Warning, Error.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00082">debug_log.h:82</a></div></div>
 <div class="ttc" id="adebug__log_8h_html_a062ce2496c8e47adec91c0d11744a7a7"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a062ce2496c8e47adec91c0d11744a7a7">LOG_INIT</a></div><div class="ttdeci">#define LOG_INIT()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00066">debug_log.h:66</a></div></div>
 <div class="ttc" id="adebug__log_8h_html_a94e6401c9e46b35182d9dbbce6b99be5"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a></div><div class="ttdeci">#define LOG(level, fmt,...)</div><div class="ttdoc">Print a log message if its severity is lower or equal to DEBUG_LOG_MAX_LEVEL.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00172">debug_log.h:172</a></div></div>
 <div class="ttc" id="aapp_8h_html_d6/d81/structapp__global__functions__t"><div class="ttname"><a href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a></div><div class="ttdoc">List of global functions, passed to App_entrypoint()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00157">app.h:157</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_ae49a1abde6843cb44c37e47616d2a810"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a></div><div class="ttdeci">#define APP_SCHEDULER_SCHEDULE_ASAP</div><div class="ttdoc">Value to return from task or as initial time to be executed ASAP.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00042">app_scheduler.h:42</a></div></div>
 <div class="ttc" id="aapi_8h_html"><div class="ttname"><a href="../../dc/d65/api_8h.html">api.h</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

@@ -85,11 +85,11 @@ $(document).ready(function(){initNavTree('dd/d9c/programming_interface.html','..
 <div class="textblock"><p>API is split into following areas:</p>
 <ul>
 <li><a class="el" href="../../dd/d9c/programming_interface.html#stack_api">Stack Libraries</a>. These are implemented in stack and header files are offered to access those.</li>
-<li><a class="el" href="../../dd/d9c/programming_interface.html#libraries_api">SDK internal API</a>. These are given as source code in SDK.</li>
+<li><a class="el" href="../../dd/d9c/programming_interface.html#libraries_api">SDK Libraries</a>. These are given as source code in SDK under libraries folder.</li>
 <li><a class="el" href="../../dd/d9c/programming_interface.html#board_api">Board definitions</a>, i.e. pinout mappings for various boards</li>
 <li><a class="el" href="../../dd/d9c/programming_interface.html#bootloader_api">Bootloader configuration</a>, i.e. early initialization functionality</li>
 <li><a class="el" href="../../dd/d9c/programming_interface.html#mcu_api">Low level hardware services (HAL)</a>, i.e. low level routines, such as access to peripherals</li>
-<li><a class="el" href="../../dd/d9c/programming_interface.html#util_api">Utility and helper services</a>, i.e. various utility- type functions, not related to stack operations as such, such as random number generation.</li>
+<li><a class="el" href="../../dd/d9c/programming_interface.html#util_api">Utility and helper services</a>, i.e. various utility type functions, not related to stack operations as such, such as random number generation.</li>
 </ul>
 <h1><a class="anchor" id="stack_api"></a>
 Stack Libraries</h1>
@@ -148,24 +148,34 @@ Application and Library Versioning</h2>
 </ol>
 <p>In addition of library versioning, applications also have an API version number, <a class="el" href="../../d2/d39/app_8h.html#ae1281d6221015da53b2be122f44abea1">APP_API_VERSION</a>, placed in their header. The SDK places the version number there to indicate which version of the low-level application API the application supports. If there is a mismatch between the low-level API versions of the stack and the application, the stack may choose to not run the application.</p>
 <h1><a class="anchor" id="libraries_api"></a>
-SDK Internal API</h1>
-<p>There are numerous services that are given as a source code as part of the SDK. They are for various purposes, like easier access for low level hardware (HAL) routines. They are only present in the generated binaries if they are used.</p>
-<p>First group of services is Wirepas wrapper services. They are abstractions of single mcu api to ease the implementation. They are located in <a class="el" href="../../dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a> folder.</p>
-<p>Following table, summarize these services and files by:</p><ul>
-<li>Name and path of the header file</li>
-<li>Short description</li>
-</ul>
+SDK Libraries</h1>
+<p>There are numerous services that are given as a source code as part of the SDK. They are for various purposes, like higher API level or application services implemented by Wirepas. They are only present in the generated binaries if they are used.</p>
+<p>They are abstractions of single mcu api to ease the implementation. They are located in <a class="el" href="../../dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a> folder.</p>
+<dl class="section note"><dt>Note</dt><dd>When a library is enabled, some single mcu api cannot be used anymore directly from application. It would result in undefined behavior. Those api are listed in each library init function description.</dd></dl>
+<p>Following table, summarize these libraries:</p>
 <table class="doxtable">
 <tr>
 <th>Name</th><th>Description </th></tr>
 <tr>
-<td><a class="el" href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a></td><td>Scheduling of multiple application tasks </td></tr>
+<td><a class="el" href="../../dc/db1/app__persistent_8h.html">app_persistent</a></td><td>Managing persistent data area </td></tr>
 <tr>
-<td><a class="el" href="../../d5/d74/shared__data_8h.html">shared_data.h</a></td><td>Handling of data packets </td></tr>
+<td><a class="el" href="../../d5/d63/dualmcu__lib_8h.html">dualmcu</a></td><td>Scheduling of multiple application tasks </td></tr>
 <tr>
-<td><a class="el" href="../../d9/d2a/uart__print_8h.html">uart_print.h</a></td><td>UART print module  </td></tr>
+<td><a class="el" href="../../d6/dd2/local__provisioning_8h.html">local_provisioning</a></td><td>Local provisioning feature built on top of more generic provisioning library </td></tr>
 <tr>
-<td><a class="el" href="../../d0/dae/provisioning_8h.html">provisioning/provisioning.h</a> </td><td>Provisioning </td></tr>
+<td><a class="el" href="../../d6/d21/poslib_8h.html">positioning</a></td><td>Positioning related logic for anchor and tags </td></tr>
+<tr>
+<td><a class="el" href="../../d0/dae/provisioning_8h.html">provisioning</a></td><td>Provisioning </td></tr>
+<tr>
+<td><a class="el" href="../../dd/ddc/app__scheduler_8h.html">scheduler</a></td><td>Scheduling of multiple application tasks </td></tr>
+<tr>
+<td><a class="el" href="../../d5/d74/shared__data_8h.html">shared_data</a></td><td>Handling of data packets between different modules </td></tr>
+<tr>
+<td><a class="el" href="../../d2/d67/shared__appconfig_8h.html">shared_appconfig</a></td><td>Register for app config following Wirepas TLV format </td></tr>
+<tr>
+<td><a class="el" href="../../d9/d7b/shared__offline_8h.html">shared_offline</a></td><td>Manages the NRLS setting between different modules </td></tr>
+<tr>
+<td><a class="el" href="../../d5/dab/stack__state_8h.html">stack_state</a></td><td>Allows module to start/stop stack and be notified when such event happens </td></tr>
 </table>
 <h1><a class="anchor" id="board_api"></a>
 Board definitions</h1>
@@ -270,8 +280,6 @@ mcu/hal_api Low level hardware API</h2>
 <td><a class="el" href="../../d5/daf/i2c_8h.html">i2c.h</a></td><td>Simple minimal I2C master driver </td></tr>
 <tr>
 <td><a class="el" href="../../db/da0/led_8h.html">led.h</a></td><td>LED functions </td></tr>
-<tr>
-<td><a class="el" href="../../de/de8/persistent_8h.html">persistent.h</a></td><td>Hardware-specific persistant memory area </td></tr>
 <tr>
 <td><a class="el" href="../../d3/d6a/power_8h.html">power.h</a></td><td>Enabling of DCDC converter </td></tr>
 <tr>

@@ -204,28 +204,25 @@ $(document).ready(function(){initNavTree('d5/da9/provisioning_joining_node_2app_
 <div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a2325454fac7906237ece595f2f257083">LVL_DEBUG</a>, <span class="stringliteral">&quot;  - net addr:  %06X&quot;</span>, net_addr);</div>
 <div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a2325454fac7906237ece595f2f257083">LVL_DEBUG</a>, <span class="stringliteral">&quot;  - net ch:    %d&quot;</span>, net_channel);</div>
 <div class="line"> </div>
-<div class="line">    <a name="a14"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a>();</div>
-<div class="line">    <a name="a15"></a><a class="code" href="../../d5/d74/shared__data_8h.html#ae4c8e98d1b0f33bf18414441f72dc270">Shared_Data_init</a>();</div>
-<div class="line"> </div>
-<div class="line">    <a name="a16"></a><a class="code" href="../../d7/d0e/button_8h.html#a52c2ed5f21cc02ad048cb9ab96b07aa9">Button_init</a>();</div>
-<div class="line">    <a name="a17"></a><a class="code" href="../../d7/d0e/button_8h.html#a596cb0cee5b599be3365860954b164b5">Button_register_for_event</a>(0, <a name="a18"></a><a class="code" href="../../d7/d0e/button_8h.html#a4e97005308962643f6d98e25de373ebeabd19dea9e19d02d7d39464dfdde1e48b">BUTTON_PRESSED</a>, button_0_cb);</div>
+<div class="line">    <a name="a14"></a><a class="code" href="../../d7/d0e/button_8h.html#a52c2ed5f21cc02ad048cb9ab96b07aa9">Button_init</a>();</div>
+<div class="line">    <a name="a15"></a><a class="code" href="../../d7/d0e/button_8h.html#a596cb0cee5b599be3365860954b164b5">Button_register_for_event</a>(0, <a name="a16"></a><a class="code" href="../../d7/d0e/button_8h.html#a4e97005308962643f6d98e25de373ebeabd19dea9e19d02d7d39464dfdde1e48b">BUTTON_PRESSED</a>, button_0_cb);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (!Storage_init())</div>
 <div class="line">    {</div>
-<div class="line">        <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a name="a19"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a80fe8a6a673728cc8d8b2a90742b46b7">LVL_ERROR</a>, <span class="stringliteral">&quot;Error opening provisioning storage.&quot;</span>);</div>
+<div class="line">        <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a name="a17"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a80fe8a6a673728cc8d8b2a90742b46b7">LVL_ERROR</a>, <span class="stringliteral">&quot;Error opening provisioning storage.&quot;</span>);</div>
 <div class="line">    }</div>
 <div class="line">    <span class="keywordflow">else</span></div>
 <div class="line">    {</div>
-<div class="line">        uid_len = Storage_getUID(&amp;conf.<a name="a20"></a><a class="code" href="../../d0/dae/provisioning_8h.html#a3a99cfe78c523405f5bb8026164b9cd3">uid</a>);</div>
-<div class="line">        key_len = Storage_getKey(&amp;conf.<a name="a21"></a><a class="code" href="../../d0/dae/provisioning_8h.html#aa60a0c39d29c4a6fdaac5bfc05f1dbec">key</a>);</div>
+<div class="line">        uid_len = Storage_getUID(&amp;conf.<a name="a18"></a><a class="code" href="../../d0/dae/provisioning_8h.html#a3a99cfe78c523405f5bb8026164b9cd3">uid</a>);</div>
+<div class="line">        key_len = Storage_getKey(&amp;conf.<a name="a19"></a><a class="code" href="../../d0/dae/provisioning_8h.html#aa60a0c39d29c4a6fdaac5bfc05f1dbec">key</a>);</div>
 <div class="line">        method = Storage_getMethod();</div>
 <div class="line"> </div>
 <div class="line">        <span class="keywordflow">if</span> (uid_len != -1 &amp;&amp; key_len != -1)</div>
 <div class="line">        {</div>
-<div class="line">            conf.<a name="a22"></a><a class="code" href="../../d0/dae/provisioning_8h.html#aaafb88cf67feff33c82ca5c25908d010">uid_len</a> = uid_len;</div>
-<div class="line">            conf.<a name="a23"></a><a class="code" href="../../d0/dae/provisioning_8h.html#a81d756c926cde8076992a83a9b3ea657">key_len</a> = key_len;</div>
-<div class="line">            conf.<a name="a24"></a><a class="code" href="../../d0/dae/provisioning_8h.html#a48dec63fd92dae89290086645d742c3c">method</a> = method;</div>
-<div class="line">            <a name="a25"></a><a class="code" href="../../d0/dae/provisioning_8h.html#a4686b27c047e34873fe80c0165a0eabb">Provisioning_init</a>(&amp;conf);</div>
+<div class="line">            conf.<a name="a20"></a><a class="code" href="../../d0/dae/provisioning_8h.html#aaafb88cf67feff33c82ca5c25908d010">uid_len</a> = uid_len;</div>
+<div class="line">            conf.<a name="a21"></a><a class="code" href="../../d0/dae/provisioning_8h.html#a81d756c926cde8076992a83a9b3ea657">key_len</a> = key_len;</div>
+<div class="line">            conf.<a name="a22"></a><a class="code" href="../../d0/dae/provisioning_8h.html#a48dec63fd92dae89290086645d742c3c">method</a> = method;</div>
+<div class="line">            <a name="a23"></a><a class="code" href="../../d0/dae/provisioning_8h.html#a4686b27c047e34873fe80c0165a0eabb">Provisioning_init</a>(&amp;conf);</div>
 <div class="line">        }</div>
 <div class="line">        <span class="keywordflow">else</span></div>
 <div class="line">        {</div>
@@ -245,7 +242,6 @@ $(document).ready(function(){initNavTree('d5/da9/provisioning_joining_node_2app_
 <div class="ttc" id="aprovisioning_8h_html_a48dec63fd92dae89290086645d742c3c"><div class="ttname"><a href="../../d0/dae/provisioning_8h.html#a48dec63fd92dae89290086645d742c3c">provisioning_conf_t::method</a></div><div class="ttdeci">provisioning_method_e method</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/dae/provisioning_8h_source.html#l00135">provisioning.h:135</a></div></div>
 <div class="ttc" id="aprovisioning_8h_html_a95ce975829424074a6a4d85421f57367"><div class="ttname"><a href="../../d0/dae/provisioning_8h.html#a95ce975829424074a6a4d85421f57367">Provisioning_start</a></div><div class="ttdeci">provisioning_ret_e Provisioning_start(void)</div><div class="ttdoc">Start the provisioning process.</div></div>
 <div class="ttc" id="adebug__log_8h_html_a0666e007be537f1dd48e75b4abc0f53a"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a0666e007be537f1dd48e75b4abc0f53a">LOG_BUFFER</a></div><div class="ttdeci">#define LOG_BUFFER(level, buffer, size)</div><div class="ttdoc">Print a buffer if its severity is lower or equal to DEBUG_LOG_MAX_LEVEL.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00193">debug_log.h:193</a></div></div>
-<div class="ttc" id="aapp__scheduler_8h_html_aadb275bc1de9c05d677ab56117535802"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a></div><div class="ttdeci">void App_Scheduler_init(void)</div><div class="ttdoc">Initialize scheduler.</div></div>
 <div class="ttc" id="aprovisioning_8h_html_a4686b27c047e34873fe80c0165a0eabb"><div class="ttname"><a href="../../d0/dae/provisioning_8h.html#a4686b27c047e34873fe80c0165a0eabb">Provisioning_init</a></div><div class="ttdeci">provisioning_ret_e Provisioning_init(provisioning_conf_t *conf)</div><div class="ttdoc">Initialize the provisioning process.</div></div>
 <div class="ttc" id="abutton_8h_html"><div class="ttname"><a href="../../d7/d0e/button_8h.html">button.h</a></div><div class="ttdoc">Board-independent button functions.</div></div>
 <div class="ttc" id="aprovisioning_8h_html_dd/d04/structprovisioning__conf__t"><div class="ttname"><a href="../../d0/dae/provisioning_8h.html#dd/d04/structprovisioning__conf__t">provisioning_conf_t</a></div><div class="ttdoc">This structure holds the provisioning parameters.</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/dae/provisioning_8h_source.html#l00132">provisioning.h:132</a></div></div>
@@ -263,7 +259,6 @@ $(document).ready(function(){initNavTree('d5/da9/provisioning_joining_node_2app_
 <div class="ttc" id="anode__configuration_8h_html_a2560821c66e34240aa698da5affba7c7"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a></div><div class="ttdeci">__STATIC_INLINE app_res_e configureNodeFromBuildParameters()</div><div class="ttdoc">Wrapper on top of configureNode to get parameters from build system and hardcoded values from chip (f...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d2e/node__configuration_8h_source.html#l00233">node_configuration.h:233</a></div></div>
 <div class="ttc" id="adebug__log_8h_html_a2325454fac7906237ece595f2f257083"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a2325454fac7906237ece595f2f257083">LVL_DEBUG</a></div><div class="ttdeci">#define LVL_DEBUG</div><div class="ttdoc">Macros to define several log levels: Debug, Info, Warning, Error.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00082">debug_log.h:82</a></div></div>
 <div class="ttc" id="asettings_8h_html_ab42b1333ea2649dfc695dfc0423f1184ace714830b904d2899fdee5682a44358b"><div class="ttname"><a href="../../de/d60/settings_8h.html#ab42b1333ea2649dfc695dfc0423f1184ace714830b904d2899fdee5682a44358b">APP_LIB_SETTINGS_ROLE_SUBNODE</a></div><div class="ttdeci">@ APP_LIB_SETTINGS_ROLE_SUBNODE</div><div class="ttdef"><b>Definition:</b> <a href="../../de/d60/settings_8h_source.html#l00076">settings.h:76</a></div></div>
-<div class="ttc" id="ashared__data_8h_html_ae4c8e98d1b0f33bf18414441f72dc270"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#ae4c8e98d1b0f33bf18414441f72dc270">Shared_Data_init</a></div><div class="ttdeci">app_res_e Shared_Data_init(void)</div><div class="ttdoc">Initialize the shared data library.</div></div>
 <div class="ttc" id="astorage_8h_html"><div class="ttname"><a href="../../d8/d6b/storage_8h.html">storage.h</a></div></div>
 <div class="ttc" id="adebug__log_8h_html_a062ce2496c8e47adec91c0d11744a7a7"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a062ce2496c8e47adec91c0d11744a7a7">LOG_INIT</a></div><div class="ttdeci">#define LOG_INIT()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00066">debug_log.h:66</a></div></div>
 <div class="ttc" id="ashared__data_8h_html"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html">shared_data.h</a></div></div>

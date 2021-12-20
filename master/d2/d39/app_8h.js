@@ -44,7 +44,8 @@ var app_8h =
     [ "app_special_addr_e", "d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313", [
       [ "APP_ADDR_ANYSINK", "d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a1d64d118fbd3df68c8ab52ce6fd94c6c", null ],
       [ "APP_ADDR_BROADCAST", "d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a90ca77035be09acbb9d606b7081303f5", null ],
-      [ "APP_ADDR_MULTICAST", "d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a3b39aa91fd467f2e0dfd127f0d974f77", null ]
+      [ "APP_ADDR_MULTICAST", "d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a3b39aa91fd467f2e0dfd127f0d974f77", null ],
+      [ "APP_ADDR_MULTICAST_LAST", "d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313abea4cd83575c9cb980376d704fcc9e02", null ]
     ] ],
     [ "__STATIC_INLINE", "d2/d39/app_8h.html#aba87361bfad2ae52cfe2f40c1a1dbf9c", null ],
     [ "APP_API_V1_VERSION", "d2/d39/app_8h.html#a364fe7c73a9fa89d37b5ec7544627646", null ],

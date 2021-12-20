@@ -108,7 +108,7 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:a48fa5da91eca7255d1c10aa0aa711de6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get sleep state of stack.  <a href="../../d9/d81/sleep_8h.html#a48fa5da91eca7255d1c10aa0aa711de6">More...</a><br /></td></tr>
 <tr class="separator:a48fa5da91eca7255d1c10aa0aa711de6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a125a4f5ebe7eff4538ec46a96ab2630d"><td class="memItemLeft" align="right" valign="top">typedef uint32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d81/sleep_8h.html#a125a4f5ebe7eff4538ec46a96ab2630d">app_lib_sleep_get_wakeup_f</a>) (void)</td></tr>
-<tr class="memdesc:a125a4f5ebe7eff4538ec46a96ab2630d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns remaining sleep time.  <a href="../../d9/d81/sleep_8h.html#a125a4f5ebe7eff4538ec46a96ab2630d">More...</a><br /></td></tr>
+<tr class="memdesc:a125a4f5ebe7eff4538ec46a96ab2630d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns remaining sleep time in seconds.  <a href="../../d9/d81/sleep_8h.html#a125a4f5ebe7eff4538ec46a96ab2630d">More...</a><br /></td></tr>
 <tr class="separator:a125a4f5ebe7eff4538ec46a96ab2630d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec8777d66c5b7f53e6b67341f8b8e49d"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d81/sleep_8h.html#aec8777d66c5b7f53e6b67341f8b8e49d">applib_wakeup_callback_f</a>) (void)</td></tr>
 <tr class="memdesc:aec8777d66c5b7f53e6b67341f8b8e49d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback called before stack wakes up.  <a href="../../d9/d81/sleep_8h.html#aec8777d66c5b7f53e6b67341f8b8e49d">More...</a><br /></td></tr>
@@ -119,6 +119,12 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a072055652d7cd4b58ba28a73ddb49528"><td class="memItemLeft" align="right" valign="top">typedef uint32_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d81/sleep_8h.html#a072055652d7cd4b58ba28a73ddb49528">app_lib_sleep_get_gotosleep</a>) (void)</td></tr>
 <tr class="memdesc:a072055652d7cd4b58ba28a73ddb49528"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get latest time used before stack enters to sleep after NRLS sleep request given.  <a href="../../d9/d81/sleep_8h.html#a072055652d7cd4b58ba28a73ddb49528">More...</a><br /></td></tr>
 <tr class="separator:a072055652d7cd4b58ba28a73ddb49528"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9993fd93749a45f74311af656ecbf276"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d81/sleep_8h.html#a9993fd93749a45f74311af656ecbf276">applib_on_sleep_callback_f</a>) (void)</td></tr>
+<tr class="memdesc:a9993fd93749a45f74311af656ecbf276"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback called when stack starts sleep.  <a href="../../d9/d81/sleep_8h.html#a9993fd93749a45f74311af656ecbf276">More...</a><br /></td></tr>
+<tr class="separator:a9993fd93749a45f74311af656ecbf276"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40d890a21e59804b5da54cb9be3d0cf8"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d81/sleep_8h.html#a40d890a21e59804b5da54cb9be3d0cf8">app_lib_sleep_on_sleep_callback_f</a>) (<a class="el" href="../../d9/d81/sleep_8h.html#a9993fd93749a45f74311af656ecbf276">applib_on_sleep_callback_f</a> callback)</td></tr>
+<tr class="memdesc:a40d890a21e59804b5da54cb9be3d0cf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set callback function to be called when stack starts sleep.  <a href="../../d9/d81/sleep_8h.html#a40d890a21e59804b5da54cb9be3d0cf8">More...</a><br /></td></tr>
+<tr class="separator:a40d890a21e59804b5da54cb9be3d0cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
@@ -129,7 +135,8 @@ Data Structures</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a3dd4ee1781c33c2e0dceeab6becf3d00"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00">app_lib_sleep_stack_state_e</a> { <a class="el" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00a388cc689f1f108470e04b9b2e0910cec">APP_LIB_SLEEP_STOPPED</a> = 0, 
-<a class="el" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00af38e9ec1d42fe61c56df03c7ed232fe7">APP_LIB_SLEEP_STARTED</a>
+<a class="el" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00af38e9ec1d42fe61c56df03c7ed232fe7">APP_LIB_SLEEP_STARTED</a>, 
+<a class="el" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00a0fd8904d09b023c115a0657bfa6e66f6">APP_LIB_SLEEP_PENDING</a>
  }</td></tr>
 <tr class="memdesc:a3dd4ee1781c33c2e0dceeab6becf3d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stack state flags.  <a href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00">More...</a><br /></td></tr>
 <tr class="separator:a3dd4ee1781c33c2e0dceeab6becf3d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,7 +146,7 @@ Macros</h2></td></tr>
 <tr class="memitem:abd628831f264eacccded967c1495b89a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d81/sleep_8h.html#abd628831f264eacccded967c1495b89a">APP_LIB_LONGSLEEP_NAME</a>&#160;&#160;&#160;0x02f20818</td></tr>
 <tr class="memdesc:abd628831f264eacccded967c1495b89a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Library symbolic name.  <a href="../../d9/d81/sleep_8h.html#abd628831f264eacccded967c1495b89a">More...</a><br /></td></tr>
 <tr class="separator:abd628831f264eacccded967c1495b89a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9197873a67e15027c9e8794eae87ab2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d81/sleep_8h.html#af9197873a67e15027c9e8794eae87ab2">APP_LIB_LONGSLEEP_VERSION</a>&#160;&#160;&#160;0x201</td></tr>
+<tr class="memitem:af9197873a67e15027c9e8794eae87ab2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d81/sleep_8h.html#af9197873a67e15027c9e8794eae87ab2">APP_LIB_LONGSLEEP_VERSION</a>&#160;&#160;&#160;0x203</td></tr>
 <tr class="memdesc:af9197873a67e15027c9e8794eae87ab2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum supported library version.  <a href="../../d9/d81/sleep_8h.html#af9197873a67e15027c9e8794eae87ab2">More...</a><br /></td></tr>
 <tr class="separator:af9197873a67e15027c9e8794eae87ab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -157,10 +164,10 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get latest time used before stack enters to sleep after NRLS sleep request given. </p>
-<p>Returns time in seconds which was used in previous NRLS sleep request starting from application request <a class="el" href="../../d9/d81/sleep_8h.html#afb1ec08432833f278c37ca72797dc9ac">lib_sleep-&gt;sleepStackforTime()</a> until stack enters to NRLS sleep. This value can be used to estimate needed parameter configuration for appconf_wait_s in <a class="el" href="../../d9/d81/sleep_8h.html#afb1ec08432833f278c37ca72797dc9ac">lib_sleep-&gt;sleepStackforTime()</a> function.</p>
+<p>Returns time in seconds which was used in previous NRLS sleep request starting from application request <a class="el" href="../../d9/d81/sleep_8h.html#afb1ec08432833f278c37ca72797dc9ac">lib_sleep-&gt;sleepStackforTime()</a> until stack enters to NRLS sleep (i.e. device has disconnected from the network). This value may be used to estimate needed parameter configuration for appconf_wait_s in <a class="el" href="../../d9/d81/sleep_8h.html#afb1ec08432833f278c37ca72797dc9ac">lib_sleep-&gt;sleepStackforTime()</a> function.</p>
 <dl class="section return"><dt>Returns</dt><dd>Total time used including application callback during that period in seconds </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00149">149</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00154">154</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
 
 </div>
 </div>
@@ -177,9 +184,9 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get sleep state of stack. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00a388cc689f1f108470e04b9b2e0910cec">APP_LIB_SLEEP_STOPPED</a> is returned until actual NRLS sleep is started. This is happening when network disconnection ongoing before NRLS sleep is started. Signaling before actual stack sleep start might take time up to 30 seconds or more depending of used radio. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>State of the sleep operation </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00107">107</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00114">114</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
 
 </div>
 </div>
@@ -195,11 +202,34 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns remaining sleep time. </p>
-<p>Returns remaining sleep time in seconds. Time period is updated every 3 second. The NRLS sleep time is not decreased while the network disconnection ongoing, once network disconnection is completed, the NRLS sleep time count down is started.</p>
-<dl class="section return"><dt>Returns</dt><dd>Remaining sleep time in seconds </dd></dl>
+<p>Returns remaining sleep time in seconds. </p>
+<dl class="section return"><dt>Returns</dt><dd>Remaining sleep time in seconds. 0 if no sleep ongoing. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00119">119</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00121">121</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
+
+</div>
+</div>
+<a id="a40d890a21e59804b5da54cb9be3d0cf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40d890a21e59804b5da54cb9be3d0cf8">&#9670;&nbsp;</a></span>app_lib_sleep_on_sleep_callback_f</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* app_lib_sleep_on_sleep_callback_f) (<a class="el" href="../../d9/d81/sleep_8h.html#a9993fd93749a45f74311af656ecbf276">applib_on_sleep_callback_f</a> callback)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set callback function to be called when stack starts sleep. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>The callback function to set </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00171">171</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
 
 </div>
 </div>
@@ -218,19 +248,21 @@ Macros</h2></td></tr>
 <p>Start stack sleeping period for a given time. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">seconds</td><td>sleep time in seconds. Sleep time starts when the node gets disconnected from Mesh network. To disconnect from the network, some time is needed for signaling before disconnection is completed (the sleep time does not include this time needed for signaling before going to sleep). Signaling before actual stack sleep start might take time up to 30 seconds or more depending of used radio. If set to 0 - there is APP_RES_INVALID_VALUE response and sleep is not started. </td></tr>
-    <tr><td class="paramname">appconf_wait_s</td><td>Wait time in seconds for app config data from network before NRLS stack sleep.<ul>
+    <tr><td class="paramname">seconds</td><td>Wake up time. Device will wake up after this many seconds. Sleep starts when node has disconnected from Mesh network. If set to 0 - there is <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a3003711bc2e65045853433dacc324767">APP_RES_INVALID_VALUE</a> response and sleep is not started. </td></tr>
+    <tr><td class="paramname">appconf_wait_s</td><td>Maximum wait time in seconds to wait for app config data from network before NRLS stack sleep. If device has already acquired app config, this argument has no impact.<ul>
 <li>0 = App config is not awaited before going to sleep.</li>
-<li>Other values = Time used to wait that app config data is received from network. </li>
+<li>Other values = Time used to wait that app config data is received from network. Minimum allowed value is 4 seconds and maximum 600 seconds. </li>
 </ul>
 </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a2e0fd18ec0f8ae18c72ebdf838235cb3">APP_RES_INVALID_CONFIGURATION</a> if node role is not correctly configured. Returns <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a3003711bc2e65045853433dacc324767">APP_RES_INVALID_VALUE</a> if sleep time exceeds the maximum value. Returns <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80acf4d6254abe9760ec1ad9403b4af6cdc">APP_RES_INVALID_STACK_STATE</a> if stack is not started and node role and seconds is correct. Returns <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> when stack sleep is started. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>If the time when waking up from NRLS sleep and going back to NRLS sleep is very short and app config is used to signal to the network e.g. overhaul state, good practice is to have <code>appconf_wait_s</code> long enough (minimum 4 seconds) to make sure that app config data is received before going to NRLS sleep </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a2e0fd18ec0f8ae18c72ebdf838235cb3">APP_RES_INVALID_CONFIGURATION</a> if node role is not correctly configured. Returns <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a3003711bc2e65045853433dacc324767">APP_RES_INVALID_VALUE</a> if <code>seconds</code> exceeds the maximum value or <code>appconf_wait_s</code> is illegal value. Returns <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80acf4d6254abe9760ec1ad9403b4af6cdc">APP_RES_INVALID_STACK_STATE</a> if stack is not started and node role and seconds is correct. Otherwisereturns <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> when sleep process is started. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If the time when waking up from NRLS sleep and going back to NRLS sleep is very short and app config is used to signal to the network e.g. overhaul state, good practice is to have <code>appconf_wait_s</code> long enough (minimum 4 seconds) to make sure that app config data is received before going to NRLS sleep </dd>
+<dd>
+Sleep starts when device has disconnected to network. In addition to appconfig wait (if desired by <code>appconf_wait_s</code>), there may be additional delay up to 40 seconds before sleep actually starts. If device has not yet connected to network, this is not happening. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00083">83</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00089">89</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
 
 </div>
 </div>
@@ -254,7 +286,7 @@ Macros</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00135">135</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00138">138</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
 
 </div>
 </div>
@@ -273,8 +305,28 @@ Macros</h2></td></tr>
 <p>Wakeup stack from sleep. </p>
 <p>Starts the stack from sleep if application wants to wake-up the stack from NRLS sleep before NRLS sleep time has elapsed.</p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a> when stack wakeup is started from sleep. Returns <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80acf4d6254abe9760ec1ad9403b4af6cdc">APP_RES_INVALID_STACK_STATE</a> if wakeup called when stack is running. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If sleep process has started but sleep is not yet started (i.e. service <a class="el" href="../../d9/d81/sleep_8h.html#afb1ec08432833f278c37ca72797dc9ac">lib_sleep-&gt;sleepStackforTime()</a> has called but device has not yet disconnected from the network, wakeup occurs immediately after disconnction of network has happened. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00098">98</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00108">108</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
+
+</div>
+</div>
+<a id="a9993fd93749a45f74311af656ecbf276"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9993fd93749a45f74311af656ecbf276">&#9670;&nbsp;</a></span>applib_on_sleep_callback_f</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* applib_on_sleep_callback_f) (void)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback called when stack starts sleep. </p>
+<p>Used with lib_sleep-&gt;setOnsleepCb() service </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00162">162</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
 
 </div>
 </div>
@@ -293,7 +345,7 @@ Macros</h2></td></tr>
 <p>Callback called before stack wakes up. </p>
 <p>Used with <a class="el" href="../../d9/d81/sleep_8h.html#a5ca8115c9730523953ae51abf03fa50b">lib_sleep-&gt;setOnWakeupCb()</a> service </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00126">126</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00129">129</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
 
 </div>
 </div>
@@ -311,7 +363,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 <div class="textblock"><p>List of library functions. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00154">154</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00178">178</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -330,6 +382,12 @@ getSleepState</td>
 <a id="ab6b7f0018cd76a0543762654f42112e8"></a><a class="el" href="../../d9/d81/sleep_8h.html#a125a4f5ebe7eff4538ec46a96ab2630d">app_lib_sleep_get_wakeup_f</a></td>
 <td class="fieldname">
 getStackWakeup</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="afd7040a2cc9d21a9bb0daa269795c14b"></a><a class="el" href="../../d9/d81/sleep_8h.html#a40d890a21e59804b5da54cb9be3d0cf8">app_lib_sleep_on_sleep_callback_f</a></td>
+<td class="fieldname">
+setOnSleepCb</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
@@ -369,17 +427,21 @@ wakeupStack</td>
 
 <p>Stack state flags. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3dd4ee1781c33c2e0dceeab6becf3d00a388cc689f1f108470e04b9b2e0910cec"></a>APP_LIB_SLEEP_STOPPED&#160;</td><td class="fielddoc"><p>Sleep is stopped. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a3dd4ee1781c33c2e0dceeab6becf3d00af38e9ec1d42fe61c56df03c7ed232fe7"></a>APP_LIB_SLEEP_STARTED&#160;</td><td class="fielddoc"><p>Sleep is started. </p>
-</td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3dd4ee1781c33c2e0dceeab6becf3d00a388cc689f1f108470e04b9b2e0910cec"></a>APP_LIB_SLEEP_STOPPED&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3dd4ee1781c33c2e0dceeab6becf3d00af38e9ec1d42fe61c56df03c7ed232fe7"></a>APP_LIB_SLEEP_STARTED&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3dd4ee1781c33c2e0dceeab6becf3d00a0fd8904d09b023c115a0657bfa6e66f6"></a>APP_LIB_SLEEP_PENDING&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="../../d9/d81/sleep_8h_source.html#l00047">47</a> of file <a class="el" href="../../d9/d81/sleep_8h_source.html">sleep.h</a>.</p>
 <div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00a388cc689f1f108470e04b9b2e0910cec">APP_LIB_SLEEP_STOPPED</a> = 0,                  </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00af38e9ec1d42fe61c56df03c7ed232fe7">APP_LIB_SLEEP_STARTED</a>                       </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;} <a class="code" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00">app_lib_sleep_stack_state_e</a>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">// @brief No sleep ongoing</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00a388cc689f1f108470e04b9b2e0910cec">APP_LIB_SLEEP_STOPPED</a> = 0,</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">// @brief Sleep is started</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00af38e9ec1d42fe61c56df03c7ed232fe7">APP_LIB_SLEEP_STARTED</a>,</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">// @brief Sleep is pending, i.e. requested but device has not yet</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="comment">// disconnected from the network</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00a0fd8904d09b023c115a0657bfa6e66f6">APP_LIB_SLEEP_PENDING</a>,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;} <a class="code" href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00">app_lib_sleep_stack_state_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -410,7 +472,7 @@ wakeupStack</td>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define APP_LIB_LONGSLEEP_VERSION&#160;&#160;&#160;0x201</td>
+          <td class="memname">#define APP_LIB_LONGSLEEP_VERSION&#160;&#160;&#160;0x203</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -423,8 +485,9 @@ wakeupStack</td>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="asleep_8h_html_a3dd4ee1781c33c2e0dceeab6becf3d00a388cc689f1f108470e04b9b2e0910cec"><div class="ttname"><a href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00a388cc689f1f108470e04b9b2e0910cec">APP_LIB_SLEEP_STOPPED</a></div><div class="ttdeci">@ APP_LIB_SLEEP_STOPPED</div><div class="ttdoc">Sleep is stopped.</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d81/sleep_8h_source.html#l00049">sleep.h:49</a></div></div>
-<div class="ttc" id="asleep_8h_html_a3dd4ee1781c33c2e0dceeab6becf3d00af38e9ec1d42fe61c56df03c7ed232fe7"><div class="ttname"><a href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00af38e9ec1d42fe61c56df03c7ed232fe7">APP_LIB_SLEEP_STARTED</a></div><div class="ttdeci">@ APP_LIB_SLEEP_STARTED</div><div class="ttdoc">Sleep is started.</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d81/sleep_8h_source.html#l00050">sleep.h:50</a></div></div>
+<div class="ttc" id="asleep_8h_html_a3dd4ee1781c33c2e0dceeab6becf3d00a388cc689f1f108470e04b9b2e0910cec"><div class="ttname"><a href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00a388cc689f1f108470e04b9b2e0910cec">APP_LIB_SLEEP_STOPPED</a></div><div class="ttdeci">@ APP_LIB_SLEEP_STOPPED</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d81/sleep_8h_source.html#l00050">sleep.h:50</a></div></div>
+<div class="ttc" id="asleep_8h_html_a3dd4ee1781c33c2e0dceeab6becf3d00af38e9ec1d42fe61c56df03c7ed232fe7"><div class="ttname"><a href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00af38e9ec1d42fe61c56df03c7ed232fe7">APP_LIB_SLEEP_STARTED</a></div><div class="ttdeci">@ APP_LIB_SLEEP_STARTED</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d81/sleep_8h_source.html#l00052">sleep.h:52</a></div></div>
+<div class="ttc" id="asleep_8h_html_a3dd4ee1781c33c2e0dceeab6becf3d00a0fd8904d09b023c115a0657bfa6e66f6"><div class="ttname"><a href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00a0fd8904d09b023c115a0657bfa6e66f6">APP_LIB_SLEEP_PENDING</a></div><div class="ttdeci">@ APP_LIB_SLEEP_PENDING</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d81/sleep_8h_source.html#l00055">sleep.h:55</a></div></div>
 <div class="ttc" id="asleep_8h_html_a3dd4ee1781c33c2e0dceeab6becf3d00"><div class="ttname"><a href="../../d9/d81/sleep_8h.html#a3dd4ee1781c33c2e0dceeab6becf3d00">app_lib_sleep_stack_state_e</a></div><div class="ttdeci">app_lib_sleep_stack_state_e</div><div class="ttdoc">Stack state flags.</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d81/sleep_8h_source.html#l00047">sleep.h:47</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

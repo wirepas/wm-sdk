@@ -85,7 +85,6 @@ $(document).ready(function(){initNavTree('db/d83/custom_app_2app_8c-example.html
 <div class="fragment"><div class="line"><span class="comment">/* Copyright 2017 Wirepas Ltd. All Rights Reserved.</span></div>
 <div class="line"><span class="comment"> *</span></div>
 <div class="line"><span class="comment"> * See file LICENSE.txt for full license details.</span></div>
-<div class="line"><span class="comment"> *</span></div>
 <div class="line"><span class="comment"> */</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">/*</span></div>
@@ -97,43 +96,34 @@ $(document).ready(function(){initNavTree('db/d83/custom_app_2app_8c-example.html
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d65/api_8h.html">api.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d74/shared__data_8h.html">shared_data.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a>&quot;</span></div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#define DEBUG_LOG_MODULE_NAME &quot;CUSTOM_APP&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#define DEBUG_LOG_MAX_LEVEL LVL_NOLOG</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dd/dd9/debug__log_8h.html">debug_log.h</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define DEFAULT_PERIOD_S    10</span></div>
-<div class="line"><span class="preprocessor">#define DEFAULT_PERIOD_US   (DEFAULT_PERIOD_S*1000*1000)</span></div>
+<div class="line"><span class="preprocessor">#define DEFAULT_PERIOD_MS   (DEFAULT_PERIOD_S*1000)</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define EXECUTION_TIME_US 500</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define SET_PERIOD_EP  10</span></div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#define DATA_EP        1</span></div>
+<div class="line"><span class="preprocessor">#define DATA_EP 1</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">static</span> uint32_t period_us;</div>
+<div class="line"><span class="keyword">static</span> uint32_t period_ms;</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">static</span> uint32_t get_value_from_string(<span class="keyword">const</span> uint8_t * bytes,</div>
-<div class="line">                                      <span class="keywordtype">size_t</span> num_bytes)</div>
+<div class="line"><span class="keyword">typedef</span> <span class="keyword">struct </span>__attribute__((packed))</div>
 <div class="line">{</div>
-<div class="line">    uint32_t value = 0;</div>
-<div class="line">    <span class="keywordflow">while</span> ((num_bytes--) &gt; 0)</div>
-<div class="line">    {</div>
-<div class="line">        <span class="keywordtype">char</span> c = (char)(*bytes++);</div>
-<div class="line">        <span class="keywordflow">if</span> ((c &lt; <span class="charliteral">&#39;0&#39;</span>) || (c &gt; <span class="charliteral">&#39;9&#39;</span>))</div>
-<div class="line">        {</div>
-<div class="line">            <span class="comment">// Not a digit</span></div>
-<div class="line">            <span class="keywordflow">break</span>;</div>
-<div class="line">        }</div>
-<div class="line">        value *= 10;</div>
-<div class="line">        value += c - <span class="charliteral">&#39;0&#39;</span>;</div>
-<div class="line">    }</div>
+<div class="line">    uint32_t period_ms;</div>
+<div class="line">} payload_periodic_t;</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">return</span> value;</div>
-<div class="line">}</div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">static</span> uint32_t send_data(<span class="keywordtype">void</span>)</div>
+<div class="line"><span class="keyword">static</span> uint32_t send_data_task(<span class="keywordtype">void</span>)</div>
 <div class="line">{</div>
-<div class="line">    <span class="comment">// This function will be called every period_us microseconds by the stack.</span></div>
-<div class="line">    <span class="comment">// You can do anything you want for EXECUTION_TIME_US. In this example, a</span></div>
-<div class="line">    <span class="comment">// monotonically increasing 32-bit value is sent to the sink.</span></div>
-<div class="line"> </div>
 <div class="line">    <span class="keyword">static</span> uint32_t <span class="keywordtype">id</span> = 0; <span class="comment">// Value to send</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Create a data packet to send</span></div>
@@ -149,63 +139,74 @@ $(document).ready(function(){initNavTree('db/d83/custom_app_2app_8c-example.html
 <div class="line">    data_to_send.<a name="a12"></a><a class="code" href="../../d2/dbd/data_8h.html#a7f43082a8111a69a9189426ea4fb9987">tracking_id</a> = <a name="a13"></a><a class="code" href="../../d2/dbd/data_8h.html#a6a2e44ccee2f7e4393d38f9072bd1841">APP_LIB_DATA_NO_TRACKING_ID</a>;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Send the data packet</span></div>
-<div class="line">    lib_data-&gt;sendData(&amp;data_to_send);</div>
+<div class="line">    <a name="a14"></a><a class="code" href="../../d5/d74/shared__data_8h.html#a639c2cd4c2ad7deba30bf25dc9c03043">Shared_Data_sendData</a>(&amp;data_to_send, NULL);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Increment value to send</span></div>
 <div class="line">    <span class="keywordtype">id</span>++;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Inform the stack that this function should be called again in</span></div>
-<div class="line">    <span class="comment">// period_us microseconds. By returning APP_LIB_SYSTEM_STOP_PERIODIC,</span></div>
+<div class="line">    <span class="comment">// period_ms microseconds. By returning APP_SCHEDULER_STOP_TASK,</span></div>
 <div class="line">    <span class="comment">// the stack won&#39;t call this function again.</span></div>
-<div class="line">    <span class="keywordflow">return</span> period_us;</div>
+<div class="line">    <span class="keywordflow">return</span> period_ms;</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> <a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554b">app_lib_data_receive_res_e</a> dataReceivedCb(</div>
-<div class="line">    <span class="keyword">const</span> <a name="_a14"></a><a class="code" href="../../d2/dbd/data_8h.html#d7/df3/structapp__lib__data__received__t">app_lib_data_received_t</a> * data)</div>
+<div class="line">    <span class="keyword">const</span> shared_data_item_t * item,</div>
+<div class="line">    <span class="keyword">const</span> <a name="_a15"></a><a class="code" href="../../d2/dbd/data_8h.html#d7/df3/structapp__lib__data__received__t">app_lib_data_received_t</a> * data)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keywordflow">if</span> ((data-&gt;<a name="a15"></a><a class="code" href="../../d2/dbd/data_8h.html#af7dcc80b7a3cab03843f5bdff120f452">num_bytes</a> &lt; 1) ||</div>
-<div class="line">        (data-&gt;<a name="a16"></a><a class="code" href="../../d2/dbd/data_8h.html#a0992896b3999455a300e8ba25c368ae8">dest_endpoint</a> != SET_PERIOD_EP))</div>
+<div class="line">    <a name="a16"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a name="a17"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;dataReceivedCb&quot;</span>);</div>
+<div class="line">    <span class="keywordflow">if</span> ((data-&gt;<a name="a18"></a><a class="code" href="../../d2/dbd/data_8h.html#af7dcc80b7a3cab03843f5bdff120f452">num_bytes</a> &lt; 1) || (data-&gt;<a class="code" href="../../d2/dbd/data_8h.html#af7dcc80b7a3cab03843f5bdff120f452">num_bytes</a>!= <span class="keyword">sizeof</span>(payload_periodic_t)))</div>
 <div class="line">    {</div>
 <div class="line">        <span class="comment">// Data was not for this application</span></div>
-<div class="line">        <span class="keywordflow">return</span> <a name="a17"></a><a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba982c231319cbb17347b7a0964988b855">APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP</a>;</div>
+<div class="line">        <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;dataReceiveCb - data was not for this application&quot;</span>);</div>
+<div class="line">        <span class="keywordflow">return</span> <a name="a19"></a><a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba982c231319cbb17347b7a0964988b855">APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP</a>;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="comment">// Parse decimal digits to a period value</span></div>
-<div class="line">    uint32_t new_period = get_value_from_string(data-&gt;<a name="a18"></a><a class="code" href="../../d2/dbd/data_8h.html#acc7ee0a7ec28292d2c1be47c4a23f78d">bytes</a>, data-&gt;<a class="code" href="../../d2/dbd/data_8h.html#af7dcc80b7a3cab03843f5bdff120f452">num_bytes</a>);</div>
-<div class="line">    period_us = (new_period &gt; 0) ? new_period * 1000 * 1000 :</div>
-<div class="line">                                   <a name="a19"></a><a class="code" href="../../dc/db2/system_8h.html#a0b580da45d85ae46ec76d485ef9bc406">APP_LIB_SYSTEM_STOP_PERIODIC</a>;</div>
+<div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;dataReceivedCb&quot;</span>);</div>
+<div class="line">    payload_periodic_t payload = *((payload_periodic_t *)data-&gt;<a name="a20"></a><a class="code" href="../../d2/dbd/data_8h.html#acc7ee0a7ec28292d2c1be47c4a23f78d">bytes</a>);</div>
 <div class="line"> </div>
-<div class="line">    <span class="comment">// Update the period now. The current period will be longer</span></div>
-<div class="line">    <span class="comment">// (already elapsed time from last period + new full period).</span></div>
-<div class="line">    lib_system-&gt;setPeriodicCb(send_data,</div>
-<div class="line">                              period_us,</div>
-<div class="line">                              EXECUTION_TIME_US);</div>
+<div class="line">    <span class="comment">/* Change the period for a new one */</span></div>
+<div class="line">    period_ms = payload.period_ms;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Data handled successfully</span></div>
-<div class="line">    <span class="keywordflow">return</span> <a name="a20"></a><a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba5eb2a589b49f72b477f0cbf5deba552a">APP_LIB_DATA_RECEIVE_RES_HANDLED</a>;</div>
+<div class="line">    <span class="keywordflow">return</span> <a name="a21"></a><a class="code" href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba5eb2a589b49f72b477f0cbf5deba552a">APP_LIB_DATA_RECEIVE_RES_HANDLED</a>;</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a21"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
+<div class="line"><span class="comment">/*Unicast messages filter*/</span></div>
+<div class="line"><span class="keyword">static</span> shared_data_item_t alltype_packets_filter =</div>
 <div class="line">{</div>
+<div class="line">    .cb = dataReceivedCb,</div>
+<div class="line">    .filter = {</div>
+<div class="line">        .mode = <a name="a22"></a><a class="code" href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a>,</div>
+<div class="line">        <span class="comment">/* Filtering by source endpoint. */</span></div>
+<div class="line">        .src_endpoint = SET_PERIOD_EP,</div>
+<div class="line">        <span class="comment">/* Filtering by destination endpoint. */</span></div>
+<div class="line">        .dest_endpoint = SET_PERIOD_EP,</div>
+<div class="line">        .multicast_cb = NULL</div>
+<div class="line">    }</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a23"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
+<div class="line">{</div>
+<div class="line">    <a name="a24"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a062ce2496c8e47adec91c0d11744a7a7">LOG_INIT</a>();</div>
+<div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;App_init&quot;</span>);</div>
 <div class="line">    <span class="comment">// Basic configuration of the node with a unique node address</span></div>
-<div class="line">    <span class="keywordflow">if</span> (<a name="a22"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a name="a23"></a><a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (<a name="a25"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a name="a26"></a><a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="comment">// Could not configure the node</span></div>
 <div class="line">        <span class="comment">// It should not happen except if one of the config value is invalid</span></div>
 <div class="line">        <span class="keywordflow">return</span>;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="comment">// Set a periodic callback to be called after DEFAULT_PERIOD_US</span></div>
-<div class="line">    period_us = DEFAULT_PERIOD_US;</div>
-<div class="line">    lib_system-&gt;setPeriodicCb(send_data,</div>
-<div class="line">                              period_us,</div>
-<div class="line">                              EXECUTION_TIME_US);</div>
+<div class="line">    <span class="comment">// Set a periodic callback to be called after DEFAULT_PERIOD_MS</span></div>
+<div class="line">    period_ms = DEFAULT_PERIOD_MS;</div>
+<div class="line">    <a name="a27"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(send_data_task,</div>
+<div class="line">                                   <a name="a28"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>,</div>
+<div class="line">                                   EXECUTION_TIME_US);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Set callback for received unicast messages</span></div>
-<div class="line">    lib_data-&gt;setDataReceivedCb(dataReceivedCb);</div>
-<div class="line"> </div>
-<div class="line">    <span class="comment">// Set callback for received broadcast messages</span></div>
-<div class="line">    lib_data-&gt;setBcastDataReceivedCb(dataReceivedCb);</div>
+<div class="line">    <a name="a29"></a><a class="code" href="../../d5/d74/shared__data_8h.html#af5983ac588df8ae846597bf0b98d86d8">Shared_Data_addDataReceivedCb</a>(&amp;alltype_packets_filter);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Start the stack</span></div>
 <div class="line">    lib_state-&gt;startStack();</div>
@@ -214,11 +215,17 @@ $(document).ready(function(){initNavTree('db/d83/custom_app_2app_8c-example.html
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="adata_8h_html_af7dcc80b7a3cab03843f5bdff120f452"><div class="ttname"><a href="../../d2/dbd/data_8h.html#af7dcc80b7a3cab03843f5bdff120f452">app_lib_data_to_send_t::num_bytes</a></div><div class="ttdeci">size_t num_bytes</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00293">data.h:293</a></div></div>
+<div class="ttc" id="adebug__log_8h_html_a589372d7f7cc36183e6c19752a7df474"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a></div><div class="ttdeci">#define LVL_INFO</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00083">debug_log.h:83</a></div></div>
 <div class="ttc" id="adata_8h_html_d7/d10/structapp__lib__data__to__send__t"><div class="ttname"><a href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a></div><div class="ttdoc">A struct for lib_data-&gt;sendData().</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00288">data.h:288</a></div></div>
+<div class="ttc" id="ashared__data_8h_html_af5983ac588df8ae846597bf0b98d86d8"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#af5983ac588df8ae846597bf0b98d86d8">Shared_Data_addDataReceivedCb</a></div><div class="ttdeci">app_res_e Shared_Data_addDataReceivedCb(shared_data_item_t *item)</div><div class="ttdoc">Add a new packet received item to the list. If the item is already in the list it is only updated.</div></div>
 <div class="ttc" id="anode__configuration_8h_html"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_a71e4c4c0dfd5649947194df11af4fe17"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_ms, uint32_t exec_time_us)</div><div class="ttdoc">Add a task.</div></div>
 <div class="ttc" id="adata_8h_html_abe388560a25c7690c48b6f3e20a32278"><div class="ttname"><a href="../../d2/dbd/data_8h.html#abe388560a25c7690c48b6f3e20a32278">app_lib_data_to_send_t::dest_address</a></div><div class="ttdeci">app_addr_t dest_address</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00295">data.h:295</a></div></div>
 <div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a></div><div class="ttdeci">@ APP_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00204">app.h:204</a></div></div>
+<div class="ttc" id="ashared__data_8h_html_a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7af9c6601a1f3d6dbe06fc3d5bdc23c3a5">SHARED_DATA_NET_MODE_ALL</a></div><div class="ttdeci">@ SHARED_DATA_NET_MODE_ALL</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d74/shared__data_8h_source.html#l00049">shared_data.h:49</a></div></div>
 <div class="ttc" id="adata_8h_html_a7f43082a8111a69a9189426ea4fb9987"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a7f43082a8111a69a9189426ea4fb9987">app_lib_data_to_send_t::tracking_id</a></div><div class="ttdeci">app_lib_data_tracking_id_t tracking_id</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00303">data.h:303</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a></div></div>
+<div class="ttc" id="adebug__log_8h_html"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html">debug_log.h</a></div></div>
 <div class="ttc" id="adata_8h_html_a962b319bd5ca8ebbb1b358e84f48382f"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a962b319bd5ca8ebbb1b358e84f48382f">app_lib_data_to_send_t::qos</a></div><div class="ttdeci">app_lib_data_qos_e qos</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00305">data.h:305</a></div></div>
 <div class="ttc" id="adata_8h_html_ad3aa19c96da7da312cd8fe99ea34554ba982c231319cbb17347b7a0964988b855"><div class="ttname"><a href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba982c231319cbb17347b7a0964988b855">APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP</a></div><div class="ttdeci">@ APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00191">data.h:191</a></div></div>
 <div class="ttc" id="adata_8h_html_ad3aa19c96da7da312cd8fe99ea34554ba5eb2a589b49f72b477f0cbf5deba552a"><div class="ttname"><a href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554ba5eb2a589b49f72b477f0cbf5deba552a">APP_LIB_DATA_RECEIVE_RES_HANDLED</a></div><div class="ttdeci">@ APP_LIB_DATA_RECEIVE_RES_HANDLED</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00188">data.h:188</a></div></div>
@@ -227,14 +234,18 @@ $(document).ready(function(){initNavTree('db/d83/custom_app_2app_8c-example.html
 <div class="ttc" id="adata_8h_html_aa2585d779da0ab21273a8d92de9a0ebe"><div class="ttname"><a href="../../d2/dbd/data_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">app_lib_data_to_send_t::flags</a></div><div class="ttdeci">uint8_t flags</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00307">data.h:307</a></div></div>
 <div class="ttc" id="adata_8h_html_ad3aa19c96da7da312cd8fe99ea34554b"><div class="ttname"><a href="../../d2/dbd/data_8h.html#ad3aa19c96da7da312cd8fe99ea34554b">app_lib_data_receive_res_e</a></div><div class="ttdeci">app_lib_data_receive_res_e</div><div class="ttdoc">Return value of data reception callback.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00184">data.h:184</a></div></div>
 <div class="ttc" id="adata_8h_html_a2f980290790d1fecb3764ef797c03335"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a2f980290790d1fecb3764ef797c03335">app_lib_data_to_send_t::src_endpoint</a></div><div class="ttdeci">uint8_t src_endpoint</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00309">data.h:309</a></div></div>
+<div class="ttc" id="adebug__log_8h_html_a062ce2496c8e47adec91c0d11744a7a7"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a062ce2496c8e47adec91c0d11744a7a7">LOG_INIT</a></div><div class="ttdeci">#define LOG_INIT()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00066">debug_log.h:66</a></div></div>
+<div class="ttc" id="ashared__data_8h_html"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html">shared_data.h</a></div></div>
 <div class="ttc" id="adata_8h_html_a0992896b3999455a300e8ba25c368ae8"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a0992896b3999455a300e8ba25c368ae8">app_lib_data_to_send_t::dest_endpoint</a></div><div class="ttdeci">uint8_t dest_endpoint</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00311">data.h:311</a></div></div>
 <div class="ttc" id="adata_8h_html_acc7ee0a7ec28292d2c1be47c4a23f78d"><div class="ttname"><a href="../../d2/dbd/data_8h.html#acc7ee0a7ec28292d2c1be47c4a23f78d">app_lib_data_to_send_t::bytes</a></div><div class="ttdeci">const uint8_t * bytes</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00291">data.h:291</a></div></div>
-<div class="ttc" id="asystem_8h_html_a0b580da45d85ae46ec76d485ef9bc406"><div class="ttname"><a href="../../dc/db2/system_8h.html#a0b580da45d85ae46ec76d485ef9bc406">APP_LIB_SYSTEM_STOP_PERIODIC</a></div><div class="ttdeci">#define APP_LIB_SYSTEM_STOP_PERIODIC</div><div class="ttdoc">Constant to stop periodic callback.</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/db2/system_8h_source.html#l00046">system.h:46</a></div></div>
+<div class="ttc" id="adebug__log_8h_html_a94e6401c9e46b35182d9dbbce6b99be5"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a></div><div class="ttdeci">#define LOG(level, fmt,...)</div><div class="ttdoc">Print a log message if its severity is lower or equal to DEBUG_LOG_MAX_LEVEL.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00172">debug_log.h:172</a></div></div>
+<div class="ttc" id="ashared__data_8h_html_a639c2cd4c2ad7deba30bf25dc9c03043"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a639c2cd4c2ad7deba30bf25dc9c03043">Shared_Data_sendData</a></div><div class="ttdeci">app_lib_data_send_res_e Shared_Data_sendData(app_lib_data_to_send_t *data, app_lib_data_data_sent_cb_f sent_cb)</div><div class="ttdoc">Send data. The packet to send is represented as a app_lib_data_to_send_t struct.</div></div>
 <div class="ttc" id="aapp_8h_html_a2fe888af6a0b27cd2455757d0823a313a1d64d118fbd3df68c8ab52ce6fd94c6c"><div class="ttname"><a href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a1d64d118fbd3df68c8ab52ce6fd94c6c">APP_ADDR_ANYSINK</a></div><div class="ttdeci">@ APP_ADDR_ANYSINK</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00236">app.h:236</a></div></div>
 <div class="ttc" id="adata_8h_html_a6a2e44ccee2f7e4393d38f9072bd1841"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a6a2e44ccee2f7e4393d38f9072bd1841">APP_LIB_DATA_NO_TRACKING_ID</a></div><div class="ttdeci">#define APP_LIB_DATA_NO_TRACKING_ID</div><div class="ttdoc">When sending data and no tracking of packet is requested, this ID may be used.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00060">data.h:60</a></div></div>
 <div class="ttc" id="adata_8h_html_d7/df3/structapp__lib__data__received__t"><div class="ttname"><a href="../../d2/dbd/data_8h.html#d7/df3/structapp__lib__data__received__t">app_lib_data_received_t</a></div><div class="ttdoc">Struct passed to data reception callback functions.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00244">data.h:244</a></div></div>
 <div class="ttc" id="aapp_8h_html_d6/d81/structapp__global__functions__t"><div class="ttname"><a href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a></div><div class="ttdoc">List of global functions, passed to App_entrypoint()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00157">app.h:157</a></div></div>
 <div class="ttc" id="adata_8h_html_aa03fbf2cdb28616e79aca69710c8b134a2c19a7699397df7b39155e4711bb762e"><div class="ttname"><a href="../../d2/dbd/data_8h.html#aa03fbf2cdb28616e79aca69710c8b134a2c19a7699397df7b39155e4711bb762e">APP_LIB_DATA_QOS_HIGH</a></div><div class="ttdeci">@ APP_LIB_DATA_QOS_HIGH</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00093">data.h:93</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_ae49a1abde6843cb44c37e47616d2a810"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a></div><div class="ttdeci">#define APP_SCHEDULER_SCHEDULE_ASAP</div><div class="ttdoc">Value to return from task or as initial time to be executed ASAP.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00042">app_scheduler.h:42</a></div></div>
 <div class="ttc" id="adata_8h_html_a45089cc0ed8195699c2cb52c160e9b44a35ac295081a6f0df8a7fb599d890993f"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a45089cc0ed8195699c2cb52c160e9b44a35ac295081a6f0df8a7fb599d890993f">APP_LIB_DATA_SEND_FLAG_NONE</a></div><div class="ttdeci">@ APP_LIB_DATA_SEND_FLAG_NONE</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00102">data.h:102</a></div></div>
 <div class="ttc" id="aapi_8h_html"><div class="ttname"><a href="../../dc/d65/api_8h.html">api.h</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->

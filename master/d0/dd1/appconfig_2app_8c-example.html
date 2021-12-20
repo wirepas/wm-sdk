@@ -104,25 +104,29 @@ $(document).ready(function(){initNavTree('d0/dd1/appconfig_2app_8c-example.html'
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d2/d67/shared__appconfig_8h.html">shared_appconfig.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d65/api_8h.html">api.h</a>&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d74/shared__data_8h.html">shared_data.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define DEBUG_LOG_MODULE_NAME &quot;MAIN_APP&quot;</span></div>
 <div class="line"><span class="preprocessor">#define DEBUG_LOG_MAX_LEVEL LVL_INFO</span></div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dd/dd9/debug__log_8h.html">debug_log.h</a>&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define DEFAULT_PERIOD_S    10</span></div>
-<div class="line"><span class="preprocessor">#define DEFAULT_PERIOD_US   (DEFAULT_PERIOD_S*1000*1000)</span></div>
+<div class="line"><span class="preprocessor">#define DEFAULT_PERIOD_MS   (DEFAULT_PERIOD_S*1000)</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define EXECUTION_TIME_US   500</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define DATA_EP             1</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">static</span> uint32_t m_period_us;</div>
+<div class="line"><span class="keyword">static</span> uint32_t m_period_ms;</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#define CUSTOM_TLV_TYPE 0x12</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> uint16_t m_filter_id;</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> uint16_t m_raw_filter_id;</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> uint16_t m_all_filter_id;</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">typedef</span> <span class="keyword">struct  </span>__attribute__((packed))</div>
 <div class="line">{</div>
@@ -151,7 +155,7 @@ $(document).ready(function(){initNavTree('d0/dd1/appconfig_2app_8c-example.html'
 <div class="line">    data_to_send.<a name="a12"></a><a class="code" href="../../d2/dbd/data_8h.html#a7f43082a8111a69a9189426ea4fb9987">tracking_id</a> = <a name="a13"></a><a class="code" href="../../d2/dbd/data_8h.html#a6a2e44ccee2f7e4393d38f9072bd1841">APP_LIB_DATA_NO_TRACKING_ID</a>;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Send the data packet</span></div>
-<div class="line">    lib_data-&gt;sendData(&amp;data_to_send);</div>
+<div class="line">    <a name="a14"></a><a class="code" href="../../d5/d74/shared__data_8h.html#a639c2cd4c2ad7deba30bf25dc9c03043">Shared_Data_sendData</a>(&amp;data_to_send, NULL);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Increment value to send</span></div>
 <div class="line">    <span class="keywordtype">id</span>++;</div>
@@ -159,7 +163,7 @@ $(document).ready(function(){initNavTree('d0/dd1/appconfig_2app_8c-example.html'
 <div class="line">    <span class="comment">// Inform the stack that this function should be called again in</span></div>
 <div class="line">    <span class="comment">// period_us microseconds. By returning APP_LIB_SYSTEM_STOP_PERIODIC,</span></div>
 <div class="line">    <span class="comment">// the stack won&#39;t call this function again.</span></div>
-<div class="line">    <span class="keywordflow">return</span> m_period_us;</div>
+<div class="line">    <span class="keywordflow">return</span> m_period_ms;</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> appConfigTLVReceivedCb(uint16_t type,</div>
@@ -171,7 +175,13 @@ $(document).ready(function(){initNavTree('d0/dd1/appconfig_2app_8c-example.html'
 <div class="line">    <span class="keywordflow">if</span> (type != CUSTOM_TLV_TYPE)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="comment">// It should never happen as we registered only this type with this cb</span></div>
-<div class="line">        <a name="a14"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a name="a15"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a80fe8a6a673728cc8d8b2a90742b46b7">LVL_ERROR</a>, <span class="stringliteral">&quot;Wrong app config type&quot;</span>);</div>
+<div class="line">        <a name="a15"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a name="a16"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a80fe8a6a673728cc8d8b2a90742b46b7">LVL_ERROR</a>, <span class="stringliteral">&quot;Wrong app config type&quot;</span>);</div>
+<div class="line">        <span class="keywordflow">return</span>;</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">if</span> (length == 0)</div>
+<div class="line">    {</div>
+<div class="line">        <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a name="a17"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;App config received but not for us&quot;</span>);</div>
 <div class="line">        <span class="keywordflow">return</span>;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
@@ -184,20 +194,20 @@ $(document).ready(function(){initNavTree('d0/dd1/appconfig_2app_8c-example.html'
 <div class="line"> </div>
 <div class="line">    config = (custom_app_config_t *) value_p;</div>
 <div class="line"> </div>
-<div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a name="a16"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>,</div>
+<div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>,</div>
 <div class="line">        <span class="stringliteral">&quot;New app configuration seq=%d, interval_s=%d&quot;</span>,</div>
 <div class="line">        config-&gt;seq,</div>
 <div class="line">        config-&gt;interval);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Set new periodic data transfer interval</span></div>
-<div class="line">    m_period_us = config-&gt;interval * 1000 * 1000;</div>
+<div class="line">    m_period_ms = config-&gt;interval * 1000;</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> appConfigRawReceivedCb(uint16_t type,</div>
 <div class="line">                                   uint8_t length,</div>
 <div class="line">                                   uint8_t * value_p)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keywordflow">if</span> (type != <a name="a17"></a><a class="code" href="../../d2/d67/shared__appconfig_8h.html#a3c6dd994fffca606a59651ff7c84f3f0">SHARED_APP_CONFIG_INCOMPATIBLE_FILTER</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (type != <a name="a18"></a><a class="code" href="../../d2/d67/shared__appconfig_8h.html#a3c6dd994fffca606a59651ff7c84f3f0">SHARED_APP_CONFIG_INCOMPATIBLE_FILTER</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="comment">// It should never happen as we register for raw type only with this cb</span></div>
 <div class="line">        <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a80fe8a6a673728cc8d8b2a90742b46b7">LVL_ERROR</a>, <span class="stringliteral">&quot;Wrong app config raw type&quot;</span>);</div>
@@ -207,23 +217,29 @@ $(document).ready(function(){initNavTree('d0/dd1/appconfig_2app_8c-example.html'
 <div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;New RAW app configuration len=%d\n&quot;</span>, length);</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a18"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
+<div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> appConfigTLVAllReceivedCb(uint16_t type,</div>
+<div class="line">                                      uint8_t length,</div>
+<div class="line">                                      uint8_t * value_p)</div>
 <div class="line">{</div>
-<div class="line">    <a name="_a19"></a><a class="code" href="../../d2/d67/shared__appconfig_8h.html#d2/de1/structshared__app__config__filter__t">shared_app_config_filter_t</a> app_config_filter;</div>
 <div class="line"> </div>
-<div class="line">    <a name="a20"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a062ce2496c8e47adec91c0d11744a7a7">LOG_INIT</a>();</div>
+<div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;New app configuration all filters type=%d len=%d\n&quot;</span>, type, length);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a19"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
+<div class="line">{</div>
+<div class="line">    <a name="_a20"></a><a class="code" href="../../d2/d67/shared__appconfig_8h.html#d2/de1/structshared__app__config__filter__t">shared_app_config_filter_t</a> app_config_filter;</div>
+<div class="line"> </div>
+<div class="line">    <a name="a21"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a062ce2496c8e47adec91c0d11744a7a7">LOG_INIT</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Basic configuration of the node with a unique node address</span></div>
-<div class="line">    <span class="keywordflow">if</span> (<a name="a21"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a name="a22"></a><a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (<a name="a22"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a name="a23"></a><a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="comment">// Could not configure the node</span></div>
 <div class="line">        <span class="comment">// It should not happen except if one of the config value is invalid</span></div>
 <div class="line">        <span class="keywordflow">return</span>;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a name="a23"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a2325454fac7906237ece595f2f257083">LVL_DEBUG</a>, <span class="stringliteral">&quot;App starting&quot;</span>);</div>
-<div class="line"> </div>
-<div class="line">    <a name="a24"></a><a class="code" href="../../d2/d67/shared__appconfig_8h.html#aec6dd99594beb669cb5e1a200a09bf6b">Shared_Appconfig_init</a>();</div>
+<div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a name="a24"></a><a class="code" href="../../dd/dd9/debug__log_8h.html#a2325454fac7906237ece595f2f257083">LVL_DEBUG</a>, <span class="stringliteral">&quot;App starting&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Prepare the app_config filter</span></div>
 <div class="line">    app_config_filter.<a name="a25"></a><a class="code" href="../../d2/d67/shared__appconfig_8h.html#acb5cfd209ba75c853d03f701e7f91679">type</a> = CUSTOM_TLV_TYPE;</div>
@@ -241,12 +257,20 @@ $(document).ready(function(){initNavTree('d0/dd1/appconfig_2app_8c-example.html'
 <div class="line">    <a class="code" href="../../d2/d67/shared__appconfig_8h.html#a1f8d9cb49f5671998580999c5fec1348">Shared_Appconfig_addFilter</a>(&amp;app_config_filter, &amp;m_raw_filter_id);</div>
 <div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;Filter added for TLV with id=%d\n&quot;</span>, m_raw_filter_id);</div>
 <div class="line"> </div>
-<div class="line">    <span class="comment">// Set a periodic callback to be called after DEFAULT_PERIOD_US</span></div>
-<div class="line">    m_period_us = DEFAULT_PERIOD_US;</div>
-<div class="line">    lib_system-&gt;setPeriodicCb(send_data,</div>
-<div class="line">                              m_period_us,</div>
-<div class="line">                              EXECUTION_TIME_US);</div>
+<div class="line">    <span class="comment">// Prepare a third app_config filter</span></div>
+<div class="line">    app_config_filter.<a class="code" href="../../d2/d67/shared__appconfig_8h.html#acb5cfd209ba75c853d03f701e7f91679">type</a> = <a name="a29"></a><a class="code" href="../../d2/d67/shared__appconfig_8h.html#a3370f7b390114eaa256bc49184f347a1">SHARED_APP_CONFIG_ALL_TYPE_FILTER</a>;</div>
+<div class="line">    app_config_filter.<a class="code" href="../../d2/d67/shared__appconfig_8h.html#afb9315d87648de79ff9bcc96c06825e2">cb</a> = appConfigTLVAllReceivedCb;</div>
+<div class="line">    app_config_filter.<a class="code" href="../../d2/d67/shared__appconfig_8h.html#a6cd927cd9429323a136b6ade3d70a177">call_cb_always</a> = <span class="keyword">false</span>;</div>
 <div class="line"> </div>
+<div class="line">    <a class="code" href="../../d2/d67/shared__appconfig_8h.html#a1f8d9cb49f5671998580999c5fec1348">Shared_Appconfig_addFilter</a>(&amp;app_config_filter, &amp;m_all_filter_id);</div>
+<div class="line">    <a class="code" href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a>(<a class="code" href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a>, <span class="stringliteral">&quot;Filter added for TLV with id=%d\n&quot;</span>, m_all_filter_id);</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// Set a periodic callback to be called after DEFAULT_PERIOD_MS</span></div>
+<div class="line">    m_period_ms = DEFAULT_PERIOD_MS;</div>
+<div class="line"> </div>
+<div class="line">    <a name="a30"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(send_data,</div>
+<div class="line">                                  m_period_ms,</div>
+<div class="line">                                  EXECUTION_TIME_US);</div>
 <div class="line">    <span class="comment">// Start the stack</span></div>
 <div class="line">    lib_state-&gt;startStack();</div>
 <div class="line">}</div>
@@ -257,13 +281,14 @@ $(document).ready(function(){initNavTree('d0/dd1/appconfig_2app_8c-example.html'
 <div class="ttc" id="adebug__log_8h_html_a589372d7f7cc36183e6c19752a7df474"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a589372d7f7cc36183e6c19752a7df474">LVL_INFO</a></div><div class="ttdeci">#define LVL_INFO</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00083">debug_log.h:83</a></div></div>
 <div class="ttc" id="adebug__log_8h_html_a80fe8a6a673728cc8d8b2a90742b46b7"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a80fe8a6a673728cc8d8b2a90742b46b7">LVL_ERROR</a></div><div class="ttdeci">#define LVL_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00085">debug_log.h:85</a></div></div>
 <div class="ttc" id="adata_8h_html_d7/d10/structapp__lib__data__to__send__t"><div class="ttname"><a href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a></div><div class="ttdoc">A struct for lib_data-&gt;sendData().</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00288">data.h:288</a></div></div>
-<div class="ttc" id="ashared__appconfig_8h_html_aec6dd99594beb669cb5e1a200a09bf6b"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#aec6dd99594beb669cb5e1a200a09bf6b">Shared_Appconfig_init</a></div><div class="ttdeci">shared_app_config_res_e Shared_Appconfig_init(void)</div><div class="ttdoc">Initialize the shared app config library library.</div></div>
 <div class="ttc" id="anode__configuration_8h_html"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a></div></div>
-<div class="ttc" id="ashared__appconfig_8h_html_afb9315d87648de79ff9bcc96c06825e2"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#afb9315d87648de79ff9bcc96c06825e2">shared_app_config_filter_t::cb</a></div><div class="ttdeci">shared_app_config_received_cb_f cb</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00071">shared_appconfig.h:71</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_a71e4c4c0dfd5649947194df11af4fe17"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_ms, uint32_t exec_time_us)</div><div class="ttdoc">Add a task.</div></div>
+<div class="ttc" id="ashared__appconfig_8h_html_afb9315d87648de79ff9bcc96c06825e2"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#afb9315d87648de79ff9bcc96c06825e2">shared_app_config_filter_t::cb</a></div><div class="ttdeci">shared_app_config_received_cb_f cb</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00073">shared_appconfig.h:73</a></div></div>
 <div class="ttc" id="adata_8h_html_abe388560a25c7690c48b6f3e20a32278"><div class="ttname"><a href="../../d2/dbd/data_8h.html#abe388560a25c7690c48b6f3e20a32278">app_lib_data_to_send_t::dest_address</a></div><div class="ttdeci">app_addr_t dest_address</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00295">data.h:295</a></div></div>
 <div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a></div><div class="ttdeci">@ APP_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00204">app.h:204</a></div></div>
 <div class="ttc" id="adata_8h_html_a7f43082a8111a69a9189426ea4fb9987"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a7f43082a8111a69a9189426ea4fb9987">app_lib_data_to_send_t::tracking_id</a></div><div class="ttdeci">app_lib_data_tracking_id_t tracking_id</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00303">data.h:303</a></div></div>
-<div class="ttc" id="ashared__appconfig_8h_html_a3c6dd994fffca606a59651ff7c84f3f0"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#a3c6dd994fffca606a59651ff7c84f3f0">SHARED_APP_CONFIG_INCOMPATIBLE_FILTER</a></div><div class="ttdeci">#define SHARED_APP_CONFIG_INCOMPATIBLE_FILTER</div><div class="ttdoc">Value to use to receive incompatible raw app_config Ie, if the app config is not recognized by this l...</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00041">shared_appconfig.h:41</a></div></div>
+<div class="ttc" id="ashared__appconfig_8h_html_a3c6dd994fffca606a59651ff7c84f3f0"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#a3c6dd994fffca606a59651ff7c84f3f0">SHARED_APP_CONFIG_INCOMPATIBLE_FILTER</a></div><div class="ttdeci">#define SHARED_APP_CONFIG_INCOMPATIBLE_FILTER</div><div class="ttdoc">Value to use to receive incompatible raw app_config Ie, if the app config is not recognized by this l...</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00043">shared_appconfig.h:43</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a></div></div>
 <div class="ttc" id="ashared__appconfig_8h_html_a1f8d9cb49f5671998580999c5fec1348"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#a1f8d9cb49f5671998580999c5fec1348">Shared_Appconfig_addFilter</a></div><div class="ttdeci">shared_app_config_res_e Shared_Appconfig_addFilter(shared_app_config_filter_t *filter, uint16_t *filter_id)</div><div class="ttdoc">Add a new app config type filter to the list. If the item is already in the list it is only updated.</div></div>
 <div class="ttc" id="adebug__log_8h_html"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html">debug_log.h</a></div></div>
 <div class="ttc" id="adata_8h_html_a962b319bd5ca8ebbb1b358e84f48382f"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a962b319bd5ca8ebbb1b358e84f48382f">app_lib_data_to_send_t::qos</a></div><div class="ttdeci">app_lib_data_qos_e qos</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00305">data.h:305</a></div></div>
@@ -274,16 +299,19 @@ $(document).ready(function(){initNavTree('d0/dd1/appconfig_2app_8c-example.html'
 <div class="ttc" id="adebug__log_8h_html_a2325454fac7906237ece595f2f257083"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a2325454fac7906237ece595f2f257083">LVL_DEBUG</a></div><div class="ttdeci">#define LVL_DEBUG</div><div class="ttdoc">Macros to define several log levels: Debug, Info, Warning, Error.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00082">debug_log.h:82</a></div></div>
 <div class="ttc" id="adata_8h_html_a2f980290790d1fecb3764ef797c03335"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a2f980290790d1fecb3764ef797c03335">app_lib_data_to_send_t::src_endpoint</a></div><div class="ttdeci">uint8_t src_endpoint</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00309">data.h:309</a></div></div>
 <div class="ttc" id="adebug__log_8h_html_a062ce2496c8e47adec91c0d11744a7a7"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a062ce2496c8e47adec91c0d11744a7a7">LOG_INIT</a></div><div class="ttdeci">#define LOG_INIT()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00066">debug_log.h:66</a></div></div>
+<div class="ttc" id="ashared__data_8h_html"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html">shared_data.h</a></div></div>
 <div class="ttc" id="adata_8h_html_a0992896b3999455a300e8ba25c368ae8"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a0992896b3999455a300e8ba25c368ae8">app_lib_data_to_send_t::dest_endpoint</a></div><div class="ttdeci">uint8_t dest_endpoint</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00311">data.h:311</a></div></div>
 <div class="ttc" id="adata_8h_html_acc7ee0a7ec28292d2c1be47c4a23f78d"><div class="ttname"><a href="../../d2/dbd/data_8h.html#acc7ee0a7ec28292d2c1be47c4a23f78d">app_lib_data_to_send_t::bytes</a></div><div class="ttdeci">const uint8_t * bytes</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00291">data.h:291</a></div></div>
-<div class="ttc" id="ashared__appconfig_8h_html_d2/de1/structshared__app__config__filter__t"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#d2/de1/structshared__app__config__filter__t">shared_app_config_filter_t</a></div><div class="ttdoc">Structure holding all parameters for app config type filtering.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00062">shared_appconfig.h:62</a></div></div>
+<div class="ttc" id="ashared__appconfig_8h_html_d2/de1/structshared__app__config__filter__t"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#d2/de1/structshared__app__config__filter__t">shared_app_config_filter_t</a></div><div class="ttdoc">Structure holding all parameters for app config type filtering.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00064">shared_appconfig.h:64</a></div></div>
 <div class="ttc" id="adebug__log_8h_html_a94e6401c9e46b35182d9dbbce6b99be5"><div class="ttname"><a href="../../dd/dd9/debug__log_8h.html#a94e6401c9e46b35182d9dbbce6b99be5">LOG</a></div><div class="ttdeci">#define LOG(level, fmt,...)</div><div class="ttdoc">Print a log message if its severity is lower or equal to DEBUG_LOG_MAX_LEVEL.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dd9/debug__log_8h_source.html#l00172">debug_log.h:172</a></div></div>
+<div class="ttc" id="ashared__data_8h_html_a639c2cd4c2ad7deba30bf25dc9c03043"><div class="ttname"><a href="../../d5/d74/shared__data_8h.html#a639c2cd4c2ad7deba30bf25dc9c03043">Shared_Data_sendData</a></div><div class="ttdeci">app_lib_data_send_res_e Shared_Data_sendData(app_lib_data_to_send_t *data, app_lib_data_data_sent_cb_f sent_cb)</div><div class="ttdoc">Send data. The packet to send is represented as a app_lib_data_to_send_t struct.</div></div>
+<div class="ttc" id="ashared__appconfig_8h_html_a3370f7b390114eaa256bc49184f347a1"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#a3370f7b390114eaa256bc49184f347a1">SHARED_APP_CONFIG_ALL_TYPE_FILTER</a></div><div class="ttdeci">#define SHARED_APP_CONFIG_ALL_TYPE_FILTER</div><div class="ttdoc">Value to use to receive all types.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00036">shared_appconfig.h:36</a></div></div>
 <div class="ttc" id="aapp_8h_html_a2fe888af6a0b27cd2455757d0823a313a1d64d118fbd3df68c8ab52ce6fd94c6c"><div class="ttname"><a href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a1d64d118fbd3df68c8ab52ce6fd94c6c">APP_ADDR_ANYSINK</a></div><div class="ttdeci">@ APP_ADDR_ANYSINK</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00236">app.h:236</a></div></div>
 <div class="ttc" id="adata_8h_html_a6a2e44ccee2f7e4393d38f9072bd1841"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a6a2e44ccee2f7e4393d38f9072bd1841">APP_LIB_DATA_NO_TRACKING_ID</a></div><div class="ttdeci">#define APP_LIB_DATA_NO_TRACKING_ID</div><div class="ttdoc">When sending data and no tracking of packet is requested, this ID may be used.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00060">data.h:60</a></div></div>
 <div class="ttc" id="aapp_8h_html_d6/d81/structapp__global__functions__t"><div class="ttname"><a href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a></div><div class="ttdoc">List of global functions, passed to App_entrypoint()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00157">app.h:157</a></div></div>
-<div class="ttc" id="ashared__appconfig_8h_html_a6cd927cd9429323a136b6ade3d70a177"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#a6cd927cd9429323a136b6ade3d70a177">shared_app_config_filter_t::call_cb_always</a></div><div class="ttdeci">bool call_cb_always</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00076">shared_appconfig.h:76</a></div></div>
+<div class="ttc" id="ashared__appconfig_8h_html_a6cd927cd9429323a136b6ade3d70a177"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#a6cd927cd9429323a136b6ade3d70a177">shared_app_config_filter_t::call_cb_always</a></div><div class="ttdeci">bool call_cb_always</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00078">shared_appconfig.h:78</a></div></div>
 <div class="ttc" id="adata_8h_html_aa03fbf2cdb28616e79aca69710c8b134a2c19a7699397df7b39155e4711bb762e"><div class="ttname"><a href="../../d2/dbd/data_8h.html#aa03fbf2cdb28616e79aca69710c8b134a2c19a7699397df7b39155e4711bb762e">APP_LIB_DATA_QOS_HIGH</a></div><div class="ttdeci">@ APP_LIB_DATA_QOS_HIGH</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00093">data.h:93</a></div></div>
-<div class="ttc" id="ashared__appconfig_8h_html_acb5cfd209ba75c853d03f701e7f91679"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#acb5cfd209ba75c853d03f701e7f91679">shared_app_config_filter_t::type</a></div><div class="ttdeci">uint16_t type</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00066">shared_appconfig.h:66</a></div></div>
+<div class="ttc" id="ashared__appconfig_8h_html_acb5cfd209ba75c853d03f701e7f91679"><div class="ttname"><a href="../../d2/d67/shared__appconfig_8h.html#acb5cfd209ba75c853d03f701e7f91679">shared_app_config_filter_t::type</a></div><div class="ttdeci">uint16_t type</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d67/shared__appconfig_8h_source.html#l00068">shared_appconfig.h:68</a></div></div>
 <div class="ttc" id="adata_8h_html_a45089cc0ed8195699c2cb52c160e9b44a35ac295081a6f0df8a7fb599d890993f"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a45089cc0ed8195699c2cb52c160e9b44a35ac295081a6f0df8a7fb599d890993f">APP_LIB_DATA_SEND_FLAG_NONE</a></div><div class="ttdeci">@ APP_LIB_DATA_SEND_FLAG_NONE</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00102">data.h:102</a></div></div>
 <div class="ttc" id="aapi_8h_html"><div class="ttname"><a href="../../dc/d65/api_8h.html">api.h</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->

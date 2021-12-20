@@ -150,7 +150,8 @@ Enumerations</h2></td></tr>
 <tr class="separator:a4d380466f2a9f6432a6abcabf44c8e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fe888af6a0b27cd2455757d0823a313"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313">app_special_addr_e</a> { <a class="el" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a1d64d118fbd3df68c8ab52ce6fd94c6c">APP_ADDR_ANYSINK</a> = 0xfffffffeu, 
 <a class="el" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a90ca77035be09acbb9d606b7081303f5">APP_ADDR_BROADCAST</a> = 0xffffffffu, 
-<a class="el" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a3b39aa91fd467f2e0dfd127f0d974f77">APP_ADDR_MULTICAST</a> = 0x80000000u
+<a class="el" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a3b39aa91fd467f2e0dfd127f0d974f77">APP_ADDR_MULTICAST</a> = 0x80000000u, 
+<a class="el" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313abea4cd83575c9cb980376d704fcc9e02">APP_ADDR_MULTICAST_LAST</a> = 0x80ffffffu
  }</td></tr>
 <tr class="memdesc:a2fe888af6a0b27cd2455757d0823a313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special destination addresses for sending packets.  <a href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313">More...</a><br /></td></tr>
 <tr class="separator:a2fe888af6a0b27cd2455757d0823a313"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,7 +192,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Node address. Each node must have a unique address in the network. There are special addresses that can be used as destination addresses, see <a class="el" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313">app_special_addr_e</a>. For various addressing modes, see addressing. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a31">inventory_app_tag/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a32">inventory_app_tag/app.c</a>.</dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d2/d39/app_8h_source.html#l00228">228</a> of file <a class="el" href="../../d2/d39/app_8h_source.html">app.h</a>.</p>
@@ -418,7 +419,7 @@ start_address</td>
 <td class="fieldname">
 start_ram_address</td>
 <td class="fielddoc">
-<p>First address used in RAM area </p>
+<p>First address used in RAM area (was forced to be 0 before) </p>
 </td></tr>
 </table>
 
@@ -468,7 +469,7 @@ version</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock"><p>List of global functions, passed to <a class="el" href="../../d2/d39/app_8h.html#aeac7453aac5efa0b1d5ae5b34b8166cd">App_entrypoint()</a> </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../de/dde/aes_2app_8c-example.html#_a14">aes/app.c</a>, <a class="el" href="../../d0/dd1/appconfig_2app_8c-example.html#_a18">appconfig/app.c</a>, <a class="el" href="../../d1/dac/basic_interrupt_2app_8c-example.html#_a20">basic_interrupt/app.c</a>, <a class="el" href="../../d7/d1c/ble_scanner_2app_8c-example.html#_a31">ble_scanner/app.c</a>, <a class="el" href="../../d3/d63/ble_tx_2app_8c-example.html#_a22">ble_tx/app.c</a>, <a class="el" href="../../d3/d9c/blink_2app_8c-example.html#_a2">blink/app.c</a>, <a class="el" href="../../db/d83/custom_app_2app_8c-example.html#_a21">custom_app/app.c</a>, <a class="el" href="../../dd/d80/debug_2app_8c-example.html#_a2">debug/app.c</a>, <a class="el" href="../../da/d1e/dualmcu_app_2app_8c-example.html#_a7">dualmcu_app/app.c</a>, <a class="el" href="../../df/d91/inventory_app_router_2app_8c-example.html#_a30">inventory_app_router/app.c</a>, <a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#_a35">inventory_app_tag/app.c</a>, <a class="el" href="../../d7/db8/minimal_app_2app_8c-example.html#_a0">minimal_app/app.c</a>, <a class="el" href="../../d0/d36/nfc_2app_8c-example.html#_a1">nfc/app.c</a>, <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#_a31">positioning_app/app.c</a>, <a class="el" href="../../d5/da9/provisioning_joining_node_2app_8c-example.html#_a5">provisioning_joining_node/app.c</a>, <a class="el" href="../../db/d30/provisioning_proxy_2app_8c-example.html#_a8">provisioning_proxy/app.c</a>, <a class="el" href="../../da/d90/ruuvi_evk_2app_8c-example.html#_a28">ruuvi_evk/app.c</a>, <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#_a6">scheduler/app.c</a>, <a class="el" href="../../d5/d87/shared_data_2app_8c-example.html#_a32">shared_data/app.c</a>, and <a class="el" href="../../dc/d2d/tinycbor_2app_8c-example.html#_a32">tinycbor/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../de/dde/aes_2app_8c-example.html#_a14">aes/app.c</a>, <a class="el" href="../../d0/dd1/appconfig_2app_8c-example.html#_a19">appconfig/app.c</a>, <a class="el" href="../../d1/dac/basic_interrupt_2app_8c-example.html#_a21">basic_interrupt/app.c</a>, <a class="el" href="../../d7/d1c/ble_scanner_2app_8c-example.html#_a18">ble_scanner/app.c</a>, <a class="el" href="../../d3/d63/ble_tx_2app_8c-example.html#_a24">ble_tx/app.c</a>, <a class="el" href="../../d3/d9c/blink_2app_8c-example.html#_a2">blink/app.c</a>, <a class="el" href="../../db/d83/custom_app_2app_8c-example.html#_a23">custom_app/app.c</a>, <a class="el" href="../../dd/d80/debug_2app_8c-example.html#_a2">debug/app.c</a>, <a class="el" href="../../da/d1e/dualmcu_app_2app_8c-example.html#_a0">dualmcu_app/app.c</a>, <a class="el" href="../../df/d91/inventory_app_router_2app_8c-example.html#_a30">inventory_app_router/app.c</a>, <a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#_a36">inventory_app_tag/app.c</a>, <a class="el" href="../../d7/db8/minimal_app_2app_8c-example.html#_a0">minimal_app/app.c</a>, <a class="el" href="../../d0/d36/nfc_2app_8c-example.html#_a3">nfc/app.c</a>, <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#_a32">positioning_app/app.c</a>, <a class="el" href="../../d5/da9/provisioning_joining_node_2app_8c-example.html#_a5">provisioning_joining_node/app.c</a>, <a class="el" href="../../db/d30/provisioning_proxy_2app_8c-example.html#_a8">provisioning_proxy/app.c</a>, <a class="el" href="../../da/d90/ruuvi_evk_2app_8c-example.html#_a29">ruuvi_evk/app.c</a>, <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#_a6">scheduler/app.c</a>, <a class="el" href="../../d5/d87/shared_data_2app_8c-example.html#_a36">shared_data/app.c</a>, and <a class="el" href="../../dc/d2d/tinycbor_2app_8c-example.html#_a32">tinycbor/app.c</a>.</dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="../../d2/d39/app_8h_source.html#l00157">157</a> of file <a class="el" href="../../d2/d39/app_8h_source.html">app.h</a>.</p>
@@ -613,6 +614,8 @@ minor</td>
 </td></tr>
 <tr><td class="fieldname"><a id="a2fe888af6a0b27cd2455757d0823a313a3b39aa91fd467f2e0dfd127f0d974f77"></a>APP_ADDR_MULTICAST&#160;</td><td class="fielddoc"><p>This is a bitmask that should be ORed with group address to send data packet to the multicast group. For example: 0x80000002 address sends packet to the multicast group #2. </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a2fe888af6a0b27cd2455757d0823a313abea4cd83575c9cb980376d704fcc9e02"></a>APP_ADDR_MULTICAST_LAST&#160;</td><td class="fielddoc"><p>This is last valid multicast address. Addresses larger than this (until <a class="el" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a1d64d118fbd3df68c8ab52ce6fd94c6c">APP_ADDR_ANYSINK</a>) are unicast addresses. </p>
+</td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="../../d2/d39/app_8h_source.html#l00233">233</a> of file <a class="el" href="../../d2/d39/app_8h_source.html">app.h</a>.</p>
@@ -620,7 +623,8 @@ minor</td>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <a class="code" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a1d64d118fbd3df68c8ab52ce6fd94c6c">APP_ADDR_ANYSINK</a>     = 0xfffffffeu,</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <a class="code" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a90ca77035be09acbb9d606b7081303f5">APP_ADDR_BROADCAST</a>   = 0xffffffffu,</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <a class="code" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313a3b39aa91fd467f2e0dfd127f0d974f77">APP_ADDR_MULTICAST</a>   = 0x80000000u,</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;} <a class="code" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313">app_special_addr_e</a>;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <a class="code" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313abea4cd83575c9cb980376d704fcc9e02">APP_ADDR_MULTICAST_LAST</a> = 0x80ffffffu,</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;} <a class="code" href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313">app_special_addr_e</a>;</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -759,7 +763,7 @@ minor</td>
 </div><div class="memdoc">
 
 <p>Open a library. </p>
-<p>This is the most important function of the Single-MCU API. All other functions are in libraries, opened using the this function. Parameters are the name and version of the library. The name is actually a 32-bit value, which is defined in each library header as a macro named APP_LIB_LIBRARY_NAME. The library version is also a macro defined in the same library header named APP_LIB_LIBRARY_VERSION.</p>
+<p>This is the most important function of the Single-MCU API. All other functions are in libraries, opened using the this function. Parameters are the name and version of the library. The name is actually a 32-bit value, which is defined in each library header as a macro: APP_LIB_LIBRARY_NAME. The library version is also a macro defined in the same library header: APP_LIB_LIBRARY_VERSION.</p>
 <p>Example of opening a library:</p>
 <div class="fragment"><div class="line"><span class="comment">// The System library</span></div>
 <div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="../../dc/db2/system_8h.html#d3/dd6/structapp__lib__system__t">app_lib_system_t</a> * lib_system = NULL;</div>
@@ -803,7 +807,7 @@ minor</td>
 <div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a></div><div class="ttdeci">@ APP_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00204">app.h:204</a></div></div>
 <div class="ttc" id="aapp_8h_html_ad6cb21e8cfc14ab5f3b4d342edf777f2"><div class="ttname"><a href="../../d2/d39/app_8h.html#ad6cb21e8cfc14ab5f3b4d342edf777f2">get_api_version_compatible_f</a></div><div class="ttdeci">uint32_t(* get_api_version_compatible_f)(void)</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00182">app.h:182</a></div></div>
 <div class="ttc" id="asystem_8h_html_a95bdb57089e68a98e1d8b40496ecffb5"><div class="ttname"><a href="../../dc/db2/system_8h.html#a95bdb57089e68a98e1d8b40496ecffb5">APP_LIB_SYSTEM_NAME</a></div><div class="ttdeci">#define APP_LIB_SYSTEM_NAME</div><div class="ttdoc">Library symbolic name.</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/db2/system_8h_source.html#l00035">system.h:35</a></div></div>
-<div class="ttc" id="asystem_8h_html_d3/dd6/structapp__lib__system__t"><div class="ttname"><a href="../../dc/db2/system_8h.html#d3/dd6/structapp__lib__system__t">app_lib_system_t</a></div><div class="ttdoc">List of library functions.</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/db2/system_8h_source.html#l00507">system.h:507</a></div></div>
+<div class="ttc" id="asystem_8h_html_d3/dd6/structapp__lib__system__t"><div class="ttname"><a href="../../dc/db2/system_8h.html#d3/dd6/structapp__lib__system__t">app_lib_system_t</a></div><div class="ttdoc">List of library functions.</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/db2/system_8h_source.html#l00519">system.h:519</a></div></div>
 <div class="ttc" id="aapp_8h_html_ac5c0d81e5cdf8c6c0f2134d56d669ccc"><div class="ttname"><a href="../../d2/d39/app_8h.html#ac5c0d81e5cdf8c6c0f2134d56d669ccc">app_global_functions_t::openLibrary</a></div><div class="ttdeci">app_open_library_f openLibrary</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00161">app.h:161</a></div></div>
 <div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a3003711bc2e65045853433dacc324767"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a3003711bc2e65045853433dacc324767">APP_RES_INVALID_VALUE</a></div><div class="ttdeci">@ APP_RES_INVALID_VALUE</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00210">app.h:210</a></div></div>
 <div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a2e0fd18ec0f8ae18c72ebdf838235cb3"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a2e0fd18ec0f8ae18c72ebdf838235cb3">APP_RES_INVALID_CONFIGURATION</a></div><div class="ttdeci">@ APP_RES_INVALID_CONFIGURATION</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00214">app.h:214</a></div></div>
@@ -813,6 +817,7 @@ minor</td>
 <div class="ttc" id="asystem_8h_html_a2d2414ac7dd22b17123663eeed84e2ec"><div class="ttname"><a href="../../dc/db2/system_8h.html#a2d2414ac7dd22b17123663eeed84e2ec">APP_LIB_SYSTEM_VERSION</a></div><div class="ttdeci">#define APP_LIB_SYSTEM_VERSION</div><div class="ttdoc">Maximum supported library version.</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/db2/system_8h_source.html#l00038">system.h:38</a></div></div>
 <div class="ttc" id="aapp_8h_html_a364fe7c73a9fa89d37b5ec7544627646"><div class="ttname"><a href="../../d2/d39/app_8h.html#a364fe7c73a9fa89d37b5ec7544627646">APP_API_V1_VERSION</a></div><div class="ttdeci">#define APP_API_V1_VERSION</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00045">app.h:45</a></div></div>
 <div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80">app_res_e</a></div><div class="ttdeci">app_res_e</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00201">app.h:201</a></div></div>
+<div class="ttc" id="aapp_8h_html_a2fe888af6a0b27cd2455757d0823a313abea4cd83575c9cb980376d704fcc9e02"><div class="ttname"><a href="../../d2/d39/app_8h.html#a2fe888af6a0b27cd2455757d0823a313abea4cd83575c9cb980376d704fcc9e02">APP_ADDR_MULTICAST_LAST</a></div><div class="ttdeci">@ APP_ADDR_MULTICAST_LAST</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00254">app.h:254</a></div></div>
 <div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a55bc4f48f8714c3e5c515e3de50ffe88"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a55bc4f48f8714c3e5c515e3de50ffe88">APP_RES_RESOURCE_UNAVAILABLE</a></div><div class="ttdeci">@ APP_RES_RESOURCE_UNAVAILABLE</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00216">app.h:216</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

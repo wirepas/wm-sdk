@@ -25,9 +25,9 @@ var NAVTREE =
   [ "Wirepas SDK", "index.html", [
     [ "Single-MCU Operation Overview", "index.html", [
       [ "Application", "index.html#application", null ],
-      [ "Application-specific Hardware Abstraction Layer (HAL)", "index.html#sdk_hal", null ],
       [ "Wirepas Mesh Single MCU API", "index.html#single_mcu_api", null ],
-      [ "Wirepas Mesh Single MCU libraries wrapper", "index.html#sdk_libraries", null ],
+      [ "SDK libraries", "index.html#sdk_libraries", null ],
+      [ "Application-specific Hardware Abstraction Layer (HAL)", "index.html#sdk_hal", null ],
       [ "Wirepas Mesh Stack", "index.html#wirepas_firmware", null ],
       [ "Wirepas Mesh Bootloader", "index.html#bootloader", null ],
       [ "Custom bootloader extension", "index.html#bootloader_extension", null ],
@@ -45,21 +45,21 @@ var NAVTREE =
         [ "Flashing Nordic nRF52 devices", "dd/d6a/sdk_environment.html#flashing_nordic_nrf52_devices", null ],
         [ "Flashing Silicon Labs Devices", "dd/d6a/sdk_environment.html#flashing_silabs_devices", null ]
       ] ],
-      [ "Resources on Nordic nRF52832 & nRF52840", "dd/d6a/sdk_environment.html#nordic_nrf52832_nrf52840", [
+      [ "Resources on Nordic nRF52", "dd/d6a/sdk_environment.html#nordic_resources", [
         [ "Flash Memory available for application on nRF52", "dd/d6a/sdk_environment.html#flash_memory_nrf52", null ],
         [ "RAM Memory available for application on nRF52", "dd/d6a/sdk_environment.html#ram_memory_nrf52", null ],
         [ "Peripherals accessible by stack only", "dd/d6a/sdk_environment.html#peripherals_accessible_by_stack_only", null ],
         [ "Peripherals Shared between the stack and the application", "dd/d6a/sdk_environment.html#peripherals_shared_between_the_stack_and_the_application", null ],
         [ "Peripherals available for the application", "dd/d6a/sdk_environment.html#peripherals_available_for_the_application", null ]
       ] ],
-      [ "Resources on EFR32xG12", "dd/d6a/sdk_environment.html#efr32xg12", [
+      [ "Resources on EFR32", "dd/d6a/sdk_environment.html#efr32_resources", [
         [ "Flash Memory available for application on EFR32", "dd/d6a/sdk_environment.html#flash_memory_efr32", null ],
         [ "RAM Memory available for application on EFR32", "dd/d6a/sdk_environment.html#ram_memory_efr32", null ],
         [ "Peripherals accessible by stack only", "dd/d6a/sdk_environment.html#peripherals_accessible_by_stack_only2", null ],
         [ "Peripherals Shared between the stack and the application", "dd/d6a/sdk_environment.html#peripherals_shared_between_the_stack_and_the_application2", null ],
         [ "Peripherals available for the application", "dd/d6a/sdk_environment.html#peripherals_available_for_the_application2", null ]
       ] ],
-      [ "Related Material", "dd/d6a/sdk_environment.html#autotoc_md5", null ]
+      [ "Related Material", "dd/d6a/sdk_environment.html#autotoc_md6", null ]
     ] ],
     [ "How to Develop Application with SDK", "de/d7a/how_to_develop.html", [
       [ "Pre-requirements", "de/d7a/how_to_develop.html#licensing", [
@@ -88,7 +88,7 @@ var NAVTREE =
         [ "Using platform specific storage", "de/d7a/how_to_develop.html#platform_specific_storage", null ],
         [ "Using a dedicated area in flash", "de/d7a/how_to_develop.html#dedicated_area", null ]
       ] ],
-      [ "Related Material", "de/d7a/how_to_develop.html#autotoc_md6", null ]
+      [ "Related Material", "de/d7a/how_to_develop.html#autotoc_md7", null ]
     ] ],
     [ "Single-MCU API Operation Principle", "d7/d28/application_operation.html", [
       [ "Build process", "d7/d28/application_operation.html#build", null ],
@@ -108,7 +108,7 @@ var NAVTREE =
       [ "Stack Libraries", "dd/d9c/programming_interface.html#stack_api", [
         [ "Application and Library Versioning", "dd/d9c/programming_interface.html#application_and_library_versioning", null ]
       ] ],
-      [ "SDK Internal API", "dd/d9c/programming_interface.html#libraries_api", null ],
+      [ "SDK Libraries", "dd/d9c/programming_interface.html#libraries_api", null ],
       [ "Board definitions", "dd/d9c/programming_interface.html#board_api", [
         [ "DCDC converter configuration", "dd/d9c/programming_interface.html#DCDC_converter", null ]
       ] ],
@@ -159,6 +159,7 @@ var NAVTREE =
     [ "Data Structures", "annotated.html", "annotated" ],
     [ "Data Fields", "functions.html", [
       [ "All", "functions.html", "functions_dup" ],
+      [ "Functions", "functions_func.html", null ],
       [ "Variables", "functions_vars.html", "functions_vars" ]
     ] ],
     [ "File List", "files.html", "files" ],
@@ -178,17 +179,21 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d2/d9e/cbor_8h.html#a22b90f10c26b3b7f3ff42e9fb51551e7",
-"d2/dbd/data_8h.html#a45089cc0ed8195699c2cb52c160e9b44a35ac295081a6f0df8a7fb599d890993f",
-"d4/d48/beacon__tx_8h.html#ad82d9b700211bc66d4008750a0a62600",
-"d6/d21/poslib_8h.html#a23c24b5786467170305052e2da467218",
-"d7/dc3/tlv_8h.html#ab2b3adeb2a67e656ff030b56727fd0ac",
-"d9/d3f/ruuvitag_2board_8h.html#a43341ad5e17bb5d20c1e528bce7d6133",
-"db/d3b/state_8h.html#ace5c9edfc6921d0e4c30fcd3f6307466a0cc839c8af5aaa6274cda0fe613edd03",
-"dc/d65/api_8h.html#a82a067faa70b77f40c2915b9608250a1",
-"dd/d2c/bl__interface_8h.html#ad3b71abd956f731e6eaa3cea9ebb86a9",
-"de/d60/settings_8h.html#a1429282296679210c3f972ec59509378",
-"dir_16c7c23ef95fef9f9a52cbda05d031cc.html"
+"d2/d67/shared__appconfig_8h.html#afb9315d87648de79ff9bcc96c06825e2",
+"d2/dbd/data_8h.html",
+"d3/dfa/mcu_2hal__api_2usart_8h.html#ad88ea3ca1aab382e95f9b843464f0b81",
+"d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c",
+"d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a87819d91929c9c1e6b5ff643d010157f",
+"d7/de1/hardware_8h.html#ad0a85f67c1b871307b2059391432fa37",
+"d8/d21/msap__frames_8h.html#d3/ddd/structmsap__install__quality__cnf__t",
+"d9/d5c/waps_8h.html",
+"da/d87/spi_8h.html#aa73eafab9cd3df3fac6d8d856c0eea1aa246ea94340687ac1f94847d0ea9126a4",
+"db/db1/waps__frames_8h.html#a556c80259568976b607ec50f8747d42a",
+"dc/dac/io_8h.html#a3578196f5fed619407310ce0db7edc2d",
+"dd/d2c/bl__interface_8h.html#d3/d20/structscratchpad__services__t",
+"de/d59/csap__frames_8h.html#a9e21c28c8a35d11c185bba57e7dc78c3",
+"df/d08/memory__area_8h.html#acbc43eb76d51f02f1e66b4c5452e41dea5dcc5a52ca3487a7770d00f95cc5c3e5",
+"globals_func_i.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -93,83 +93,24 @@ $(document).ready(function(){initNavTree('da/d1e/dualmcu_app_2app_8c-example.htm
 <div class="line"><span class="comment"> * \brief   This file is a template to Dual MCU API app for all paltforms</span></div>
 <div class="line"><span class="comment"> */</span></div>
 <div class="line"><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d1/da4/hal__api_8h.html">hal_api.h</a>&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;io.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;waps.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dc/d65/api_8h.html">api.h</a>&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;waps/sap/multicast.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a>&quot;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Interface config</span></div>
-<div class="line"><span class="keyword">const</span> app_interface_config_s m_interface_config =</div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d6/dd2/local__provisioning_8h.html">local_provisioning.h</a>&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="../../d5/d63/dualmcu__lib_8h.html">dualmcu_lib.h</a>&quot;</span></div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a0"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
 <div class="line">{</div>
-<div class="line">    .interface = APP_UART_INT,</div>
-<div class="line">    .baudrate = UART_BAUDRATE,</div>
-<div class="line">    .flow_ctrl = UART_FLOWCONTROL</div>
-<div class="line">};</div>
+<div class="line">    <a name="a1"></a><a class="code" href="../../d6/dd2/local__provisioning_8h.html#a4165364656d6855239266af640b36d5f">Local_provisioning_init</a>(NULL, NULL);</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> newAppConfigCb(<span class="keyword">const</span> uint8_t * bytes,</div>
-<div class="line">                    uint8_t seq,</div>
-<div class="line">                    uint16_t interval)</div>
-<div class="line">{</div>
-<div class="line">    Waps_sinkUpdated(seq, bytes, interval);</div>
-<div class="line">}</div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span> dataSentCb(<span class="keyword">const</span> <a name="_a0"></a><a class="code" href="../../d2/dbd/data_8h.html#d6/de0/structapp__lib__data__sent__status__t">app_lib_data_sent_status_t</a> * status)</div>
-<div class="line">{</div>
-<div class="line">    Waps_packetSent(status-&gt;<a name="a1"></a><a class="code" href="../../d2/dbd/data_8h.html#a7f43082a8111a69a9189426ea4fb9987">tracking_id</a>,</div>
-<div class="line">                    status-&gt;<a name="a2"></a><a class="code" href="../../d2/dbd/data_8h.html#a2f980290790d1fecb3764ef797c03335">src_endpoint</a>,</div>
-<div class="line">                    status-&gt;<a name="a3"></a><a class="code" href="../../d2/dbd/data_8h.html#a0992896b3999455a300e8ba25c368ae8">dest_endpoint</a>,</div>
-<div class="line">                    status-&gt;<a name="a4"></a><a class="code" href="../../d2/dbd/data_8h.html#a39f101eb4be9d5ac0ec9ad59778252bf">queue_time</a>,</div>
-<div class="line">                    status-&gt;<a name="a5"></a><a class="code" href="../../d2/dbd/data_8h.html#abe388560a25c7690c48b6f3e20a32278">dest_address</a>,</div>
-<div class="line">                    status-&gt;<a name="a6"></a><a class="code" href="../../d2/dbd/data_8h.html#a7960f9c558f9ee2c3d4a8fdea096fb56">success</a>);</div>
-<div class="line">}</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> onScannedNborsCb(<span class="keywordtype">void</span>)</div>
-<div class="line">{</div>
-<div class="line">    Waps_onScannedNbors();</div>
-<div class="line">}</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a7"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
-<div class="line">{</div>
-<div class="line">    <span class="comment">// Open HAL</span></div>
-<div class="line">    <a name="a8"></a><a class="code" href="../../d1/da4/hal__api_8h.html#a82f4c21a5d6be4bbd993534316ca779c">HAL_Open</a>();</div>
-<div class="line"> </div>
-<div class="line">    <span class="comment">// Initialize Scheduler</span></div>
-<div class="line">    <a name="a9"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a>();</div>
-<div class="line"> </div>
-<div class="line">    <span class="comment">// Initialize IO&#39;s (enable clock and initialize pins)</span></div>
-<div class="line">    Io_init();</div>
-<div class="line"> </div>
-<div class="line">    <span class="comment">// Initialize the Dual-MCU API protocol</span></div>
-<div class="line">    Waps_init();</div>
-<div class="line"> </div>
-<div class="line">    <span class="comment">//register callbacks</span></div>
-<div class="line">    lib_data-&gt;setDataReceivedCb(Waps_receiveUnicast);</div>
-<div class="line">    lib_data-&gt;setBcastDataReceivedCb(Waps_receiveBcast);</div>
-<div class="line">    lib_data-&gt;setDataSentCb(dataSentCb);</div>
-<div class="line">    lib_data-&gt;setNewAppConfigCb(newAppConfigCb);</div>
-<div class="line">    lib_settings-&gt;registerGroupQuery(Multicast_isGroupCb);</div>
-<div class="line">    lib_state-&gt;setOnScanNborsCb(onScannedNborsCb,</div>
-<div class="line">                                <a name="a10"></a><a class="code" href="../../db/d3b/state_8h.html#ae829d4242b3afe89f01822fe660b62b7a8bad4deb7660820ff7dbfdd36a87e675">APP_LIB_STATE_SCAN_NBORS_ONLY_REQUESTED</a>);</div>
-<div class="line"> </div>
+<div class="line">    <a name="a2"></a><a class="code" href="../../d5/d63/dualmcu__lib_8h.html#ab51e6d4045f7d54ded85cd33ba5fa167">Dualmcu_lib_init</a>(UART_BAUDRATE, UART_FLOWCONTROL);</div>
 <div class="line">}</div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aapp__scheduler_8h_html_aadb275bc1de9c05d677ab56117535802"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a></div><div class="ttdeci">void App_Scheduler_init(void)</div><div class="ttdoc">Initialize scheduler.</div></div>
-<div class="ttc" id="astate_8h_html_ae829d4242b3afe89f01822fe660b62b7a8bad4deb7660820ff7dbfdd36a87e675"><div class="ttname"><a href="../../db/d3b/state_8h.html#ae829d4242b3afe89f01822fe660b62b7a8bad4deb7660820ff7dbfdd36a87e675">APP_LIB_STATE_SCAN_NBORS_ONLY_REQUESTED</a></div><div class="ttdeci">@ APP_LIB_STATE_SCAN_NBORS_ONLY_REQUESTED</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d3b/state_8h_source.html#l00099">state.h:99</a></div></div>
-<div class="ttc" id="adata_8h_html_abe388560a25c7690c48b6f3e20a32278"><div class="ttname"><a href="../../d2/dbd/data_8h.html#abe388560a25c7690c48b6f3e20a32278">app_lib_data_sent_status_t::dest_address</a></div><div class="ttdeci">app_addr_t dest_address</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00328">data.h:328</a></div></div>
-<div class="ttc" id="adata_8h_html_a39f101eb4be9d5ac0ec9ad59778252bf"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a39f101eb4be9d5ac0ec9ad59778252bf">app_lib_data_sent_status_t::queue_time</a></div><div class="ttdeci">uint32_t queue_time</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00333">data.h:333</a></div></div>
-<div class="ttc" id="adata_8h_html_a7f43082a8111a69a9189426ea4fb9987"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a7f43082a8111a69a9189426ea4fb9987">app_lib_data_sent_status_t::tracking_id</a></div><div class="ttdeci">app_lib_data_tracking_id_t tracking_id</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00336">data.h:336</a></div></div>
-<div class="ttc" id="aapp__scheduler_8h_html"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a></div></div>
-<div class="ttc" id="ahal__api_8h_html"><div class="ttname"><a href="../../d1/da4/hal__api_8h.html">hal_api.h</a></div><div class="ttdoc">Collection of common interfaces that Wirepas HAL implements.</div></div>
-<div class="ttc" id="ahal__api_8h_html_a82f4c21a5d6be4bbd993534316ca779c"><div class="ttname"><a href="../../d1/da4/hal__api_8h.html#a82f4c21a5d6be4bbd993534316ca779c">HAL_Open</a></div><div class="ttdeci">bool HAL_Open(void)</div><div class="ttdoc">Initialize HAL.</div></div>
-<div class="ttc" id="adata_8h_html_a2f980290790d1fecb3764ef797c03335"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a2f980290790d1fecb3764ef797c03335">app_lib_data_sent_status_t::src_endpoint</a></div><div class="ttdeci">uint8_t src_endpoint</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00338">data.h:338</a></div></div>
-<div class="ttc" id="adata_8h_html_a0992896b3999455a300e8ba25c368ae8"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a0992896b3999455a300e8ba25c368ae8">app_lib_data_sent_status_t::dest_endpoint</a></div><div class="ttdeci">uint8_t dest_endpoint</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00340">data.h:340</a></div></div>
-<div class="ttc" id="adata_8h_html_a7960f9c558f9ee2c3d4a8fdea096fb56"><div class="ttname"><a href="../../d2/dbd/data_8h.html#a7960f9c558f9ee2c3d4a8fdea096fb56">app_lib_data_sent_status_t::success</a></div><div class="ttdeci">bool success</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00342">data.h:342</a></div></div>
+<div class="ttc" id="alocal__provisioning_8h_html"><div class="ttname"><a href="../../d6/dd2/local__provisioning_8h.html">local_provisioning.h</a></div></div>
+<div class="ttc" id="adualmcu__lib_8h_html"><div class="ttname"><a href="../../d5/d63/dualmcu__lib_8h.html">dualmcu_lib.h</a></div></div>
+<div class="ttc" id="alocal__provisioning_8h_html_a4165364656d6855239266af640b36d5f"><div class="ttname"><a href="../../d6/dd2/local__provisioning_8h.html#a4165364656d6855239266af640b36d5f">Local_provisioning_init</a></div><div class="ttdeci">Local_provisioning_res_e Local_provisioning_init(local_provisioning_psk_t *psk, local_provisioning_proxy_enabled_cb on_proxy_enabled_cb)</div><div class="ttdoc">Initialize the Local provisioning library.</div></div>
+<div class="ttc" id="adualmcu__lib_8h_html_ab51e6d4045f7d54ded85cd33ba5fa167"><div class="ttname"><a href="../../d5/d63/dualmcu__lib_8h.html#ab51e6d4045f7d54ded85cd33ba5fa167">Dualmcu_lib_init</a></div><div class="ttdeci">dualmcu_lib_res_e Dualmcu_lib_init(uint32_t baudrate, bool flow_ctrl)</div><div class="ttdoc">Initialize Dualmcu_lib.</div></div>
 <div class="ttc" id="aapp_8h_html_d6/d81/structapp__global__functions__t"><div class="ttname"><a href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a></div><div class="ttdoc">List of global functions, passed to App_entrypoint()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00157">app.h:157</a></div></div>
-<div class="ttc" id="adata_8h_html_d6/de0/structapp__lib__data__sent__status__t"><div class="ttname"><a href="../../d2/dbd/data_8h.html#d6/de0/structapp__lib__data__sent__status__t">app_lib_data_sent_status_t</a></div><div class="ttdoc">Struct to tracking callback function.</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00325">data.h:325</a></div></div>
-<div class="ttc" id="aapi_8h_html"><div class="ttname"><a href="../../dc/d65/api_8h.html">api.h</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

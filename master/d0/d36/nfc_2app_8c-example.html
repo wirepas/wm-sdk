@@ -206,7 +206,7 @@ $(document).ready(function(){initNavTree('d0/d36/nfc_2app_8c-example.html','../.
 <div class="line">    <span class="keywordflow">if</span> ((!m_field_on) &amp;&amp; (m_data_written))</div>
 <div class="line">    {</div>
 <div class="line">        m_data_written = <span class="keyword">false</span>;</div>
-<div class="line">        App_Scheduler_addTask(process_ndef, 0);</div>
+<div class="line">        <a name="a1"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(process_ndef, <a name="a2"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>, 350);</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -253,12 +253,12 @@ $(document).ready(function(){initNavTree('d0/d36/nfc_2app_8c-example.html','../.
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a1"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
+<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a3"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
 <div class="line">{</div>
 <div class="line">    t2_emu_res_e t2ret;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Basic configuration of the node with a unique node address */</span></div>
-<div class="line">    <span class="keywordflow">if</span> (<a name="a2"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a name="a3"></a><a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (<a name="a4"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a name="a5"></a><a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="comment">/* Could not configure the node */</span></div>
 <div class="line">        <span class="comment">/* It should not happen except if one of the config value is invalid */</span></div>
@@ -267,8 +267,6 @@ $(document).ready(function(){initNavTree('d0/d36/nfc_2app_8c-example.html','../.
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Check if NFC power-up the board */</span></div>
 <div class="line">    nfc_hw_is_nfc_reset_reason();</div>
-<div class="line"> </div>
-<div class="line">    <a name="a4"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a>();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Init Type II Tag Emulator with T2_RAM_SIZE bytes */</span></div>
 <div class="line">    <span class="comment">/* t2_callback will be called, from IRQ context on every Read/Write and Field event */</span></div>
@@ -285,14 +283,15 @@ $(document).ready(function(){initNavTree('d0/d36/nfc_2app_8c-example.html','../.
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aapp__scheduler_8h_html_a52e39bcd9fb750ac5001e4e6b8de21c4"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a52e39bcd9fb750ac5001e4e6b8de21c4">APP_SCHEDULER_STOP_TASK</a></div><div class="ttdeci">#define APP_SCHEDULER_STOP_TASK</div><div class="ttdoc">Value to return from task to remove it.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00037">app_scheduler.h:37</a></div></div>
-<div class="ttc" id="aapp__scheduler_8h_html_aadb275bc1de9c05d677ab56117535802"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a></div><div class="ttdeci">void App_Scheduler_init(void)</div><div class="ttdoc">Initialize scheduler.</div></div>
 <div class="ttc" id="anode__configuration_8h_html"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_a71e4c4c0dfd5649947194df11af4fe17"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_ms, uint32_t exec_time_us)</div><div class="ttdoc">Add a task.</div></div>
 <div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a></div><div class="ttdeci">@ APP_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00204">app.h:204</a></div></div>
 <div class="ttc" id="aapp__scheduler_8h_html"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html">app_scheduler.h</a></div></div>
 <div class="ttc" id="anode__configuration_8h_html_a2560821c66e34240aa698da5affba7c7"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a></div><div class="ttdeci">__STATIC_INLINE app_res_e configureNodeFromBuildParameters()</div><div class="ttdoc">Wrapper on top of configureNode to get parameters from build system and hardcoded values from chip (f...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d2e/node__configuration_8h_source.html#l00233">node_configuration.h:233</a></div></div>
 <div class="ttc" id="atlv_8h_html_a849e9473d3954c57c1a4f976aedd019d"><div class="ttname"><a href="../../d7/dc3/tlv_8h.html#a849e9473d3954c57c1a4f976aedd019d">tlv_res_e</a></div><div class="ttdeci">tlv_res_e</div><div class="ttdoc">List of return codes.</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/dc3/tlv_8h_source.html#l00014">tlv.h:14</a></div></div>
 <div class="ttc" id="atlv_8h_html"><div class="ttname"><a href="../../d7/dc3/tlv_8h.html">tlv.h</a></div><div class="ttdoc">Library to encode/decode buffers in TLV (Type Length Value) format.</div></div>
 <div class="ttc" id="aapp_8h_html_d6/d81/structapp__global__functions__t"><div class="ttname"><a href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a></div><div class="ttdoc">List of global functions, passed to App_entrypoint()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00157">app.h:157</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_ae49a1abde6843cb44c37e47616d2a810"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a></div><div class="ttdeci">#define APP_SCHEDULER_SCHEDULE_ASAP</div><div class="ttdoc">Value to return from task or as initial time to be executed ASAP.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00042">app_scheduler.h:42</a></div></div>
 <div class="ttc" id="aapi_8h_html"><div class="ttname"><a href="../../dc/d65/api_8h.html">api.h</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

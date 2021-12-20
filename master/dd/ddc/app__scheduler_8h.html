@@ -202,10 +202,9 @@ Macros</h2></td></tr>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
 <div class="line">{</div>
-<div class="line">    <a class="code" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a>();</div>
 <div class="line">    <span class="comment">// Launch two periodic task with different period</span></div>
-<div class="line">    App_Scheduler_addTask(periodic_task_50ms, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
-<div class="line">    App_Scheduler_addTask(periodic_task_500ms, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
+<div class="line">    <a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(periodic_task_50ms, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>, 10);</div>
+<div class="line">    <a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(periodic_task_500ms, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>, 10);</div>
 <div class="line">    ...</div>
 <div class="line">    <span class="comment">// Start the stack</span></div>
 <div class="line">    lib_state-&gt;startStack();</div>
@@ -219,7 +218,7 @@ Macros</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if able to add, false otherwise </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a2">scheduler/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d0/dd1/appconfig_2app_8c-example.html#a30">appconfig/app.c</a>, <a class="el" href="../../d1/dac/basic_interrupt_2app_8c-example.html#a16">basic_interrupt/app.c</a>, <a class="el" href="../../d3/d9c/blink_2app_8c-example.html#a11">blink/app.c</a>, <a class="el" href="../../db/d83/custom_app_2app_8c-example.html#a27">custom_app/app.c</a>, <a class="el" href="../../dd/d80/debug_2app_8c-example.html#a8">debug/app.c</a>, <a class="el" href="../../df/d91/inventory_app_router_2app_8c-example.html#a32">inventory_app_router/app.c</a>, <a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a10">inventory_app_tag/app.c</a>, <a class="el" href="../../d0/d36/nfc_2app_8c-example.html#a1">nfc/app.c</a>, <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a22">positioning_app/app.c</a>, <a class="el" href="../../da/d90/ruuvi_evk_2app_8c-example.html#a28">ruuvi_evk/app.c</a>, <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a2">scheduler/app.c</a>, and <a class="el" href="../../d5/d87/shared_data_2app_8c-example.html#a15">shared_data/app.c</a>.</dd>
 </dl>
 
 </div>
@@ -248,7 +247,7 @@ Macros</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if able to cancel, false otherwise (not existing) </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a27">inventory_app_tag/app.c</a>, <a class="el" href="../../da/d90/ruuvi_evk_2app_8c-example.html#a27">ruuvi_evk/app.c</a>, and <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a5">scheduler/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a28">inventory_app_tag/app.c</a>, <a class="el" href="../../da/d90/ruuvi_evk_2app_8c-example.html#a27">ruuvi_evk/app.c</a>, and <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a5">scheduler/app.c</a>.</dd>
 </dl>
 
 </div>
@@ -270,16 +269,9 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initialize scheduler. </p>
-<p>Example on use: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
-<div class="line">{</div>
-<div class="line">    <a class="code" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a>();</div>
-<div class="line">    ...</div>
-<div class="line">    <span class="comment">// Start the stack</span></div>
-<div class="line">    lib_state-&gt;startStack();</div>
-<div class="line">}</div>
-</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>If App scheduler is used in application, the periodicWork offered by system library MUST NOT be used outside of this module </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../da/d1e/dualmcu_app_2app_8c-example.html#a9">dualmcu_app/app.c</a>, <a class="el" href="../../df/d91/inventory_app_router_2app_8c-example.html#a32">inventory_app_router/app.c</a>, <a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a36">inventory_app_tag/app.c</a>, <a class="el" href="../../d0/d36/nfc_2app_8c-example.html#a4">nfc/app.c</a>, <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a34">positioning_app/app.c</a>, <a class="el" href="../../d5/da9/provisioning_joining_node_2app_8c-example.html#a14">provisioning_joining_node/app.c</a>, <a class="el" href="../../da/d90/ruuvi_evk_2app_8c-example.html#a30">ruuvi_evk/app.c</a>, and <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a12">scheduler/app.c</a>.</dd>
-</dl>
+<dl class="section note"><dt>Note</dt><dd>If App scheduler is enabled in app, <a class="el" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a> is automatically called before App_init </dd>
+<dd>
+If App scheduler is used in application, the periodicWork offered by system library MUST NOT be used outside of this module </dd></dl>
 
 </div>
 </div>
@@ -332,7 +324,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Value to return from task or as initial time to be executed ASAP. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a10">inventory_app_tag/app.c</a>, <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a22">positioning_app/app.c</a>, <a class="el" href="../../da/d90/ruuvi_evk_2app_8c-example.html#a26">ruuvi_evk/app.c</a>, and <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a3">scheduler/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d1/dac/basic_interrupt_2app_8c-example.html#a17">basic_interrupt/app.c</a>, <a class="el" href="../../d3/d9c/blink_2app_8c-example.html#a12">blink/app.c</a>, <a class="el" href="../../db/d83/custom_app_2app_8c-example.html#a28">custom_app/app.c</a>, <a class="el" href="../../dd/d80/debug_2app_8c-example.html#a9">debug/app.c</a>, <a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a11">inventory_app_tag/app.c</a>, <a class="el" href="../../d0/d36/nfc_2app_8c-example.html#a2">nfc/app.c</a>, <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a23">positioning_app/app.c</a>, <a class="el" href="../../da/d90/ruuvi_evk_2app_8c-example.html#a26">ruuvi_evk/app.c</a>, and <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a3">scheduler/app.c</a>.</dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="../../dd/ddc/app__scheduler_8h_source.html#l00042">42</a> of file <a class="el" href="../../dd/ddc/app__scheduler_8h_source.html">app_scheduler.h</a>.</p>
@@ -352,7 +344,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Value to return from task to remove it. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a15">inventory_app_tag/app.c</a>, <a class="el" href="../../d0/d36/nfc_2app_8c-example.html#a0">nfc/app.c</a>, <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a11">positioning_app/app.c</a>, and <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a1">scheduler/app.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="../../d3/d2f/inventory_app_tag_2app_8c-example.html#a16">inventory_app_tag/app.c</a>, <a class="el" href="../../d0/d36/nfc_2app_8c-example.html#a0">nfc/app.c</a>, <a class="el" href="../../d2/d7a/positioning_app_2app_8c-example.html#a11">positioning_app/app.c</a>, <a class="el" href="../../d6/da1/scheduler_2app_8c-example.html#a1">scheduler/app.c</a>, and <a class="el" href="../../d5/d87/shared_data_2app_8c-example.html#a13">shared_data/app.c</a>.</dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="../../dd/ddc/app__scheduler_8h_source.html#l00037">37</a> of file <a class="el" href="../../dd/ddc/app__scheduler_8h_source.html">app_scheduler.h</a>.</p>
@@ -363,8 +355,8 @@ Macros</h2></td></tr>
 </div><!-- doc-content -->
 <div class="ttc" id="aapp__scheduler_8h_html_a245a7f2a478b72e2d4a43b3c18676ab3a1adad39d5503458efeddef8b98527cc4"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3a1adad39d5503458efeddef8b98527cc4">APP_SCHEDULER_RES_UNINITIALIZED</a></div><div class="ttdeci">@ APP_SCHEDULER_RES_UNINITIALIZED</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00056">app_scheduler.h:56</a></div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_a245a7f2a478b72e2d4a43b3c18676ab3a52e992fd53f13b7a664b47e8884b936b"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3a52e992fd53f13b7a664b47e8884b936b">APP_SCHEDULER_RES_OK</a></div><div class="ttdeci">@ APP_SCHEDULER_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00050">app_scheduler.h:50</a></div></div>
-<div class="ttc" id="aapp__scheduler_8h_html_aadb275bc1de9c05d677ab56117535802"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a></div><div class="ttdeci">void App_Scheduler_init(void)</div><div class="ttdoc">Initialize scheduler.</div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_a245a7f2a478b72e2d4a43b3c18676ab3a2379eda407c46922cc110cb05f4c93c7"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3a2379eda407c46922cc110cb05f4c93c7">APP_SCHEDULER_RES_NO_MORE_TASK</a></div><div class="ttdeci">@ APP_SCHEDULER_RES_NO_MORE_TASK</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00052">app_scheduler.h:52</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_a71e4c4c0dfd5649947194df11af4fe17"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_ms, uint32_t exec_time_us)</div><div class="ttdoc">Add a task.</div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_a245a7f2a478b72e2d4a43b3c18676ab3a1f4e0e040fb54d5088d0b57570eebcb0"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3a1f4e0e040fb54d5088d0b57570eebcb0">APP_SCHEDULER_RES_UNKNOWN_TASK</a></div><div class="ttdeci">@ APP_SCHEDULER_RES_UNKNOWN_TASK</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00054">app_scheduler.h:54</a></div></div>
 <div class="ttc" id="aapp__scheduler_8h_html_a245a7f2a478b72e2d4a43b3c18676ab3"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a245a7f2a478b72e2d4a43b3c18676ab3">app_scheduler_res_e</a></div><div class="ttdeci">app_scheduler_res_e</div><div class="ttdoc">List of return code.</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/ddc/app__scheduler_8h_source.html#l00047">app_scheduler.h:47</a></div></div>
 <div class="ttc" id="aapp_8h_html_d6/d81/structapp__global__functions__t"><div class="ttname"><a href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a></div><div class="ttdoc">List of global functions, passed to App_entrypoint()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00157">app.h:157</a></div></div>

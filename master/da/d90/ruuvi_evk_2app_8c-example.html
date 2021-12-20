@@ -265,14 +265,14 @@ $(document).ready(function(){initNavTree('da/d90/ruuvi_evk_2app_8c-example.html'
 <div class="line">    <span class="keywordflow">else</span></div>
 <div class="line">    {</div>
 <div class="line">        <span class="comment">/* Config changed, schedule Sensor task ASAP. */</span></div>
-<div class="line">        App_Scheduler_addTask(sensor_task, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
+<div class="line">        <a name="a28"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(sensor_task, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>, 100);</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a28"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
+<div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a name="_a29"></a><a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
 <div class="line">{</div>
 <div class="line">    <span class="comment">/* Basic configuration of the node with a unique node address. */</span></div>
-<div class="line">    <span class="keywordflow">if</span> (<a name="a29"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
+<div class="line">    <span class="keywordflow">if</span> (<a name="a30"></a><a class="code" href="../../df/d2e/node__configuration_8h.html#a2560821c66e34240aa698da5affba7c7">configureNodeFromBuildParameters</a>() != <a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="comment">/*</span></div>
 <div class="line"><span class="comment">         * Could not configure the node.</span></div>
@@ -286,13 +286,13 @@ $(document).ready(function(){initNavTree('da/d90/ruuvi_evk_2app_8c-example.html'
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Initialize all the modules. */</span></div>
 <div class="line">    App_Config_init(on_config_update);</div>
-<div class="line">    <a name="a30"></a><a class="code" href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a>();</div>
+<div class="line"> </div>
 <div class="line">    ruuvi_spi_init();</div>
 <div class="line">    BME280_wrapper_init();</div>
 <div class="line">    LIS2DH12_wrapper_init();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/* Launch the sensor task. */</span></div>
-<div class="line">    App_Scheduler_addTask(sensor_task, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>);</div>
+<div class="line">    <a class="code" href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a>(sensor_task, <a class="code" href="../../dd/ddc/app__scheduler_8h.html#ae49a1abde6843cb44c37e47616d2a810">APP_SCHEDULER_SCHEDULE_ASAP</a>, 100);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/*</span></div>
 <div class="line"><span class="comment">     * Start the stack.</span></div>
@@ -308,10 +308,10 @@ $(document).ready(function(){initNavTree('da/d90/ruuvi_evk_2app_8c-example.html'
 <div class="ttc" id="aruuvitag_2board_8h_html_a75eed948e0f10c561d634017f729f180"><div class="ttname"><a href="../../d9/d3f/ruuvitag_2board_8h.html#a75eed948e0f10c561d634017f729f180">BOARD_SPI_BME280_CS_PIN</a></div><div class="ttdeci">#define BOARD_SPI_BME280_CS_PIN</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3f/ruuvitag_2board_8h_source.html#l00025">board.h:25</a></div></div>
 <div class="ttc" id="adata_8h_html_d7/d10/structapp__lib__data__to__send__t"><div class="ttname"><a href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a></div><div class="ttdoc">A struct for lib_data-&gt;sendData().</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dbd/data_8h_source.html#l00288">data.h:288</a></div></div>
 <div class="ttc" id="aspi_8h_html_ae4797b549e4bf5bb099063dbc87764b9a181c9a9eed2847edfaba2cc1e4daff94"><div class="ttname"><a href="../../da/d87/spi_8h.html#ae4797b549e4bf5bb099063dbc87764b9a181c9a9eed2847edfaba2cc1e4daff94">SPI_ORDER_MSB</a></div><div class="ttdeci">@ SPI_ORDER_MSB</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d87/spi_8h_source.html#l00029">spi.h:29</a></div></div>
-<div class="ttc" id="aapp__scheduler_8h_html_aadb275bc1de9c05d677ab56117535802"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#aadb275bc1de9c05d677ab56117535802">App_Scheduler_init</a></div><div class="ttdeci">void App_Scheduler_init(void)</div><div class="ttdoc">Initialize scheduler.</div></div>
 <div class="ttc" id="aspi_8h_html"><div class="ttname"><a href="../../da/d87/spi_8h.html">spi.h</a></div></div>
 <div class="ttc" id="apower_8h_html"><div class="ttname"><a href="../../d3/d6a/power_8h.html">power.h</a></div></div>
 <div class="ttc" id="anode__configuration_8h_html"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html">node_configuration.h</a></div></div>
+<div class="ttc" id="aapp__scheduler_8h_html_a71e4c4c0dfd5649947194df11af4fe17"><div class="ttname"><a href="../../dd/ddc/app__scheduler_8h.html#a71e4c4c0dfd5649947194df11af4fe17">App_Scheduler_addTask_execTime</a></div><div class="ttdeci">app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb, uint32_t delay_ms, uint32_t exec_time_us)</div><div class="ttdoc">Add a task.</div></div>
 <div class="ttc" id="aspi_8h_html_a0cb467f85c0d7ce489b861ee7bb20e9aa7aebb9dcd5e5c35a51fdf2c880995ffb"><div class="ttname"><a href="../../da/d87/spi_8h.html#a0cb467f85c0d7ce489b861ee7bb20e9aa7aebb9dcd5e5c35a51fdf2c880995ffb">SPI_MODE_HIGH_FIRST</a></div><div class="ttdeci">@ SPI_MODE_HIGH_FIRST</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d87/spi_8h_source.html#l00022">spi.h:22</a></div></div>
 <div class="ttc" id="aspi_8h_html_aaff140ca10943cd41793057d81e664dc"><div class="ttname"><a href="../../da/d87/spi_8h.html#aaff140ca10943cd41793057d81e664dc">spi_conf_t::mode</a></div><div class="ttdeci">spi_mode_e mode</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d87/spi_8h_source.html#l00037">spi.h:37</a></div></div>
 <div class="ttc" id="aspi_8h_html_aa73eafab9cd3df3fac6d8d856c0eea1aaab387de120e46a0cfb9f4c1fa310f8f9"><div class="ttname"><a href="../../da/d87/spi_8h.html#aa73eafab9cd3df3fac6d8d856c0eea1aaab387de120e46a0cfb9f4c1fa310f8f9">SPI_RES_OK</a></div><div class="ttdeci">@ SPI_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d87/spi_8h_source.html#l00054">spi.h:54</a></div></div>

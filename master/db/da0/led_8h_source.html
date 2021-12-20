@@ -101,9 +101,11 @@ $(document).ready(function(){initNavTree('db/da0/led_8h_source.html','../../'); 
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<a class="code" href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8">led_res_e</a> <a class="code" href="../../db/da0/led_8h.html#a09b4763e1f0d3a26bfed612e84b6c749">Led_set</a>(uint8_t led_id, <span class="keywordtype">bool</span> state);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<a class="code" href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8">led_res_e</a> <a class="code" href="../../db/da0/led_8h.html#a06ea59c242323b5e32a567d244c0ea8b">Led_toggle</a>(uint8_t led_id);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;uint8_t <a class="code" href="../../db/da0/led_8h.html#ae6e8fa2e23d13592b01d12eb62c95a7e">Led_getNumber</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="../../db/da0/led_8h.html#a1ef67ca29685c3f92d278d8e5712ef7b">Led_get</a> (uint8_t led_id);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<a class="code" href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8">led_res_e</a> <a class="code" href="../../db/da0/led_8h.html#a06ea59c242323b5e32a567d244c0ea8b">Led_toggle</a>(uint8_t led_id);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;uint8_t <a class="code" href="../../db/da0/led_8h.html#ae6e8fa2e23d13592b01d12eb62c95a7e">Led_getNumber</a>(<span class="keywordtype">void</span>);</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aled_8h_html_a09b4763e1f0d3a26bfed612e84b6c749"><div class="ttname"><a href="../../db/da0/led_8h.html#a09b4763e1f0d3a26bfed612e84b6c749">Led_set</a></div><div class="ttdeci">led_res_e Led_set(uint8_t led_id, bool state)</div><div class="ttdoc">Turn the given LED on or off.</div></div>
@@ -113,6 +115,7 @@ $(document).ready(function(){initNavTree('db/da0/led_8h_source.html','../../'); 
 <div class="ttc" id="aled_8h_html_aa8fb1f4b9ec78bfc448496565e6f91c8a5d14138b630090cb20c5627c7ecd0e5d"><div class="ttname"><a href="../../db/da0/led_8h.html#aa8fb1f4b9ec78bfc448496565e6f91c8a5d14138b630090cb20c5627c7ecd0e5d">LED_RES_INVALID_ID</a></div><div class="ttdeci">@ LED_RES_INVALID_ID</div><div class="ttdef"><b>Definition:</b> <a href="../../db/da0/led_8h_source.html#l00022">led.h:22</a></div></div>
 <div class="ttc" id="aled_8h_html_a040c02c99d35c3ee1fe6ae56bd8a8646"><div class="ttname"><a href="../../db/da0/led_8h.html#a040c02c99d35c3ee1fe6ae56bd8a8646">Led_init</a></div><div class="ttdeci">void Led_init(void)</div><div class="ttdoc">Initialize Led module.</div></div>
 <div class="ttc" id="aled_8h_html_ae6e8fa2e23d13592b01d12eb62c95a7e"><div class="ttname"><a href="../../db/da0/led_8h.html#ae6e8fa2e23d13592b01d12eb62c95a7e">Led_getNumber</a></div><div class="ttdeci">uint8_t Led_getNumber(void)</div><div class="ttdoc">Get number of leds available.</div></div>
+<div class="ttc" id="aled_8h_html_a1ef67ca29685c3f92d278d8e5712ef7b"><div class="ttname"><a href="../../db/da0/led_8h.html#a1ef67ca29685c3f92d278d8e5712ef7b">Led_get</a></div><div class="ttdeci">bool Led_get(uint8_t led_id)</div><div class="ttdoc">Get the given LED current state.</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
