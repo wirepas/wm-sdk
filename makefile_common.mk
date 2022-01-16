@@ -17,6 +17,7 @@ WP_LIB_PATH := libraries/
 GLOBAL_BUILD := build/
 BOARDS_PATH := board/
 BOARDS_PATH_INTERNAL := board_internal/
+APPLICATIONS_PATH := source/
 MCU_PATH := mcu/
 
 # General compiler flags (Define it before specific makefile in order to allow app to overwrite it)
@@ -135,7 +136,7 @@ INCLUDES += -I$(MCU_PATH)common/cmsis -I$(BOARD_FOLDER)
 
 # Folder where the application sources are located (and config file)
 # Can be in different folders, try them one by one
-APP_POSSIBLE_FOLDER := source/*/$(app_name)/ source/$(app_name)/
+APP_POSSIBLE_FOLDER := $(APPLICATIONS_PATH)*/$(app_name)/ $(APPLICATIONS_PATH)$(app_name)/
 
 APP_SRCS_PATH := $(wildcard $(APP_POSSIBLE_FOLDER))
 ifeq (,$(wildcard $(APP_SRCS_PATH)))

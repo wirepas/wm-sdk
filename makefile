@@ -231,3 +231,6 @@ clean: need_board
 .PHONY: clean_all
 clean_all:
 	rm -rf $(GLOBAL_BUILD)
+
+# lets you create custom targets to do project specific post processing
+-include $(APP_SRCS_PATH)custom_targets.mk
