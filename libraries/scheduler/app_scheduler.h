@@ -31,6 +31,27 @@
  */
 typedef uint32_t (*task_cb_f)();
 
+
+#if APP_SCHEDULER_ENABLE_ARGS_PASSING
+/**
+ * \brief   Task callback to be registered
+ *
+ * \param   p_args user defined arguments variable. This can be useful
+ *          if callback function execution depends on arguments passed
+ * \return  Delay before being executed again in ms
+ * \note    Return value in ms is aligned on system coarse timesatmp
+ *          boundaries that has a 1/128s granularity. So asking 3 or 7 ms will
+ *          result in same scheduling.
+ *          If a better accuracy is needed, hardware timer must be used
+ */
+typedef uint32_t (*task_with_args_cb_f)(const void *p_args);
+
+typedef struct {
+   const task_with_args_cb_f func;
+   const void * p_args;
+} task_with_args_st;
+#endif
+
 /**
  * \brief   Value to return from task to remove it
  */
@@ -134,5 +155,78 @@ static inline app_scheduler_res_e App_Scheduler_addTask(task_cb_f cb, uint32_t d
  * \return  True if able to cancel, false otherwise (not existing)
  */
 app_scheduler_res_e App_Scheduler_cancelTask(task_cb_f cb);
+
+#if APP_SCHEDULER_ENABLE_ARGS_PASSING
+
+/**
+ * \brief   Add a task
+ *
+ * Example on use:
+ *
+ * @code
+ *
+ * static uint32_t periodic_task_50ms()
+ * {
+ *     ...
+ *     return 50;
+ * }
+ *
+ * static uint32_t periodic_task_500ms()
+ * {
+ *     ...
+ *     return 500;
+ * }
+ *
+ * void App_init(const app_global_functions_t * functions)
+ * {
+ *     // Launch two periodic task with different period
+ *     App_Scheduler_addTask_execTime(periodic_task_50ms, APP_SCHEDULER_SCHEDULE_ASAP, 10);
+ *     App_Scheduler_addTask_execTime(periodic_task_500ms, APP_SCHEDULER_SCHEDULE_ASAP, 10);
+ *     ...
+ *     // Start the stack
+ *     lib_state->startStack();
+ * }
+ * @endcode
+ *
+ *
+ * \param   cb
+ *          Callback to be called from main periodic task.
+ *          Same cb can only be added once. Calling this function with an already
+ *          registered cb will update the next scheduled time.
+ * \param   delay_ms
+ *          delay in ms to be scheduled (0 to be scheduled asap)
+ * \param   exec_time_us
+ *          Maximum execution time required for the task to be executed
+ * \return  True if able to add, false otherwise
+ */
+app_scheduler_res_e App_Scheduler_addTask_with_args_execTime(const task_with_args_st* p_task, uint32_t delay_ms, uint32_t exec_time_us);
+
+#ifdef APP_SCHEDULER_MAX_EXEC_TIME_US
+/**
+ * \brief   Add a task without execution time (deprecated)
+ * \param   cb
+ *          Callback to be called from main periodic task.
+ *          Same cb can only be added once. Calling this function with an already
+ *          registered cb will update the next scheduled time.
+ * \param   delay_ms
+ *          delay in ms to be scheduled (0 to be scheduled asap)
+ * \return  True if able to add, false otherwise
+ *
+ * \note    This call is deprecated and you should use @ref App_Scheduler_addTask_execTime instead
+ */
+static inline app_scheduler_res_e App_Scheduler_addTask_with_args(const task_with_args_st* p_task, uint32_t delay_ms)
+{
+    return App_Scheduler_addTask_with_args_execTime(p_task, delay_ms, APP_SCHEDULER_MAX_EXEC_TIME_US);
+}
+#endif
+
+/**
+ * \brief   Cancel a task
+ * \param   cb
+ *          Callback already registered from App_Scheduler_addTask.
+ * \return  True if able to cancel, false otherwise (not existing)
+ */
+app_scheduler_res_e App_Scheduler_cancelTask_with_args(const task_with_args_st* p_task);
+#endif
 
 #endif //_APP_SCHEDULER_H_
