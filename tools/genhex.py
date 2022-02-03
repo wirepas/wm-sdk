@@ -178,6 +178,7 @@ class Flashable(object):
 
         # Add other files to memory image.
         for in_file in self.infiles:
+            added = False
             for area in self.config.areas.values():
                 # Add file only if bootloader knows this area.
                 if area.id == in_file.area_id:
@@ -196,6 +197,11 @@ class Flashable(object):
                         memory.overlap_ok = True
                         memory += header
                         memory.overlap_ok = False
+
+                    added = True
+
+            if not added:
+                raise ValueError("\nArea id not found in ini file: 0x%x\n" % in_file.area_id)
 
         return memory
 
@@ -235,7 +241,7 @@ def create_argument_parser(pgmname):
             "A tool to generate flashable hex files", help_width),
         epilog =
             "values:\n"
-            "  infilespec    [version|file.conf]:area_id:filename\n"
+            "  infilespec    [version|file.conf]:area_id:filename or area_id:filename\n"
             "  area_id       0x00000000 .. 0xffffffff\n"
             "  version       major.minor.maintenance.developer, "
             "each 0 .. 255,\n"

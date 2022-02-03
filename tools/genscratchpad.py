@@ -151,7 +151,16 @@ class InFile(object):
 
         try:
             # Read version, memory area ID and file name.
-            version, area_id, filename = file_spec.split(":", 2)
+            fields = file_spec.split(":", 2)
+            if fields.__len__() == 3:
+                version, area_id, filename = fields
+            elif fields.__len__() == 2:
+                # Version is not provided, probably useless (as some area do not have versioning)
+                version = "0.0.0.0"
+                area_id, filename = fields
+            else:
+                raise ValueError("invalid input file specification: "
+                             "'%s'" % file_spec)
 
             if version.endswith(".conf"):
                 # conf file provided, version must be read inside

@@ -1,0 +1,184 @@
+From 87b18dbebc65f77301059aeaa751994cc7dcd9b3 Mon Sep 17 00:00:00 2001
+From: Gwendal Raoul <gwendal.raoul@wirepas.com>
+Date: Thu, 9 Dec 2021 21:12:24 +0100
+Subject: [PATCH] Wirepas Dual Boot demo:
+
+On top of peripheral_ht example.
+
+Addition:
+  - Button 0, to switch back to Wirepas app
+  - Set switch info in shared area with Wirepas app
+  - Add the correct KConfig keys in prj.conf
+---
+ samples/bluetooth/peripheral_ht/prj.conf   |  16 +++-
+ samples/bluetooth/peripheral_ht/src/main.c | 105 +++++++++++++++++++++
+ 2 files changed, 120 insertions(+), 1 deletion(-)
+
+diff --git a/samples/bluetooth/peripheral_ht/prj.conf b/samples/bluetooth/peripheral_ht/prj.conf
+index 59360b0a01..c202887757 100644
+--- a/samples/bluetooth/peripheral_ht/prj.conf
++++ b/samples/bluetooth/peripheral_ht/prj.conf
+@@ -5,7 +5,21 @@ CONFIG_BT_PERIPHERAL=y
+ CONFIG_BT_DIS=y
+ CONFIG_BT_DIS_PNP=n
+ CONFIG_BT_BAS=y
+-CONFIG_BT_DEVICE_NAME="Zephyr Health Thermometer"
++CONFIG_BT_DEVICE_NAME="Wirepas Dual boot Health Thermometer"
+ CONFIG_BT_DEVICE_APPEARANCE=768
+ CONFIG_BT_ATT_ENFORCE_FLOW=n
+ CONFIG_CBPRINTF_FP_SUPPORT=y
++
++# Needed to access flash with partitions
++CONFIG_FLASH=y
++CONFIG_FLASH_MAP=y
++
++# Needed to have the gnerated hex, linked
++# at the right address
++CONFIG_USE_DT_CODE_PARTITION=y
++
++# Needed for button
++CONFIG_GPIO=y
++
++# Needed to call reboot from app
++CONFIG_REBOOT=y
+diff --git a/samples/bluetooth/peripheral_ht/src/main.c b/samples/bluetooth/peripheral_ht/src/main.c
+index eaa480f4b9..fcca60750e 100644
+--- a/samples/bluetooth/peripheral_ht/src/main.c
++++ b/samples/bluetooth/peripheral_ht/src/main.c
+@@ -21,6 +21,14 @@
+ #include <bluetooth/gatt.h>
+ #include <bluetooth/services/bas.h>
+ 
++// Additionnal headers needed to:
++// - access flash
++// - use one button
++// - let app reset the system
++#include <storage/flash_map.h>
++#include <drivers/gpio.h>
++#include <sys/reboot.h>
++
+ #include "hts.h"
+ 
+ static const struct bt_data ad[] = {
+@@ -93,10 +101,98 @@ static void bas_notify(void)
+ 	bt_bas_set_battery_level(battery_level);
+ }
+ 
++/*
++ * @brief Switch to wirepas
++ *        Write the first word from the storage partition
++ *        with something different than 0xFFFFFFFF
++ */
++static void switch_to_wirepas(void)
++{
++	uint32_t switch_value;
++	const struct flash_area *fa;
++	int err = flash_area_open(FLASH_AREA_ID(storage), &fa);
++	if (err != 0) {
++		printk("Cannot get flash area (err %d)\n", err);
++		return;
++	}
++
++	switch_value = 0x123456;
++	err = flash_area_write(fa, 0, &switch_value, 4);
++	if (err != 0) {
++		printk("Cannot write flash area (err %d)\n", err);
++		return;
++	}
++	printk("Switch set\n");
++}
++
++// Variable to exit the main loop
++// It will be set to true from button handler
++static bool m_reset_to_wirepas = false;
++
++// Id of main thread to wake it pu
++static k_tid_t m_main_tread_id;
++
++// Needed for button handling
++static const struct gpio_dt_spec button = GPIO_DT_SPEC_GET_OR(DT_ALIAS(sw0), gpios,
++							      {0});
++static struct gpio_callback button_cb_data;
++
++/*
++ * @brief Button handler to wakeup main thread
++ *        It set the flag to reboot.
++ */
++static void button_pressed(const struct device *dev, struct gpio_callback *cb,
++		    uint32_t pins)
++{
++	m_reset_to_wirepas = true;
++	// Wakeup the main thread
++	k_wakeup(m_main_tread_id);
++}
++
++/*
++ *	@brief Setup button to switch when button 0 is pressed
++ */
++static void setup_switch_button()
++{
++	int ret;
++
++	if (!device_is_ready(button.port)) {
++		printk("Error: button device %s is not ready\n",
++		       button.port->name);
++		return;
++	}
++
++	ret = gpio_pin_configure_dt(&button, GPIO_INPUT);
++	if (ret != 0) {
++		printk("Error %d: failed to configure %s pin %d\n",
++		       ret, button.port->name, button.pin);
++		return;
++	}
++
++	ret = gpio_pin_interrupt_configure_dt(&button,
++					      GPIO_INT_EDGE_TO_ACTIVE);
++	if (ret != 0) {
++		printk("Error %d: failed to configure interrupt on %s pin %d\n",
++			ret, button.port->name, button.pin);
++		return;
++	}
++
++	gpio_init_callback(&button_cb_data, button_pressed, BIT(button.pin));
++	gpio_add_callback(button.port, &button_cb_data);
++	printk("Set up button at %s pin %d\n", button.port->name, button.pin);
++
++}
++
+ void main(void)
+ {
+ 	int err;
+ 
++	m_main_tread_id = k_current_get();
++	m_reset_to_wirepas = false;
++
++	// Configure button
++	setup_switch_button();
++
+ 	err = bt_enable(NULL);
+ 	if (err) {
+ 		printk("Bluetooth init failed (err %d)\n", err);
+@@ -113,10 +209,19 @@ void main(void)
+ 	while (1) {
+ 		k_sleep(K_SECONDS(1));
+ 
++		if (m_reset_to_wirepas)
++		{
++			break;
++		}
++
+ 		/* Temperature measurements simulation */
+ 		hts_indicate();
+ 
+ 		/* Battery level simulation */
+ 		bas_notify();
+ 	}
++
++	// Main loop exited, switch back to Wirepas
++	switch_to_wirepas();
++	sys_reboot(SYS_REBOOT_COLD);
+ }
+-- 
+2.25.1
+

@@ -1,0 +1,23 @@
+/delete-node/ &boot_partition;
+/delete-node/ &slot0_partition;
+/delete-node/ &slot1_partition;
+/delete-node/ &scratch_partition;
+/delete-node/ &storage_partition;
+
+&flash0 {
+    partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		slot0_partition: partition@ba000 {
+			label = "image-0";
+			reg = <0x000ba000 0x00040000>;
+		};
+
+		storage_partition: partition@fa000 {
+			label = "storage";
+			reg = <0x000fa000 0x00004000>;
+		};
+	};
+};

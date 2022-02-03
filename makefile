@@ -79,12 +79,13 @@ define BUILD_FULL_SCRATCHPAD
 endef
 
 define BUILD_HEX
-	@echo "  Creating Flashable Hex: $(2) + $(3) + $(4) -> $(1)"
+	@echo "  Creating Flashable Hex: $(2) + $(3) + $(4) + $(5) -> $(1)"
 	$(HEX_GEN)      --configfile=$(BOOTLOADER_CONFIG_INI) \
 					--bootloader=$(2) \
 	                $(1) \
 	                $(patsubst %.hex,%.conf,$(3)):$(firmware_area_id):$(3) \
-	                $(app_major).$(app_minor).$(app_maintenance).$(app_development):$(app_area_id):$(4)
+	                $(app_major).$(app_minor).$(app_maintenance).$(app_development):$(app_area_id):$(4) \
+	                $(5)
 endef
 
 define BUILD_APP_SCRATCHPAD
@@ -184,7 +185,7 @@ $(FULL_SCRATCHPAD_BIN): initial_setup $(STACK_HEX) $(APP_HEX) $(BOOTLOADER_CONFI
 	$(call BUILD_FULL_SCRATCHPAD,$(FULL_SCRATCHPAD_BIN),$(STACK_HEX),$(APP_HEX))
 
 $(FINAL_IMAGE_HEX): initial_setup $(STACK_HEX) $(APP_HEX) $(BOOTLOADER_HEX) $(BOOTLOADER_CONFIG_INI)
-	$(call BUILD_HEX,$(FINAL_IMAGE_HEX),$(BOOTLOADER_HEX),$(STACK_HEX),$(APP_HEX))
+	$(call BUILD_HEX,$(FINAL_IMAGE_HEX),$(BOOTLOADER_HEX),$(STACK_HEX),$(APP_HEX),$(EXTRA_HEX))
 
 $(BOOTLOADER_CONFIG_INI): initial_setup $(INI_FILE_WP) $(INI_FILE_APP) $(BUILDPREFIX_APP)
 	@	# Rule to create the full config file based on multiple ini files and store it per build folder
