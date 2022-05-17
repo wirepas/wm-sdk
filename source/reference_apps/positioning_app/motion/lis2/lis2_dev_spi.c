@@ -110,7 +110,7 @@ static int32_t lis2_spi_read(void * handle,
 */
 static int32_t lis2_spi_write(void *handle,
                                uint8_t reg,
-                               uint8_t *bufp,
+                              const uint8_t *bufp,
                                uint16_t len)
 {
     spi_res_e res;

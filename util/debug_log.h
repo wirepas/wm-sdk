@@ -14,6 +14,9 @@
 #include <stdarg.h>
 #include "api.h"
 #include "uart_print.h"
+#if APP_PRINTING_VIA_RTT
+#include "SEGGER_RTT.h"
+#endif
 
 /**
  * Simple library to print only relevant log messages.
@@ -61,6 +64,13 @@
 #define DEBUG_LOG_UART_BAUDRATE 115200
 #endif
 #define LOG_INIT() UartPrint_init(DEBUG_LOG_UART_BAUDRATE)
+#elif APP_PRINTING_VIA_RTT
+#define Print_Log(fmt, ...) SEGGER_RTT_printf(0, fmt, ##__VA_ARGS__)
+#define LOG_INIT()                 \
+    do {                           \
+        SEGGER_RTT_Init();         \
+        SEGGER_RTT_SetTerminal(0); \
+    } while (0);
 #else
 #define Print_Log(fmt, ...)
 #define LOG_INIT()
@@ -79,11 +89,11 @@
 /**
  * \brief Macros to define several log levels: Debug, Info, Warning, Error.
  */
-#define LVL_DEBUG 4
-#define LVL_INFO 3
+#define LVL_DEBUG   4
+#define LVL_INFO    3
 #define LVL_WARNING 2
-#define LVL_ERROR 1
-#define LVL_NOLOG 0
+#define LVL_ERROR   1
+#define LVL_NOLOG   0
 
 /* Do not modify; number in macro name must match the defined log levels
  * above.
@@ -104,60 +114,58 @@
  */
 #define FLUSH_DELAY_MS 45
 
-
 #ifndef DEBUG_LOG_CUSTOM
-#    ifndef DEBUG_LOG_MODULE_NAME
-         /* Name of the module must be defined. */
-#        error "No module name set for logger"
+#ifndef DEBUG_LOG_MODULE_NAME
+/* Name of the module must be defined. */
+#error "No module name set for logger"
 #endif
-     /* Use "[Module name][Time] Log level: " log prefix by default. */
-#    define DEBUG_LOG_PRINT_MODULE_NAME
-#    define DEBUG_LOG_PRINT_TIME
-#    define DEBUG_LOG_PRINT_LEVEL
-#    undef  DEBUG_LOG_PRINT_FUNCTION
-#    undef  DEBUG_LOG_PRINT_LINE
+/* Use "[Module name][Time] Log level: " log prefix by default. */
+#define DEBUG_LOG_PRINT_MODULE_NAME
+#define DEBUG_LOG_PRINT_TIME
+#define DEBUG_LOG_PRINT_LEVEL
+#undef DEBUG_LOG_PRINT_FUNCTION
+#undef DEBUG_LOG_PRINT_LINE
 #endif
 
 /* Module name string. */
 #ifdef DEBUG_LOG_PRINT_MODULE_NAME
-#    define S_MOD_NAME_PREFIX "["DEBUG_LOG_MODULE_NAME"]"
+#define S_MOD_NAME_PREFIX "[" DEBUG_LOG_MODULE_NAME "]"
 #else
-#    define S_MOD_NAME_PREFIX
+#define S_MOD_NAME_PREFIX
 #endif
 /* Timestamp string. */
 #ifdef DEBUG_LOG_PRINT_TIME_HP
-#    define S_TIME_PREFIX "[%09u]"
-#    define S_TIME_SUFFIX , lib_time->getTimestampHp()
+#define S_TIME_PREFIX "[%09u]"
+#define S_TIME_SUFFIX , lib_time->getTimestampHp()
 #elif defined(DEBUG_LOG_PRINT_TIME)
-#    define S_TIME_PREFIX "[%09u]"
-#    define S_TIME_SUFFIX , lib_time->getTimestampCoarse()
+#define S_TIME_PREFIX "[%09u]"
+#define S_TIME_SUFFIX , lib_time->getTimestampCoarse()
 #else
-#    define S_TIME_PREFIX
-#    define S_TIME_SUFFIX
+#define S_TIME_PREFIX
+#define S_TIME_SUFFIX
 #endif
 /* Log level string. */
 #ifdef DEBUG_LOG_PRINT_LEVEL
-#    define S_LEVEL_PREFIX(level) " "DEBUG_LVL_TO_STRING(level)": "
+#define S_LEVEL_PREFIX(level) " " DEBUG_LVL_TO_STRING(level) ": "
 #else
-#    define S_LEVEL_PREFIX(level)
+#define S_LEVEL_PREFIX(level)
 #endif
 /* Function string. */
 #ifdef DEBUG_LOG_PRINT_FUNCTION
-#    define S_FUNCTION_PREFIX "func:%s, "
-#    define S_FUNCTION_SUFFIX , __FUNCTION__
+#define S_FUNCTION_PREFIX "func:%s, "
+#define S_FUNCTION_SUFFIX , __FUNCTION__
 #else
-#    define S_FUNCTION_PREFIX
-#    define S_FUNCTION_SUFFIX
+#define S_FUNCTION_PREFIX
+#define S_FUNCTION_SUFFIX
 #endif
 /* Line string. */
 #ifdef DEBUG_LOG_PRINT_LINE
-#    define S_LINE_PREFIX "line: %03d, "
-#    define S_LINE_SUFFIX , __LINE__
+#define S_LINE_PREFIX "line: %03d, "
+#define S_LINE_SUFFIX , __LINE__
 #else
-#    define S_LINE_PREFIX
-#    define S_LINE_SUFFIX
+#define S_LINE_PREFIX
+#define S_LINE_SUFFIX
 #endif
-
 
 /**
  * \brief   Print a log message if its severity is lower or
@@ -169,16 +177,15 @@
  * \param   ...
  *          The list of parameters
  */
-#define LOG(level, fmt, ...) \
-{ \
-    ((uint8_t) level) <= ((uint8_t) DEBUG_LOG_MAX_LEVEL) ? \
-    Print_Log( \
-        S_MOD_NAME_PREFIX S_TIME_PREFIX S_LEVEL_PREFIX(level) \
-        S_FUNCTION_PREFIX S_LINE_PREFIX \
-        fmt"\n" S_TIME_SUFFIX S_FUNCTION_SUFFIX S_LINE_SUFFIX \
-        , ##__VA_ARGS__) : \
-    (void)NULL; \
-}
+#define LOG(level, fmt, ...)                                                                                                     \
+    {                                                                                                                            \
+        ((uint8_t)level) <= ((uint8_t)DEBUG_LOG_MAX_LEVEL) ? Print_Log(                                                          \
+                                                                 S_MOD_NAME_PREFIX S_TIME_PREFIX S_LEVEL_PREFIX(level)           \
+                                                                     S_FUNCTION_PREFIX S_LINE_PREFIX                             \
+                                                                         fmt "\n" S_TIME_SUFFIX S_FUNCTION_SUFFIX S_LINE_SUFFIX, \
+                                                                 ##__VA_ARGS__)                                                  \
+                                                           : (void)NULL;                                                         \
+    }
 
 /**
  * \brief   Print a buffer if its severity is lower or
@@ -190,32 +197,31 @@
  * \param   size
  *          Size in bytes of the buffer.
  */
-#define LOG_BUFFER(level, buffer, size) \
-{ \
-    if(((uint8_t) level) <= ((uint8_t) DEBUG_LOG_MAX_LEVEL)) { \
-        for (uint8_t i = 0; i < size; i++) \
-        { \
-            Print_Log("%02X ", buffer[i]); \
-            if ((i & 0xF) == 0xF && i != (uint8_t)(size-1)) \
-            { \
-                Print_Log("\n"); \
-            } \
-        } \
-    Print_Log("\n"); \
-    } \
-}
+#define LOG_BUFFER(level, buffer, size)                             \
+    {                                                               \
+        if (((uint8_t)level) <= ((uint8_t)DEBUG_LOG_MAX_LEVEL)) {   \
+            for (uint8_t i = 0; i < size; i++) {                    \
+                Print_Log("%02X ", buffer[i]);                      \
+                if ((i & 0xF) == 0xF && i != (uint8_t)(size - 1)) { \
+                    Print_Log("\n");                                \
+                }                                                   \
+            }                                                       \
+            Print_Log("\n");                                        \
+        }                                                           \
+    }
 
 /**
  * \brief   Actively wait that Uart buffer as been sent.
  * \param   level
  *          Only wait if level is lower or equal to DEBUG_LOG_MAX_LEVEL.
  */
-#define LOG_FLUSH(level) \
-{ \
-    if(((uint8_t) level) <= ((uint8_t) DEBUG_LOG_MAX_LEVEL)) { \
-        app_lib_time_timestamp_hp_t end; \
-        end = lib_time->addUsToHpTimestamp(lib_time->getTimestampHp(), \
-                                           FLUSH_DELAY_MS * 1000); \
-        while (lib_time->isHpTimestampBefore(lib_time->getTimestampHp(),end)); \
-    } \
-}
+#define LOG_FLUSH(level)                                                           \
+    {                                                                              \
+        if (((uint8_t)level) <= ((uint8_t)DEBUG_LOG_MAX_LEVEL)) {                  \
+            app_lib_time_timestamp_hp_t end;                                       \
+            end = lib_time->addUsToHpTimestamp(lib_time->getTimestampHp(),         \
+                                               FLUSH_DELAY_MS * 1000);             \
+            while (lib_time->isHpTimestampBefore(lib_time->getTimestampHp(), end)) \
+                ;                                                                  \
+        }                                                                          \
+    }
