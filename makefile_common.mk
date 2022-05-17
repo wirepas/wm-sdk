@@ -3,7 +3,7 @@ GCC_TESTED_VERSION := 10.2.1
 
 # Minimum binaries version required by this SDK version
 MIN_BOOTLOADER_VERSION := 7
-MIN_STACK_VERSION := 5.2.0.0
+MIN_STACK_VERSION := 5.3.0.0
 
 # SDK itself
 SDK_PATH := .
