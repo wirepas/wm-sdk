@@ -455,7 +455,7 @@ shared_offline_status_e Shared_Offline_get_status(uint32_t * elapsed_s_p,
     uint32_t now = lib_time->getTimestampS();
     if (!m_initialized)
     {
-        return SHARED_OFFLINE_RES_UNINITIALIZED;
+        return SHARED_OFFLINE_STATUS_UNINITIALIZED;
     }
 
     if (lib_sleep->getSleepState() == APP_LIB_SLEEP_STARTED)

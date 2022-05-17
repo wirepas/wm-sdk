@@ -138,13 +138,11 @@ void App_init(const app_global_functions_t * functions)
     }
 
     /* Configure new node. */
-    lib_settings->setNodeRole(
-                app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_SUBNODE,
 #ifdef LOW_LATENCY_NODE
-                                             APP_LIB_SETTINGS_ROLE_FLAG_LL |
+    lib_settings->setNodeRole(APP_LIB_SETTINGS_ROLE_SUBNODE_LL);
+#else
+    lib_settings->setNodeRole(APP_LIB_SETTINGS_ROLE_SUBNODE_LE);
 #endif
-                                             0
-                                            ));
 
     /* Print actual node config. */
     LOG(LVL_DEBUG, "Node network parameters:");

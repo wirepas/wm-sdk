@@ -37,8 +37,7 @@ The following application settings can be controlled through `config.mk` paramet
 | default_network_cipher_key | Network encryption key. (recommended to be set) |
 | default_network_authen_key | Network authentication key. (recommended to be set) |
 | app_specific_area_id |  Application area ID. Shall be unique in the network |
-| default_role | router (headdnode): 1, non-router (subnode): 2 (note that anchors are always routers while tags non-routers)| 
-| default_role_flag |  low-energy: 0x00 , low-latency: 0x10 (battery powered nodes shall always be low-energy)
+| default_role | Router (headnode) LE: 0x01, Router LL: 0x11, Non-router (subnode) LE: 0x02, Advertiser: 0x04 (note that anchors are always routers while tags non-routers and battery powered nodes shall always be low-energy)| 
 | default_poslib_device_class |  Positioning class for node 0xFF...0xF9 (see `poslib_class_e` in `poslib.h`)|
 | default_poslib_device_mode | Tag NRLS: 1, Tag autoscan: 2, Anchor autoscan: 3, Anchor oportunistic: 4 (`poslib_mode_e` in `poslib.h`) |
 | default_update_period_static_s | Measurement rate if node is static or motion monitoring not supported | 

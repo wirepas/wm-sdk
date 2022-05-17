@@ -4,7 +4,7 @@
  *        for EFR32MG21A010F512IM32
  ******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories, Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories, Inc. www.silabs.com</b>
  ******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -166,8 +166,8 @@ typedef enum IRQn{
 #define _SILICON_LABS_32B_SERIES_2_CONFIG                 1                                 /** Product Config Identifier */
 #define _SILICON_LABS_GECKO_INTERNAL_SDID                 200                               /** Silicon Labs internal use only */
 #define _SILICON_LABS_GECKO_INTERNAL_SDID_200                                               /** Silicon Labs internal use only */
-#define _SILICON_LABS_SECURITY_FEATURE_SE                 0                                 /** Secure Element */
-#define _SILICON_LABS_SECURITY_FEATURE_VAULT              1                                 /** Vault */
+#define _SILICON_LABS_SECURITY_FEATURE_SE                 0                                 /** Mid */
+#define _SILICON_LABS_SECURITY_FEATURE_VAULT              1                                 /** High */
 #define _SILICON_LABS_SECURITY_FEATURE_ROT                2                                 /** Root Of Trust */
 #define _SILICON_LABS_SECURITY_FEATURE                    _SILICON_LABS_SECURITY_FEATURE_SE /** Security feature set */
 #define _SILICON_LABS_EFR32_RADIO_NONE                    0                                 /** No radio present */
@@ -182,63 +182,63 @@ typedef enum IRQn{
 
 /** Memory Base addresses and limits */
 #define FLASH_MEM_BASE                                    (0x00000000UL) /** FLASH_MEM base address */
-#define FLASH_MEM_SIZE                                    (0x00100000UL) /** FLASH_MEM avaliable address space */
+#define FLASH_MEM_SIZE                                    (0x00100000UL) /** FLASH_MEM available address space */
 #define FLASH_MEM_END                                     (0x000FFFFFUL) /** FLASH_MEM end address */
 #define FLASH_MEM_BITS                                    (0x15UL)       /** FLASH_MEM used bits */
 #define MSC_FLASH_MEM_BASE                                (0x00000000UL) /** MSC_FLASH_MEM base address */
-#define MSC_FLASH_MEM_SIZE                                (0x00100000UL) /** MSC_FLASH_MEM avaliable address space */
+#define MSC_FLASH_MEM_SIZE                                (0x00100000UL) /** MSC_FLASH_MEM available address space */
 #define MSC_FLASH_MEM_END                                 (0x000FFFFFUL) /** MSC_FLASH_MEM end address */
 #define MSC_FLASH_MEM_BITS                                (0x15UL)       /** MSC_FLASH_MEM used bits */
 #define MSC_FLASH_USERDATA_MEM_BASE                       (0x0FE00000UL) /** MSC_FLASH_USERDATA_MEM base address */
-#define MSC_FLASH_USERDATA_MEM_SIZE                       (0x00000400UL) /** MSC_FLASH_USERDATA_MEM avaliable address space */
+#define MSC_FLASH_USERDATA_MEM_SIZE                       (0x00000400UL) /** MSC_FLASH_USERDATA_MEM available address space */
 #define MSC_FLASH_USERDATA_MEM_END                        (0x0FE003FFUL) /** MSC_FLASH_USERDATA_MEM end address */
 #define MSC_FLASH_USERDATA_MEM_BITS                       (0xBUL)        /** MSC_FLASH_USERDATA_MEM used bits */
 #define USERDATA_BASE                                     (0x0FE00000UL) /** USERDATA base address */
-#define USERDATA_SIZE                                     (0x00000400UL) /** USERDATA avaliable address space */
+#define USERDATA_SIZE                                     (0x00000400UL) /** USERDATA available address space */
 #define USERDATA_END                                      (0x0FE003FFUL) /** USERDATA end address */
 #define USERDATA_BITS                                     (0xBUL)        /** USERDATA used bits */
 #define MSC_FLASH_DEVINFO_MEM_BASE                        (0x0FE08000UL) /** MSC_FLASH_DEVINFO_MEM base address */
-#define MSC_FLASH_DEVINFO_MEM_SIZE                        (0x00000400UL) /** MSC_FLASH_DEVINFO_MEM avaliable address space */
+#define MSC_FLASH_DEVINFO_MEM_SIZE                        (0x00000400UL) /** MSC_FLASH_DEVINFO_MEM available address space */
 #define MSC_FLASH_DEVINFO_MEM_END                         (0x0FE083FFUL) /** MSC_FLASH_DEVINFO_MEM end address */
 #define MSC_FLASH_DEVINFO_MEM_BITS                        (0xBUL)        /** MSC_FLASH_DEVINFO_MEM used bits */
 #define MSC_FLASH_CHIPCONFIG_MEM_BASE                     (0x0FE0E000UL) /** MSC_FLASH_CHIPCONFIG_MEM base address */
-#define MSC_FLASH_CHIPCONFIG_MEM_SIZE                     (0x00000400UL) /** MSC_FLASH_CHIPCONFIG_MEM avaliable address space */
+#define MSC_FLASH_CHIPCONFIG_MEM_SIZE                     (0x00000400UL) /** MSC_FLASH_CHIPCONFIG_MEM available address space */
 #define MSC_FLASH_CHIPCONFIG_MEM_END                      (0x0FE0E3FFUL) /** MSC_FLASH_CHIPCONFIG_MEM end address */
 #define MSC_FLASH_CHIPCONFIG_MEM_BITS                     (0xBUL)        /** MSC_FLASH_CHIPCONFIG_MEM used bits */
 #define MSC_FLASH_RESERVED_MEM_BASE                       (0x0FF00000UL) /** MSC_FLASH_RESERVED_MEM base address */
-#define MSC_FLASH_RESERVED_MEM_SIZE                       (0x00100000UL) /** MSC_FLASH_RESERVED_MEM avaliable address space */
+#define MSC_FLASH_RESERVED_MEM_SIZE                       (0x00100000UL) /** MSC_FLASH_RESERVED_MEM available address space */
 #define MSC_FLASH_RESERVED_MEM_END                        (0x0FFFFFFFUL) /** MSC_FLASH_RESERVED_MEM end address */
 #define MSC_FLASH_RESERVED_MEM_BITS                       (0x15UL)       /** MSC_FLASH_RESERVED_MEM used bits */
 #define DMEM_RAM0_RAM_MEM_BASE                            (0x20000000UL) /** DMEM_RAM0_RAM_MEM base address */
-#define DMEM_RAM0_RAM_MEM_SIZE                            (0x00018000UL) /** DMEM_RAM0_RAM_MEM avaliable address space */
+#define DMEM_RAM0_RAM_MEM_SIZE                            (0x00018000UL) /** DMEM_RAM0_RAM_MEM available address space */
 #define DMEM_RAM0_RAM_MEM_END                             (0x20017FFFUL) /** DMEM_RAM0_RAM_MEM end address */
 #define DMEM_RAM0_RAM_MEM_BITS                            (0x11UL)       /** DMEM_RAM0_RAM_MEM used bits */
 #define RAM_MEM_BASE                                      (0x20000000UL) /** RAM_MEM base address */
-#define RAM_MEM_SIZE                                      (0x00018000UL) /** RAM_MEM avaliable address space */
+#define RAM_MEM_SIZE                                      (0x00018000UL) /** RAM_MEM available address space */
 #define RAM_MEM_END                                       (0x20017FFFUL) /** RAM_MEM end address */
 #define RAM_MEM_BITS                                      (0x11UL)       /** RAM_MEM used bits */
 #define RDMEM_SEQRAM_S_MEM_BASE                           (0xA0000000UL) /** RDMEM_SEQRAM_S_MEM base address */
-#define RDMEM_SEQRAM_S_MEM_SIZE                           (0x00002000UL) /** RDMEM_SEQRAM_S_MEM avaliable address space */
+#define RDMEM_SEQRAM_S_MEM_SIZE                           (0x00002000UL) /** RDMEM_SEQRAM_S_MEM available address space */
 #define RDMEM_SEQRAM_S_MEM_END                            (0xA0001FFFUL) /** RDMEM_SEQRAM_S_MEM end address */
 #define RDMEM_SEQRAM_S_MEM_BITS                           (0xEUL)        /** RDMEM_SEQRAM_S_MEM used bits */
 #define RDMEM_FRCRAM_S_MEM_BASE                           (0xA0002000UL) /** RDMEM_FRCRAM_S_MEM base address */
-#define RDMEM_FRCRAM_S_MEM_SIZE                           (0x00001000UL) /** RDMEM_FRCRAM_S_MEM avaliable address space */
+#define RDMEM_FRCRAM_S_MEM_SIZE                           (0x00001000UL) /** RDMEM_FRCRAM_S_MEM available address space */
 #define RDMEM_FRCRAM_S_MEM_END                            (0xA0002FFFUL) /** RDMEM_FRCRAM_S_MEM end address */
 #define RDMEM_FRCRAM_S_MEM_BITS                           (0xDUL)        /** RDMEM_FRCRAM_S_MEM used bits */
 #define RDMEM_SEQRAM_NS_MEM_BASE                          (0xB0000000UL) /** RDMEM_SEQRAM_NS_MEM base address */
-#define RDMEM_SEQRAM_NS_MEM_SIZE                          (0x00002000UL) /** RDMEM_SEQRAM_NS_MEM avaliable address space */
+#define RDMEM_SEQRAM_NS_MEM_SIZE                          (0x00002000UL) /** RDMEM_SEQRAM_NS_MEM available address space */
 #define RDMEM_SEQRAM_NS_MEM_END                           (0xB0001FFFUL) /** RDMEM_SEQRAM_NS_MEM end address */
 #define RDMEM_SEQRAM_NS_MEM_BITS                          (0xEUL)        /** RDMEM_SEQRAM_NS_MEM used bits */
 #define RDMEM_SEQRAM_SEQRAM_MEM_BASE                      (0xB0000000UL) /** RDMEM_SEQRAM_SEQRAM_MEM base address */
-#define RDMEM_SEQRAM_SEQRAM_MEM_SIZE                      (0x00002000UL) /** RDMEM_SEQRAM_SEQRAM_MEM avaliable address space */
+#define RDMEM_SEQRAM_SEQRAM_MEM_SIZE                      (0x00002000UL) /** RDMEM_SEQRAM_SEQRAM_MEM available address space */
 #define RDMEM_SEQRAM_SEQRAM_MEM_END                       (0xB0001FFFUL) /** RDMEM_SEQRAM_SEQRAM_MEM end address */
 #define RDMEM_SEQRAM_SEQRAM_MEM_BITS                      (0xEUL)        /** RDMEM_SEQRAM_SEQRAM_MEM used bits */
 #define RDMEM_FRCRAM_FRCRAM_MEM_BASE                      (0xB0002000UL) /** RDMEM_FRCRAM_FRCRAM_MEM base address */
-#define RDMEM_FRCRAM_FRCRAM_MEM_SIZE                      (0x00001000UL) /** RDMEM_FRCRAM_FRCRAM_MEM avaliable address space */
+#define RDMEM_FRCRAM_FRCRAM_MEM_SIZE                      (0x00001000UL) /** RDMEM_FRCRAM_FRCRAM_MEM available address space */
 #define RDMEM_FRCRAM_FRCRAM_MEM_END                       (0xB0002FFFUL) /** RDMEM_FRCRAM_FRCRAM_MEM end address */
 #define RDMEM_FRCRAM_FRCRAM_MEM_BITS                      (0xDUL)        /** RDMEM_FRCRAM_FRCRAM_MEM used bits */
 #define RDMEM_FRCRAM_NS_MEM_BASE                          (0xB0002000UL) /** RDMEM_FRCRAM_NS_MEM base address */
-#define RDMEM_FRCRAM_NS_MEM_SIZE                          (0x00001000UL) /** RDMEM_FRCRAM_NS_MEM avaliable address space */
+#define RDMEM_FRCRAM_NS_MEM_SIZE                          (0x00001000UL) /** RDMEM_FRCRAM_NS_MEM available address space */
 #define RDMEM_FRCRAM_NS_MEM_END                           (0xB0002FFFUL) /** RDMEM_FRCRAM_NS_MEM end address */
 #define RDMEM_FRCRAM_NS_MEM_BITS                          (0xDUL)        /** RDMEM_FRCRAM_NS_MEM used bits */
 

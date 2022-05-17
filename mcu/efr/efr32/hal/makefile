@@ -45,6 +45,9 @@ endif
 SRCS += $(EFR32_HAL_PREFIX)voltage.c
 endif
 
+ifeq ($(HAL_PRS), yes)
+SRCS += $(EFR32_VENDOR_PREFIX)em_prs.c
+endif
 
 SRCS += $(EFR32_HAL_PREFIX)ds.c    \
         $(EFR32_HAL_PREFIX)power.c \

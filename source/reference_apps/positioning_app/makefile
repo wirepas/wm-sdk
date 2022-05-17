@@ -7,7 +7,6 @@ INCLUDES +=-I$(SRCS_PATH)
 CFLAGS += -DCONF_NETWORK_ADDRESS=$(default_network_address)
 CFLAGS += -DCONF_NETWORK_CHANNEL=$(default_network_channel)
 CFLAGS += -DCONF_ROLE=$(default_role)
-CFLAGS += -DCONF_ROLE_FLAG=$(default_role_flag)
 
 #Device class & mode
 CFLAGS += -DPOSLIB_DEVICE_CLASS=$(default_poslib_device_class)

@@ -26,6 +26,7 @@
 #include "shared_appconfig.h"
 #include "shared_neighbors.h"
 #include "stack_state.h"
+#include "ds.h"
 
 /** Define safety margin for processing WAPS */
 #define WAPS_SAFETY_MARGIN_US  8000u
@@ -42,6 +43,23 @@
  */
 #define WAPS_MAX_REQUEST_QUEUING_TIME_COARSE ((WAPS_MAX_REQUEST_QUEUING_TIME_MS * 128 / 1000))
 
+/** Initialization time deep sleep preventation
+  * In case stack is not running, some devices (like Thunderboard BG22) requires extra run time before
+  * deep sleep can be enabled, othervise re-flashing of the device would not work without powercycle.
+  * This is because debugger takes some time to connect, and it does not have a chance after
+  * the boot time optimizations were implemented. Each time system goes to deep sleep by autopower,
+  * the debugger needs to attempt the connection again as HFXO was shut down for deep sleep.
+  * After deep sleep, establishing debugger connection fails again as the device goes again to
+  * deep sleep by the request of autopower. To get the debugger connection established
+  * little more initial run time is needed. After debugger connection is established once,
+  * the HFXO will stay on also in deep sleep by request of debugging interface.
+  */
+#define WAPS_INIT_DEEP_SLEEP_PREVENTATION_TIME_MS      100
+
+/** Advise scheduler how long will it take to get
+  * deep sleep preventation bit removed.
+  */
+#define WAPS_TASK_EXEC_TIME_FOR_REMOVE_DS_PREV_US      500
 
 /**
  * \brief   Waps_exec is the core of WAPS
@@ -53,6 +71,12 @@
  * \return  Next requested invocation time, or OS_NO_TIMETABLE
  */
 static uint32_t Waps_exec(void);
+
+/**
+ * \bried   Waps_init_completed_for_deep_sleep
+ *          Initialization time has completed and deep sleep could be enabled.
+ */
+static uint32_t Waps_init_completed_for_deep_sleep(void);
 
 /** Something to send ? */
 static bool frames_pending(void);
@@ -74,7 +98,7 @@ static void app_config_received_cb(uint16_t type,
                                    uint8_t * value_p);
 
 /** Callback when a neighbor scan is done */
-static void on_scanned_nbors_cb(void);
+static void on_scanned_nbors_cb(const app_lib_state_neighbor_scan_info_t * scan_info);
 
 /**
  * \brief   Process request and generate reply
@@ -163,6 +187,12 @@ bool Waps_init(uint32_t baudrate, bool flow_ctrl)
     Shared_Data_addDataReceivedCb(&m_waps_data_filter);
     Shared_Appconfig_addFilter(&app_config_filter, &id);
 
+    // Enforce fragmented mode as dualmcu protocol cannot forward 1500 bytes packet
+    // over uart (all size are on 1 byte) and uart drivers are not ready
+    // TODO: this mode should be set by Shared_Data lib instead depending on a
+    // build flag
+    lib_data->setFragmentMode(APP_LIB_DATA_FRAGMENTED_MODE_ENABLED);
+
     sl_list_init(&waps_request_queue);
     sl_list_init(&waps_ind_queue);
     sl_list_init(&waps_reply_queue);
@@ -179,11 +209,24 @@ bool Waps_init(uint32_t baudrate, bool flow_ctrl)
         Waps_itemInit(item_free_threshold_cb, 50);
         // Check autostart
         bool autostart;
-        if((!Stack_State_isStarted()) &&
-           Persistent_getAutostart(&autostart) == APP_RES_OK &&
-           autostart)
+        if(!Stack_State_isStarted())
         {
-            Stack_State_startStack();
+            DS_Disable(DS_SOURCE_INIT);
+            if (Persistent_getAutostart(&autostart) == APP_RES_OK &&
+                autostart)
+            {
+                if (Stack_State_startStack() == APP_RES_OK)
+                {
+                    DS_Enable(DS_SOURCE_INIT);
+                }
+            }
+            else
+            {
+                App_Scheduler_addTask_execTime(
+                    Waps_init_completed_for_deep_sleep,
+                    WAPS_INIT_DEEP_SLEEP_PREVENTATION_TIME_MS,
+                    WAPS_TASK_EXEC_TIME_FOR_REMOVE_DS_PREV_US);
+            }
         }
         // Queue indication to show that stack has started (or waiting to start)
         add_indication(Msap_getStackStatusIndication());
@@ -244,6 +287,13 @@ send_reply:
     }
 }
 
+static uint32_t Waps_init_completed_for_deep_sleep(void)
+{
+    DS_Enable(DS_SOURCE_INIT);
+
+    return APP_SCHEDULER_STOP_TASK;
+}
+
 static void app_config_received_cb(uint16_t type,
                                    uint8_t length,
                                    uint8_t * value_p)
@@ -282,7 +332,7 @@ static void app_config_received_cb(uint16_t type,
     }
 }
 
-static void on_scanned_nbors_cb(void)
+static void on_scanned_nbors_cb(const app_lib_state_neighbor_scan_info_t * scan_info)
 {
 // The next block is under ifdef has dualmcu has never generated
 // Neighbors indication. It was only registering for requested scans

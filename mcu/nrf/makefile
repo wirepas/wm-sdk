@@ -1,5 +1,5 @@
 MCU_PREFIX := $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/
-MCU_CONFIG := $(MCU_PREFIX)/config.mk
+MCU_CONFIG := $(MCU_PREFIX)config.mk
 VENDOR_PREFIX := $(MCU_PATH)$(MCU_FAMILY)/common/vendor/
 NRF_FAMILY_HAL_PREFIX  := $(MCU_PATH)$(MCU_FAMILY)/common/hal/
 
@@ -16,7 +16,7 @@ INCLUDES += -I$(MCU_PATH)$(MCU_FAMILY)/common/
 -include $(MCU_CONFIG)
 
 # Include MCU specific HAL drivers
--include $(MCU_PREFIX)/hal/makefile
+-include $(MCU_PREFIX)hal/makefile
 
 # Build common HAL drivers for nrf-family
 ifeq ($(HAL_SPI), yes)

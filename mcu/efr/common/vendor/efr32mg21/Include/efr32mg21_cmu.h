@@ -3,7 +3,7 @@
  * @brief EFR32MG21 CMU register and bit field definitions
  ******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories, Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories, Inc. www.silabs.com</b>
  ******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -263,7 +263,7 @@ typedef struct {
 #define _CMU_WDOGLOCK_LOCKKEY_SHIFT                0                                    /**< Shift value for CMU_LOCKKEY                 */
 #define _CMU_WDOGLOCK_LOCKKEY_MASK                 0xFFFFUL                             /**< Bit mask for CMU_LOCKKEY                    */
 #define _CMU_WDOGLOCK_LOCKKEY_DEFAULT              0x00005257UL                         /**< Mode DEFAULT for CMU_WDOGLOCK               */
-#define _CMU_WDOGLOCK_LOCKKEY_UNLOCK               0x00005257UL                         /**< Mode UNLOCK for CMU_WDOGLOCK                */
+#define _CMU_WDOGLOCK_LOCKKEY_UNLOCK               0x000093F7UL                         /**< Mode UNLOCK for CMU_WDOGLOCK                */
 #define CMU_WDOGLOCK_LOCKKEY_DEFAULT               (_CMU_WDOGLOCK_LOCKKEY_DEFAULT << 0) /**< Shifted mode DEFAULT for CMU_WDOGLOCK       */
 #define CMU_WDOGLOCK_LOCKKEY_UNLOCK                (_CMU_WDOGLOCK_LOCKKEY_UNLOCK << 0)  /**< Shifted mode UNLOCK for CMU_WDOGLOCK        */
 

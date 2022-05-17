@@ -10,7 +10,6 @@
  * Application tag, information header and entrypoint
  */
 
-#include "app.h"
 #include "api.h"
 #include "board_init.h"
 #include "libraries_init.h"

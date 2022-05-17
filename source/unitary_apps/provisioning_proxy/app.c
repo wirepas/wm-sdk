@@ -137,14 +137,12 @@ void App_init(const app_global_functions_t * functions)
     }
 
     /* Proxy must be configured as Headnode. */
-    lib_settings->setNodeRole(
-                app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE,
+    /* Configure new node. */
 #ifdef LOW_LATENCY_NODE
-                                             APP_LIB_SETTINGS_ROLE_FLAG_LL
+    lib_settings->setNodeRole(APP_LIB_SETTINGS_ROLE_HEADNODE_LL);
 #else
-                                             0
+    lib_settings->setNodeRole(APP_LIB_SETTINGS_ROLE_HEADNODE_LE);
 #endif
-                                            ));
 
     Provisioning_Proxy_init(&conf);
 

@@ -46,7 +46,7 @@ Please extract them at the root of [image folder][here_image] (All the *.a, *.he
 
 This SDK relies on GNU Arm toolchain. To use the SDK you will need to fulfill the following requirements:
 
-1. A GCC Arm toolchain (_version 7.2.1 is recommended_)
+1. A GCC Arm toolchain (_version 10.2.1 is recommended_)
 2. The make tool
 3. python 3.x
 4. pycryptodome package for python (_can be installed with pip_)

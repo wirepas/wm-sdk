@@ -96,7 +96,7 @@ P1.15   47      gpio           1.15           (low freq)
 #define BOARD_LED_ACTIVE_LOW            true
 
 // List of GPIO pins for buttons on the board: SW1
-#define BOARD_BUTTON_PIN_LIST           {38}
+//#define BOARD_BUTTON_PIN_LIST           {38}
 
 // Active low polarity for buttons
 #define BOARD_BUTTON_ACTIVE_LOW         true

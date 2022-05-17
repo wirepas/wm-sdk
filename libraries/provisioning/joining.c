@@ -310,12 +310,13 @@ static uint32_t state_wait_scan_end(void)
                  *  to catch it early.
                  */
 
-                /* Test if the node is already joined to the joining node.
+                /* Test if the node is already joined to the network from joining beacon.
+                 * If it is the case, route change callback will never be called so skip
+                 * this part
                  */
                 if (lib_settings->getNetworkAddress(&addr) == APP_RES_OK &&
                     lib_settings->getNetworkChannel(&ch) == APP_RES_OK &&
-                    addr != beacon->addr &&
-                    ch != beacon->channel)
+                    !(addr == beacon->addr && ch == beacon->channel))
                 {
                     LOG(LVL_INFO, "State WAIT_SCAN_END : "
                             "start joining process (address : %d, ch : %d).",

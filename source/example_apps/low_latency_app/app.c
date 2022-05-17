@@ -386,12 +386,9 @@ void App_init(const app_global_functions_t * functions)
     }
 
     /*
-     * Set node operating mode to low-latency and set node role to router.
+     * Set node operating mode to router low-latency
      */
-
-    lib_settings->setNodeRole(
-        app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE,
-                                     APP_LIB_SETTINGS_ROLE_FLAG_LL));
+    lib_settings->setNodeRole(APP_LIB_SETTINGS_ROLE_HEADNODE_LL);
 
 
     /* Use app persistance to read and write multicast address. */

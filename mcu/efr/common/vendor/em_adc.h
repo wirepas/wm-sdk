@@ -321,7 +321,7 @@ typedef enum {
 #endif
 
 #if defined(_ADC_SINGLECTRL_POSSEL_MASK)
-/** Positive input selection for single and scan coversion. */
+/** Positive input selection for single and scan conversion. */
 typedef enum {
   adcPosSelAPORT0XCH0  = _ADC_SINGLECTRL_POSSEL_APORT0XCH0,
   adcPosSelAPORT0XCH1  = _ADC_SINGLECTRL_POSSEL_APORT0XCH1,
@@ -993,7 +993,7 @@ typedef struct {
 
 #if defined(_ADC_SINGLECTRL_NEGSEL_MASK)
   /** Select negative input for single channel conversion mode. Negative input is grounded
-      for single-ended (non-differential) converison.  */
+      for single-ended (non-differential) conversion.  */
   ADC_NegSel_TypeDef            negSel;
 #endif
 

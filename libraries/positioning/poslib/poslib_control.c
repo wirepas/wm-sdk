@@ -387,23 +387,24 @@ static poslib_ret_e check_role(poslib_settings_t * settings)
  */
 {
     app_lib_settings_role_t role;
-    uint8_t base_role;
     uint8_t poslib_mode = settings->node_mode;
     lib_settings->getNodeRole(&role);
-    base_role = app_lib_settings_get_base_role(role);
 
     switch (poslib_mode)
     {
         case POSLIB_MODE_AUTOSCAN_ANCHOR:
         case POSLIB_MODE_OPPORTUNISTIC_ANCHOR:
         {
-            bool valid = (base_role == APP_LIB_SETTINGS_ROLE_HEADNODE) || 
-                    (base_role == APP_LIB_SETTINGS_ROLE_SINK) ||
-                    (base_role == APP_LIB_SETTINGS_ROLE_SUBNODE && settings->mbcn.enabled);
+            bool valid = (role == APP_LIB_SETTINGS_ROLE_HEADNODE_LL) ||
+                         (role == APP_LIB_SETTINGS_ROLE_HEADNODE_LE) ||
+                         (role == APP_LIB_SETTINGS_ROLE_SINK_LL) ||
+                         (role == APP_LIB_SETTINGS_ROLE_SINK_LE) ||
+                         (role == APP_LIB_SETTINGS_ROLE_SUBNODE_LE && settings->mbcn.enabled) ||
+                         (role == APP_LIB_SETTINGS_ROLE_SUBNODE_LL && settings->mbcn.enabled) ;
 
             if (!valid)
             {
-                LOG(LVL_ERROR, "Anchor mode: %u but role: %u", poslib_mode, base_role);
+                LOG(LVL_ERROR, "Anchor mode: %u but role: %u", poslib_mode, role);
                 return POS_RET_INVALID_PARAM; 
             }
             break;
@@ -411,25 +412,26 @@ static poslib_ret_e check_role(poslib_settings_t * settings)
         case POSLIB_MODE_NRLS_TAG:
         case POSLIB_MODE_AUTOSCAN_TAG:
         {
-            if (base_role != APP_LIB_SETTINGS_ROLE_SUBNODE)
+            if (role != APP_LIB_SETTINGS_ROLE_SUBNODE_LE &&
+                role != APP_LIB_SETTINGS_ROLE_SUBNODE_LL)
             {
-                LOG(LVL_ERROR, "Tag mode: %u but role: %u", poslib_mode, base_role);
+                LOG(LVL_ERROR, "Tag mode: %u but role: %u", poslib_mode, role);
                 return POS_RET_INVALID_PARAM;
             }
             break;
         }
         case POSLIB_MODE_DA_TAG:
         {
-            if (base_role != APP_LIB_SETTINGS_ROLE_ADVERTISER)
+            if (role != APP_LIB_SETTINGS_ROLE_ADVERTISER)
             {
-                LOG(LVL_ERROR, "DA Tag mode: %u but role: %u", poslib_mode, base_role);
+                LOG(LVL_ERROR, "DA Tag mode: %u but role: %u", poslib_mode, role);
                 return POS_RET_INVALID_PARAM;
             }
             break;
         }
         default:
          {
-            LOG(LVL_ERROR, "Unknown node mode: %u, role: %u", poslib_mode, base_role);
+            LOG(LVL_ERROR, "Unknown node mode: %u, role: %u", poslib_mode, role);
             return POS_RET_INVALID_PARAM;
             break;
          }
@@ -793,32 +795,35 @@ poslib_measurements_e get_meas_type()
 
 static void get_node_info(poslib_meas_record_node_info_t * node_info)
 {
-    uint32_t * features = &node_info->features;
+    uint32_t features = node_info->features;
     node_info->node_class = m_pos_settings.node_class;
     node_info->node_mode = m_pos_settings.node_mode;
     node_info->update_s = get_update_period();
 
-    *features = POSLIB_NODE_INFO_FEATURES_VERSION & POSLIB_NODE_INFO_MASK_VERSION;  
+    features = POSLIB_NODE_INFO_FEATURES_VERSION & POSLIB_NODE_INFO_MASK_VERSION;  
     if (m_pos_settings.motion.enabled)
     {
-        *features |= POSLIB_NODE_INFO_FLAG_MOTION_EN;
+        features |= POSLIB_NODE_INFO_FLAG_MOTION_EN;
     }
     if (m_ctrl.events.is_static)
     {
-        *features |= POSLIB_NODE_INFO_FLAG_IS_STATIC;
+        features |= POSLIB_NODE_INFO_FLAG_IS_STATIC;
     }
     if (PosLibBle_getEddystoneStatus())
     {
-        *features |= POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON;
+        features |= POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON;
     }
     if (PosLibBle_getiBeaconStatus())
     {
-        *features |= POSLIB_NODE_INFO_FLAG_IBEACON_ON;
+        features |= POSLIB_NODE_INFO_FLAG_IBEACON_ON;
     }
     if(m_pos_settings.da.routing_enabled)
     {
-        *features |= POSLIB_NODE_INFO_FLAG_MBCN_ON; 
+        features |= POSLIB_NODE_INFO_FLAG_MBCN_ON; 
     }
+
+    node_info->features = features;
+
     LOG(LVL_DEBUG, "Node info feature: %x en: %u", node_info->features, m_pos_settings.motion.enabled); 
 }
 

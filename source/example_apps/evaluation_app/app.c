@@ -696,10 +696,7 @@ void App_init(const app_global_functions_t * functions)
      * Default is low-energy.
      */
 #ifdef ENABLE_LOW_LATENCY_MODE
-    lib_settings->setNodeRole(
-            app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE,
-                                         APP_LIB_SETTINGS_ROLE_FLAG_LL |
-                                         APP_LIB_SETTINGS_ROLE_FLAG_AUTOROLE));
+    lib_settings->setNodeRole(APP_LIB_SETTINGS_ROLE_AUTOROLE_LL);
 #endif
     /* Set up LED. */
     Led_init();

@@ -49,10 +49,14 @@ extern "C" {
 /*******************************************************************************
  *******************************   DEFINES   ***********************************
  ******************************************************************************/
-#if defined(_EMU_STATUS_VSCALE_MASK) \
+#if (defined(_EMU_STATUS_VSCALE_MASK) || defined(_EMU_CTRL_EM23VSCALE_MASK)) \
   && !defined(_SILICON_LABS_GECKO_INTERNAL_SDID_200)
 /** Voltage scaling present */
 #define EMU_VSCALE_PRESENT
+#if !defined(_SILICON_LABS_32B_SERIES_2_CONFIG_5)
+/** Voltage scaling for EM01 present */
+#define EMU_VSCALE_EM01_PRESENT
+#endif
 #endif
 
 /*******************************************************************************
@@ -219,6 +223,7 @@ typedef enum {
 #endif
 } EMU_DcdcMode_TypeDef;
 
+/** DCDC operating modes in EM2 or EM3. */
 typedef enum {
   /** DCDC mode is low power. */
   emuDcdcModeEM23_LowPower = EMU_DCDCCTRL_DCDCMODEEM23_EM23LOWPOWER,
@@ -332,38 +337,38 @@ typedef enum {
   emuDcdcTonMaxTimeout_1P75us = _DCDC_CTRL_IPKTMAXCTRL_TMAX_1P75us, /**< Ton max is 1.75us. */
   emuDcdcTonMaxTimeout_2P03us = _DCDC_CTRL_IPKTMAXCTRL_TMAX_2P03us  /**< Ton max is 2.03us. */
 #else
-  emuDcdcTonMaxTimeout_Off    = 0,  /**< Ton max off.       */
-  emuDcdcTonMaxTimeout_0P14us = 1,
-  emuDcdcTonMaxTimeout_0P21us = 2,
-  emuDcdcTonMaxTimeout_0P28us = 3,
-  emuDcdcTonMaxTimeout_0P35us = 4,
-  emuDcdcTonMaxTimeout_0P42us = 5,
-  emuDcdcTonMaxTimeout_0P49us = 6,
-  emuDcdcTonMaxTimeout_0P56us = 7,
-  emuDcdcTonMaxTimeout_0P63us = 8,
-  emuDcdcTonMaxTimeout_0P70us = 9,
-  emuDcdcTonMaxTimeout_0P77us = 10,
-  emuDcdcTonMaxTimeout_0P84us = 11,
-  emuDcdcTonMaxTimeout_0P91us = 12,
-  emuDcdcTonMaxTimeout_0P98us = 13,
-  emuDcdcTonMaxTimeout_1P05us = 14,
-  emuDcdcTonMaxTimeout_1P12us = 15,
-  emuDcdcTonMaxTimeout_1P19us = 16,
-  emuDcdcTonMaxTimeout_1P26us = 17,
-  emuDcdcTonMaxTimeout_1P33us = 18,
-  emuDcdcTonMaxTimeout_1P40us = 19,
-  emuDcdcTonMaxTimeout_1P47us = 20,
-  emuDcdcTonMaxTimeout_1P54us = 21,
-  emuDcdcTonMaxTimeout_1P61us = 22,
-  emuDcdcTonMaxTimeout_1P68us = 23,
-  emuDcdcTonMaxTimeout_1P75us = 24,
-  emuDcdcTonMaxTimeout_1P82us = 25,
-  emuDcdcTonMaxTimeout_1P89us = 26,
-  emuDcdcTonMaxTimeout_1P96us = 27,
-  emuDcdcTonMaxTimeout_2P03us = 28,
-  emuDcdcTonMaxTimeout_2P10us = 29,
-  emuDcdcTonMaxTimeout_2P17us = 30,
-  emuDcdcTonMaxTimeout_2P24us = 31
+  emuDcdcTonMaxTimeout_Off    = 0, /**< Ton max off.       */
+  emuDcdcTonMaxTimeout_0P14us = 1, /**< Ton max is 0.14us. */
+  emuDcdcTonMaxTimeout_0P21us = 2, /**< Ton max is 0.21us. */
+  emuDcdcTonMaxTimeout_0P28us = 3, /**< Ton max is 0.28us. */
+  emuDcdcTonMaxTimeout_0P35us = 4, /**< Ton max is 0.35us. */
+  emuDcdcTonMaxTimeout_0P42us = 5, /**< Ton max is 0.42us. */
+  emuDcdcTonMaxTimeout_0P49us = 6, /**< Ton max is 0.49us. */
+  emuDcdcTonMaxTimeout_0P56us = 7, /**< Ton max is 0.56us. */
+  emuDcdcTonMaxTimeout_0P63us = 8, /**< Ton max is 0.63us. */
+  emuDcdcTonMaxTimeout_0P70us = 9, /**< Ton max is 0.70us. */
+  emuDcdcTonMaxTimeout_0P77us = 10, /**< Ton max is 0.77us. */
+  emuDcdcTonMaxTimeout_0P84us = 11, /**< Ton max is 0.84us. */
+  emuDcdcTonMaxTimeout_0P91us = 12, /**< Ton max is 0.91us. */
+  emuDcdcTonMaxTimeout_0P98us = 13, /**< Ton max is 0.98us. */
+  emuDcdcTonMaxTimeout_1P05us = 14, /**< Ton max is 1.05us. */
+  emuDcdcTonMaxTimeout_1P12us = 15, /**< Ton max is 1.12us. */
+  emuDcdcTonMaxTimeout_1P19us = 16, /**< Ton max is 1.19us. */
+  emuDcdcTonMaxTimeout_1P26us = 17, /**< Ton max is 1.26us. */
+  emuDcdcTonMaxTimeout_1P33us = 18, /**< Ton max is 1.33us. */
+  emuDcdcTonMaxTimeout_1P40us = 19, /**< Ton max is 1.40us. */
+  emuDcdcTonMaxTimeout_1P47us = 20, /**< Ton max is 1.47us. */
+  emuDcdcTonMaxTimeout_1P54us = 21, /**< Ton max is 1.54us. */
+  emuDcdcTonMaxTimeout_1P61us = 22, /**< Ton max is 1.61us. */
+  emuDcdcTonMaxTimeout_1P68us = 23, /**< Ton max is 1.68us. */
+  emuDcdcTonMaxTimeout_1P75us = 24, /**< Ton max is 1.75us. */
+  emuDcdcTonMaxTimeout_1P82us = 25, /**< Ton max is 1.82us. */
+  emuDcdcTonMaxTimeout_1P89us = 26, /**< Ton max is 1.89us. */
+  emuDcdcTonMaxTimeout_1P96us = 27, /**< Ton max is 1.96us. */
+  emuDcdcTonMaxTimeout_2P03us = 28, /**< Ton max is 2.03us. */
+  emuDcdcTonMaxTimeout_2P10us = 29, /**< Ton max is 2.10us. */
+  emuDcdcTonMaxTimeout_2P17us = 30, /**< Ton max is 2.17us. */
+  emuDcdcTonMaxTimeout_2P24us = 31  /**< Ton max is 2.24us. */
 #endif
 } EMU_DcdcTonMaxTimeout_TypeDef;
 
@@ -435,7 +440,7 @@ typedef enum {
 } EMU_BiasMode_TypeDef;
 #endif
 
-#if defined(EMU_VSCALE_PRESENT)
+#if defined(EMU_VSCALE_EM01_PRESENT)
 /** Supported EM0/1 Voltage Scaling Levels. */
 typedef enum {
   /** High-performance voltage level. HF clock can be set to any frequency. */
@@ -461,7 +466,7 @@ typedef enum {
   emuVScaleEM23_FastWakeup      = _EMU_CTRL_EM23VSCALE_VSCALE2,
   /** Low-power optimized voltage level. Using this voltage level in EM2 and 3
       adds approximately 30 us to wakeup time if EM0 and 1 voltage must be scaled
-      up to @ref emuVScaleEM01_HighPerformance on EM2 or 3 exit. */
+      up to emuVScaleEM01_HighPerformance on EM2 or 3 exit. */
   emuVScaleEM23_LowPower        = _EMU_CTRL_EM23VSCALE_VSCALE0,
 } EMU_VScaleEM23_TypeDef;
 #endif
@@ -611,16 +616,14 @@ typedef enum {
  *******************************   STRUCTS   ***********************************
  ******************************************************************************/
 
-#if defined(EMU_VSCALE_PRESENT)
+#if defined(EMU_VSCALE_EM01_PRESENT)
 /** EM0 and 1 initialization structure. Voltage scaling is applied when
     the core clock frequency is changed from @ref cmu. EM0 and 1 emuVScaleEM01_HighPerformance
     is always enabled. */
 typedef struct {
   bool  vScaleEM01LowPowerVoltageEnable; /**< EM0/1 low power voltage status. */
 } EMU_EM01Init_TypeDef;
-#endif
 
-#if defined(EMU_VSCALE_PRESENT)
 /** Default initialization of EM0 and 1 configuration. */
 #define EMU_EM01INIT_DEFAULT                                                              \
   {                                                                                       \
@@ -772,7 +775,7 @@ typedef struct {
 /** Default Backup Power Domain configuration. */
 #define EMU_BUINIT_DEFAULT                                                               \
   {                                                                                      \
-    false,                   /* MAIN-BU Comparator is not disabloed */                   \
+    false,                   /* MAIN-BU Comparator is not disabled */                    \
     emuBuBuInactPwrCon_None, /* No power connection wen not in backup mode */            \
     emuBuBuActPwrCon_None,   /* No power connection when in backup mode */               \
     emuBuPwrRes_Res0,        /* RES0 series resistance between main and backup power. */ \
@@ -822,8 +825,19 @@ typedef struct {
     emuDcdcPeakCurrent_Load36mA,   /**< Default peak current in EM0/1. */    \
     emuDcdcPeakCurrent_Load36mA    /**< Default peak current in EM2/3. */    \
   }
+#elif defined(_SILICON_LABS_32B_SERIES_2_CONFIG_4) || defined(_SILICON_LABS_32B_SERIES_2_CONFIG_5)
+#define EMU_DCDCINIT_DEFAULT                                                 \
+  {                                                                          \
+    emuDcdcMode_Regulation,        /**< DCDC regulator on. */                \
+    emuVreginCmpThreshold_2v3,     /**< 2.3V VREGIN comparator threshold. */ \
+    emuDcdcTonMaxTimeout_1P19us,   /**< Ton max is 1.19us. */                \
+    emuDcdcDriveSpeed_Default,     /**< Default efficiency in EM0/1. */      \
+    emuDcdcDriveSpeed_Default,     /**< Default efficiency in EM2/3. */      \
+    emuDcdcPeakCurrent_Load60mA,   /**< Default peak current in EM0/1. */    \
+    emuDcdcPeakCurrent_Load36mA    /**< Default peak current in EM2/3. */    \
+  }
 #endif
-#endif
+#endif /* _DCDC_CTRL_MASK */
 
 #if defined(_EMU_DCDCCTRL_MASK)
 /** DCDC initialization structure. */
@@ -869,6 +883,20 @@ typedef struct {
     emuDcdcAnaPeripheralPower_DCDC,/* Select DCDC as analog power supply (lower power). */ \
     emuDcdcLnHighEfficiency,     /* Use high-efficiency mode. */                           \
     emuDcdcLnCompCtrl_1u0F,      /* 1uF DCDC capacitor. */                                 \
+  }
+#elif defined(WGM160PX22KGA2)
+#define EMU_DCDCINIT_DEFAULT                                                         \
+  {                                                                                  \
+    emuPowerConfig_DcdcToDvdd,   /* DCDC to DVDD. */                                 \
+    emuDcdcMode_LowNoise,        /* Low-noise mode in EM0. */                        \
+    1800,                        /* Nominal output voltage for DVDD mode, 1.8V.  */  \
+    5,                           /* Nominal EM0/1 load current of less than 5mA. */  \
+    10,                          /* Nominal EM2/3/4 load current less than 10uA.  */ \
+    200, /* Maximum average current of 200mA
+            (assume strong battery or other power source). */                 \
+    emuDcdcAnaPeripheralPower_AVDD,/* Select AVDD as analog power supply). */ \
+    emuDcdcLnHighEfficiency,     /* Use high-efficiency mode. */              \
+    emuDcdcLnCompCtrl_4u7F,      /* 4.7uF DCDC capacitor. */                  \
   }
 #else
 #define EMU_DCDCINIT_DEFAULT                                                         \
@@ -967,19 +995,23 @@ typedef struct {
  *****************************   PROTOTYPES   **********************************
  ******************************************************************************/
 
-#if defined(EMU_VSCALE_PRESENT)
+#if defined(EMU_VSCALE_EM01_PRESENT)
 void EMU_EM01Init(const EMU_EM01Init_TypeDef *em01Init);
 #endif
 void EMU_EM23Init(const EMU_EM23Init_TypeDef *em23Init);
 void EMU_EM23PresleepHook(void);
 void EMU_EM23PostsleepHook(void);
-#if defined(_EMU_EM4CONF_MASK) || defined(_EMU_EM4CTRL_MASK)
-void EMU_EM4Init(const EMU_EM4Init_TypeDef *em4Init);
-#endif
+void EMU_EFPEM23PresleepHook(void);
+void EMU_EFPEM23PostsleepHook(void);
 void EMU_EnterEM2(bool restore);
 void EMU_EnterEM3(bool restore);
 void EMU_Save(void);
 void EMU_Restore(void);
+#if defined(_EMU_EM4CONF_MASK) || defined(_EMU_EM4CTRL_MASK)
+void EMU_EM4Init(const EMU_EM4Init_TypeDef *em4Init);
+#endif
+void EMU_EM4PresleepHook(void);
+void EMU_EFPEM4PresleepHook(void);
 void EMU_EnterEM4(void);
 #if defined(_EMU_EM4CTRL_MASK)
 void EMU_EnterEM4H(void);
@@ -992,7 +1024,10 @@ void EMU_RamPowerUp(void);
 void EMU_PeripheralRetention(EMU_PeripheralRetention_TypeDef periMask, bool enable);
 #endif
 void EMU_UpdateOscConfig(void);
-#if defined(EMU_VSCALE_PRESENT)
+#if defined(EMU_VSCALE_EM01_PRESENT)
+#if defined(_SILICON_LABS_32B_SERIES_2)
+void EMU_EFPEM01VScale(EMU_VScaleEM01_TypeDef voltage);
+#endif
 void EMU_VScaleEM01ByClock(uint32_t clockFrequency, bool wait);
 void EMU_VScaleEM01(EMU_VScaleEM01_TypeDef voltage, bool wait);
 #endif
@@ -1035,14 +1070,14 @@ void EMU_DCDCModeSet(EMU_DcdcMode_TypeDef dcdcMode);
 void EMU_DCDCModeEM23Set(EMU_DcdcModeEM23_TypeDef dcdcModeEM23);
 #endif
 bool EMU_DCDCPowerOff(void);
+#if defined(_DCDC_EM01CTRL0_IPKVAL_MASK)
+void EMU_EM01PeakCurrentSet(const EMU_DcdcPeakCurrent_TypeDef peakCurrentEM01);
+#endif
 #if defined(_DCDC_PFMXCTRL_IPKVAL_MASK)
 void EMU_DCDCSetPFMXModePeakCurrent(uint32_t value);
 #endif
 #if defined(_DCDC_PFMXCTRL_IPKTMAXCTRL_MASK)
 void EMU_DCDCSetPFMXTimeoutMaxCtrl(EMU_DcdcTonMaxTimeout_TypeDef value);
-#endif
-#if defined(_DCDC_EM01CTRL0_IPKVAL_MASK)
-void EMU_EM01PeakCurrentSet(const EMU_DcdcPeakCurrent_TypeDef peakCurrentEM01);
 #endif
 
 #if !defined(_DCDC_CTRL_MASK)
@@ -1058,8 +1093,20 @@ void EMU_VmonHystInit(const EMU_VmonHystInit_TypeDef *vmonInit);
 void EMU_VmonEnable(EMU_VmonChannel_TypeDef channel, bool enable);
 bool EMU_VmonChannelStatusGet(EMU_VmonChannel_TypeDef channel);
 #endif
+#if defined(_SILICON_LABS_GECKO_INTERNAL_SDID_80)
+void EMU_SetBiasMode(EMU_BiasMode_TypeDef mode);
+#endif
 #if defined(_EMU_TEMP_TEMP_MASK)
 float EMU_TemperatureGet(void);
+#endif
+#if defined(EMU_CTRL_EFPDIRECTMODEEN)
+void EMU_EFPDirectModeEnable(bool enable);
+#endif
+#if defined(EMU_CTRL_EFPDRVDECOUPLE)
+void EMU_EFPDriveDecoupleSet(bool enable);
+#endif
+#if defined(EMU_CTRL_EFPDRVDVDD)
+void EMU_EFPDriveDvddSet(bool enable);
 #endif
 
 #if defined(_DCDC_CTRL_MASK)
@@ -1131,7 +1178,7 @@ __STATIC_INLINE void EMU_EnterEM1(void)
   __WFI();
 }
 
-#if defined(EMU_VSCALE_PRESENT)
+#if defined(EMU_VSCALE_EM01_PRESENT)
 /***************************************************************************//**
  * @brief
  *   Wait for voltage scaling to complete.
@@ -1150,7 +1197,7 @@ __STATIC_INLINE void EMU_VScaleWait(void)
 }
 #endif
 
-#if defined(EMU_VSCALE_PRESENT)
+#if defined(EMU_VSCALE_EM01_PRESENT)
 /***************************************************************************//**
  * @brief
  *   Get current voltage scaling level.
@@ -1189,7 +1236,7 @@ __STATIC_INLINE bool EMU_VmonStatusGet(void)
  *
  * @param[in] flags
  *   Pending EMU interrupt sources to clear. Use one or more valid
- *   interrupt flags for the EMU module (EMU_IFC_nnn).
+ *   interrupt flags for the EMU module (EMU_IFC_nnn or EMU_IF_nnn).
  ******************************************************************************/
 __STATIC_INLINE void EMU_IntClear(uint32_t flags)
 {
@@ -1238,6 +1285,56 @@ __STATIC_INLINE void EMU_IntEnable(uint32_t flags)
   EMU->IEN |= flags;
 #endif
 }
+
+#if defined(EMU_CTRL_EFPDRVDVDD)
+/***************************************************************************//**
+ * @brief
+ *   Enable EFP interrupts.
+ *
+ * @param[in] flags
+ *   Enable/disable EFP interrupts.
+ ******************************************************************************/
+__STATIC_INLINE void EMU_EFPIntEnable(uint32_t flags)
+{
+#if defined(EMU_HAS_SET_CLEAR)
+  EMU->EFPIEN_SET = flags;
+#else
+  EMU->EFPIEN |= flags;
+#endif
+}
+
+/***************************************************************************//**
+ * @brief
+ *   Get pending EMU EFP interrupt flags.
+ *
+ * @note
+ *   Event bits are not cleared by the use of this function.
+ *
+ * @return
+ *   EMU EFP interrupt sources pending. .
+ ******************************************************************************/
+__STATIC_INLINE uint32_t EMU_EFPIntGet(void)
+{
+  return EMU->EFPIF;
+}
+
+/***************************************************************************//**
+ * @brief
+ *   Clear one or more pending EMU EFP interrupts.
+ *
+ * @param[in] flags
+ *   Pending EMU EFP interrupt sources to clear. Use one or more valid
+ *   interrupt flags for the EMU EFP module.
+ ******************************************************************************/
+__STATIC_INLINE void EMU_EFPIntClear(uint32_t flags)
+{
+#if defined(EMU_HAS_SET_CLEAR)
+  EMU->EFPIF_CLR = flags;
+#else
+  EMU->EFPIFC = flags;
+#endif
+}
+#endif
 
 /***************************************************************************//**
  * @brief
@@ -1438,7 +1535,7 @@ __STATIC_INLINE bool EMU_TemperatureReady(void)
 #if defined(_EMU_TEMP_TEMPAVG_MASK)
 /***************************************************************************//**
  * @brief
- *   Get averaged temperature in degrees Celcius
+ *   Get averaged temperature in degrees Celsius.
  *
  * @note
  *   An averaged temperature measurement must first be requested by calling
@@ -1457,14 +1554,14 @@ __STATIC_INLINE float EMU_TemperatureAvgGet(void)
 
 /***************************************************************************//**
  * @brief
- *   Request averaged temperature
+ *   Request averaged temperature.
  *
  * @note
- *   EMU must be unlocked, by calling @ref EMU_Unlock(), before this function
+ *   EMU must be unlocked by calling @ref EMU_Unlock() before this function
  *   can be called.
  *
  * @param[in] numSamples
- *   Number of temeprature samples to average
+ *   Number of temperature samples to average
  ******************************************************************************/
 __STATIC_INLINE void EMU_TemperatureAvgRequest(EMU_TempAvgNum_TypeDef numSamples)
 {
@@ -1474,10 +1571,6 @@ __STATIC_INLINE void EMU_TemperatureAvgRequest(EMU_TempAvgNum_TypeDef numSamples
 
 #endif //defined(_EMU_TEMP_TEMPAVG_MASK)
 #endif //defined(_EMU_TEMP_TEMP_MASK)
-
-#if defined(_SILICON_LABS_GECKO_INTERNAL_SDID_80)
-void EMU_SetBiasMode(EMU_BiasMode_TypeDef mode);
-#endif
 
 /** @} (end addtogroup emu) */
 

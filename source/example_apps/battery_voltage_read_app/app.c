@@ -122,7 +122,7 @@ static bool encode_voltage_in_cbor(uint64_t value)
  * @note    Only for backward compatibility with WNT Client
  * node voltage visualisation feature and WNT API.
  */
-static app_res_e send_voltage_to_wnt(void)
+static app_lib_data_send_res_e send_voltage_to_wnt(void)
 {
     cbor_encoder_close_container(&m_encoder, &m_mapEncoder);
     /* Send packet. */
@@ -170,7 +170,7 @@ uint32_t measure_voltage(void)
         /* Generate and send packet. */
         if (encode_voltage_in_cbor(avg))
         {
-            if(send_voltage_to_wnt() != APP_RES_OK)
+            if(send_voltage_to_wnt() != APP_LIB_DATA_SEND_RES_SUCCESS)
             {
                 LOG(LVL_ERROR, "Could not send batt voltage");
             }

@@ -3,7 +3,7 @@
  * @brief EFR32MG22 I2C register and bit field definitions
  ******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories, Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories, Inc. www.silabs.com</b>
  ******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -50,8 +50,8 @@ typedef struct {
   __IM uint32_t  STATE;                         /**< State Register                                     */
   __IM uint32_t  STATUS;                        /**< Status Register                                    */
   __IOM uint32_t CLKDIV;                        /**< Clock Division Register                            */
-  __IOM uint32_t SADDR;                         /**< Slave Address Register                             */
-  __IOM uint32_t SADDRMASK;                     /**< Slave Address Mask Register                        */
+  __IOM uint32_t SADDR;                         /**< Follower Address Register                          */
+  __IOM uint32_t SADDRMASK;                     /**< Follower Address Mask Register                     */
   __IM uint32_t  RXDATA;                        /**< Receive Buffer Data Register                       */
   __IM uint32_t  RXDOUBLE;                      /**< Receive Buffer Double Data Register                */
   __IM uint32_t  RXDATAP;                       /**< Receive Buffer Data Peek Register                  */
@@ -68,8 +68,8 @@ typedef struct {
   __IM uint32_t  STATE_SET;                     /**< State Register                                     */
   __IM uint32_t  STATUS_SET;                    /**< Status Register                                    */
   __IOM uint32_t CLKDIV_SET;                    /**< Clock Division Register                            */
-  __IOM uint32_t SADDR_SET;                     /**< Slave Address Register                             */
-  __IOM uint32_t SADDRMASK_SET;                 /**< Slave Address Mask Register                        */
+  __IOM uint32_t SADDR_SET;                     /**< Follower Address Register                          */
+  __IOM uint32_t SADDRMASK_SET;                 /**< Follower Address Mask Register                     */
   __IM uint32_t  RXDATA_SET;                    /**< Receive Buffer Data Register                       */
   __IM uint32_t  RXDOUBLE_SET;                  /**< Receive Buffer Double Data Register                */
   __IM uint32_t  RXDATAP_SET;                   /**< Receive Buffer Data Peek Register                  */
@@ -86,8 +86,8 @@ typedef struct {
   __IM uint32_t  STATE_CLR;                     /**< State Register                                     */
   __IM uint32_t  STATUS_CLR;                    /**< Status Register                                    */
   __IOM uint32_t CLKDIV_CLR;                    /**< Clock Division Register                            */
-  __IOM uint32_t SADDR_CLR;                     /**< Slave Address Register                             */
-  __IOM uint32_t SADDRMASK_CLR;                 /**< Slave Address Mask Register                        */
+  __IOM uint32_t SADDR_CLR;                     /**< Follower Address Register                          */
+  __IOM uint32_t SADDRMASK_CLR;                 /**< Follower Address Mask Register                     */
   __IM uint32_t  RXDATA_CLR;                    /**< Receive Buffer Data Register                       */
   __IM uint32_t  RXDOUBLE_CLR;                  /**< Receive Buffer Double Data Register                */
   __IM uint32_t  RXDATAP_CLR;                   /**< Receive Buffer Data Peek Register                  */
@@ -104,8 +104,8 @@ typedef struct {
   __IM uint32_t  STATE_TGL;                     /**< State Register                                     */
   __IM uint32_t  STATUS_TGL;                    /**< Status Register                                    */
   __IOM uint32_t CLKDIV_TGL;                    /**< Clock Division Register                            */
-  __IOM uint32_t SADDR_TGL;                     /**< Slave Address Register                             */
-  __IOM uint32_t SADDRMASK_TGL;                 /**< Slave Address Mask Register                        */
+  __IOM uint32_t SADDR_TGL;                     /**< Follower Address Register                          */
+  __IOM uint32_t SADDRMASK_TGL;                 /**< Follower Address Mask Register                     */
   __IM uint32_t  RXDATA_TGL;                    /**< Receive Buffer Data Register                       */
   __IM uint32_t  RXDOUBLE_TGL;                  /**< Receive Buffer Double Data Register                */
   __IM uint32_t  RXDATAP_TGL;                   /**< Receive Buffer Data Peek Register                  */
@@ -157,7 +157,7 @@ typedef struct {
 #define I2C_CTRL_CORERST_DEFAULT            (_I2C_CTRL_CORERST_DEFAULT << 0)            /**< Shifted mode DEFAULT for I2C_CTRL           */
 #define I2C_CTRL_CORERST_DISABLE            (_I2C_CTRL_CORERST_DISABLE << 0)            /**< Shifted mode DISABLE for I2C_CTRL           */
 #define I2C_CTRL_CORERST_ENABLE             (_I2C_CTRL_CORERST_ENABLE << 0)             /**< Shifted mode ENABLE for I2C_CTRL            */
-#define I2C_CTRL_SLAVE                      (0x1UL << 1)                                /**< Addressable as Slave                        */
+#define I2C_CTRL_SLAVE                      (0x1UL << 1)                                /**< Addressable as Follower                     */
 #define _I2C_CTRL_SLAVE_SHIFT               1                                           /**< Shift value for I2C_SLAVE                   */
 #define _I2C_CTRL_SLAVE_MASK                0x2UL                                       /**< Bit mask for I2C_SLAVE                      */
 #define _I2C_CTRL_SLAVE_DEFAULT             0x00000000UL                                /**< Mode DEFAULT for I2C_CTRL                   */
@@ -338,7 +338,7 @@ typedef struct {
 #define _I2C_STATE_BUSY_MASK                0x1UL                                       /**< Bit mask for I2C_BUSY                       */
 #define _I2C_STATE_BUSY_DEFAULT             0x00000001UL                                /**< Mode DEFAULT for I2C_STATE                  */
 #define I2C_STATE_BUSY_DEFAULT              (_I2C_STATE_BUSY_DEFAULT << 0)              /**< Shifted mode DEFAULT for I2C_STATE          */
-#define I2C_STATE_MASTER                    (0x1UL << 1)                                /**< Master                                      */
+#define I2C_STATE_MASTER                    (0x1UL << 1)                                /**< Leader                                      */
 #define _I2C_STATE_MASTER_SHIFT             1                                           /**< Shift value for I2C_MASTER                  */
 #define _I2C_STATE_MASTER_MASK              0x2UL                                       /**< Bit mask for I2C_MASTER                     */
 #define _I2C_STATE_MASTER_DEFAULT           0x00000000UL                                /**< Mode DEFAULT for I2C_STATE                  */
@@ -562,7 +562,7 @@ typedef struct {
 #define _I2C_IF_NACK_MASK                   0x80UL                                      /**< Bit mask for I2C_NACK                       */
 #define _I2C_IF_NACK_DEFAULT                0x00000000UL                                /**< Mode DEFAULT for I2C_IF                     */
 #define I2C_IF_NACK_DEFAULT                 (_I2C_IF_NACK_DEFAULT << 7)                 /**< Shifted mode DEFAULT for I2C_IF             */
-#define I2C_IF_MSTOP                        (0x1UL << 8)                                /**< Master STOP Condition Interrupt Flag        */
+#define I2C_IF_MSTOP                        (0x1UL << 8)                                /**< Leader STOP Condition Interrupt Flag        */
 #define _I2C_IF_MSTOP_SHIFT                 8                                           /**< Shift value for I2C_MSTOP                   */
 #define _I2C_IF_MSTOP_MASK                  0x100UL                                     /**< Bit mask for I2C_MSTOP                      */
 #define _I2C_IF_MSTOP_DEFAULT               0x00000000UL                                /**< Mode DEFAULT for I2C_IF                     */
@@ -602,7 +602,7 @@ typedef struct {
 #define _I2C_IF_CLTO_MASK                   0x8000UL                                    /**< Bit mask for I2C_CLTO                       */
 #define _I2C_IF_CLTO_DEFAULT                0x00000000UL                                /**< Mode DEFAULT for I2C_IF                     */
 #define I2C_IF_CLTO_DEFAULT                 (_I2C_IF_CLTO_DEFAULT << 15)                /**< Shifted mode DEFAULT for I2C_IF             */
-#define I2C_IF_SSTOP                        (0x1UL << 16)                               /**< Slave STOP condition Interrupt Flag         */
+#define I2C_IF_SSTOP                        (0x1UL << 16)                               /**< Follower STOP condition Interrupt Flag      */
 #define _I2C_IF_SSTOP_SHIFT                 16                                          /**< Shift value for I2C_SSTOP                   */
 #define _I2C_IF_SSTOP_MASK                  0x10000UL                                   /**< Bit mask for I2C_SSTOP                      */
 #define _I2C_IF_SSTOP_DEFAULT               0x00000000UL                                /**< Mode DEFAULT for I2C_IF                     */
@@ -671,7 +671,7 @@ typedef struct {
 #define _I2C_IEN_NACK_MASK                  0x80UL                                      /**< Bit mask for I2C_NACK                       */
 #define _I2C_IEN_NACK_DEFAULT               0x00000000UL                                /**< Mode DEFAULT for I2C_IEN                    */
 #define I2C_IEN_NACK_DEFAULT                (_I2C_IEN_NACK_DEFAULT << 7)                /**< Shifted mode DEFAULT for I2C_IEN            */
-#define I2C_IEN_MSTOP                       (0x1UL << 8)                                /**< Master STOP Condition Interrupt Flag        */
+#define I2C_IEN_MSTOP                       (0x1UL << 8)                                /**< Leader STOP Condition Interrupt Flag        */
 #define _I2C_IEN_MSTOP_SHIFT                8                                           /**< Shift value for I2C_MSTOP                   */
 #define _I2C_IEN_MSTOP_MASK                 0x100UL                                     /**< Bit mask for I2C_MSTOP                      */
 #define _I2C_IEN_MSTOP_DEFAULT              0x00000000UL                                /**< Mode DEFAULT for I2C_IEN                    */
@@ -711,7 +711,7 @@ typedef struct {
 #define _I2C_IEN_CLTO_MASK                  0x8000UL                                    /**< Bit mask for I2C_CLTO                       */
 #define _I2C_IEN_CLTO_DEFAULT               0x00000000UL                                /**< Mode DEFAULT for I2C_IEN                    */
 #define I2C_IEN_CLTO_DEFAULT                (_I2C_IEN_CLTO_DEFAULT << 15)               /**< Shifted mode DEFAULT for I2C_IEN            */
-#define I2C_IEN_SSTOP                       (0x1UL << 16)                               /**< Slave STOP condition Interrupt Flag         */
+#define I2C_IEN_SSTOP                       (0x1UL << 16)                               /**< Follower STOP condition Interrupt Flag      */
 #define _I2C_IEN_SSTOP_SHIFT                16                                          /**< Shift value for I2C_SSTOP                   */
 #define _I2C_IEN_SSTOP_MASK                 0x10000UL                                   /**< Bit mask for I2C_SSTOP                      */
 #define _I2C_IEN_SSTOP_DEFAULT              0x00000000UL                                /**< Mode DEFAULT for I2C_IEN                    */

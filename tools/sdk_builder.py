@@ -13,15 +13,16 @@ import hashlib
 from sdk_explorer import SDKExplorer
 
 
-def build_single_app(root_folder, app_name, board, app_only=False, extra_build_args=None):
+def build_single_app(root_folder, app_name, board, app_only=False, config=None, extra_build_args=None):
     """Build a given application
 
     Args:
         root_folder: root_folder of sdk
         app_name: name of the app to build
         board: board to build
-        full_image: True to build all final images and otap files. False to only build app binary
-        xtra_build_args: list of args to append to the make cmd
+        app_only: False to build all final images and otap files. True to only build app binary
+        config: which config file to take to build the app
+        extra_build_args: list of args to append to the make cmd
     """
     
     _cpu_count = multiprocessing.cpu_count()
@@ -31,6 +32,9 @@ def build_single_app(root_folder, app_name, board, app_only=False, extra_build_a
                  'app_name={}'.format(app_name),
                  'target_board={}'.format(board)]
 
+    if config is not None:
+        build_cmd.append('app_config={}'.format(config))
+
     if extra_build_args is not None:
         for arg in extra_build_args:
             build_cmd.append(arg)
@@ -38,20 +42,32 @@ def build_single_app(root_folder, app_name, board, app_only=False, extra_build_a
     if app_only:
         build_cmd.append('app_only')
 
-    print("Build:make -j{} app_name={} target_board={}".format(_cpu_count, app_name, board))
-
+    print("Build:",' '.join(build_cmd))
     _process = subprocess.Popen(build_cmd,
                                 cwd=root_folder)
     assert(_process.wait() == 0)
 
-def remove_duplicate_boards(all_boards, dup_boards):
+def remove_duplicate_boards(matrix, app, dup_boards):
     """Remove duplicated boards from list. Only one board from dup_board should remain
        in initial list
 
     Args:
-        all_boards: initial list of boards
+        matrix: matrix of all apps
+        app: name of app
         dup_boards: duplicated boards
     """
+
+    try:
+        if app in matrix:
+            all_boards = matrix[app]["config.mk"]
+        else:
+            # It is an app with alternate config
+            app, config_suffix = app.rsplit('_config', 1)
+            all_boards = matrix[app]["config"+config_suffix+".mk"]
+    except KeyError:
+        print("Something went wrong when removing duplicate for app ", app)
+        return
+
     # Only one from dup_boards list should remain
     found = False
     for dup in dup_boards:
@@ -64,8 +80,9 @@ def remove_duplicate_boards(all_boards, dup_boards):
 
 def get_number_of_combination(matrix):
     count = 0
-    for key, value in matrix.items():
-        count += len(value)
+    for app, configs in matrix.items():
+        for config, boards in configs.items():
+            count += len(boards)
     return count
 
 def build_all_apps(root_folder, boards_subset=None, apps_subset=None, app_only=False, extra_build_args=None, file_aliases=None, num_chunks=1, chunk_id=0):
@@ -92,10 +109,8 @@ def build_all_apps(root_folder, boards_subset=None, apps_subset=None, app_only=F
                     app, boards = line.split(':')
                     duplicate_boards = boards.rstrip('\n').split(',')
 
-                    try:
-                        remove_duplicate_boards(sdk_matrix[app], duplicate_boards)
-                    except KeyError:
-                        continue
+                    remove_duplicate_boards(sdk_matrix, app, duplicate_boards)
+
         except FileNotFoundError:
             print("Cannot open file for aliases")
 
@@ -105,7 +120,7 @@ def build_all_apps(root_folder, boards_subset=None, apps_subset=None, app_only=F
     if chunk_id >= num_chunks:
         raise ValueError("num_chunks must be < chunk_id")
 
-    for app_name, compatible_boards in sorted(sdk_matrix.items())[chunk_id::num_chunks]:
+    for app_name, configs in sorted(sdk_matrix.items())[chunk_id::num_chunks]:
         if apps_subset is not None and app_name not in apps_subset:
             continue
 
@@ -113,12 +128,19 @@ def build_all_apps(root_folder, boards_subset=None, apps_subset=None, app_only=F
         if app_only and app_name == "bootloader_updater":
             continue
 
-        for board in compatible_boards:
-            if boards_subset is not None and board not in boards_subset:
-                continue
+        # Check different configs
+        for config, compatible_boards in configs.items():
+            if config == "config.mk":
+                config = None
+            else:
+                config = config.rsplit(".", 1)[0]
+            for board in compatible_boards:
+                if boards_subset is not None and board not in boards_subset:
+                    continue
 
-            # App must be built
-            build_single_app(root_folder, app_name, board, app_only, extra_build_args)
+
+                # App must be built
+                build_single_app(root_folder, app_name, board, app_only=app_only, config=config, extra_build_args=extra_build_args)
 
 def generate_alias_matrix(root_folder, file):
     """
@@ -162,6 +184,7 @@ def generate_alias_matrix(root_folder, file):
                 alias += ("{},".format(v[0]))
 
             print(alias)
+            alias += "\n"
             f.write(alias)
 
     print("Before: ", all, " After: ", len(aliases_dic))

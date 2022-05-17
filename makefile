@@ -16,6 +16,7 @@ STACK_SCRATCHPAD_NAME := $(FIRMWARE_NAME)
 STACK_SCRATCHPAD_BIN := $(BUILDPREFIX_APP)$(STACK_SCRATCHPAD_NAME).otap
 
 BOOTLOADER_CONFIG_INI := $(BUILDPREFIX_APP)bootloader_full_config.ini
+PLATFORM_CONFIG_INI := $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/ini_files/$(MCU)$(MCU_SUB)$(MCU_MEM_VAR)_platform.ini
 
 CLEAN += $(FULL_SCRATCHPAD_BIN) $(APP_SCRATCHPAD_BIN) $(STACK_SCRATCHPAD_BIN) $(BOOTLOADER_CONFIG_INI)
 
@@ -35,8 +36,6 @@ TARGETS += $(FINAL_IMAGE_HEX) otap
 #
 # Manage area id and ini files
 #
-# Include app specific config needed to generate a scratchpad
--include $(APP_SRCS_PATH)config.mk
 
 # Define the app_area as a combination of app_area and HW_VARIANT_ID
 ifeq ($(app_specific_area_id),)
@@ -79,12 +78,13 @@ define BUILD_FULL_SCRATCHPAD
 endef
 
 define BUILD_HEX
-	@echo "  Creating Flashable Hex: $(2) + $(3) + $(4) -> $(1)"
+	@echo "  Creating Flashable Hex: $(2) + $(3) + $(4) + $(5) -> $(1)"
 	$(HEX_GEN)      --configfile=$(BOOTLOADER_CONFIG_INI) \
 					--bootloader=$(2) \
 	                $(1) \
 	                $(patsubst %.hex,%.conf,$(3)):$(firmware_area_id):$(3) \
-	                $(app_major).$(app_minor).$(app_maintenance).$(app_development):$(app_area_id):$(4)
+	                $(app_major).$(app_minor).$(app_maintenance).$(app_development):$(app_area_id):$(4) \
+	                $(5)
 endef
 
 define BUILD_APP_SCRATCHPAD
@@ -184,11 +184,11 @@ $(FULL_SCRATCHPAD_BIN): initial_setup $(STACK_HEX) $(APP_HEX) $(BOOTLOADER_CONFI
 	$(call BUILD_FULL_SCRATCHPAD,$(FULL_SCRATCHPAD_BIN),$(STACK_HEX),$(APP_HEX))
 
 $(FINAL_IMAGE_HEX): initial_setup $(STACK_HEX) $(APP_HEX) $(BOOTLOADER_HEX) $(BOOTLOADER_CONFIG_INI)
-	$(call BUILD_HEX,$(FINAL_IMAGE_HEX),$(BOOTLOADER_HEX),$(STACK_HEX),$(APP_HEX))
+	$(call BUILD_HEX,$(FINAL_IMAGE_HEX),$(BOOTLOADER_HEX),$(STACK_HEX),$(APP_HEX),$(EXTRA_HEX))
 
 $(BOOTLOADER_CONFIG_INI): initial_setup $(INI_FILE_WP) $(INI_FILE_APP) $(BUILDPREFIX_APP)
 	@	# Rule to create the full config file based on multiple ini files and store it per build folder
-	$(BOOT_CONF) -i $(INI_FILE_WP) -i $(INI_FILE_APP) -i $(KEY_FILE) -o $(BOOTLOADER_CONFIG_INI) -ol APP_AREA_ID:$(app_area_id) -ol STACK_AREA_ID:$(firmware_area_id)
+	$(BOOT_CONF) -i $(INI_FILE_WP) -i $(INI_FILE_APP) -i $(KEY_FILE) -i $(PLATFORM_CONFIG_INI) -o $(BOOTLOADER_CONFIG_INI) -ol APP_AREA_ID:$(app_area_id) -ol STACK_AREA_ID:$(firmware_area_id)
 
 bootloader_test: $(BOOTLOADER_HEX) $(BOOTLOADER_TEST_HEX) $(BOOTLOADER_CONFIG_INI)
 	$(call BUILD_BOOTLOADER_TEST_APP,$(BUILDPREFIX_APP)final_bootloader_test.hex,$<,$(BOOTLOADER_CONFIG_INI),$(word 2,$^))

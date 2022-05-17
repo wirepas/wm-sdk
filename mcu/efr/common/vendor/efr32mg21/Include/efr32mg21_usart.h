@@ -3,7 +3,7 @@
  * @brief EFR32MG21 USART register and bit field definitions
  ******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories, Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories, Inc. www.silabs.com</b>
  ******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -67,9 +67,9 @@ typedef struct {
   __IOM uint32_t I2SCTRL;                       /**< I2S Control Register                               */
   __IOM uint32_t TIMING;                        /**< Timing Register                                    */
   __IOM uint32_t CTRLX;                         /**< Control Register Extended                          */
-  __IOM uint32_t TIMECMP0;                      /**< Used to generate interrupts and vario...           */
-  __IOM uint32_t TIMECMP1;                      /**< Used to generate interrupts and vario...           */
-  __IOM uint32_t TIMECMP2;                      /**< Used to generate interrupts and vario...           */
+  __IOM uint32_t TIMECMP0;                      /**< Timer Compare 0                                    */
+  __IOM uint32_t TIMECMP1;                      /**< Timer Compare 1                                    */
+  __IOM uint32_t TIMECMP2;                      /**< Timer Compare 2                                    */
   uint32_t       RESERVED0[997U];               /**< Reserved for future use                            */
   __IM uint32_t  IPVERSION_SET;                 /**< IPVERSION                                          */
   __IOM uint32_t EN_SET;                        /**< USART Enable                                       */
@@ -95,9 +95,9 @@ typedef struct {
   __IOM uint32_t I2SCTRL_SET;                   /**< I2S Control Register                               */
   __IOM uint32_t TIMING_SET;                    /**< Timing Register                                    */
   __IOM uint32_t CTRLX_SET;                     /**< Control Register Extended                          */
-  __IOM uint32_t TIMECMP0_SET;                  /**< Used to generate interrupts and vario...           */
-  __IOM uint32_t TIMECMP1_SET;                  /**< Used to generate interrupts and vario...           */
-  __IOM uint32_t TIMECMP2_SET;                  /**< Used to generate interrupts and vario...           */
+  __IOM uint32_t TIMECMP0_SET;                  /**< Timer Compare 0                                    */
+  __IOM uint32_t TIMECMP1_SET;                  /**< Timer Compare 1                                    */
+  __IOM uint32_t TIMECMP2_SET;                  /**< Timer Compare 2                                    */
   uint32_t       RESERVED1[997U];               /**< Reserved for future use                            */
   __IM uint32_t  IPVERSION_CLR;                 /**< IPVERSION                                          */
   __IOM uint32_t EN_CLR;                        /**< USART Enable                                       */
@@ -123,9 +123,9 @@ typedef struct {
   __IOM uint32_t I2SCTRL_CLR;                   /**< I2S Control Register                               */
   __IOM uint32_t TIMING_CLR;                    /**< Timing Register                                    */
   __IOM uint32_t CTRLX_CLR;                     /**< Control Register Extended                          */
-  __IOM uint32_t TIMECMP0_CLR;                  /**< Used to generate interrupts and vario...           */
-  __IOM uint32_t TIMECMP1_CLR;                  /**< Used to generate interrupts and vario...           */
-  __IOM uint32_t TIMECMP2_CLR;                  /**< Used to generate interrupts and vario...           */
+  __IOM uint32_t TIMECMP0_CLR;                  /**< Timer Compare 0                                    */
+  __IOM uint32_t TIMECMP1_CLR;                  /**< Timer Compare 1                                    */
+  __IOM uint32_t TIMECMP2_CLR;                  /**< Timer Compare 2                                    */
   uint32_t       RESERVED2[997U];               /**< Reserved for future use                            */
   __IM uint32_t  IPVERSION_TGL;                 /**< IPVERSION                                          */
   __IOM uint32_t EN_TGL;                        /**< USART Enable                                       */
@@ -151,9 +151,9 @@ typedef struct {
   __IOM uint32_t I2SCTRL_TGL;                   /**< I2S Control Register                               */
   __IOM uint32_t TIMING_TGL;                    /**< Timing Register                                    */
   __IOM uint32_t CTRLX_TGL;                     /**< Control Register Extended                          */
-  __IOM uint32_t TIMECMP0_TGL;                  /**< Used to generate interrupts and vario...           */
-  __IOM uint32_t TIMECMP1_TGL;                  /**< Used to generate interrupts and vario...           */
-  __IOM uint32_t TIMECMP2_TGL;                  /**< Used to generate interrupts and vario...           */
+  __IOM uint32_t TIMECMP0_TGL;                  /**< Timer Compare 0                                    */
+  __IOM uint32_t TIMECMP1_TGL;                  /**< Timer Compare 1                                    */
+  __IOM uint32_t TIMECMP2_TGL;                  /**< Timer Compare 2                                    */
 } USART_TypeDef;
 /** @} End of group EFR32MG21_USART */
 
@@ -264,7 +264,7 @@ typedef struct {
 #define USART_CTRL_MSBF_DEFAULT                 (_USART_CTRL_MSBF_DEFAULT << 10)         /**< Shifted mode DEFAULT for USART_CTRL         */
 #define USART_CTRL_MSBF_DISABLE                 (_USART_CTRL_MSBF_DISABLE << 10)         /**< Shifted mode DISABLE for USART_CTRL         */
 #define USART_CTRL_MSBF_ENABLE                  (_USART_CTRL_MSBF_ENABLE << 10)          /**< Shifted mode ENABLE for USART_CTRL          */
-#define USART_CTRL_CSMA                         (0x1UL << 11)                            /**< Action On Slave-Select In Master Mode       */
+#define USART_CTRL_CSMA                         (0x1UL << 11)                            /**< Action On Chip Select In Main Mode          */
 #define _USART_CTRL_CSMA_SHIFT                  11                                       /**< Shift value for USART_CSMA                  */
 #define _USART_CTRL_CSMA_MASK                   0x800UL                                  /**< Bit mask for USART_CSMA                     */
 #define _USART_CTRL_CSMA_DEFAULT                0x00000000UL                             /**< Mode DEFAULT for USART_CTRL                 */
@@ -370,7 +370,7 @@ typedef struct {
 #define USART_CTRL_ERRSTX_DEFAULT               (_USART_CTRL_ERRSTX_DEFAULT << 24)       /**< Shifted mode DEFAULT for USART_CTRL         */
 #define USART_CTRL_ERRSTX_DISABLE               (_USART_CTRL_ERRSTX_DISABLE << 24)       /**< Shifted mode DISABLE for USART_CTRL         */
 #define USART_CTRL_ERRSTX_ENABLE                (_USART_CTRL_ERRSTX_ENABLE << 24)        /**< Shifted mode ENABLE for USART_CTRL          */
-#define USART_CTRL_SSSEARLY                     (0x1UL << 25)                            /**< Synchronous Slave Setup Early               */
+#define USART_CTRL_SSSEARLY                     (0x1UL << 25)                            /**< Synchronous Secondary Setup Early           */
 #define _USART_CTRL_SSSEARLY_SHIFT              25                                       /**< Shift value for USART_SSSEARLY              */
 #define _USART_CTRL_SSSEARLY_MASK               0x2000000UL                              /**< Bit mask for USART_SSSEARLY                 */
 #define _USART_CTRL_SSSEARLY_DEFAULT            0x00000000UL                             /**< Mode DEFAULT for USART_CTRL                 */
@@ -394,7 +394,7 @@ typedef struct {
 #define _USART_CTRL_MVDIS_MASK                  0x40000000UL                             /**< Bit mask for USART_MVDIS                    */
 #define _USART_CTRL_MVDIS_DEFAULT               0x00000000UL                             /**< Mode DEFAULT for USART_CTRL                 */
 #define USART_CTRL_MVDIS_DEFAULT                (_USART_CTRL_MVDIS_DEFAULT << 30)        /**< Shifted mode DEFAULT for USART_CTRL         */
-#define USART_CTRL_SMSDELAY                     (0x1UL << 31)                            /**< Synchronous Master Sample Delay             */
+#define USART_CTRL_SMSDELAY                     (0x1UL << 31)                            /**< Synchronous Main Sample Delay               */
 #define _USART_CTRL_SMSDELAY_SHIFT              31                                       /**< Shift value for USART_SMSDELAY              */
 #define _USART_CTRL_SMSDELAY_MASK               0x80000000UL                             /**< Bit mask for USART_SMSDELAY                 */
 #define _USART_CTRL_SMSDELAY_DEFAULT            0x00000000UL                             /**< Mode DEFAULT for USART_CTRL                 */
@@ -528,12 +528,12 @@ typedef struct {
 #define _USART_CMD_TXDIS_MASK                   0x8UL                                   /**< Bit mask for USART_TXDIS                    */
 #define _USART_CMD_TXDIS_DEFAULT                0x00000000UL                            /**< Mode DEFAULT for USART_CMD                  */
 #define USART_CMD_TXDIS_DEFAULT                 (_USART_CMD_TXDIS_DEFAULT << 3)         /**< Shifted mode DEFAULT for USART_CMD          */
-#define USART_CMD_MASTEREN                      (0x1UL << 4)                            /**< Master Enable                               */
+#define USART_CMD_MASTEREN                      (0x1UL << 4)                            /**< Main Mode Enable                            */
 #define _USART_CMD_MASTEREN_SHIFT               4                                       /**< Shift value for USART_MASTEREN              */
 #define _USART_CMD_MASTEREN_MASK                0x10UL                                  /**< Bit mask for USART_MASTEREN                 */
 #define _USART_CMD_MASTEREN_DEFAULT             0x00000000UL                            /**< Mode DEFAULT for USART_CMD                  */
 #define USART_CMD_MASTEREN_DEFAULT              (_USART_CMD_MASTEREN_DEFAULT << 4)      /**< Shifted mode DEFAULT for USART_CMD          */
-#define USART_CMD_MASTERDIS                     (0x1UL << 5)                            /**< Master Disable                              */
+#define USART_CMD_MASTERDIS                     (0x1UL << 5)                            /**< Main Mode Disable                           */
 #define _USART_CMD_MASTERDIS_SHIFT              5                                       /**< Shift value for USART_MASTERDIS             */
 #define _USART_CMD_MASTERDIS_MASK               0x20UL                                  /**< Bit mask for USART_MASTERDIS                */
 #define _USART_CMD_MASTERDIS_DEFAULT            0x00000000UL                            /**< Mode DEFAULT for USART_CMD                  */
@@ -582,7 +582,7 @@ typedef struct {
 #define _USART_STATUS_TXENS_MASK                0x2UL                                        /**< Bit mask for USART_TXENS                    */
 #define _USART_STATUS_TXENS_DEFAULT             0x00000000UL                                 /**< Mode DEFAULT for USART_STATUS               */
 #define USART_STATUS_TXENS_DEFAULT              (_USART_STATUS_TXENS_DEFAULT << 1)           /**< Shifted mode DEFAULT for USART_STATUS       */
-#define USART_STATUS_MASTER                     (0x1UL << 2)                                 /**< SPI Master Mode                             */
+#define USART_STATUS_MASTER                     (0x1UL << 2)                                 /**< SPI Main Mode                               */
 #define _USART_STATUS_MASTER_SHIFT              2                                            /**< Shift value for USART_MASTER                */
 #define _USART_STATUS_MASTER_MASK               0x4UL                                        /**< Bit mask for USART_MASTER                   */
 #define _USART_STATUS_MASTER_DEFAULT            0x00000000UL                                 /**< Mode DEFAULT for USART_STATUS               */
@@ -958,7 +958,7 @@ typedef struct {
 #define _USART_IF_MPAF_MASK                     0x400UL                                 /**< Bit mask for USART_MPAF                     */
 #define _USART_IF_MPAF_DEFAULT                  0x00000000UL                            /**< Mode DEFAULT for USART_IF                   */
 #define USART_IF_MPAF_DEFAULT                   (_USART_IF_MPAF_DEFAULT << 10)          /**< Shifted mode DEFAULT for USART_IF           */
-#define USART_IF_SSM                            (0x1UL << 11)                           /**< Slave-Select In Master Mode Interrupt Fl    */
+#define USART_IF_SSM                            (0x1UL << 11)                           /**< Chip-Select In Main Mode Interrupt Flag     */
 #define _USART_IF_SSM_SHIFT                     11                                      /**< Shift value for USART_SSM                   */
 #define _USART_IF_SSM_MASK                      0x800UL                                 /**< Bit mask for USART_SSM                      */
 #define _USART_IF_SSM_DEFAULT                   0x00000000UL                            /**< Mode DEFAULT for USART_IF                   */
@@ -1047,7 +1047,7 @@ typedef struct {
 #define _USART_IEN_MPAF_MASK                    0x400UL                                 /**< Bit mask for USART_MPAF                     */
 #define _USART_IEN_MPAF_DEFAULT                 0x00000000UL                            /**< Mode DEFAULT for USART_IEN                  */
 #define USART_IEN_MPAF_DEFAULT                  (_USART_IEN_MPAF_DEFAULT << 10)         /**< Shifted mode DEFAULT for USART_IEN          */
-#define USART_IEN_SSM                           (0x1UL << 11)                           /**< Slave-Select In Master Mode Interrupt Fl    */
+#define USART_IEN_SSM                           (0x1UL << 11)                           /**< Chip-Select In Main Mode Interrupt Flag     */
 #define _USART_IEN_SSM_SHIFT                    11                                      /**< Shift value for USART_SSM                   */
 #define _USART_IEN_SSM_MASK                     0x800UL                                 /**< Bit mask for USART_SSM                      */
 #define _USART_IEN_SSM_DEFAULT                  0x00000000UL                            /**< Mode DEFAULT for USART_IEN                  */

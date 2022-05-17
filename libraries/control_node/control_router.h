@@ -6,7 +6,7 @@
 #ifndef _CONTROL_ROUTER_H_
 #define _CONTROL_ROUTER_H_
 
-#include "advertiser.h"
+#include "wms_advertiser.h"
 #include "control_node_int.h"
 
 

@@ -40,7 +40,18 @@
   160,                           /* Maximum reverse current of 160mA */                     \
   emuDcdcLnCompCtrl_4u7F,        /* 4.7uF DCDC capacitor */                                 \
 }
-#else // _SILICON_LABS_32B_SERIES_2
+#elif defined(_SILICON_LABS_32B_SERIES_2_CONFIG_3)
+#define EMU_DCDCINIT                                                         \
+{                                                                            \
+    emuDcdcMode_Regulation,        /**< DCDC regulator on. */                \
+    emuVreginCmpThreshold_2v3,     /**< 2.3V VREGIN comparator threshold. */ \
+    emuDcdcTonMaxTimeout_1P19us,   /**< Ton max is 1.19us. */                \
+    emuDcdcDriveSpeed_Default,     /**< Default efficiency in EM0/1. */      \
+    emuDcdcDriveSpeed_Default,     /**< Default efficiency in EM2/3. */      \
+    emuDcdcPeakCurrent_Load36mA,   /**< Default peak current in EM0/1. */    \
+    emuDcdcPeakCurrent_Load36mA    /**< Default peak current in EM2/3. */    \
+}
+#else //other  _SILICON_LABS_32B_SERIES_2 device
 #define EMU_DCDCINIT                                                        \
 {                                                                           \
     emuDcdcMode_Regulation,        /**< DCDC regulator on. */               \
@@ -51,7 +62,7 @@
     emuDcdcDriveSpeed_Default,     /**< Default efficiency in EM2/3. */     \
     emuDcdcPeakCurrent_Load60mA,   /**< Default peak current in EM0/1. */   \
     emuDcdcPeakCurrent_Load36mA    /**< Default peak current in EM2/3. */   \
-  }
+}
 #endif
 
 void Power_enableDCDC()

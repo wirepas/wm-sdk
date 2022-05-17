@@ -19,6 +19,7 @@
 #include "poslib_measurement.h"
 #include "shared_neighbors.h"
 #include "shared_data.h"
+#include "api.h"
 #include "voltage.h"
 
 
@@ -152,24 +153,29 @@ static void deregister_callbacks(void)
  *
  * @param   void
  */
-static void scanend_cb(void)
+static void scanend_cb(const app_lib_state_neighbor_scan_info_t * scan_info)
 {
-    if (!m_opportunistic)
+    app_lib_settings_role_t node_role;
+    lib_settings->getNodeRole(&node_role);
+
+    if ((scan_info->complete) || (node_role == APP_LIB_SETTINGS_ROLE_ADVERTISER))
     {
-        deregister_callbacks();
+        if (!m_opportunistic)
+        {
+            deregister_callbacks();
+        }
+        if (m_meas_table.num_beacons == 0 && m_time_when_no_beacons_s == 0)
+        {
+            m_time_when_no_beacons_s =  lib_time->getTimestampS();
+        }
+        else if (m_meas_table.num_beacons != 0)
+        {
+            m_time_when_no_beacons_s = 0;
+        }
     }
 
     PosLibEvent_add(POSLIB_CTRL_EVENT_SCAN_END);
     m_scan_pending = false;
-    
-    if (m_meas_table.num_beacons == 0 && m_time_when_no_beacons_s == 0)
-    {
-        m_time_when_no_beacons_s =  lib_time->getTimestampS();
-    }
-    else if (m_meas_table.num_beacons != 0)
-    {
-        m_time_when_no_beacons_s = 0;
-    }
 }
 
 /**

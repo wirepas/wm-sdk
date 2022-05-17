@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := pca10059 pca10056 pca10100 pca10040 ruuvitag silabs_brd4180b silabs_brd4184a silabs_brd4181b 
+TARGET_BOARDS := pca10059 pca10056 pca10100 pca10040 ruuvitag silabs_brd4180b silabs_brd4184a silabs_brd4181b bgm220-ek4314a 
 #
 # Network default settings configuration
 #
@@ -16,10 +16,9 @@ app_specific_area_id ?= 0x8010A0
 
 # Default stack setting
 
-#headnode: 1, subnode: 2
-default_role ?= 2
-# LE: 0 , LL: 0x10
-default_role_flag ?= 0
+# CONF_ROLE. From app_lib_settings_role_e in api/wms_settings.h
+# Headnode (router) LE: 0x01, Headnode (router) LL: 0x11, Subnode (non-router) LE: 0x02, Advertiser: 0x04
+default_role ?= 0x02
 
 # Default positioning settings
 

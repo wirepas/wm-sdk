@@ -3,7 +3,7 @@
  * @brief EFR32MG22 RAC register and bit field definitions
  ******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories, Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories, Inc. www.silabs.com</b>
  ******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -4796,11 +4796,11 @@ typedef struct {
 #define _RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_SHIFT                2                                                                 /**< Shift value for RAC_DIGCLKRETIMERESETN      */
 #define _RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_MASK                 0x4UL                                                             /**< Bit mask for RAC_DIGCLKRETIMERESETN         */
 #define _RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_DEFAULT              0x00000000UL                                                      /**< Mode DEFAULT for RAC_DIGCLKRETIMECTRL       */
-#define _RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_operate              0x00000000UL                                                      /**< Mode operate for RAC_DIGCLKRETIMECTRL       */
-#define _RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_reset                0x00000001UL                                                      /**< Mode reset for RAC_DIGCLKRETIMECTRL         */
+#define _RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_reset                0x00000000UL                                                      /**< Mode reset for RAC_DIGCLKRETIMECTRL         */
+#define _RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_operate              0x00000001UL                                                      /**< Mode operate for RAC_DIGCLKRETIMECTRL       */
 #define RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_DEFAULT               (_RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_DEFAULT << 2)           /**< Shifted mode DEFAULT for RAC_DIGCLKRETIMECTRL*/
-#define RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_operate               (_RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_operate << 2)           /**< Shifted mode operate for RAC_DIGCLKRETIMECTRL*/
 #define RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_reset                 (_RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_reset << 2)             /**< Shifted mode reset for RAC_DIGCLKRETIMECTRL */
+#define RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_operate               (_RAC_DIGCLKRETIMECTRL_DIGCLKRETIMERESETN_operate << 2)           /**< Shifted mode operate for RAC_DIGCLKRETIMECTRL*/
 #define _RAC_DIGCLKRETIMECTRL_DIGCLKRETIMELIMITH_SHIFT                4                                                                 /**< Shift value for RAC_DIGCLKRETIMELIMITH      */
 #define _RAC_DIGCLKRETIMECTRL_DIGCLKRETIMELIMITH_MASK                 0x70UL                                                            /**< Bit mask for RAC_DIGCLKRETIMELIMITH         */
 #define _RAC_DIGCLKRETIMECTRL_DIGCLKRETIMELIMITH_DEFAULT              0x00000000UL                                                      /**< Mode DEFAULT for RAC_DIGCLKRETIMECTRL       */

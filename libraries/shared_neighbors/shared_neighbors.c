@@ -44,7 +44,7 @@ static void received_beacon_cb(const app_lib_state_beacon_rx_t * beacon)
     Sys_exitCriticalSection();
 }
 
-static void received_network_scan_end()
+static void received_network_scan_end(const app_lib_state_neighbor_scan_info_t * scan_info)
 {
     Sys_enterCriticalSection();
 
@@ -52,7 +52,7 @@ static void received_network_scan_end()
     {
         if (m_neighbor_scan[i].cb_scanned_neighbor)
         {
-            m_neighbor_scan[i].cb_scanned_neighbor();
+            m_neighbor_scan[i].cb_scanned_neighbor(scan_info);
             LOG(LVL_DEBUG, "received_network_scan_end callback (id: %d)", i);
         }
     }
@@ -152,8 +152,7 @@ app_res_e Shared_Neighbors_addScanNborsCb
         return APP_RES_INVALID_NULL_POINTER;
     }
 
-    lib_state->setOnScanNborsCb(received_network_scan_end,
-                                APP_LIB_STATE_SCAN_NBORS_ALL);
+    lib_state->setOnScanNborsCb(received_network_scan_end);
 
     Sys_enterCriticalSection();
     for (uint8_t i = 0; i < SHARED_NEIGHBORS_MAX_CB; i++)

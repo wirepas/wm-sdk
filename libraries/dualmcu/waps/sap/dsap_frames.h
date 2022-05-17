@@ -87,6 +87,24 @@ typedef struct __attribute__ ((__packed__))
 #define FRAME_DSAP_DATA_TX_TT_REQ_HEADER_SIZE  \
     (sizeof(dsap_data_tx_tt_req_t) - APDU_MAX_SIZE)
 
+typedef struct __attribute__ ((__packed__))
+{
+    pduid_t     apdu_id;
+    ep_t        src_endpoint;
+    w_addr_t    dst_addr;
+    ep_t        dst_endpoint;
+    uint8_t     qos;
+    uint8_t     tx_opts;
+    uint32_t    travel_time;
+    uint16_t    full_packet_id : 12;
+    // Fragment offset + flag
+    uint16_t    fragment_offset_flag;
+    uint8_t     apdu_len;
+    uint8_t     apdu[APDU_MAX_SIZE];
+} dsap_data_tx_frag_req_t;
+
+#define FRAME_DSAP_DATA_TX_FRAG_REQ_HEADER_SIZE  \
+    (sizeof(dsap_data_tx_frag_req_t) - APDU_MAX_SIZE)
 /* WAPS-DSAP-DATA_RX-INDICATION */
 
 // info field masks and offsets
@@ -99,6 +117,14 @@ typedef struct __attribute__ ((__packed__))
 #define RX_IND_INFO_HOPCOUNT_OFFSET 2
 #define RX_IND_INFO_MAX_HOPCOUNT \
     (RX_IND_INFO_HOPCOUNT_MASK >> RX_IND_INFO_HOPCOUNT_OFFSET)
+
+// fragment_offset_flag field access
+
+// Fragment offset: Lowest 12 bits
+#define DSAP_FRAG_LENGTH_MASK 0x0fff
+
+// Last fragment: Highest bit
+#define DSAP_FRAG_LAST_FLAG_MASK 0x8000
 
 typedef struct __attribute__ ((__packed__))
 {
@@ -116,6 +142,29 @@ typedef struct __attribute__ ((__packed__))
 
 #define FRAME_DSAP_DATA_RX_IND_HEADER_SIZE  \
     (sizeof(dsap_data_rx_ind_t) - APDU_MAX_SIZE)
+
+
+/* WAPS-DSAP-DATA_RX_FRAG-INDICATION */
+
+typedef struct __attribute__ ((__packed__))
+{
+    uint8_t     queued_indications;
+    w_addr_t    src_addr;
+    ep_t        src_endpoint;
+    w_addr_t    dst_addr;
+    ep_t        dst_endpoint;
+    // Qos + hop count
+    uint8_t     info;
+    uint32_t    delay;
+    uint16_t    full_packet_id;
+    // Fragment offset + flag
+    uint16_t    fragment_offset_flag;
+    uint8_t     apdu_len;
+    uint8_t     apdu[APDU_MAX_SIZE];
+} dsap_data_rx_frag_ind_t;
+
+#define FRAME_DSAP_DATA_RX_FRAG_IND_HEADER_SIZE  \
+    (sizeof(dsap_data_rx_frag_ind_t) - APDU_MAX_SIZE)
 
 /* WAPS-DSAP-DATA_TX-INDICATION */
 
@@ -143,9 +192,11 @@ typedef union
 {
     dsap_data_tx_req_t          data_tx_req;
     dsap_data_tx_tt_req_t       data_tx_tt_req;
+    dsap_data_tx_frag_req_t     data_tx_frag_req;
     dsap_data_tx_ind_t          data_tx_ind;
     dsap_data_tx_cnf_t          data_tx_cnf;
     dsap_data_rx_ind_t          data_rx_ind;
+    dsap_data_rx_frag_ind_t     data_rx_frag_ind;
 } frame_dsap;
 
 
