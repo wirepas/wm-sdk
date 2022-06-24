@@ -129,7 +129,7 @@ def main():
         # Create a bootloader config
         key_pair = KeyDesc(auth, encryp)
         key_dic = {"default": key_pair}
-        config = BootloaderConfig(None, None, key_dic)
+        config = BootloaderConfig(None, None, key_dic, None)
 
         # Write it to the output file
         config.to_ini_file(args.out_key_file)
