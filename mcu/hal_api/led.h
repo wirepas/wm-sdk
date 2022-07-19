@@ -66,6 +66,15 @@ void Led_init(void);
 led_res_e Led_set(uint8_t led_id, bool state);
 
 /**
+ * \brief   Get the given LED current state
+ *
+ * \param   led_id
+ *          Id of the led
+ * \return  True if ON , false if OFF
+ */
+bool Led_get (uint8_t led_id);
+
+/**
  * \brief   Toggle the given LED
  * \param   led_id
  *          Id of the led

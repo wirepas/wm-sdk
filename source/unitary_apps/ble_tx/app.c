@@ -23,6 +23,10 @@
 #include <string.h>
 #include <inttypes.h>
 
+#include "shared_data.h"
+
+#define DATA_EP 5
+
 static const uint8_t beacon_hdr[] =
 {
     0x42,                                   /* Non-connectable beacon */
@@ -72,7 +76,9 @@ static size_t makeBeacon(uint8_t * buffer,
     return sizeof(beacon_hdr) + (size_t)url_num_bytes;
 }
 
+/* Generic callback function */
 static app_lib_data_receive_res_e dataReceivedFunc(
+    const shared_data_item_t * item,
     const app_lib_data_received_t * data)
 {
     app_lib_data_to_send_t data_to_send;
@@ -130,10 +136,27 @@ static app_lib_data_receive_res_e dataReceivedFunc(
     data_to_send.flags = APP_LIB_DATA_SEND_FLAG_NONE;
     data_to_send.tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 
-    lib_data->sendData(&data_to_send);
+    Shared_Data_sendData(&data_to_send, NULL);
 
     return APP_LIB_DATA_RECEIVE_RES_HANDLED;
 }
+
+
+
+/** All messages filter */
+static shared_data_item_t all_packets_filter =
+{
+    .cb = dataReceivedFunc,
+    .filter = {
+        .mode = SHARED_DATA_NET_MODE_ALL,
+        /* Filtering by source endpoint. */
+        .src_endpoint = DATA_EP,
+        /* Filtering by destination endpoint. */
+        .dest_endpoint = DATA_EP,
+        .multicast_cb = NULL
+    }
+};
+
 
 /**
  * \brief   Initialization callback for application
@@ -152,8 +175,6 @@ void App_init(const app_global_functions_t * functions)
         return;
     }
 
-    lib_data->setDataReceivedCb(dataReceivedFunc);
-    lib_data->setBcastDataReceivedCb(dataReceivedFunc);
-
+    Shared_Data_addDataReceivedCb(&all_packets_filter);
     lib_state->startStack();
 }

@@ -12,7 +12,7 @@
 #endif
 
 #if defined(EFR32FG12) || defined(EFR32MG12) || defined(EFR32FG13)
-static const CMU_HFXOInit_TypeDef m_hfxoInit =
+static CMU_HFXOInit_TypeDef m_hfxoInit =
 {
     false,               /* Low-noise mode for EFR32 */
     false,               /* Disable auto-start on EM0/1 entry */
@@ -31,7 +31,7 @@ static const CMU_HFXOInit_TypeDef m_hfxoInit =
     cmuOscMode_Crystal
 };
 
-static const CMU_LFXOInit_TypeDef m_lfxoInit =
+static CMU_LFXOInit_TypeDef m_lfxoInit =
 {
     BOARD_HW_LFXO_CTUNE,            /* ctune */
     _CMU_LFXOCTRL_GAIN_DEFAULT,     /* Default gain, 2 */
@@ -41,7 +41,7 @@ static const CMU_LFXOInit_TypeDef m_lfxoInit =
 #endif
 
 #if defined(EFR32MG21) || defined(EFR32MG22)
-static const CMU_HFXOInit_TypeDef m_hfxoInit =
+static CMU_HFXOInit_TypeDef m_hfxoInit =
 {
     cmuHfxoCbLsbTimeout_416us,
     cmuHfxoSteadyStateTimeout_833us,  /* First lock              */
@@ -64,7 +64,7 @@ static const CMU_HFXOInit_TypeDef m_hfxoInit =
     false                             /* Lock registers          */
 };
 
-static const CMU_LFXOInit_TypeDef m_lfxoInit =
+static CMU_LFXOInit_TypeDef m_lfxoInit =
 {
     BOARD_HW_LFXO_GAIN,               /* gain            */
     BOARD_HW_LFXO_CTUNE,              /* capTune         */
@@ -88,7 +88,14 @@ static const hardware_capabilities_t m_hw =
     .dcdc = BOARD_HW_DCDC,
     .platform.nrf52 = NULL
 };
+#elif defined(NRF91_PLATFORM)
 
+static const hardware_capabilities_t m_hw =
+{
+    .crystal_32k = BOARD_HW_CRYSTAL_32K,
+    .dcdc = BOARD_HW_DCDC,
+    .platform.nrf91 = NULL
+};
 #elif defined(EFR32_PLATFORM)
 
 static const platform_efr32_t m_platform_efr32 =
@@ -108,5 +115,22 @@ static const hardware_capabilities_t m_hw =
 
 const hardware_capabilities_t * Hardware_getCapabilities(void)
 {
+#if defined(EFR32MG21) || defined(EFR32MG22)
+    // If DevInfo.ModuleInfo contains valid calibration value for HFXO CTUNE,
+    // use it.
+    if ((DEVINFO->MODULEINFO & _DEVINFO_MODULEINFO_HFXOCALVAL_MASK) == 0) {
+        m_hfxoInit.ctuneXoAna =
+            DEVINFO->MODXOCAL & _DEVINFO_MODXOCAL_HFXOCTUNEXIANA_MASK;
+        m_hfxoInit.ctuneXiAna =
+            DEVINFO->MODXOCAL & _DEVINFO_MODXOCAL_HFXOCTUNEXIANA_MASK;
+    }
+    // If DevInfo.ModuleInfo contains valid calibration value for LFXO CapTune,
+    // use it.
+    if ((DEVINFO->MODULEINFO & _DEVINFO_MODULEINFO_LFXOCALVAL_MASK) == 0) {
+        m_lfxoInit.capTune =
+            DEVINFO->MODXOCAL & _DEVINFO_MODXOCAL_LFXOCAPTUNE_MASK;
+    }
+#endif
+
     return &m_hw;
 }

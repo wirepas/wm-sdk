@@ -18,7 +18,6 @@
 #include "poslib_event.h"
 #include "poslib_measurement.h"
 #include "shared_neighbors.h"
-#include "shared_shutdown.h"
 #include "shared_data.h"
 #include "voltage.h"
 

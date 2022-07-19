@@ -4,7 +4,7 @@ SRCS += board/board_init.c
 
 # Include custom board makefile, where board specific source files can be added
 # Does nothing, if file does not exist
--include board/$(target_board)/makefile_board.mk
+-include $(BOARD_FOLDER)/makefile_board.mk
 
 # HARDWARE CAPABILITIES #
 ## Is 32kHz crystal mounted on the board? default:yes, possible values:yes, no

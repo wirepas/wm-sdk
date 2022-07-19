@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := pca10040 pca10056 
+TARGET_BOARDS := pca10056 pca10040 
 # Specify supported target boards here
 
 #

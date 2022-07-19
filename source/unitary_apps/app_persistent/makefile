@@ -1,9 +1,3 @@
-# You can add more sources here and libraries if needed
-SRCS +=
-INCLUDES +=
-LIBS +=
-LDFLAGS +=
-
 # This application use HAL for leds
 HAL_LED=yes
 

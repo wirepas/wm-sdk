@@ -15,18 +15,6 @@
 #include "beacon_tx.h"
 #include "shared_beacon.h"
 
-/**
- * Maximum number of beacons that can be used at the same time.
- * It is application specific and maximum is APP_LIB_BEACON_TX_MAX_INDEX
- */
-#ifndef SHARED_BEACONS_MAX_NBR_BEACONS
-// Must be defined from application
-#error "Please define SHARED_BEACONS_MAX_NBR_BEACONS from your application makefile"
-#endif
-
-/** Maximum index used in m_beacon_index table */
-#define SHARED_BEACONS_MAX_INDEX       (SHARED_BEACONS_MAX_NBR_BEACONS - 1)
-
 /** Internal structure of a shared beacon */
 typedef struct
 {
@@ -38,15 +26,21 @@ typedef struct
 static bool m_init_done = false;
 /** check for first time beacon tx rf enable */
 static bool m_beacons_enabled;
-/** table used to see which indexes are reserved and list intervals requested */
-static shared_beacon_t m_beacon_index[SHARED_BEACONS_MAX_NBR_BEACONS];
+/** table used to see which indexes are reserved and list intervals requested.
+ * No need to make it configurable at build time as it will be max 8*3
+ */
+static shared_beacon_t m_beacon_index[APP_LIB_BEACON_TX_MAX_INDEX+1];
 /** used common beacon tx sending interval for all enabled beacons */
 static uint32_t m_min_interval_used_ms;
 
 shared_beacon_res_e Shared_Beacon_init(void)
 {
     LOG(LVL_INFO, "Shared_Beacon_init \n");
-
+    if (m_init_done)
+    {
+        // Initialization already done
+        return SHARED_BEACON_RES_OK;
+    }
     memset(&m_beacon_index[0], 0, sizeof(m_beacon_index));
     m_init_done = true;
     m_beacons_enabled = false;
@@ -76,7 +70,7 @@ shared_beacon_res_e Shared_Beacon_startBeacon(uint16_t interval_ms,
 
     Sys_enterCriticalSection();
 
-    for (n = 0; n <= SHARED_BEACONS_MAX_INDEX; n++)
+    for (n = 0; n <= APP_LIB_BEACON_TX_MAX_INDEX; n++)
     {
         if (!m_beacon_index[n].in_use)
         {
@@ -140,7 +134,7 @@ static uint32_t smallest_interval(void)
     uint8_t n;
     uint32_t interval_ms = APP_LIB_BEACON_TX_MAX_INTERVAL;
 
-    for (n = 0; n <= SHARED_BEACONS_MAX_INDEX; n++)
+    for (n = 0; n <= APP_LIB_BEACON_TX_MAX_INDEX; n++)
     {
         if (m_beacon_index[n].in_use &&
            (m_beacon_index[n].interval_ms < interval_ms))
@@ -162,7 +156,7 @@ shared_beacon_res_e Shared_Beacon_stopBeacon(uint8_t shared_beacon_index)
         return SHARED_BEACON_INIT_NOT_DONE;
     }
 
-    if (shared_beacon_index > SHARED_BEACONS_MAX_INDEX)
+    if (shared_beacon_index > APP_LIB_BEACON_TX_MAX_INDEX)
     {
         LOG(LVL_ERROR, "Shared_Beacon_stopBeacon error wrong parametere");
         return SHARED_BEACON_INVALID_PARAM;

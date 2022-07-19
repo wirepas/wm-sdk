@@ -12,8 +12,8 @@ This page contains following sections:
 - @subpage installation_of_sdk_environment
 - @subpage checking_the_installation_validity
 - @subpage flashing_guideline
-- @subpage nordic_nrf52832_nrf52840
-- @subpage efr32xg12
+- @subpage nordic_resources
+- @subpage efr32_resources
 
 @section installation_of_sdk_environment Installation of SDK Environment
 
@@ -193,7 +193,7 @@ Please power-cycle target hardware.
 @endcode
 
 
-@section nordic_nrf52832_nrf52840 Resources on Nordic nRF52832 & nRF52840
+@section nordic_resources Resources on Nordic nRF52
 
 The nRF52 chip version supported by Wirepas Mesh has minimum 512kB of flash and
 64kB of RAM.
@@ -216,7 +216,14 @@ set so that it is always safe to use scratchpad image that will contain both
 firmware and application.
 
 The _recommended_ maximum size of @ref flash_memory "flash memory" for an
-application is 40kB.
+application, according to processor type is following:
+
+<table>
+<tr><th>Processor</th><th>Flash memory</th></tr>
+<tr><td>nRF52832</td><td>40kB</td></tr>
+<tr><td>nRF52833</td><td>40kB</td></tr>
+<tr><td>nRF52840</td><td>256kB</td></tr>
+</table>
 
 @subsection ram_memory_nrf52 RAM Memory available for application on nRF52
 
@@ -225,6 +232,7 @@ following:
 <table>
 <tr><th>Processor</th><th>RAM memory</th></tr>
 <tr><td>nRF52832</td><td>Up to 16 kB (8 kB by default)</td></tr>
+<tr><td>nRF52833</td><td>72 kB</td></tr>
 <tr><td>nRF52840</td><td>188 kB</td></tr>
 </table>
 
@@ -265,11 +273,20 @@ let the stack use them for its own purpose.
 <tr><td>Temp</td><td>@ref APP_LIB_HARDWARE_PERIPHERAL_TEMPERATURE</td></tr>
 </table>
 
+Random Number Generator RNG (nRF52) and True Random Number Generator TRNG (EFR32)
+are available for application to use within App_init function.
+After App_init returns, these peripherals are reserved for Wirepas Mesh stack and
+all initializations done in App_init may be overwritten.
+Application may also take the control of RNG/TRNG by initializing the peripheral in
+scheduled task after App_init has returned and after Wirepas Mesh stack has started.
+Do note that initialization must not take place within interrupt context as interrupt
+could be served before these peripherals are released from Wirepas Mesh stack usage.
+
 @subsection peripherals_available_for_the_application Peripherals available for the application
 
 All the other peripherals not listed above are free to be used by the application.
 
-@section efr32xg12 Resources on EFR32xG12
+@section efr32_resources Resources on EFR32
 
 Following chip variants (at 2.4 GHz only) are supported:
 
@@ -283,6 +300,19 @@ Following chip variants (at 2.4 GHz only) are supported:
 -   EFR32BG12P232F1024G L125/M48    [2.4 GHz only, 1024/128, BGA125/QFN48]
 -   EFR32BG12P432F1024G L125/M48    [2.4 GHz only, 1024/256, BGA125/QFN48]
 -   EFR32BG12P433F1024G L125/M48    [2.4 GHz & SubGHz, 1024/256, BGA125/QFN48]
+-   EFR32BG21A010F1024IM32
+-   EFR32BG21A010F512IM32
+-   EFR32BG21A010F768IM32
+-   EFR32BG21A020F1024IM32
+-   EFR32BG21A020F512IM32
+-   EFR32BG21A020F768IM32
+-   EFR32BG22C224F512GM32
+-   EFR32BG22C224F512GM40
+-   EFR32BG22C224F512GN32
+-   EFR32BG22C224F512IM32
+-   EFR32BG22C224F512IM40
+-   BGM220PC22HNA
+-   BGM220SC22HNA
 
 This page contains following sections:
 - @subpage flash_memory_efr32
@@ -309,6 +339,10 @@ application, according to processor type is following:
 <tr><td>efr32xg12pxxxf1024</td><td>256kB</td></tr>
 <tr><td>efr32xg12pxxxf512</td><td>40kB</td></tr>
 <tr><td>efr32xg13pxxxf512</td><td>40kB</td></tr>
+<tr><td>efr32xg21xxxxf512</td><td>40kB</td></tr>
+<tr><td>efr32xg21xxxxf768</td><td>40kB</td></tr>
+<tr><td>efr32xg21xxxxf1024</td><td>256kB</td></tr>
+<tr><td>efr32xg22xxxxf512</td><td>40kB</td></tr>
 </table>
 
 
@@ -321,6 +355,10 @@ following:
 <tr><td>efr32xg12pxxxf1024</td><td>72kB</td></tr>
 <tr><td>efr32xg12pxxxf512</td><td>8kB</td></tr>
 <tr><td>efr32xg13pxxxf512</td><td>16kB</td></tr>
+<tr><td>efr32xg21xxxxf512</td><td>12kB</td></tr>
+<tr><td>efr32xg21xxxxf768</td><td>12kB</td></tr>
+<tr><td>efr32xg21xxxxf1024</td><td>44kB</td></tr>
+<tr><td>efr32xg22xxxxf512</td><td>4.5kB</td></tr>
 </table>
 
 @subsection peripherals_accessible_by_stack_only2 Peripherals accessible by stack only

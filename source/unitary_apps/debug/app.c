@@ -16,9 +16,11 @@
 #include <string.h>
 #include "api.h"
 #include "node_configuration.h"
+#include "app_scheduler.h"
+
 
 /* The module name to be printed each lines. */
-#define DEBUG_LOG_MODULE_NAME "DBUG APP"
+#define DEBUG_LOG_MODULE_NAME "DEBUG APP"
 /* The maximum log level printed for this module. */
 #define DEBUG_LOG_MAX_LEVEL LVL_INFO
 /* debug_log.h can be included in multiple c files with an other name or log
@@ -29,13 +31,13 @@
 
 /** Period to send data */
 #define DEFAULT_PERIOD_S    10
-#define DEFAULT_PERIOD_US   (DEFAULT_PERIOD_S*1000*1000)
+#define DEFAULT_PERIOD_MS   (DEFAULT_PERIOD_S*1000)
 
 /** Time needed to execute the periodic work, in us */
 #define EXECUTION_TIME_US   500
 
 /** Period to send measurements, in us */
-static uint32_t period_us;
+static uint32_t period_ms;
 
 /**
  * \brief   Callback function to demostrate debug prints
@@ -46,7 +48,7 @@ static uint32_t send_data(void)
     static uint8_t cntr = 0;
     LOG(LVL_INFO, "TX: Periodic data = %d", cntr);
     cntr++;
-    return period_us;
+    return period_ms;
 }
 
 /**
@@ -74,11 +76,11 @@ void App_init(const app_global_functions_t * functions)
     }
 
     // Set a periodic callback to be called after DEFAULT_PERIOD_US
-    period_us = DEFAULT_PERIOD_US;
-    lib_system->setPeriodicCb(send_data,
-                              period_us,
-                              EXECUTION_TIME_US);
+    period_ms = DEFAULT_PERIOD_MS;
 
+    App_Scheduler_addTask_execTime(send_data,
+                                    APP_SCHEDULER_SCHEDULE_ASAP,
+                                    EXECUTION_TIME_US);
     // Start the stack
     lib_state->startStack();
 }

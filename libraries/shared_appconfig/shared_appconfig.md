@@ -19,7 +19,7 @@ To be parsed by this library, app config should start with the following header 
 
 
 In case of an app config starting with a different header, its content is not parsed by the library
-and sent to registered module directly (module who registered to type SHARED_APP_CONFIG_INCOMPATIBLE_FILTER).
+and sent to registered module directly (module who registered to type SHARED_APP_CONFIG_INCOMPATIBLE_FILTER and SHARED_APP_CONFIG_ALL_TYPE_FILTER).
 
 ### TLV encoding
 As length available in app config is relatively short, the length only require 7 bytes. The MSB of the Length field is used to improve the Type encoding.

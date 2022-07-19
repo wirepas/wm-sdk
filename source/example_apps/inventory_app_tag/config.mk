@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := mdbt50q_rx nrf52832_mdk_v2 pca10040 pca10056 pca10059 pca10100 pca10112 promistel_rpi_hat ruuvitag silabs_brd4180b silabs_brd4181b silabs_brd4184a silabs_brd4253a silabs_brd4254a tbsense2 ublox_b204 wuerth_261101102 
+TARGET_BOARDS := silabs_brd4254a efr32_template pca10059 silabs_brd4180b pca10056 nrf52_template silabs_brd4184a silabs_brd4181b promistel_rpi_hat pca10100 ublox_b204 tbsense2 pca10112 pca10040 bgm220-ek4314a wuerth_261101102 mdbt50q_rx nrf52832_mdk_v2 ruuvitag pan1780 silabs_brd4312a silabs_brd4253a 
 
 
 #
@@ -35,7 +35,7 @@ default_scan_rand_ms=250
 default_send_rand_ms=100
 
 # App version
-app_major=5
-app_minor=1
-app_maintenance=0
-app_development=0
+app_major=$(sdk_major)
+app_minor=$(sdk_minor)
+app_maintenance=$(sdk_maintenance)
+app_development=1

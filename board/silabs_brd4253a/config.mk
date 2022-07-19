@@ -1,4 +1,5 @@
 # Mcu of the board
+MCU_FAMILY=efr
 MCU=efr32
 MCU_SUB=xg12
 MCU_MEM_VAR=pxxxf1024
@@ -20,4 +21,4 @@ board_hw_lfxo_gain=2
 # For convenience, an example of a +19dBm power table is provided, uncomment the
 # line below to use that instead of the default +10dBm power table
 # NOTE! +19 dBm power level is usable only where US FCC regulation applies
-#RADIO_CUSTOM_POWER_TABLE=mcu/efr32/hal/radio/radio_power_table_efr32xg12_19dBm.h
+#RADIO_CUSTOM_POWER_TABLE=mcu/efr/efr32/hal/radio/radio_power_table_efr32xg12_19dBm.h

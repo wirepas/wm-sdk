@@ -39,23 +39,6 @@ CFLAGS += -DPOSLIB_MBCN_TX_INTERVAL_MS=$(default_mbcn_tx_interval_ms)
 CFLAGS += -DPOSLIB_DA_ROUTING_ENABLED=$(default_da_routing_enabled)
 CFLAGS += -DPOSLIB_DA_FOLLOW_NETWORK=$(default_da_follow_network)
 
-# Enable shared libdata library
-SHARED_DATA=yes
-# Enable shared app_config library
-SHARED_APP_CONFIG=yes
-CFLAGS += -DSHARED_APP_CONFIG_MAX_FILTER=2
-# Enable shared Neigbors library
-SHARED_NEIGHBORS=yes
-CFLAGS += -DSHARED_NEIGHBORS_MAX_CB=2
-# Enabled shared Shutdown library
-SHARED_SHUTDOWN=yes
-CFLAGS += -DSHARED_SHUTDOWN_MAX_CB=2
-# Enable shared Offline
-SHARED_OFFLINE=yes
-CFLAGS += -DSHARED_OFFLINE_MAX_MODULES=2
-# Enable shared beacon
-SHARED_BEACON=yes
-CFLAGS += -DSHARED_BEACONS_MAX_NBR_BEACONS=2
 # Enable Positioning library
 POSITIONING=yes
 
@@ -79,8 +62,7 @@ CFLAGS += -DBUTTON_ENABLED
 endif
 
 APP_SCHEDULER=yes
-CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=4
-CFLAGS += -DAPP_SCHEDULER_MAX_EXEC_TIME_US=500
+APP_SCHEDULER_TASKS=4
 
 # MOTION support
 ifneq ($(motion_sensor),)

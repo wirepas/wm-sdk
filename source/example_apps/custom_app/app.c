@@ -1,7 +1,6 @@
 /* Copyright 2017 Wirepas Ltd. All Rights Reserved.
  *
  * See file LICENSE.txt for full license details.
- *
  */
 
 /*
@@ -13,10 +12,19 @@
 
 #include "api.h"
 #include "node_configuration.h"
+#include "shared_data.h"
+#include "app_scheduler.h"
+
+
+#define DEBUG_LOG_MODULE_NAME "CUSTOM_APP"
+/** To activate logs, configure the following line with "LVL_INFO". */
+#define DEBUG_LOG_MAX_LEVEL LVL_NOLOG
+
+#include "debug_log.h"
 
 /** Period to send data */
 #define DEFAULT_PERIOD_S    10
-#define DEFAULT_PERIOD_US   (DEFAULT_PERIOD_S*1000*1000)
+#define DEFAULT_PERIOD_MS   (DEFAULT_PERIOD_S*1000)
 
 /** Time needed to execute the periodic work, in us */
 #define EXECUTION_TIME_US 500
@@ -24,48 +32,24 @@
 /** Endpoint to change the sending period value */
 #define SET_PERIOD_EP  10
 
-/** Endpoint to send data */
-#define DATA_EP        1
+#define DATA_EP 1
 
-/** Period to send measurements, in us */
-static uint32_t period_us;
+/** Period to send measurements, in ms */
+static uint32_t period_ms;
+
+typedef struct __attribute__((packed))
+{
+    /** periodic message interval in milliseconds */
+    uint32_t period_ms;
+} payload_periodic_t;
 
 /**
- * \brief   Read the value in decimal from a string
- * \param   bytes
- *          Pointer to the string
- * \param   num_bytes
- *          Number of bytes in the string
- * \return  The parsed value
+ * @brief   Task to send periodic message.
+ * @return  next period
  */
-static uint32_t get_value_from_string(const uint8_t * bytes,
-                                      size_t num_bytes)
+
+static uint32_t send_data_task(void)
 {
-    uint32_t value = 0;
-    while ((num_bytes--) > 0)
-    {
-        char c = (char)(*bytes++);
-        if ((c < '0') || (c > '9'))
-        {
-            // Not a digit
-            break;
-        }
-        value *= 10;
-        value += c - '0';
-    }
-
-    return value;
-}
-
-/**
- * \brief   Periodic callback
- */
-static uint32_t send_data(void)
-{
-    // This function will be called every period_us microseconds by the stack.
-    // You can do anything you want for EXECUTION_TIME_US. In this example, a
-    // monotonically increasing 32-bit value is sent to the sink.
-
     static uint32_t id = 0; // Value to send
 
     // Create a data packet to send
@@ -81,15 +65,15 @@ static uint32_t send_data(void)
     data_to_send.tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 
     // Send the data packet
-    lib_data->sendData(&data_to_send);
+    Shared_Data_sendData(&data_to_send, NULL);
 
     // Increment value to send
     id++;
 
     // Inform the stack that this function should be called again in
-    // period_us microseconds. By returning APP_LIB_SYSTEM_STOP_PERIODIC,
+    // period_ms microseconds. By returning APP_SCHEDULER_STOP_TASK,
     // the stack won't call this function again.
-    return period_us;
+    return period_ms;
 }
 
 /**
@@ -99,29 +83,41 @@ static uint32_t send_data(void)
  * \return  Result code, \ref app_lib_data_receive_res_e
  */
 static app_lib_data_receive_res_e dataReceivedCb(
+    const shared_data_item_t * item,
     const app_lib_data_received_t * data)
 {
-    if ((data->num_bytes < 1) ||
-        (data->dest_endpoint != SET_PERIOD_EP))
+    LOG(LVL_INFO, "dataReceivedCb");
+    if ((data->num_bytes < 1) || (data->num_bytes!= sizeof(payload_periodic_t)))
     {
         // Data was not for this application
+        LOG(LVL_INFO, "dataReceiveCb - data was not for this application");
         return APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP;
     }
 
-    // Parse decimal digits to a period value
-    uint32_t new_period = get_value_from_string(data->bytes, data->num_bytes);
-    period_us = (new_period > 0) ? new_period * 1000 * 1000 :
-                                   APP_LIB_SYSTEM_STOP_PERIODIC;
+    LOG(LVL_INFO, "dataReceivedCb");
+    payload_periodic_t payload = *((payload_periodic_t *)data->bytes);
 
-    // Update the period now. The current period will be longer
-    // (already elapsed time from last period + new full period).
-    lib_system->setPeriodicCb(send_data,
-                              period_us,
-                              EXECUTION_TIME_US);
+    /* Change the period for a new one */
+    period_ms = payload.period_ms;
 
     // Data handled successfully
     return APP_LIB_DATA_RECEIVE_RES_HANDLED;
 }
+
+/*Unicast messages filter*/
+static shared_data_item_t alltype_packets_filter =
+{
+    .cb = dataReceivedCb,
+    .filter = {
+        .mode = SHARED_DATA_NET_MODE_ALL,
+        /* Filtering by source endpoint. */
+        .src_endpoint = SET_PERIOD_EP,
+        /* Filtering by destination endpoint. */
+        .dest_endpoint = SET_PERIOD_EP,
+        .multicast_cb = NULL
+    }
+};
+
 
 /**
  * \brief   Initialization callback for application
@@ -132,6 +128,8 @@ static app_lib_data_receive_res_e dataReceivedCb(
  */
 void App_init(const app_global_functions_t * functions)
 {
+    LOG_INIT();
+    LOG(LVL_INFO, "App_init");
     // Basic configuration of the node with a unique node address
     if (configureNodeFromBuildParameters() != APP_RES_OK)
     {
@@ -140,17 +138,14 @@ void App_init(const app_global_functions_t * functions)
         return;
     }
 
-    // Set a periodic callback to be called after DEFAULT_PERIOD_US
-    period_us = DEFAULT_PERIOD_US;
-    lib_system->setPeriodicCb(send_data,
-                              period_us,
-                              EXECUTION_TIME_US);
+    // Set a periodic callback to be called after DEFAULT_PERIOD_MS
+    period_ms = DEFAULT_PERIOD_MS;
+    App_Scheduler_addTask_execTime(send_data_task,
+                                   APP_SCHEDULER_SCHEDULE_ASAP,
+                                   EXECUTION_TIME_US);
 
     // Set callback for received unicast messages
-    lib_data->setDataReceivedCb(dataReceivedCb);
-
-    // Set callback for received broadcast messages
-    lib_data->setBcastDataReceivedCb(dataReceivedCb);
+    Shared_Data_addDataReceivedCb(&alltype_packets_filter);
 
     // Start the stack
     lib_state->startStack();

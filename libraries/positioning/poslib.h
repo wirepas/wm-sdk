@@ -345,13 +345,6 @@ poslib_ret_e PosLib_getConfig(poslib_settings_t * settings);
 /**
  * @brief   Start the positioning updates according to provided configuration.
  *          Calls PosLib initialization function before start.
- * @note    Following shared libraries needs to be initialized before use
- *          App_Scheduler_init();
- *          Shared_Data_init();
- *          Shared_Appconfig_init();
- *          Shared_Neighbors_init();
- *          Shared_Beacon_init();
- *          Shared_Offline_init();
  *          
  * @return  See \ref poslib_ret_e
  */
