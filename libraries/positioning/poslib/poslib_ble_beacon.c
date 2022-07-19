@@ -440,7 +440,7 @@ poslib_ret_e PosLibBle_start(ble_beacon_settings_t * settings)
         case POSLIB_BLE_ON:
         {   
             App_Scheduler_cancelTask(start_beacons_task);
-            App_Scheduler_addTask(start_beacons_task, BLE_STACK_WAIT_MS);
+            App_Scheduler_addTask_execTime(start_beacons_task, BLE_STACK_WAIT_MS, 500);
             break; 
         }
 
@@ -488,8 +488,8 @@ static void setConnectionStatus(bool wm_coverage)
         /*Start beacons if outside coverage for > activation_delay_s */
         m_activation_started = true;
         App_Scheduler_cancelTask(start_beacons_task);
-        App_Scheduler_addTask(start_beacons_task, 
-            TIME_SEC_TO_MSEC(m_ble_settings.activation_delay_s));
+        App_Scheduler_addTask_execTime(start_beacons_task,
+            TIME_SEC_TO_MSEC(m_ble_settings.activation_delay_s), 500);
 
         LOG(LVL_DEBUG, "BLE beacons to be activated in %u sec", 
             m_ble_settings.activation_delay_s);

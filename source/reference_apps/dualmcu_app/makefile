@@ -13,8 +13,6 @@ UART_USE_DMA=yes
 UART_USE_USB=no
 endif
 
-INCLUDES += -I$(SRCS_PATH)
-
 # Define default baudrate and hardware flow control settings
 uart_br ?= 125000
 uart_fc ?= false
@@ -28,9 +26,7 @@ ifeq ($(otap_force_legacy),yes)
     CFLAGS += -DOTAP_FORCE_LEGACY
 endif
 
-# Use App Scheduler and configure it
-APP_SCHEDULER=yes
-CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=3
+DUALMCU_LIB=yes
 
-include $(SRCS_PATH)waps/makefile
-include $(SRCS_PATH)drivers/makefile
+# Enable local provisioning
+LOCAL_PROVISIONING=yes

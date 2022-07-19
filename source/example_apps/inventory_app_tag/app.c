@@ -142,7 +142,7 @@ static void sentDataCb(const app_lib_data_sent_status_t * status)
     m_state.data[SEND_CONFIRM].done = true;
     m_state.data[SEND_CONFIRM].success = status->success;
     // notify the main task
-    App_Scheduler_addTask(advertiser_task, APP_SCHEDULER_SCHEDULE_ASAP);
+    App_Scheduler_addTask_execTime(advertiser_task, APP_SCHEDULER_SCHEDULE_ASAP, 100);
   }
 }
 
@@ -170,7 +170,7 @@ static app_lib_data_receive_res_e dataReceivedCb(
     m_state.data[ACK].done = true;
     m_state.data[ACK].end_hp = (uint32_t) lib_time->getTimestampHp();
 
-    App_Scheduler_addTask(advertiser_task, APP_SCHEDULER_SCHEDULE_ASAP);
+    App_Scheduler_addTask_execTime(advertiser_task, APP_SCHEDULER_SCHEDULE_ASAP, 100);
     return APP_LIB_DATA_RECEIVE_RES_HANDLED;
 }
 
@@ -569,7 +569,7 @@ static void beaconReceivedCb(const app_lib_state_beacon_rx_t * beacon)
 static void scanEndCb(void)
 {
     m_state.data[SCAN_END].done = true;
-    App_Scheduler_addTask(advertiser_task, APP_SCHEDULER_SCHEDULE_ASAP);
+    App_Scheduler_addTask_execTime(advertiser_task, APP_SCHEDULER_SCHEDULE_ASAP, 100);
 }
 
 /**
@@ -589,7 +589,7 @@ static uint32_t main_task(void)
 
     if (m_state.current == IDLE)
     {
-      App_Scheduler_addTask(advertiser_task, APP_SCHEDULER_SCHEDULE_ASAP);
+      App_Scheduler_addTask_execTime(advertiser_task, APP_SCHEDULER_SCHEDULE_ASAP, 100);
     }
     else if (m_state.run > 10)  /*advertiser task run missed too many times*/
     {
@@ -738,10 +738,10 @@ void App_init(const app_global_functions_t * functions)
 {
     adv_init();
     next_state(IDLE, 0);
-    App_Scheduler_init();
+
     Random_init(getUniqueAddress());
     uint32_t delay = m_settings.period_ms + Random_jitter(m_settings.period_ms);
-    App_Scheduler_addTask(main_task, delay) ;
+    App_Scheduler_addTask_execTime(main_task, delay, 100);
     callbacks_init();
 
 

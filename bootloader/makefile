@@ -5,10 +5,10 @@ SRCS += bootloader/bl_hardware.c
 
 INCLUDES += -Ibootloader/
 
-ifneq ("$(wildcard board/$(target_board)/bootloader/custom_early_init.c)","")
-	SRCS += board/$(target_board)/bootloader/custom_early_init.c
+ifneq ("$(wildcard $(BOARD_FOLDER)/bootloader/custom_early_init.c)","")
+	SRCS += $(BOARD_FOLDER)/bootloader/custom_early_init.c
 endif
 
-ifneq ("$(wildcard board/$(target_board)/bootloader/makefile)","")
-    include board/$(target_board)/bootloader/makefile
+ifneq ("$(wildcard $(BOARD_FOLDER)/bootloader/makefile)","")
+    include $(BOARD_FOLDER)/bootloader/makefile
 endif

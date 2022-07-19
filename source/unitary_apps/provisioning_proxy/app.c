@@ -146,7 +146,6 @@ void App_init(const app_global_functions_t * functions)
 #endif
                                             ));
 
-    Shared_Data_init();
     Provisioning_Proxy_init(&conf);
 
     Button_init();

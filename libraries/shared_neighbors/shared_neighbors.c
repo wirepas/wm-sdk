@@ -12,15 +12,6 @@
 #include "debug_log.h"
 #include "shared_neighbors.h"
 
-/**
- * Maximum shared_state callbacks that can be registered at the same time.
- * It is application specific.
- */
-#ifndef SHARED_NEIGHBORS_MAX_CB
-// Must be defined from application
-#error "Please define SHARED_NEIGHBORS_MAX_CB from your application makefile"
-#endif
-
 /** Internal structure of a callback for state library network beacon cb */
 typedef struct
 {

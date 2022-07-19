@@ -394,12 +394,7 @@ void App_init(const app_global_functions_t * functions)
                                      APP_LIB_SETTINGS_ROLE_FLAG_LL));
 
 
-    /* Initiate app persistance to read and write multicast address. */
-    res = App_Persistent_init();
-    if (res != APP_PERSISTENT_RES_OK)
-    {
-        LOG(LVL_ERROR, "Cannot initialize persistent\n");
-    }
+    /* Use app persistance to read and write multicast address. */
     res = App_Persistent_read( (uint8_t* ) &m_mcast_address, sizeof(m_mcast_address));
     if (res == APP_PERSISTENT_RES_INVALID_CONTENT)
     {
@@ -407,8 +402,10 @@ void App_init(const app_global_functions_t * functions)
         m_mcast_address = 0x80000001;
         App_Persistent_write((uint8_t *) &m_mcast_address, sizeof(m_mcast_address));
     }
-    /* Init shared data module. */
-    Shared_Data_init();
+    else if (res == APP_PERSISTENT_RES_UNINITIALIZED)
+    {
+        LOG(LVL_ERROR, "Persistent area is not initialized as it should (no area defined?)\n");
+    }
 
     /* Set up LED. */
     Led_init();
@@ -424,9 +421,6 @@ void App_init(const app_global_functions_t * functions)
                                   BUTTON_PRESSED,
                                   button_pressed_handler);
     }
-
-    /* Init application scheduler. */
-    App_Scheduler_init();
 
     /* Set unicast, multicast & broadcast received messages callback. */
     Shared_Data_addDataReceivedCb(&alltype_packets_filter);

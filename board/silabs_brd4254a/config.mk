@@ -1,4 +1,5 @@
 # Mcu of the board
+MCU_FAMILY=efr
 MCU=efr32
 MCU_SUB=xg12
 MCU_MEM_VAR=pxxxf1024

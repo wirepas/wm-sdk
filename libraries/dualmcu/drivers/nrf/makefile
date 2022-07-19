@@ -1,0 +1,4 @@
+NRF_DRIVERS_PREFIX := $(DRIVERS_PREFIX)nrf/
+
+SRCS += $(NRF_DRIVERS_PREFIX)exti.c  \
+        $(NRF_DRIVERS_PREFIX)io.c    \

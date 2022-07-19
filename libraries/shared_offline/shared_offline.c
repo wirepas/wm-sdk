@@ -18,11 +18,6 @@
 #endif
 #include "debug_log.h"
 
-#ifndef SHARED_OFFLINE_MAX_MODULES
-// Must be defined from application
-#error "Please define SHARED_OFFLINE_MAX_MODULES from your application makefile"
-#endif
-
 /** Structure of a task */
 typedef struct
 {
@@ -304,22 +299,14 @@ static void evaluate_sleep()
 
 shared_offline_res_e Shared_Offline_init(void)
 {
-    app_res_e res;
+    if (m_initialized)
+    {
+        return SHARED_OFFLINE_RES_OK;
+    }
+
     for (uint8_t i = 0; i < SHARED_OFFLINE_MAX_MODULES; i++)
     {
         m_modules[i].in_use = false;
-    }
-
-    // Check if NRLS is possible on this node.
-    // As there is no explicit test in nrls lib, just test it ourself
-    // Ask to enter sleep with invalid period. Depending on answer we
-    // may determine if we have the right role. It works as role is checked
-    // before values are checked
-    res = lib_sleep->sleepStackforTime(0, 0);
-    if (res == APP_RES_INVALID_CONFIGURATION)
-    {
-        // Role is wrong
-        return SHARED_OFFLINE_RES_WRONG_ROLE;
     }
 
     lib_sleep->setOnWakeupCb(on_stack_online_cb);
@@ -333,10 +320,23 @@ shared_offline_res_e Shared_Offline_init(void)
 shared_offline_res_e Shared_Offline_register(uint8_t * id_p,
                                              offline_setting_conf_t cbs)
 {
+    app_res_e res;
     bool added = false;
     if (!m_initialized)
     {
         return SHARED_OFFLINE_RES_UNINITIALIZED;
+    }
+
+    // Check if NRLS is possible on this node.
+    // As there is no explicit test in nrls lib, just test it ourself
+    // Ask to enter sleep with invalid period. Depending on answer we
+    // may determine if we have the right role. It works as role is checked
+    // before values are checked
+    res = lib_sleep->sleepStackforTime(0, 0);
+    if (res == APP_RES_INVALID_CONFIGURATION)
+    {
+        // Role is wrong
+        return SHARED_OFFLINE_RES_WRONG_ROLE;
     }
 
     Sys_enterCriticalSection();

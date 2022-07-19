@@ -147,7 +147,11 @@ typedef app_res_e
  * \param   interval
  *          Sending interval in milliseconds
  * \return  Result code, \ref APP_RES_OK if successful,
- *          \ref APP_RES_INVALID_VALUE if interval is invalid
+ *          \ref APP_RES_INVALID_VALUE if interval is invalid,
+ *          \ref APP_RES_INVALID_STACK_STATE if stack is not running
+ * @note    Stack must be running (i.e. @ref app_lib_state_start_stack_f
+ *          "lib_state->startStack()" must have been called) in order for
+ *          set being possible.
  * \note    Beacons are sent on all enabled channels right after each other,
  *          for every interval, i.e. the more channels are enabled, the longer
  *          a transmission takes
@@ -169,6 +173,10 @@ typedef app_res_e
  *          Pointer to radio transmission power, in dBm
  * \return  Result code, \ref APP_RES_OK if successful,
  *          \ref APP_RES_RESOURCE_UNAVAILABLE if index is too large
+ *          \ref APP_RES_INVALID_STACK_STATE if stack is not running
+ * @note    Stack must be running (i.e. @ref app_lib_state_start_stack_f
+ *          "lib_state->startStack()" must have been called) in order for
+ *          set being possible.
  * \note    Power is rounded to the closest possible value and the value
  *          pointed by \p power_p is modified to the used value
  */
@@ -186,6 +194,10 @@ typedef app_res_e
  * \return  Result code, \ref APP_RES_OK if successful,
  *          \ref APP_RES_RESOURCE_UNAVAILABLE if index is too large,
  *          \ref APP_RES_INVALID_VALUE if mask is invalid
+ *          \ref APP_RES_INVALID_STACK_STATE if stack is not running
+ * @note    Stack must be running (i.e. @ref app_lib_state_start_stack_f
+ *          "lib_state->startStack()" must have been called) in order for
+ *          set being possible.
  */
 typedef app_res_e
     (*app_lib_beacon_tx_set_beacon_channels_f)(
@@ -213,6 +225,10 @@ typedef app_res_e
  * \return  Result code, \ref APP_RES_OK if successful,
  *          \ref APP_RES_RESOURCE_UNAVAILABLE if index is too large,
  *          \ref APP_RES_INVALID_VALUE if num_bytes is invalid
+ *          \ref APP_RES_INVALID_STACK_STATE if stack is not running
+ * @note    Stack must be running (i.e. @ref app_lib_state_start_stack_f
+ *          "lib_state->startStack()" must have been called) in order for
+ *          set being possible.
  */
 typedef app_res_e
     (*app_lib_beacon_tx_set_beacon_contents_f)(uint_fast8_t index,

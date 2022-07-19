@@ -289,15 +289,11 @@ APP_PRINTING=yes
 
 Using of @ref app_scheduler.h "app scheduler" can be done by using this flag.
 
-@note You also need to enable two compilation flags by using @ref
-source_makefile_cflags "CFLAGS" option
-
 Example:
 @code
-# Use App Scheduler. Declare 4 tasks with maximum execution time of 100 us each
+# Use App Scheduler. Declare 4 tasks
 APP_SCHEDULER=yes
-CFLAGS += -DAPP_SCHEDULER_MAX_TASKS=4
-CFLAGS += -DAPP_SCHEDULER_MAX_EXEC_TIME_US=100
+APP_SCHEDULER_TASKS=4
 @endcode
 
 @subsection source_makefile_cflags CFLAGS

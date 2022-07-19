@@ -60,7 +60,7 @@ static void acc_event_cb(uint8_t pin, gpio_event_e event)
     if (m_mon_enabled && m_mon_cfg.cb != NULL)
     {
         m_mon_cfg.cb(POSLIB_MOTION_DYNAMIC);
-        App_Scheduler_addTask(set_motion_static, MOTION_STATIC_TIMEOUT_MS);
+        App_Scheduler_addTask_execTime(set_motion_static, MOTION_STATIC_TIMEOUT_MS, 500);
     }
 }
 
@@ -256,7 +256,7 @@ posapp_motion_ret_e PosAppMotion_getAcceleration(posapp_motion_acc_callback_f cb
     m_acc_sampling = true;
 
     m_acc_state = ACC_START;
-    App_Scheduler_addTask(accelerometer_task, APP_SCHEDULER_SCHEDULE_ASAP);
+    App_Scheduler_addTask_execTime(accelerometer_task, APP_SCHEDULER_SCHEDULE_ASAP, 500);
     
     return POSAPP_MOTION_RET_OK;
 }
