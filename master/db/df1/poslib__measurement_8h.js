@@ -26,7 +26,7 @@ var poslib__measurement_8h =
       [ "update_s", "db/df1/poslib__measurement_8h.html#a5b8fb7d3174f97c50b0b1dee139680aa", null ]
     ] ],
     [ "poslib_measurement", "db/df1/poslib__measurement_8h.html#d7/d4b/structposlib__measurement", [
-      [ "max_duration_us", "db/df1/poslib__measurement_8h.html#a134142500ff2cd2d7aecf3abfef2de90", null ],
+      [ "max_duration_ms", "db/df1/poslib__measurement_8h.html#a1b08282aec4ed31ba8ce2183b9a30624", null ],
       [ "mode", "db/df1/poslib__measurement_8h.html#a82dc5c68a3876489953dc4a3da3a7f1c", null ]
     ] ],
     [ "PosLibMeas_clearMeas", "db/df1/poslib__measurement_8h.html#a0e51abd18f82e29e6b6fe4281e19de50", null ],

@@ -149,12 +149,12 @@ Configuration of a node</h2>
 <p>The <a class="el" href="../../de/d7a/how_to_develop.html#app_init">App_Init()</a> function is the entry point for the application. It is called by the stack after each boot.</p>
 <p>The Wirepas Connectivity stack is in the stopped state during this call. All the API calls that require the stack to be in the stopped state, like configuring node settings, must be done in this function.</p>
 <p>The code below shows the minimal steps for an application to configure a node and start the stack.</p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a class="code" href="../../da/dbb/wms__app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
 <div class="line">{</div>
 <div class="line">    <span class="comment">// Basic configuration of the node with a unique node address</span></div>
 <div class="line">    <span class="keywordflow">if</span> (<a class="code" href="../../df/d2e/node__configuration_8h.html#a0d716b25bf54d5ac6a553135cd6a44a7">configureNode</a>(<a class="code" href="../../df/d2e/node__configuration_8h.html#a445f5127c4f9e8f7e3ffd4694fedaf30">getUniqueAddress</a>(),</div>
 <div class="line">                      NETWORK_ADDRESS,</div>
-<div class="line">                      NETWORK_CHANNEL) != <a class="code" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
+<div class="line">                      NETWORK_CHANNEL) != <a class="code" href="../../da/dbb/wms__app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a>)</div>
 <div class="line">    {</div>
 <div class="line">        <span class="comment">// Could not configure the node. It should not happen</span></div>
 <div class="line">        <span class="comment">// except if one of the config value is invalid</span></div>
@@ -165,13 +165,13 @@ Configuration of a node</h2>
 <div class="line"> </div>
 <div class="line">    lib_state-&gt;startStack();</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>A newly flashed device starts with its role set to <a class="el" href="../../de/d60/settings_8h.html#ab42b1333ea2649dfc695dfc0423f1184a45e9c1d12ed69997903750fd96b3a2e9">APP_LIB_SETTINGS_ROLE_HEADNODE</a> and with the flag <a class="el" href="../../de/d60/settings_8h.html#ad60f684ddb64fff64bd9443bec7d6575a62621bb39a97dae23f07fb98fbec0acb">APP_LIB_SETTINGS_ROLE_FLAG_AUTOROLE</a>, by default.</p>
+</div><!-- fragment --><p>A newly flashed device starts with its role set to <a class="el" href="../../df/d62/wms__settings_8h.html#ad2ffb12371d3d3c5c3c16e8aa691a3d8a6a1eb491da8a62316f9bd1c265c03a44">APP_LIB_SETTINGS_ROLE_AUTOROLE_LE</a> by default.</p>
 <p>To be able to join a network, the application must set at least a unique node address, a common network address and a common network channel. Consequently, it is important to check if a node setting (role, node address, etc.) is already set before updating it from application initialization code. Otherwise it would break the Remote API, as the remotely updated value would be overwritten in <a class="el" href="../../de/d7a/how_to_develop.html#app_init">App_Init()</a>.</p>
 <p>This is the role of the <a class="el" href="../../df/d2e/node__configuration_8h.html#a0d716b25bf54d5ac6a553135cd6a44a7">configureNode()</a> function. It sets the node address, network address and network channel, but <b>ONLY</b> if these settings are missing from the node. This is the case on first boot after flashing but not after any reboots after that, unless the settings are explicitly cleared by the application.</p>
-<p>Note that the <a class="el" href="../../db/d3b/state_8h.html#a39ad217d32c2986151820eb24c74e618">lib_state-&gt;stopStack()</a> function will cause a reboot of the device and the <a class="el" href="../../de/d7a/how_to_develop.html#app_init">App_Init()</a> function will be called again.</p>
+<p>Note that the <a class="el" href="../../d4/d27/wms__state_8h.html#a39ad217d32c2986151820eb24c74e618">lib_state-&gt;stopStack()</a> function will cause a reboot of the device and the <a class="el" href="../../de/d7a/how_to_develop.html#app_init">App_Init()</a> function will be called again.</p>
 <p>Once the node is correctly configured, the stack must be started.</p>
 <p>This initialization is just an example and can be something different, depending on the use case. For example, the application can wait for configuration via another interface (<a class="el" href="../../d5/d7b/application_examples.html#source_makefile_hal_uart">UART</a>, <a class="el" href="../../d5/d7b/application_examples.html#source_makefile_hal_spi">SPI</a>, NFC, ...). This is the case with the <code><a class="el" href="../../da/d1e/dualmcu_app_2app_8c-example.html">dualmcu_app</a></code> application, for example.</p>
-<dl class="section note"><dt>Note</dt><dd>Application <b>must</b> call <a class="el" href="../../db/d3b/state_8h.html#a8b9ddf8d4323784f6a437060c30f31b1">lib_state-&gt;startStack()</a>. It can be at the end of <a class="el" href="../../de/d7a/how_to_develop.html#app_init">App_Init()</a> function or in a <a class="el" href="../../dc/db2/system_8h.html#a3bbe9181ed7a154eb9d2baf96f337701">deferred context</a> but it must be called! Without this call, the node will not be part of any network.</dd>
+<dl class="section note"><dt>Note</dt><dd>Application <b>must</b> call <a class="el" href="../../d4/d27/wms__state_8h.html#a8b9ddf8d4323784f6a437060c30f31b1">lib_state-&gt;startStack()</a>. It can be at the end of <a class="el" href="../../de/d7a/how_to_develop.html#app_init">App_Init()</a> function or in a <a class="el" href="../../df/d6b/wms__system_8h.html#a3bbe9181ed7a154eb9d2baf96f337701">deferred context</a> but it must be called! Without this call, the node will not be part of any network.</dd>
 <dd>
 Remote API built-in feature of the stack (described in <a class="el" href="../../de/d7a/how_to_develop.html#relmat7">[7]</a>) allows the change of a setting remotely. This change can happen any time from the application point of view and will generate a reboot and a new call to <a class="el" href="../../de/d7a/how_to_develop.html#app_init">App_Init()</a> after the update.</dd>
 <dd>
@@ -184,7 +184,7 @@ Build application</h1>
 <dl class="section note"><dt>Note</dt><dd>Many times the application must be built on custom hardware, not yet having board definition. See documentation <a class="el" href="../../de/d7a/how_to_develop.html#define_custom_board">here</a>.</dd></dl>
 <h1><a class="anchor" id="test_application"></a>
 Test application</h1>
-<p>To practically test the application, a minimum of two boards is needed. One of them must be configured as a <a class="el" href="../../de/d60/settings_8h.html#ab42b1333ea2649dfc695dfc0423f1184a33fffe4b117ac07c9c45ea216232592e">sink</a> and the other as a node (i.e. something else than sink). In a first step, the sink can be connected to a PC running the Wirepas Terminal.</p>
+<p>To practically test the application, a minimum of two boards is needed. One of them must be configured as a <a class="el" href="../../df/d62/wms__settings_8h.html#ad2ffb12371d3d3c5c3c16e8aa691a3d8a814d2aa3fd8f79d70d6a0ddeee57c504">sink Low Energy</a> or a <a class="el" href="../../df/d62/wms__settings_8h.html#ad2ffb12371d3d3c5c3c16e8aa691a3d8a3705edf2786fadb244f262171131204d">sink Low Latency</a> and the other as a node (i.e. something else than sink). In a first step, the sink can be connected to a PC running the Wirepas Terminal.</p>
 <p>The application runs on the board configured as a node. Even if it is technically possible to run the application on a sink, it implies that the board has another network connection (WiFi, Ethernet,...) and everything is managed by the same MCU. In this basic configuration, it is assumed that it is not the case.</p>
 <p>To program the sink, application <code><a class="el" href="../../da/d1e/dualmcu_app_2app_8c-example.html">dualmcu_app</a> </code> can be flashed and then configured by using Wirepas Terminal.</p>
 <h1><a class="anchor" id="flashing_device"></a>
@@ -210,7 +210,7 @@ Define custom board definition</h1>
 <h1><a class="anchor" id="app_init"></a>
 Application startup</h1>
 <p>The Wirepas Mesh Single-MCU SDK low-level initialization code sets up the application environment to run C code. The low-level setup is outside the scope of this document, but once the setup is done, the application initialization function <code>App_init()</code> will be run::</p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a class="code" href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> App_init(<span class="keyword">const</span> <a class="code" href="../../da/dbb/wms__app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a> * functions)</div>
 <div class="line">{</div>
 <div class="line">    ...</div>
 <div class="line">}</div>
@@ -247,7 +247,7 @@ Free resources</h2>
 Power consumption</h2>
 <p>The Wirepas Connectivity stack will try to enter the deepest possible sleep state of the platform, to optimize power consumption.</p>
 <p>But as the application may require staying in a higher power state (to keep a peripheral clock enabled for example), the application can ask the stack to prevent entering the deep sleep state.</p>
-<p>Please see the <a class="el" href="../../dc/db2/system_8h.html#a8e2cb074dc572f44ebc7a615ebfd6a07">lib_system-&gt;disableDeepSleep()</a> function in the <a class="el" href="../../dc/db2/system_8h.html">System library</a>.</p>
+<p>Please see the <a class="el" href="../../df/d6b/wms__system_8h.html#a8e2cb074dc572f44ebc7a615ebfd6a07">lib_system-&gt;disableDeepSleep()</a> function in the System library.</p>
 <h2><a class="anchor" id="persistent_memory"></a>
 How to store data in persistent memory</h2>
 <p>It is often necessary to store data from an application to persistent memory in order to still have access to it across reboots of the node. The different methods to achieve it and their pros and cons are described in this section.</p>
@@ -259,7 +259,7 @@ How to store data in persistent memory</h2>
 <h2><a class="anchor" id="storage_library"></a>
 Using storage library</h2>
 <p>Wirepas Mesh Stack uses reserved areas for its own usage in internal flash. To avoid reserving too much flash, this area is kept as small as possible. However, a small amount of this area is reserved for the application.</p>
-<p>This application area can be accessed through the <a class="el" href="../../d8/d6b/storage_8h.html#d3/d48/structapp__lib__storage__t">storage library</a> handle.</p>
+<p>This application area can be accessed through the <a class="el" href="../../d4/d75/wms__storage_8h.html#d3/d48/structapp__lib__storage__t">storage library</a> handle.</p>
 <ul>
 <li>Pros<ol type="1">
 <li>Really easy to use as no flash driver needed</li>
@@ -267,7 +267,7 @@ Using storage library</h2>
 </ol>
 </li>
 <li>Cons<ol type="1">
-<li>Very limited in size. Maximum size can be asked with <a class="el" href="../../d8/d6b/storage_8h.html#a77b56196275da84f0b4f8ef676adfc9d">lib_stoarge-&gt;getPersistentMaxSize</a>()</li>
+<li>Very limited in size. Maximum size can be asked with <a class="el" href="../../d4/d75/wms__storage_8h.html#a77b56196275da84f0b4f8ef676adfc9d">lib_stoarge-&gt;getPersistentMaxSize</a>()</li>
 <li>It cannot be pre-flashed before first execution</li>
 <li>Application must manage validity of the content (with magic number for example)</li>
 </ol>
@@ -298,7 +298,7 @@ Using a dedicated area in flash</h2>
 <p>The internal flash is partitioned in multiple areas. Some of these areas are used for Wirepas usage like the bootloader or the firmware that cannot be moved. But the remaining part of flash can be freely partitioned by the application. Each area has a dedicated area ID and a given size. More information about area ids and its usage can be found in <a class="el" href="../../de/d7a/how_to_develop.html#relmat2">[2]</a></p>
 <p>The steps to realize are:</p><ol type="1">
 <li>Defining a new partitioning in the <a class="el" href="../../d5/d7b/application_examples.html#config_mk_ini_file">Ini file</a> by adding a new area with flag user (i.e. flags = 0x00000014)</li>
-<li>Access it through the <a class="el" href="../../df/d08/memory__area_8h.html#d8/d55/structapp__lib__memory__area__t">memory area library</a> handle from your application.</li>
+<li>Access it through the <a class="el" href="../../d6/d15/wms__memory__area_8h.html#d8/d55/structapp__lib__memory__area__t">memory area library</a> handle from your application.</li>
 <li>Application can also directly access the memory area without using the library, but it requires the application to know the absolute address of the area (not needed with the memory library)</li>
 </ol>
 <p>An example can be found from the <a class="el" href="../../d5/da9/provisioning_joining_node_2app_8c-example.html">provisioning joining node</a> with the code to access the memory area in storage_memarea.c and example of modified ini file in the scratchpad_ini folder</p>
@@ -326,9 +326,9 @@ Related Material</h1>
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <div class="ttc" id="anode__configuration_8h_html_a0d716b25bf54d5ac6a553135cd6a44a7"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html#a0d716b25bf54d5ac6a553135cd6a44a7">configureNode</a></div><div class="ttdeci">__STATIC_INLINE app_res_e configureNode(app_addr_t my_addr, app_lib_settings_net_addr_t my_network_addr, app_lib_settings_net_channel_t my_network_ch, const uint8_t *my_authentication_key_p, const uint8_t *my_encryption_key_p)</div><div class="ttdoc">Helper function to initially setup a node if not already configured. This configuration can be modifi...</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d2e/node__configuration_8h_source.html#l00063">node_configuration.h:63</a></div></div>
-<div class="ttc" id="aapp_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122"><div class="ttname"><a href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a></div><div class="ttdeci">@ APP_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00204">app.h:204</a></div></div>
+<div class="ttc" id="awms__app_8h_html_a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122"><div class="ttname"><a href="../../da/dbb/wms__app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80a003dcdf43ec0474fb1190cdccd959122">APP_RES_OK</a></div><div class="ttdeci">@ APP_RES_OK</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dbb/wms__app_8h_source.html#l00204">wms_app.h:204</a></div></div>
+<div class="ttc" id="awms__app_8h_html_d6/d81/structapp__global__functions__t"><div class="ttname"><a href="../../da/dbb/wms__app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a></div><div class="ttdoc">List of global functions, passed to App_entrypoint()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dbb/wms__app_8h_source.html#l00157">wms_app.h:157</a></div></div>
 <div class="ttc" id="anode__configuration_8h_html_a445f5127c4f9e8f7e3ffd4694fedaf30"><div class="ttname"><a href="../../df/d2e/node__configuration_8h.html#a445f5127c4f9e8f7e3ffd4694fedaf30">getUniqueAddress</a></div><div class="ttdeci">__STATIC_INLINE app_addr_t getUniqueAddress()</div><div class="ttdoc">Helper function to generate a unique unicast address.</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d2e/node__configuration_8h_source.html#l00139">node_configuration.h:139</a></div></div>
-<div class="ttc" id="aapp_8h_html_d6/d81/structapp__global__functions__t"><div class="ttname"><a href="../../d2/d39/app_8h.html#d6/d81/structapp__global__functions__t">app_global_functions_t</a></div><div class="ttdoc">List of global functions, passed to App_entrypoint()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d39/app_8h_source.html#l00157">app.h:157</a></div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

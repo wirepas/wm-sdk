@@ -95,8 +95,12 @@ Data Structures</h2></td></tr>
 <tr class="separator:d1/d60/structdsap__data__tx__req__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:d6/d81/structdsap__data__tx__tt__req__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#d6/d81/structdsap__data__tx__tt__req__t">dsap_data_tx_tt_req_t</a></td></tr>
 <tr class="separator:d6/d81/structdsap__data__tx__tt__req__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:db/d71/structdsap__data__tx__frag__req__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#db/d71/structdsap__data__tx__frag__req__t">dsap_data_tx_frag_req_t</a></td></tr>
+<tr class="separator:db/d71/structdsap__data__tx__frag__req__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:dc/d07/structdsap__data__rx__ind__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#dc/d07/structdsap__data__rx__ind__t">dsap_data_rx_ind_t</a></td></tr>
 <tr class="separator:dc/d07/structdsap__data__rx__ind__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:dc/d3f/structdsap__data__rx__frag__ind__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#dc/d3f/structdsap__data__rx__frag__ind__t">dsap_data_rx_frag_ind_t</a></td></tr>
+<tr class="separator:dc/d3f/structdsap__data__rx__frag__ind__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:d6/d3a/structdsap__data__tx__ind__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#d6/d3a/structdsap__data__tx__ind__t">dsap_data_tx_ind_t</a></td></tr>
 <tr class="separator:d6/d3a/structdsap__data__tx__ind__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:d2/dc6/structdsap__data__tx__cnf__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#d2/dc6/structdsap__data__tx__cnf__t">dsap_data_tx_cnf_t</a></td></tr>
@@ -149,6 +153,8 @@ Macros</h2></td></tr>
 <tr class="separator:a9c7599699423602d6ade4e531433f64e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a394a7815c573873dcdede2c2aafaddad"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#a394a7815c573873dcdede2c2aafaddad">FRAME_DSAP_DATA_TX_TT_REQ_HEADER_SIZE</a>&#160;&#160;&#160;(sizeof(<a class="el" href="../../d5/d53/dsap__frames_8h.html#d6/d81/structdsap__data__tx__tt__req__t">dsap_data_tx_tt_req_t</a>) - <a class="el" href="../../d5/d53/dsap__frames_8h.html#a5818355c4c254d012e8e3a449e954fcf">APDU_MAX_SIZE</a>)</td></tr>
 <tr class="separator:a394a7815c573873dcdede2c2aafaddad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1436b3f7ccd106f8bab52c265f0698a2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#a1436b3f7ccd106f8bab52c265f0698a2">FRAME_DSAP_DATA_TX_FRAG_REQ_HEADER_SIZE</a>&#160;&#160;&#160;(sizeof(<a class="el" href="../../d5/d53/dsap__frames_8h.html#db/d71/structdsap__data__tx__frag__req__t">dsap_data_tx_frag_req_t</a>) - <a class="el" href="../../d5/d53/dsap__frames_8h.html#a5818355c4c254d012e8e3a449e954fcf">APDU_MAX_SIZE</a>)</td></tr>
+<tr class="separator:a1436b3f7ccd106f8bab52c265f0698a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91426a2d9cb74ca41c25c3de4532db6a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#a91426a2d9cb74ca41c25c3de4532db6a">RX_IND_INFO_QOS_MASK</a>&#160;&#160;&#160;0x3</td></tr>
 <tr class="separator:a91426a2d9cb74ca41c25c3de4532db6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3858c2a429b6efae736324e37b6ddb9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#ab3858c2a429b6efae736324e37b6ddb9">RX_IND_INFO_QOS_OFFSET</a>&#160;&#160;&#160;0</td></tr>
@@ -159,8 +165,14 @@ Macros</h2></td></tr>
 <tr class="separator:ace262166b5b397c83ee686f042a3ab61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a838008c2e8eb2f5a6562c425c506d3e7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#a838008c2e8eb2f5a6562c425c506d3e7">RX_IND_INFO_MAX_HOPCOUNT</a>&#160;&#160;&#160;(<a class="el" href="../../d5/d53/dsap__frames_8h.html#a2ce1d35353f62999e411248bcc5951be">RX_IND_INFO_HOPCOUNT_MASK</a> &gt;&gt; <a class="el" href="../../d5/d53/dsap__frames_8h.html#ace262166b5b397c83ee686f042a3ab61">RX_IND_INFO_HOPCOUNT_OFFSET</a>)</td></tr>
 <tr class="separator:a838008c2e8eb2f5a6562c425c506d3e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e02fcf82e33b7010ffd3e8ff076b400"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#a5e02fcf82e33b7010ffd3e8ff076b400">DSAP_FRAG_LENGTH_MASK</a>&#160;&#160;&#160;0x0fff</td></tr>
+<tr class="separator:a5e02fcf82e33b7010ffd3e8ff076b400"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee465bd36cc6d9d17410bc4b8df869a4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#aee465bd36cc6d9d17410bc4b8df869a4">DSAP_FRAG_LAST_FLAG_MASK</a>&#160;&#160;&#160;0x8000</td></tr>
+<tr class="separator:aee465bd36cc6d9d17410bc4b8df869a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06383738952d7de4464d475c59ea9cbf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#a06383738952d7de4464d475c59ea9cbf">FRAME_DSAP_DATA_RX_IND_HEADER_SIZE</a>&#160;&#160;&#160;(sizeof(<a class="el" href="../../d5/d53/dsap__frames_8h.html#dc/d07/structdsap__data__rx__ind__t">dsap_data_rx_ind_t</a>) - <a class="el" href="../../d5/d53/dsap__frames_8h.html#a5818355c4c254d012e8e3a449e954fcf">APDU_MAX_SIZE</a>)</td></tr>
 <tr class="separator:a06383738952d7de4464d475c59ea9cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfb55bddcb98f2c34bc2935b97f22e61"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d53/dsap__frames_8h.html#adfb55bddcb98f2c34bc2935b97f22e61">FRAME_DSAP_DATA_RX_FRAG_IND_HEADER_SIZE</a>&#160;&#160;&#160;(sizeof(<a class="el" href="../../d5/d53/dsap__frames_8h.html#dc/d3f/structdsap__data__rx__frag__ind__t">dsap_data_rx_frag_ind_t</a>) - <a class="el" href="../../d5/d53/dsap__frames_8h.html#a5818355c4c254d012e8e3a449e954fcf">APDU_MAX_SIZE</a>)</td></tr>
+<tr class="separator:adfb55bddcb98f2c34bc2935b97f22e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
 <a name="d1/d60/structdsap__data__tx__req__t" id="d1/d60/structdsap__data__tx__req__t"></a>
@@ -303,6 +315,91 @@ tx_opts</td>
 
 </div>
 </div>
+<a name="db/d71/structdsap__data__tx__frag__req__t" id="db/d71/structdsap__data__tx__frag__req__t"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#db/d71/structdsap__data__tx__frag__req__t">&#9670;&nbsp;</a></span>dsap_data_tx_frag_req_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct dsap_data_tx_frag_req_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00090">90</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Data Fields</th></tr>
+<tr><td class="fieldtype">
+<a id="a95acf85a002812b264572970adc2f033"></a>uint8_t</td>
+<td class="fieldname">
+apdu[102]</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="af8d2e29d5309f0a20febcfbe40848f47"></a><a class="el" href="../../db/db1/waps__frames_8h.html#ac976fc18c658ed6d8a9e9a3a045c7f18">pduid_t</a></td>
+<td class="fieldname">
+apdu_id</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a57bac7aac120827b00605f108362c128"></a>uint8_t</td>
+<td class="fieldname">
+apdu_len</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a62135be23077738ceeac25bd112d6755"></a><a class="el" href="../../db/db1/waps__frames_8h.html#a816e5cc1d03a10a8bcfbd56fa8554b5e">w_addr_t</a></td>
+<td class="fieldname">
+dst_addr</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a392caa89e0bfa791fae7dd77ddf2f88a"></a><a class="el" href="../../db/db1/waps__frames_8h.html#aee71d80c96b47076b17640ee902138a2">ep_t</a></td>
+<td class="fieldname">
+dst_endpoint</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a3bbde7f938ca87be34aa8cecacfca2ce"></a>uint16_t</td>
+<td class="fieldname">
+fragment_offset_flag</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="aa92442fc4f0ec72e54bea9b8f9f24d07"></a>uint16_t</td>
+<td class="fieldname">
+full_packet_id: 12</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a65ee2b4b16f25052c441ff9959dcc7e7"></a>uint8_t</td>
+<td class="fieldname">
+qos</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a29c1d371b8223440e07c87704e14ecaf"></a><a class="el" href="../../db/db1/waps__frames_8h.html#aee71d80c96b47076b17640ee902138a2">ep_t</a></td>
+<td class="fieldname">
+src_endpoint</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a0e413d04afb2aa236f4eca61395f2296"></a>uint32_t</td>
+<td class="fieldname">
+travel_time</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="ad35cab9ac558c322115f7bb21ceb13aa"></a>uint8_t</td>
+<td class="fieldname">
+tx_opts</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
 <a name="dc/d07/structdsap__data__rx__ind__t" id="dc/d07/structdsap__data__rx__ind__t"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#dc/d07/structdsap__data__rx__ind__t">&#9670;&nbsp;</a></span>dsap_data_rx_ind_t</h2>
 
@@ -315,7 +412,7 @@ tx_opts</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00103">103</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00129">129</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -376,6 +473,91 @@ src_endpoint</td>
 
 </div>
 </div>
+<a name="dc/d3f/structdsap__data__rx__frag__ind__t" id="dc/d3f/structdsap__data__rx__frag__ind__t"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#dc/d3f/structdsap__data__rx__frag__ind__t">&#9670;&nbsp;</a></span>dsap_data_rx_frag_ind_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct dsap_data_rx_frag_ind_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00149">149</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Data Fields</th></tr>
+<tr><td class="fieldtype">
+<a id="a95acf85a002812b264572970adc2f033"></a>uint8_t</td>
+<td class="fieldname">
+apdu[102]</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a57bac7aac120827b00605f108362c128"></a>uint8_t</td>
+<td class="fieldname">
+apdu_len</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a458421a43d4f6dc515faf427bf579d00"></a>uint32_t</td>
+<td class="fieldname">
+delay</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a62135be23077738ceeac25bd112d6755"></a><a class="el" href="../../db/db1/waps__frames_8h.html#a816e5cc1d03a10a8bcfbd56fa8554b5e">w_addr_t</a></td>
+<td class="fieldname">
+dst_addr</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a392caa89e0bfa791fae7dd77ddf2f88a"></a><a class="el" href="../../db/db1/waps__frames_8h.html#aee71d80c96b47076b17640ee902138a2">ep_t</a></td>
+<td class="fieldname">
+dst_endpoint</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a3bbde7f938ca87be34aa8cecacfca2ce"></a>uint16_t</td>
+<td class="fieldname">
+fragment_offset_flag</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="aa92442fc4f0ec72e54bea9b8f9f24d07"></a>uint16_t</td>
+<td class="fieldname">
+full_packet_id</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a3b5693c71298b922c6188573f2474227"></a>uint8_t</td>
+<td class="fieldname">
+info</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a728d3d9f16d71b13ff793321294778fc"></a>uint8_t</td>
+<td class="fieldname">
+queued_indications</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a008990100a26edf900028b85c6d3cb42"></a><a class="el" href="../../db/db1/waps__frames_8h.html#a816e5cc1d03a10a8bcfbd56fa8554b5e">w_addr_t</a></td>
+<td class="fieldname">
+src_addr</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a29c1d371b8223440e07c87704e14ecaf"></a><a class="el" href="../../db/db1/waps__frames_8h.html#aee71d80c96b47076b17640ee902138a2">ep_t</a></td>
+<td class="fieldname">
+src_endpoint</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
 <a name="d6/d3a/structdsap__data__tx__ind__t" id="d6/d3a/structdsap__data__tx__ind__t"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#d6/d3a/structdsap__data__tx__ind__t">&#9670;&nbsp;</a></span>dsap_data_tx_ind_t</h2>
 
@@ -388,7 +570,7 @@ src_endpoint</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00122">122</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00171">171</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -449,7 +631,7 @@ src_endpoint</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00135">135</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00184">184</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -486,9 +668,15 @@ result</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00142">142</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00191">191</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
+<tr><td class="fieldtype">
+<a id="a2e58faafb59a59bdc0504586b8314a06"></a><a class="el" href="../../d5/d53/dsap__frames_8h.html#dc/d3f/structdsap__data__rx__frag__ind__t">dsap_data_rx_frag_ind_t</a></td>
+<td class="fieldname">
+data_rx_frag_ind</td>
+<td class="fielddoc">
+</td></tr>
 <tr><td class="fieldtype">
 <a id="af2e2b85a6ec1ad9a6303d76b2d278a46"></a><a class="el" href="../../d5/d53/dsap__frames_8h.html#dc/d07/structdsap__data__rx__ind__t">dsap_data_rx_ind_t</a></td>
 <td class="fieldname">
@@ -499,6 +687,12 @@ data_rx_ind</td>
 <a id="a5546238144daa9ba91cfbcb2d7e583ad"></a><a class="el" href="../../d5/d53/dsap__frames_8h.html#d2/dc6/structdsap__data__tx__cnf__t">dsap_data_tx_cnf_t</a></td>
 <td class="fieldname">
 data_tx_cnf</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a82069d744076b6612721f102a111737c"></a><a class="el" href="../../d5/d53/dsap__frames_8h.html#db/d71/structdsap__data__tx__frag__req__t">dsap_data_tx_frag_req_t</a></td>
+<td class="fieldname">
+data_tx_frag_req</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
@@ -671,6 +865,54 @@ data_tx_tt_req</td>
 
 </div>
 </div>
+<a id="aee465bd36cc6d9d17410bc4b8df869a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee465bd36cc6d9d17410bc4b8df869a4">&#9670;&nbsp;</a></span>DSAP_FRAG_LAST_FLAG_MASK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DSAP_FRAG_LAST_FLAG_MASK&#160;&#160;&#160;0x8000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00127">127</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+
+</div>
+</div>
+<a id="a5e02fcf82e33b7010ffd3e8ff076b400"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e02fcf82e33b7010ffd3e8ff076b400">&#9670;&nbsp;</a></span>DSAP_FRAG_LENGTH_MASK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DSAP_FRAG_LENGTH_MASK&#160;&#160;&#160;0x0fff</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00124">124</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+
+</div>
+</div>
+<a id="adfb55bddcb98f2c34bc2935b97f22e61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfb55bddcb98f2c34bc2935b97f22e61">&#9670;&nbsp;</a></span>FRAME_DSAP_DATA_RX_FRAG_IND_HEADER_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FRAME_DSAP_DATA_RX_FRAG_IND_HEADER_SIZE&#160;&#160;&#160;(sizeof(<a class="el" href="../../d5/d53/dsap__frames_8h.html#dc/d3f/structdsap__data__rx__frag__ind__t">dsap_data_rx_frag_ind_t</a>) - <a class="el" href="../../d5/d53/dsap__frames_8h.html#a5818355c4c254d012e8e3a449e954fcf">APDU_MAX_SIZE</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00166">166</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+
+</div>
+</div>
 <a id="a06383738952d7de4464d475c59ea9cbf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a06383738952d7de4464d475c59ea9cbf">&#9670;&nbsp;</a></span>FRAME_DSAP_DATA_RX_IND_HEADER_SIZE</h2>
 
@@ -683,7 +925,23 @@ data_tx_tt_req</td>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00117">117</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00143">143</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+
+</div>
+</div>
+<a id="a1436b3f7ccd106f8bab52c265f0698a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1436b3f7ccd106f8bab52c265f0698a2">&#9670;&nbsp;</a></span>FRAME_DSAP_DATA_TX_FRAG_REQ_HEADER_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FRAME_DSAP_DATA_TX_FRAG_REQ_HEADER_SIZE&#160;&#160;&#160;(sizeof(<a class="el" href="../../d5/d53/dsap__frames_8h.html#db/d71/structdsap__data__tx__frag__req__t">dsap_data_tx_frag_req_t</a>) - <a class="el" href="../../d5/d53/dsap__frames_8h.html#a5818355c4c254d012e8e3a449e954fcf">APDU_MAX_SIZE</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00106">106</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
 
 </div>
 </div>
@@ -731,7 +989,7 @@ data_tx_tt_req</td>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00098">98</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00116">116</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
 
 </div>
 </div>
@@ -747,7 +1005,7 @@ data_tx_tt_req</td>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00099">99</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00117">117</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
 
 </div>
 </div>
@@ -763,7 +1021,7 @@ data_tx_tt_req</td>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00100">100</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00118">118</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
 
 </div>
 </div>
@@ -779,7 +1037,7 @@ data_tx_tt_req</td>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00095">95</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00113">113</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
 
 </div>
 </div>
@@ -795,7 +1053,7 @@ data_tx_tt_req</td>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00096">96</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d5/d53/dsap__frames_8h_source.html#l00114">114</a> of file <a class="el" href="../../d5/d53/dsap__frames_8h_source.html">dsap_frames.h</a>.</p>
 
 </div>
 </div>

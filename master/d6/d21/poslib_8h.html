@@ -133,8 +133,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a9a074ca9e5f00358a5c025a4fc11b4e6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a9a074ca9e5f00358a5c025a4fc11b4e6">PosLib_decodeMbcn</a> (uint8_t *buf, uint8_t length, <a class="el" href="../../d6/d21/poslib_8h.html#da/db7/structposlib__mbcn__data__t">poslib_mbcn_data_t</a> *mbcn)</td></tr>
 <tr class="memdesc:a9a074ca9e5f00358a5c025a4fc11b4e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes the mini-beacon payload.  <a href="../../d6/d21/poslib_8h.html#a9a074ca9e5f00358a5c025a4fc11b4e6">More...</a><br /></td></tr>
 <tr class="separator:a9a074ca9e5f00358a5c025a4fc11b4e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a099b198c76f930f605d1cfe0720132f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/dbd/data_8h.html#ab53b6510f8ecb4a1621c905c15855164">app_lib_data_send_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a099b198c76f930f605d1cfe0720132f2">PosLib_sendData</a> (<a class="el" href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> *data, <a class="el" href="../../d2/dbd/data_8h.html#ad4532c2af19fb5161fd44dd3d806be38">app_lib_data_data_sent_cb_f</a> sent_cb)</td></tr>
-<tr class="memdesc:a099b198c76f930f605d1cfe0720132f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send data. The packet to send is represented as a <a class="el" href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> struct. In node has Advertiser role and dest_address is APP_ADDR_ANYSINK then the function will replace the destination with the address of the best found LL router supporting DA.  <a href="../../d6/d21/poslib_8h.html#a099b198c76f930f605d1cfe0720132f2">More...</a><br /></td></tr>
+<tr class="memitem:a099b198c76f930f605d1cfe0720132f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d50/wms__data_8h.html#ab53b6510f8ecb4a1621c905c15855164">app_lib_data_send_res_e</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d21/poslib_8h.html#a099b198c76f930f605d1cfe0720132f2">PosLib_sendData</a> (<a class="el" href="../../d6/d50/wms__data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> *data, <a class="el" href="../../d6/d50/wms__data_8h.html#ad4532c2af19fb5161fd44dd3d806be38">app_lib_data_data_sent_cb_f</a> sent_cb)</td></tr>
+<tr class="memdesc:a099b198c76f930f605d1cfe0720132f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send data. The packet to send is represented as a <a class="el" href="../../d6/d50/wms__data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> struct. In node has Advertiser role and dest_address is APP_ADDR_ANYSINK then the function will replace the destination with the address of the best found LL router supporting DA.  <a href="../../d6/d21/poslib_8h.html#a099b198c76f930f605d1cfe0720132f2">More...</a><br /></td></tr>
 <tr class="separator:a099b198c76f930f605d1cfe0720132f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -544,15 +544,15 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d2/dbd/data_8h.html#ab53b6510f8ecb4a1621c905c15855164">app_lib_data_send_res_e</a> PosLib_sendData </td>
+          <td class="memname"><a class="el" href="../../d6/d50/wms__data_8h.html#ab53b6510f8ecb4a1621c905c15855164">app_lib_data_send_res_e</a> PosLib_sendData </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d6/d50/wms__data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="../../d2/dbd/data_8h.html#ad4532c2af19fb5161fd44dd3d806be38">app_lib_data_data_sent_cb_f</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d6/d50/wms__data_8h.html#ad4532c2af19fb5161fd44dd3d806be38">app_lib_data_data_sent_cb_f</a>&#160;</td>
           <td class="paramname"><em>sent_cb</em>&#160;</td>
         </tr>
         <tr>
@@ -563,7 +563,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Send data. The packet to send is represented as a <a class="el" href="../../d2/dbd/data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> struct. In node has Advertiser role and dest_address is APP_ADDR_ANYSINK then the function will replace the destination with the address of the best found LL router supporting DA. </p>
+<p>Send data. The packet to send is represented as a <a class="el" href="../../d6/d50/wms__data_8h.html#d7/d10/structapp__lib__data__to__send__t">app_lib_data_to_send_t</a> struct. In node has Advertiser role and dest_address is APP_ADDR_ANYSINK then the function will replace the destination with the address of the best found LL router supporting DA. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>Data to send </td></tr>
@@ -572,7 +572,7 @@ Macros</h2></td></tr>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>tracking_id is managed by the library. When function return the data structure is modified to reflect id used to send the packet. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d2/dbd/data_8h.html#ab53b6510f8ecb4a1621c905c15855164acf63322bd1c34794b230e2120116cfbb">APP_LIB_DATA_SEND_RES_SUCCESS</a> means that data was accepted for sending. See <a class="el" href="../../d2/d39/app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80">app_res_e</a> for other result codes. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Result code, <a class="el" href="../../d6/d50/wms__data_8h.html#ab53b6510f8ecb4a1621c905c15855164acf63322bd1c34794b230e2120116cfbb">APP_LIB_DATA_SEND_RES_SUCCESS</a> means that data was accepted for sending. See <a class="el" href="../../da/dbb/wms__app_8h.html#a4d380466f2a9f6432a6abcabf44c8e80">app_res_e</a> for other result codes. </dd></dl>
 
 </div>
 </div>
@@ -832,7 +832,7 @@ tx_interval_ms</td>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="a8d91ba4782f95b418de22bbf3efb8c57"></a><a class="el" href="../../d4/d48/beacon__tx_8h.html#a30a12c45866d1166e6e58e6266b5812d">app_lib_beacon_tx_channels_mask_e</a></td>
+<a id="a8d91ba4782f95b418de22bbf3efb8c57"></a><a class="el" href="../../df/de4/wms__beacon__tx_8h.html#a30a12c45866d1166e6e58e6266b5812d">app_lib_beacon_tx_channels_mask_e</a></td>
 <td class="fieldname">
 channels</td>
 <td class="fielddoc">
@@ -1102,7 +1102,7 @@ led_on_duration_s</td>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
-<a id="aee539108cc019b56d4b942795e7f79f8"></a>uint8_t</td>
+<a id="a6e5531ab66b58093a821e3372889b0c5"></a>uint16_t</td>
 <td class="fieldname">
 event_id</td>
 <td class="fielddoc">
@@ -1114,7 +1114,7 @@ nrls_sleep_time_sec</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
-<a id="a0725552d7a30db5983fb2a47183ce4af"></a><a class="el" href="../../de/df7/time_8h.html#a46366e00a718eae381bc08dc4e3c2bf2">app_lib_time_timestamp_hp_t</a></td>
+<a id="a0725552d7a30db5983fb2a47183ce4af"></a><a class="el" href="../../d9/d53/wms__time_8h.html#a46366e00a718eae381bc08dc4e3c2bf2">app_lib_time_timestamp_hp_t</a></td>
 <td class="fieldname">
 time_hp</td>
 <td class="fielddoc">

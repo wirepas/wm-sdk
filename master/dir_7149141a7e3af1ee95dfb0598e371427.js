@@ -16,6 +16,7 @@ var dir_7149141a7e3af1ee95dfb0598e371427 =
     [ "silabs_brd4180b", "dir_555640e812d235816ac3bb8ff03282ef.html", "dir_555640e812d235816ac3bb8ff03282ef" ],
     [ "silabs_brd4181b", "dir_eed793308ffc04e66a1ec299cd494756.html", "dir_eed793308ffc04e66a1ec299cd494756" ],
     [ "silabs_brd4184a", "dir_1a8dd19174d2623537684992af502d5d.html", "dir_1a8dd19174d2623537684992af502d5d" ],
+    [ "silabs_brd4210a", "dir_675ffeef94abc0c6be09d46f63060517.html", "dir_675ffeef94abc0c6be09d46f63060517" ],
     [ "silabs_brd4253a", "dir_936e57eb449f4860b4218b49b33c18e4.html", "dir_936e57eb449f4860b4218b49b33c18e4" ],
     [ "silabs_brd4254a", "dir_0b5d52d8cf935980608cb302c23bb4ba.html", "dir_0b5d52d8cf935980608cb302c23bb4ba" ],
     [ "silabs_brd4312a", "dir_ab18bb381621569b5e6d7431f269cb76.html", "dir_ab18bb381621569b5e6d7431f269cb76" ],

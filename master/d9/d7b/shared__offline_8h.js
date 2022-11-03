@@ -22,7 +22,8 @@ var shared__offline_8h =
     ] ],
     [ "shared_offline_status_e", "d9/d7b/shared__offline_8h.html#a1c71a0996c8c02b3eb12c07b767498f5", [
       [ "SHARED_OFFLINE_STATUS_OFFLINE", "d9/d7b/shared__offline_8h.html#a1c71a0996c8c02b3eb12c07b767498f5ac46b43aedfa9b9bee91528bfec685297", null ],
-      [ "SHARED_OFFLINE_STATUS_ONLINE", "d9/d7b/shared__offline_8h.html#a1c71a0996c8c02b3eb12c07b767498f5ac3a7334b8d99f4804aee48eca7485e57", null ]
+      [ "SHARED_OFFLINE_STATUS_ONLINE", "d9/d7b/shared__offline_8h.html#a1c71a0996c8c02b3eb12c07b767498f5ac3a7334b8d99f4804aee48eca7485e57", null ],
+      [ "SHARED_OFFLINE_STATUS_UNINITIALIZED", "d9/d7b/shared__offline_8h.html#a1c71a0996c8c02b3eb12c07b767498f5a9067a19a3f68a8ac40733916856334c3", null ]
     ] ],
     [ "SHARED_OFFLINE_INFINITE_DELAY", "d9/d7b/shared__offline_8h.html#a7dbc8e19b424cbfaba729339475ba2ef", null ]
 ];

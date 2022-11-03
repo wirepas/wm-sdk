@@ -53,7 +53,7 @@ var poslib_8h =
       [ "led_on_duration_s", "d6/d21/poslib_8h.html#a3f37ae043532e6822c96529b755b062a", null ]
     ] ],
     [ "POSLIB_FLAG_EVENT_info_t", "d6/d21/poslib_8h.html#d2/d82/struct_p_o_s_l_i_b___f_l_a_g___e_v_e_n_t__info__t", [
-      [ "event_id", "d6/d21/poslib_8h.html#aee539108cc019b56d4b942795e7f79f8", null ],
+      [ "event_id", "d6/d21/poslib_8h.html#a6e5531ab66b58093a821e3372889b0c5", null ],
       [ "nrls_sleep_time_sec", "d6/d21/poslib_8h.html#a47b060b8cdeed44e1e1b84bd3b21557f", null ],
       [ "time_hp", "d6/d21/poslib_8h.html#a0725552d7a30db5983fb2a47183ce4af", null ]
     ] ],

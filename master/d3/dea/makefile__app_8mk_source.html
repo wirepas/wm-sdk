@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('d3/dea/makefile__app_8mk_source.html',
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;# Sources &amp; includes paths</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;#</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;SRCS += $(APP_SRCS_PATH)app.c</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;INCLUDES += -iquote$(API_PATH) -I$(APP_SRCS_PATH)include -I$(UTIL_PATH)</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;INCLUDES += -I$(API_PATH) -I$(APP_SRCS_PATH)include -I$(UTIL_PATH)</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;# Objects list</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;OBJS_ = $(SRCS:.c=.o) $(ASM_SRCS:.s=.o)</div>

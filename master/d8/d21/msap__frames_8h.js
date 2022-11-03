@@ -140,6 +140,14 @@ var msap__frames_8h =
       [ "target_crc", "d8/d21/msap__frames_8h.html#a06e72ddb74d1794e2b999e252b2af285", null ],
       [ "target_sequence", "d8/d21/msap__frames_8h.html#a34970b97eb01ebdead032c04446e60ad", null ]
     ] ],
+    [ "msap_scratchpad_block_read_req_t", "d8/d21/msap__frames_8h.html#df/d88/structmsap__scratchpad__block__read__req__t", [
+      [ "num_bytes", "d8/d21/msap__frames_8h.html#aefd66aaf6bf7a0a84d75073f8d1f02c3", null ],
+      [ "start_addr", "d8/d21/msap__frames_8h.html#a94ee8b3c3c313a37430d52949bd0e8cb", null ]
+    ] ],
+    [ "msap_scratchpad_block_read_cnf_t", "d8/d21/msap__frames_8h.html#de/dea/structmsap__scratchpad__block__read__cnf__t", [
+      [ "bytes", "d8/d21/msap__frames_8h.html#a46560221161407b0bd855493abedf5a7", null ],
+      [ "result", "d8/d21/msap__frames_8h.html#a556c80259568976b607ec50f8747d42a", null ]
+    ] ],
     [ "frame_msap", "d8/d21/msap__frames_8h.html#d4/d04/unionframe__msap", [
       [ "cost_read_cnf", "d8/d21/msap__frames_8h.html#a44da237d33e2e45cb68bab8eccc42556", null ],
       [ "cost_write_req", "d8/d21/msap__frames_8h.html#aade0b33ebebdc8435ecf34963b21d6e0", null ],
@@ -155,6 +163,8 @@ var msap__frames_8h =
       [ "remote_status_ind", "d8/d21/msap__frames_8h.html#ab6bde5517d5a1d3885afaaeeab2c732e", null ],
       [ "remote_status_req", "d8/d21/msap__frames_8h.html#a746ab8c576a3c936ac0bddf2f4f6ed05", null ],
       [ "remote_update_req", "d8/d21/msap__frames_8h.html#a2b9542a9d2eab51cdb79755262b2db23", null ],
+      [ "scratchpad_block_read_cnf", "d8/d21/msap__frames_8h.html#a06df775066154000f6ffe694a5c679c2", null ],
+      [ "scratchpad_block_read_req", "d8/d21/msap__frames_8h.html#a45ad97240b0e5cd600a1d3811b360168", null ],
       [ "scratchpad_block_req", "d8/d21/msap__frames_8h.html#aa361e97977e762ba7662f1f496f46d02", null ],
       [ "scratchpad_start_req", "d8/d21/msap__frames_8h.html#ab6767b8f23d9d577ecccd7de73bb8fb2", null ],
       [ "scratchpad_status_cnf", "d8/d21/msap__frames_8h.html#a551d630ba2ebc0099b9c827e2158c3e9", null ],
@@ -177,7 +187,8 @@ var msap__frames_8h =
       [ "MSAP_ATTR_AC_LIMITS", "d8/d21/msap__frames_8h.html#a57538830d27151139aad789ec2111d3ca9b1f602b93681eb9969c4399a2d6eec5", null ],
       [ "MSAP_ATTR_CURRENT_AC", "d8/d21/msap__frames_8h.html#a57538830d27151139aad789ec2111d3ca1e981b67fd7c6e5bcc28123a967c10ba", null ],
       [ "MSAP_ATTR_SCRATCHPAD_BLOCK_MAX", "d8/d21/msap__frames_8h.html#a57538830d27151139aad789ec2111d3ca77d734d085456d8b8ba90273889f0cab", null ],
-      [ "MSAP_ATTR_ENERGY", "d8/d21/msap__frames_8h.html#a57538830d27151139aad789ec2111d3ca94365fa6f91549d1090cbbcdbae72376", null ],
+      [ "MSAP_ATTR_SCRATCHPAD_NUM_BYTES", "d8/d21/msap__frames_8h.html#a57538830d27151139aad789ec2111d3ca4b0dd9f89dd098a6d55f2488611d8403", null ],
+      [ "MSAP_ATTR_RESERVED_1", "d8/d21/msap__frames_8h.html#a57538830d27151139aad789ec2111d3ca17871a91bca539a12050e4855a5ee985", null ],
       [ "MSAP_ATTR_AUTOSTART", "d8/d21/msap__frames_8h.html#a57538830d27151139aad789ec2111d3ca5fc79edc566039543ea005731782d808", null ],
       [ "MSAP_ATTR_AC_RANGE", "d8/d21/msap__frames_8h.html#a57538830d27151139aad789ec2111d3cab03c34dc7c616c2eacdb573cec4805e8", null ],
       [ "MSAP_ATTR_MCAST_GROUPS", "d8/d21/msap__frames_8h.html#a57538830d27151139aad789ec2111d3ca9805e8a3aec6511554313a0d6c6ce974", null ]
@@ -187,7 +198,7 @@ var msap__frames_8h =
       [ "MSAP_ATTR_PDU_BUFF_USAGE_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eea6f63f0ea3ef6eb36fa8e9ab9aadc2917", null ],
       [ "MSAP_ATTR_PDU_BUFF_CAP_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eea5f04d2a2101f924c8fd81ef59931216d", null ],
       [ "MSAP_ATTR_NBOR_COUNT_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eeae2cec5264134c4361b7269ee54183ef9", null ],
-      [ "MSAP_ATTR_ENERGY_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eeaabbd1548b0d1f1e7bd7e393b3a3f6fa6", null ],
+      [ "MSAP_ATTR_RESERVED_1_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eea8e9d16f1b9c8051a7b1a0c683af4f995", null ],
       [ "MSAP_ATTR_AUTOSTART_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eeadaeb714a3c4c28a0f186bb3dd02235cf", null ],
       [ "MSAP_ATTR_ROUTE_COUNT_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eea128a29989b43cc21f513445f8f358a9e", null ],
       [ "MSAP_ATTR_SYSTEM_TIME_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eea52dea064e6dc312eacdbcce8ff636b2f", null ],
@@ -195,7 +206,8 @@ var msap__frames_8h =
       [ "MSAP_ATTR_AC_LIMITS_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eea4755095bc407094d6c7cfc20558459ee", null ],
       [ "MSAP_ATTR_CURRENT_AC_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eea75296002f5d6085c900d8f446513be8b", null ],
       [ "MSAP_ATTR_SCRATCHPAD_BLOCK_MAX_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eeaa42d4aa925c4c2d71246d4dd2cb9da25", null ],
-      [ "MSAP_ATTR_MCAST_GROUPS_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eea2197d8bf5d28e193c52f5e40742b6a1e", null ]
+      [ "MSAP_ATTR_MCAST_GROUPS_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eea2197d8bf5d28e193c52f5e40742b6a1e", null ],
+      [ "MSAP_ATTR_SCRATCHPAD_NUM_BYTES_SIZE", "d8/d21/msap__frames_8h.html#a28ff6eb281df315981eaf95f2ac4b8eea4faf690981d6fcb23694f9f586cce872", null ]
     ] ],
     [ "msap_neighbor_type_e", "d8/d21/msap__frames_8h.html#adcac49bfd7b8b23309a15712c3595e45", [
       [ "NEIGHBOR_IS_NEXT_HOP", "d8/d21/msap__frames_8h.html#adcac49bfd7b8b23309a15712c3595e45a1b01567af18765d87487a1bc87bf272c", null ],
@@ -234,6 +246,14 @@ var msap__frames_8h =
       [ "MSAP_SCRATCHPAD_BLOCK_INVALID_NUM_BYTES", "d8/d21/msap__frames_8h.html#a8c86fd6b1c2dec688974e89920bf26cba20ed258a4c00e57a62731acea462589e", null ],
       [ "MSAP_SCRATCHPAD_BLOCK_INVALID_DATA", "d8/d21/msap__frames_8h.html#a8c86fd6b1c2dec688974e89920bf26cbaf1ffc25dd3acdfdcb1ca49ce9a94ed99", null ]
     ] ],
+    [ "msap_scratchpad_block_read_e", "d8/d21/msap__frames_8h.html#a9f22311192eeb6de14455c27f0b6c924", [
+      [ "MSAP_SCRATCHPAD_BLOCK_READ_SUCCESS", "d8/d21/msap__frames_8h.html#a9f22311192eeb6de14455c27f0b6c924a572affc1c147b4d4ad72f12914770d50", null ],
+      [ "MSAP_SCRATCHPAD_BLOCK_READ_INVALID_STATE", "d8/d21/msap__frames_8h.html#a9f22311192eeb6de14455c27f0b6c924ae260dec8fe90c00363700c055ca05c90", null ],
+      [ "MSAP_SCRATCHPAD_BLOCK_READ_INVALID_START_ADDR", "d8/d21/msap__frames_8h.html#a9f22311192eeb6de14455c27f0b6c924a8e8ff6882ff483c358aa148213b777a3", null ],
+      [ "MSAP_SCRATCHPAD_BLOCK_READ_INVALID_NUM_BYTES", "d8/d21/msap__frames_8h.html#a9f22311192eeb6de14455c27f0b6c924aa0771d2bd4382888f3d53fb9834757ac", null ],
+      [ "MSAP_SCRATCHPAD_BLOCK_READ_NO_SCRATCHPAD", "d8/d21/msap__frames_8h.html#a9f22311192eeb6de14455c27f0b6c924ae79908d2e5bfefa3436b1a4fc13d6fda", null ],
+      [ "MSAP_SCRATCHPAD_BLOCK_READ_ACCESS_DENIED", "d8/d21/msap__frames_8h.html#a9f22311192eeb6de14455c27f0b6c924aa04eb26dde408b73c745fe2b00385b96", null ]
+    ] ],
     [ "msap_scratchpad_bootable_result_e", "d8/d21/msap__frames_8h.html#a2a22fdcf30e8833fee4f1ad6360f4aeb", [
       [ "MSAP_SCRATCHPAD_BOOTABLE_SUCCESS", "d8/d21/msap__frames_8h.html#a2a22fdcf30e8833fee4f1ad6360f4aeba8511a394b92c4ef40c3f2d0f3e501276", null ],
       [ "MSAP_SCRATCHPAD_BOOTABLE_INVALID_STATE", "d8/d21/msap__frames_8h.html#a2a22fdcf30e8833fee4f1ad6360f4aeba49c17dee2d19e72a8766b253c448943e", null ],
@@ -266,8 +286,10 @@ var msap__frames_8h =
       [ "MSAP_SLEEP_ACCESS_DENIED", "d8/d21/msap__frames_8h.html#a9092aba1950d0beddf03eb64c7feeb54a15bfae84befb0860ff47183da87a2367", null ]
     ] ],
     [ "APP_CONF_MAX", "d8/d21/msap__frames_8h.html#a157927b6f822d1861e5f948555f5205e", null ],
+    [ "FRAME_MSAP_SCRATCHPAD_BLOCK_READ_CNF_HEADER_SIZE", "d8/d21/msap__frames_8h.html#a94e36c3b4d2769267941ee8522318a65", null ],
     [ "FRAME_MSAP_SCRATCHPAD_BLOCK_REQ_HEADER_SIZE", "d8/d21/msap__frames_8h.html#ac34e524252412910c39cc78a39d27a5b", null ],
     [ "MSAP_AUTOSTART", "d8/d21/msap__frames_8h.html#a3143f0824d83f318f852ff97d992748d", null ],
     [ "MSAP_MAX_NBORS", "d8/d21/msap__frames_8h.html#aa717101fb772efdc14220976746cb332", null ],
-    [ "MSAP_SCRATCHPAD_BLOCK_MAX_NUM_BYTES", "d8/d21/msap__frames_8h.html#abb7ff711457d36e634ef0c3c4494e88d", null ]
+    [ "MSAP_SCRATCHPAD_BLOCK_MAX_NUM_BYTES", "d8/d21/msap__frames_8h.html#abb7ff711457d36e634ef0c3c4494e88d", null ],
+    [ "MSAP_SCRATCHPAD_BLOCK_READ_MAX_NUM_BYTES", "d8/d21/msap__frames_8h.html#aad83f15e91ca4740cdd7a5e303f5ba92", null ]
 ];

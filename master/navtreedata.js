@@ -34,17 +34,8 @@ var NAVTREE =
       [ "The physical Hardware", "index.html#hardware", null ]
     ] ],
     [ "SDK Environment setup", "dd/d6a/sdk_environment.html", [
-      [ "Installation of SDK Environment", "dd/d6a/sdk_environment.html#installation_of_sdk_environment", [
-        [ "Windows installation using WSL", "dd/d6a/sdk_environment.html#windows_installation", null ],
-        [ "Compiler installation", "dd/d6a/sdk_environment.html#wsl_compiler", null ],
-        [ "Miscellaneous installation", "dd/d6a/sdk_environment.html#wsl_misc", null ],
-        [ "Installation on Ubuntu Linux", "dd/d6a/sdk_environment.html#linux_installation", null ]
-      ] ],
-      [ "Checking the installation validity", "dd/d6a/sdk_environment.html#checking_the_installation_validity", null ],
-      [ "Flashing devices", "dd/d6a/sdk_environment.html#flashing_guideline", [
-        [ "Flashing Nordic nRF52 devices", "dd/d6a/sdk_environment.html#flashing_nordic_nrf52_devices", null ],
-        [ "Flashing Silicon Labs Devices", "dd/d6a/sdk_environment.html#flashing_silabs_devices", null ]
-      ] ],
+      [ "Installation of SDK Environment", "dd/d6a/sdk_environment.html#installation_of_sdk_environment", null ],
+      [ "Flashing devices", "dd/d6a/sdk_environment.html#flashing_guideline", null ],
       [ "Resources on Nordic nRF52", "dd/d6a/sdk_environment.html#nordic_resources", [
         [ "Flash Memory available for application on nRF52", "dd/d6a/sdk_environment.html#flash_memory_nrf52", null ],
         [ "RAM Memory available for application on nRF52", "dd/d6a/sdk_environment.html#ram_memory_nrf52", null ],
@@ -179,21 +170,21 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d2/d67/shared__appconfig_8h.html#afb9315d87648de79ff9bcc96c06825e2",
-"d2/dbd/data_8h.html",
-"d3/dfa/mcu_2hal__api_2usart_8h.html#ad88ea3ca1aab382e95f9b843464f0b81",
-"d5/d74/shared__data_8h.html#a2e6186783b7766ef287959ae36ccc3d7a4c07247f9f1c0ffbc117e91de7218e6c",
-"d6/d21/poslib_8h.html#a901f2963fbf3a97cee5c1bf5335daf46a87819d91929c9c1e6b5ff643d010157f",
-"d7/de1/hardware_8h.html#ad0a85f67c1b871307b2059391432fa37",
-"d8/d21/msap__frames_8h.html#d3/ddd/structmsap__install__quality__cnf__t",
-"d9/d5c/waps_8h.html",
-"da/d87/spi_8h.html#aa73eafab9cd3df3fac6d8d856c0eea1aa246ea94340687ac1f94847d0ea9126a4",
-"db/db1/waps__frames_8h.html#a556c80259568976b607ec50f8747d42a",
-"dc/dac/io_8h.html#a3578196f5fed619407310ce0db7edc2d",
-"dd/d2c/bl__interface_8h.html#d3/d20/structscratchpad__services__t",
-"de/d59/csap__frames_8h.html#a9e21c28c8a35d11c185bba57e7dc78c3",
-"df/d08/memory__area_8h.html#acbc43eb76d51f02f1e66b4c5452e41dea5dcc5a52ca3487a7770d00f95cc5c3e5",
-"globals_func_i.html"
+"d2/d9e/cbor_8h.html#a09e21d737c100cb652018f2bfe9d83aa",
+"d2/dee/silabs__brd4312a_2board_8h.html",
+"d4/d27/wms__state_8h.html#acf176bd8b11c3f2a4fd06463260cac25",
+"d5/d63/dualmcu__lib_8h.html#aa267ba0cb0c8fa9778930ad837301e36a24a57d67346994c29144687e66cfa5eb",
+"d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a53a54c355b9ad51ece8f6bbf0de222d4",
+"d6/da4/ringbuffer_8h.html#a8469cf7ae073605a15d5b703470b4cfd",
+"d8/d21/msap__frames_8h.html#a47c9febfb66ca4724d05a3a27c6db872",
+"d8/da1/wms__radio__config_8h.html#aac3240e302e32e1edae779e568f1e86a",
+"da/d1b/function__codes_8h.html#a05072f32294c9de0e72543107820f082",
+"db/d41/pca10100_2board_8h.html#a29ae5883a2b90d5dd60552e78fa1a639",
+"dc/dac/io_8h.html#ae6ffb2eba5e3f26ad937b17d11f8895f",
+"dd/db3/unionwaps__frame__t_8____unnamed____.html",
+"df/d27/bgm220-ek4314a_2board_8h.html",
+"df/d99/wms__otap_8h.html#ae18b5c19d96a4ba019861bca3d0ee088",
+"globals_eval_i.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
