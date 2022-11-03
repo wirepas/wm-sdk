@@ -30,6 +30,7 @@
 #include "button.h"
 #include "shared_data.h"
 #include "app_scheduler.h"
+#include "stack_state.h"
 
 // How often diradv scans and sends data (in useconds)
 #define SCAN_PERIOD_MS (60*1000)
@@ -126,9 +127,9 @@ static void beacon_listen_cb(const app_lib_state_beacon_rx_t * beacon)
  */
 static uint32_t start_scan(void)
 {
-    // Start scanning max for 1 seconds
+    // Start scanning for stack default time
+    // Scan will be aborted if we find a neighbor
     m_is_scanning = true;
-    lib_state->setScanDuration(1000000);
     lib_state->startScanNbors();
     // Enable led
     Led_set(0, true);
@@ -139,11 +140,19 @@ static uint32_t start_scan(void)
 /**
  * \brief   Scan ended
  */
-static void scan_ended(void)
+static void scan_ended(app_lib_stack_event_e event, void * param_p)
 {
-    // Disable LED
-    Led_set(0, false);
-    m_is_scanning = false;
+    app_lib_state_neighbor_scan_info_t * scan_info;
+
+    scan_info = (app_lib_state_neighbor_scan_info_t *) param_p;
+
+    if (scan_info->complete == true &&
+        scan_info->scan_type == SCAN_TYPE_APP_ORIGINATED)
+    {
+        // Disable LED
+        Led_set(0, false);
+        m_is_scanning = false;
+    }
 }
 
 /**
@@ -215,16 +224,13 @@ void App_init(const app_global_functions_t * functions)
                                        SCAN_PERIOD_MS,
                                        1000);
         // Set scan end callback. Turns off the led if nothing was found
-        lib_state->setOnScanNborsCb(scan_ended,
-                                    APP_LIB_STATE_SCAN_NBORS_ONLY_REQUESTED);
+        Stack_State_addEventCb(scan_ended, 1 << APP_LIB_STATE_STACK_EVENT_SCAN_STOPPED);
         // Callback when data has been sent. Turns off the led.
         lib_data->setDataSentCb(data_sent_cb);
     }
     else
     {
-        lib_settings->setNodeRole(
-            app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE,
-                                         APP_LIB_SETTINGS_ROLE_FLAG_LL));
+        lib_settings->setNodeRole(APP_LIB_SETTINGS_ROLE_HEADNODE_LL);
         // Set callback to receive packet from advertiser and generate response
         // to sink
         lib_advertiser->setRouterAckGenCb(acklistener_cb);

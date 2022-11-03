@@ -9,8 +9,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "app.h"
-#include "system.h"
+#include <stddef.h>
 
 /** User callback for character received event */
 typedef void (*serial_rx_callback_f)(uint8_t * ch, size_t n);

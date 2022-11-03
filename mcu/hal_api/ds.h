@@ -26,5 +26,6 @@ void DS_Disable(uint32_t source);
 #define DS_SOURCE_USART         0x00000001
 #define DS_SOURCE_USART_POWER   0x00000002
 #define DS_SOURCE_DEBUG         0x00000004
+#define DS_SOURCE_INIT          0x00000008
 
 #endif /* SOURCE_WAPS_APP_DRIVERS_DS_H_ */

@@ -11,8 +11,7 @@
 #include "shared_data.h"
 #include "random.h"
 #include "node_configuration.h"
-#include "time.h"
-#include "hardware.h"
+#include "api.h"
 #include "aessw.h"
 
 #define DEBUG_LOG_MODULE_NAME "PROXY LIB"
@@ -418,8 +417,7 @@ provisioning_ret_e Provisioning_Proxy_init(provisioning_proxy_conf_t * conf)
         lib_joining->enableProxy(false);
         Shared_Data_addDataReceivedCb(&m_ptk_received_item);
         Random_init(getUniqueId() ^
-                    lib_time->getTimestampHp() ^
-                    lib_hw->readSupplyVoltage());
+                    lib_time->getTimestampHp());
         m_counter = Random_get16();
     }
 

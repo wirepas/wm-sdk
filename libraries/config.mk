@@ -43,6 +43,7 @@ endif
 
 ifeq ($(PROVISIONING), yes)
 scheduler_tasks+= + 3
+stack_state_cbs+= + 1
 SHARED_DATA=yes
 TINY_CBOR=yes
 SW_AES=yes
@@ -60,11 +61,14 @@ SHARED_DATA=yes
 endif
 
 ifeq ($(POSITIONING), yes)
-scheduler_tasks+= + 6
+scheduler_tasks+= + 7
 SHARED_DATA=yes
 app_config_filters+= + 2
 shared_neighbors_cbs+= + 2
-stack_state_cbs+= + 1
+# 2 state event cb
+# - one in measurement for end of scan
+# - one if route cb is implemented in poslib_contol
+stack_state_cbs+= + 2
 SHARED_BEACON=yes
 shared_offline_modules+= + 2
 endif
@@ -74,11 +78,10 @@ scheduler_tasks+= + 2
 endif
 
 ifeq ($(DUALMCU_LIB), yes)
-scheduler_tasks+= + 2
+scheduler_tasks+= + 3
 app_config_filters+= + 1
-shared_neighbors_cbs+= + 1
 SHARED_DATA=yes
-STACK_STATE_LIB=yes
+stack_state_cbs+= + 1
 endif
 
 #########

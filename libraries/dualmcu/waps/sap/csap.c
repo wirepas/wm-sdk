@@ -20,19 +20,18 @@
 /* App attribute node roles */
 typedef enum
 {
-    /** Node role config nibble */
-    APP_ATTR_NODE_ROLE_INVALID              = 0x00,
-    APP_ATTR_NODE_ROLE_SINK                 = 0x01,
-    APP_ATTR_NODE_ROLE_NODE                 = 0x02,
-    APP_ATTR_NODE_ROLE_SUBNODE              = 0x03,
-    APP_ATTR_NODE_ROLE_MASK                 = 0x0F,
-    /** Node role special mask nibble */
-    APP_ATTR_NODE_ROLE_LL                   = 0x10,
-    APP_ATTR_NODE_ROLE_RESV0                = 0x20,
-    APP_ATTR_NODE_ROLE_RESV1                = 0x40,
-    APP_ATTR_NODE_ROLE_AUTO                 = 0x80,
-    APP_ATTR_NODE_ROLE_SPECIAL_MASK         = 0xF0,
-} app_attr_node_role_e;
+    NODE_ROLE_INVALID              = 0x00,
+    NODE_ROLE_SINK_LE              = 0x01,
+    NODE_ROLE_HEADNODE_LE          = 0x02,
+    NODE_ROLE_SUBNODE_LE           = 0x03,
+    NODE_ROLE_SINK_LL              = 0x11,
+    NODE_ROLE_HEADNODE_LL          = 0x12,
+    NODE_ROLE_SUBNODE_LL           = 0x13,
+    NODE_ROLE_HEADNODE_AUTO_LE     = 0x82,// Same as NODE_ROLE_SUBNODE_AUTO_LE
+    NODE_ROLE_SUBNODE_AUTO_LE      = 0x83,
+    NODE_ROLE_HEADNODE_AUTO_LL     = 0x92,// Same as NODE_ROLE_SUBNODE_AUTO_LL
+    NODE_ROLE_SUBNODE_AUTO_LL      = 0x93,
+} node_role_e;
 
 /* Map attr id to attr length */
 static const uint8_t m_attr_size_lut[] =
@@ -57,7 +56,7 @@ static const uint8_t m_attr_size_lut[] =
     CSAP_ATTR_STACK_PROFILE_SIZE,
     CSAP_ATTR_RESERVED_1_SIZE,
     CSAP_ATTR_OFFLINE_SCAN_SIZE,
-    CSAP_ATTR_CHANNEL_ALLOC_MAP_SIZE,
+    CSAP_ATTR_RESERVED_3_SIZE,
     CSAP_ATTR_FEATURE_LOCK_BITS_SIZE,
     CSAP_ATTR_FEATURE_LOCK_KEY_SIZE,
     CSAP_ATTR_RESERVED_2_SIZE,
@@ -188,6 +187,7 @@ static attribute_result_e readAttr(attr_t attr_id,
                                    uint8_t * attr_size_p)
 {
     uint32_t tmp;   // Needed for 32-bit alignment
+    app_lib_data_data_size_t max_size;
     app_res_e result = APP_RES_OK;
     app_addr_t addr;
     app_lib_settings_net_addr_t net_addr;
@@ -225,41 +225,47 @@ static attribute_result_e readAttr(attr_t attr_id,
                 result = lib_settings->getNodeRole(&role);
                 if (result == APP_RES_OK)
                 {
-                    app_attr_node_role_e attr_role;
+                    node_role_e attr_role;
                     // Convert app role to attribute manager role
-                    switch (app_lib_settings_get_base_role(role))
+                    switch (role)
                     {
-                        case APP_LIB_SETTINGS_ROLE_SINK:
-                            attr_role = APP_ATTR_NODE_ROLE_SINK;
+                        case APP_LIB_SETTINGS_ROLE_SINK_LE:
+                            attr_role = NODE_ROLE_SINK_LE;
                             break;
-                        case APP_LIB_SETTINGS_ROLE_HEADNODE:
-                            attr_role = APP_ATTR_NODE_ROLE_NODE;
+                        case APP_LIB_SETTINGS_ROLE_SINK_LL:
+                            attr_role = NODE_ROLE_SINK_LL;
                             break;
-                        case APP_LIB_SETTINGS_ROLE_SUBNODE:
-                            attr_role = APP_ATTR_NODE_ROLE_SUBNODE;
+                        case APP_LIB_SETTINGS_ROLE_HEADNODE_LE:
+                            attr_role = NODE_ROLE_HEADNODE_LE;
                             break;
+                        case APP_LIB_SETTINGS_ROLE_HEADNODE_LL:
+                            attr_role = NODE_ROLE_HEADNODE_LL;
+                            break;
+                        case APP_LIB_SETTINGS_ROLE_SUBNODE_LE:
+                            attr_role = NODE_ROLE_SUBNODE_LE;
+                            break;
+                        case APP_LIB_SETTINGS_ROLE_SUBNODE_LL:
+                            attr_role = NODE_ROLE_SUBNODE_LL;
+                            break;
+                        case APP_LIB_SETTINGS_ROLE_AUTOROLE_LE:
+                            attr_role = NODE_ROLE_SUBNODE_AUTO_LE;
+                            break;
+                        case APP_LIB_SETTINGS_ROLE_AUTOROLE_LL:
+                            attr_role = NODE_ROLE_SUBNODE_AUTO_LL;
+                            break;
+                        case APP_LIB_SETTINGS_ROLE_ADVERTISER:
+                        // Advertizer not know at dualmcu level
                         default:
                             // Unknown role
-                            attr_role = APP_ATTR_NODE_ROLE_INVALID;
-                    }
-
-                    // Add role flags
-                    app_lib_settings_role_t flags =
-                        app_lib_settings_get_flags_role(role);
-                    if (flags & APP_LIB_SETTINGS_ROLE_FLAG_LL)
-                    {
-                        attr_role |= APP_ATTR_NODE_ROLE_LL;
-                    }
-                    if (flags & APP_LIB_SETTINGS_ROLE_FLAG_AUTOROLE)
-                    {
-                        attr_role |= APP_ATTR_NODE_ROLE_AUTO;
+                            attr_role = NODE_ROLE_INVALID;
                     }
                     tmp = (uint32_t)attr_role;
                 }
             }
             break;
         case CSAP_ATTR_APP_MAXT_TRANS_UNIT:
-            tmp = lib_data->getDataMaxNumBytes();
+            max_size = lib_data->getDataMaxNumBytes();
+            tmp = max_size.max_fragment_size;
             break;
         case CSAP_ATTR_SCRATCHPAD_SEQ:
             tmp = lib_otap->getSeq();
@@ -339,9 +345,6 @@ static attribute_result_e readAttr(attr_t attr_id,
         case CSAP_ATTR_FEATURE_LOCK_KEY:
             result = lib_settings->getFeatureLockKey(NULL);
             break;
-        case CSAP_ATTR_CHANNEL_ALLOC_MAP:
-            result = lib_settings->getChannelMap(&tmp);
-            break;
         case CSAP_ATTR_RESERVED_CHANNELS:
             /* Determine actual attribute size, which can vary */
             attr_size = (get_num_channels() + 7) / 8;
@@ -357,6 +360,7 @@ static attribute_result_e readAttr(attr_t attr_id,
             break;
         case CSAP_ATTR_RESERVED_1:
         case CSAP_ATTR_RESERVED_2:
+        case CSAP_ATTR_RESERVED_3:
         default:
             /* Unsupported attribute */
             result = APP_RES_NOT_IMPLEMENTED;
@@ -464,31 +468,38 @@ static attribute_result_e writeAttr(attr_t attr_id,
         case CSAP_ATTR_NODE_ROLE:
             {
                 uint8_t role = (uint8_t) tmp;
-                app_lib_settings_role_t app_role = APP_LIB_SETTINGS_ROLE_SINK;
-                // Convert attribute manager role to app role
-                switch (role & APP_ATTR_NODE_ROLE_MASK)
+                app_lib_settings_role_t app_role = 0xff;
+                switch (role)
                 {
-                    case APP_ATTR_NODE_ROLE_SINK:
-                        app_role = APP_LIB_SETTINGS_ROLE_SINK;
+                    case NODE_ROLE_SINK_LE:
+                        app_role = APP_LIB_SETTINGS_ROLE_SINK_LE;
                         break;
-                    case APP_ATTR_NODE_ROLE_NODE:
-                        app_role = APP_LIB_SETTINGS_ROLE_HEADNODE;
+                    case NODE_ROLE_HEADNODE_LE:
+                        app_role = APP_LIB_SETTINGS_ROLE_HEADNODE_LE;
                         break;
-                    case APP_ATTR_NODE_ROLE_SUBNODE:
-                        app_role = APP_LIB_SETTINGS_ROLE_SUBNODE;
-                    break;
-                    default:
-                        return appRes2attrRes(APP_RES_INVALID_VALUE);
-                }
+                    case NODE_ROLE_SUBNODE_LE:
+                        app_role = APP_LIB_SETTINGS_ROLE_SUBNODE_LE;
+                        break;
+                    case NODE_ROLE_SINK_LL:
+                        app_role = APP_LIB_SETTINGS_ROLE_SINK_LL;
+                        break;
+                    case NODE_ROLE_HEADNODE_LL:
+                        app_role = APP_LIB_SETTINGS_ROLE_HEADNODE_LL;
+                        break;
+                    case NODE_ROLE_SUBNODE_LL:
+                        app_role = APP_LIB_SETTINGS_ROLE_SUBNODE_LL;
+                        break;
+                    case NODE_ROLE_HEADNODE_AUTO_LE:
+                    case NODE_ROLE_SUBNODE_AUTO_LE:
+                        app_role = APP_LIB_SETTINGS_ROLE_AUTOROLE_LE;
+                        break;
+                    case NODE_ROLE_HEADNODE_AUTO_LL:
+                    case NODE_ROLE_SUBNODE_AUTO_LL:
+                        app_role = APP_LIB_SETTINGS_ROLE_AUTOROLE_LL;
+                        break;
+                    case NODE_ROLE_INVALID:
+                        return ATTR_INV_VALUE;
 
-                // Add flags
-                if (role & APP_ATTR_NODE_ROLE_LL)
-                {
-                    app_role |= APP_LIB_SETTINGS_ROLE_FLAG_LL;
-                }
-                if (role & APP_ATTR_NODE_ROLE_AUTO)
-                {
-                    app_role |= APP_LIB_SETTINGS_ROLE_FLAG_AUTOROLE;
                 }
                 result = lib_settings->setNodeRole(app_role);
 
@@ -500,9 +511,10 @@ static attribute_result_e writeAttr(attr_t attr_id,
 
                     Persistent_isFirstboot(&firstboot);
 
-                    if ((app_role & APP_LIB_SETTINGS_BASE_ROLE_MASK) ==
-                                                APP_LIB_SETTINGS_ROLE_SINK &&
-                        firstboot)
+                    // Check if first boot and a sink
+                    if ((app_role == APP_LIB_SETTINGS_ROLE_SINK_LE ||
+                         app_role == APP_LIB_SETTINGS_ROLE_SINK_LL) &&
+                         firstboot)
                     {
                         if (lib_otap->setTargetScratchpadAndAction(
                                                     0x00,
@@ -526,9 +538,6 @@ static attribute_result_e writeAttr(attr_t attr_id,
         case CSAP_ATTR_OFFLINE_SCAN:
             result = lib_settings->setOfflineScan(tmp);
             break;
-        case CSAP_ATTR_CHANNEL_ALLOC_MAP:
-            result = lib_settings->setChannelMap(tmp);
-            break;
         case CSAP_ATTR_FEATURE_LOCK_BITS:
             result = lib_settings->setFeatureLockBits(tmp);
             break;
@@ -540,6 +549,7 @@ static attribute_result_e writeAttr(attr_t attr_id,
             break;
         case CSAP_ATTR_RESERVED_1:
         case CSAP_ATTR_RESERVED_2:
+        case CSAP_ATTR_RESERVED_3:
         default:
             // Unsupported attribute
             result = APP_RES_NOT_IMPLEMENTED;

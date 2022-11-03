@@ -199,7 +199,7 @@ void GPIO_ExtIntConfig(GPIO_Port_TypeDef port,
     BUS_RegMaskedWrite(&GPIO->EXTIPSELL,
                        _GPIO_EXTIPSELL_EXTIPSEL0_MASK
                        << (_GPIO_EXTIPSELL_EXTIPSEL1_SHIFT * intNo),
-                       port << (_GPIO_EXTIPSELL_EXTIPSEL1_SHIFT * intNo));
+                       (uint32_t)port << (_GPIO_EXTIPSELL_EXTIPSEL1_SHIFT * intNo));
   } else {
 #if defined(_GPIO_EXTIPSELH_MASK)
     tmp = intNo - 8;
@@ -207,12 +207,12 @@ void GPIO_ExtIntConfig(GPIO_Port_TypeDef port,
     BUS_RegMaskedWrite(&GPIO->EXTIPSELH,
                        _GPIO_EXTIPSELH_EXTIPSEL0_MASK
                        << (_GPIO_EXTIPSELH_EXTIPSEL1_SHIFT * tmp),
-                       port << (_GPIO_EXTIPSELH_EXTIPSEL1_SHIFT * tmp));
+                       (uint32_t)port << (_GPIO_EXTIPSELH_EXTIPSEL1_SHIFT * tmp));
 #elif defined(_GPIO_EXTIPSELH_EXTIPSEL8_MASK)
     BUS_RegMaskedWrite(&GPIO->EXTIPSELH,
                        _GPIO_EXTIPSELH_EXTIPSEL8_MASK
                        << (_GPIO_EXTIPSELH_EXTIPSEL9_SHIFT * tmp),
-                       port << (_GPIO_EXTIPSELH_EXTIPSEL9_SHIFT * tmp));
+                       (uint32_t)port << (_GPIO_EXTIPSELH_EXTIPSEL9_SHIFT * tmp));
 #else
 #error Invalid GPIO_EXTIPINSELH bit fields
 #endif
@@ -227,21 +227,21 @@ void GPIO_ExtIntConfig(GPIO_Port_TypeDef port,
     BUS_RegMaskedWrite(&GPIO->EXTIPINSELL,
                        _GPIO_EXTIPINSELL_EXTIPINSEL0_MASK
                        << (_GPIO_EXTIPINSELL_EXTIPINSEL1_SHIFT * intNo),
-                       ((pin % 4) & _GPIO_EXTIPINSELL_EXTIPINSEL0_MASK)
+                       (uint32_t)((pin % 4) & _GPIO_EXTIPINSELL_EXTIPINSEL0_MASK)
                        << (_GPIO_EXTIPINSELL_EXTIPINSEL1_SHIFT * intNo));
   } else {
 #if defined (_GPIO_EXTIPINSELH_EXTIPINSEL8_MASK)
     BUS_RegMaskedWrite(&GPIO->EXTIPINSELH,
                        _GPIO_EXTIPINSELH_EXTIPINSEL8_MASK
                        << (_GPIO_EXTIPINSELH_EXTIPINSEL9_SHIFT * tmp),
-                       ((pin % 4) & _GPIO_EXTIPINSELH_EXTIPINSEL8_MASK)
+                       (uint32_t)((pin % 4) & _GPIO_EXTIPINSELH_EXTIPINSEL8_MASK)
                        << (_GPIO_EXTIPSELH_EXTIPSEL9_SHIFT * tmp));
 #endif
 #if defined (_GPIO_EXTIPINSELH_EXTIPINSEL0_MASK)
     BUS_RegMaskedWrite(&GPIO->EXTIPINSELH,
                        _GPIO_EXTIPINSELH_EXTIPINSEL0_MASK
                        << (_GPIO_EXTIPINSELH_EXTIPINSEL1_SHIFT * tmp),
-                       ((pin % 4) & _GPIO_EXTIPINSELH_EXTIPINSEL0_MASK)
+                       (uint32_t)((pin % 4) & _GPIO_EXTIPINSELH_EXTIPINSEL0_MASK)
                        << (_GPIO_EXTIPSELH_EXTIPSEL1_SHIFT * tmp));
 #endif
   }
@@ -259,6 +259,73 @@ void GPIO_ExtIntConfig(GPIO_Port_TypeDef port,
   /* Finally enable/disable interrupt. */
   BUS_RegBitWrite(&(GPIO->IEN), intNo, enable);
 }
+
+#if _SILICON_LABS_32B_SERIES > 0
+/***************************************************************************//**
+ * @brief
+ *   Configure EM4WU pins as external level-sensitive interrupts.
+ *
+ * @details
+ *   It is recommended to disable interrupts before configuring the GPIO pin interrupt.
+ *   See @ref GPIO_IntDisable() for more information.
+ *
+ *   The GPIO interrupt handler must be in place before enabling the
+ *   interrupt.
+ *
+ *   Notice that any pending interrupt for the selected interrupt is cleared
+ *   by this function.
+ *
+ * @note
+ *   The selected port/pin must be mapped to an existant EM4WU interrupt.
+ *   Each EM4WU signal is connected to a fixed pin.
+ *   Refer to the Alternate Function Table in the device Datasheet for the
+ *   location of each EM4WU signal. For example, on xG22 device, the interrupt
+ *   of EM4WU6 is fixed to pin PC00.
+ *
+ * @param[in] port
+ *   The port to associate with the @p pin.
+ *
+ * @param[in] pin
+ *   The pin number on the port.
+ *
+ * @param[in] intNo
+ *   The EM4WU interrupt number to trigger.
+ *
+ * @param[in] polarity
+ *   true = Active high level-sensitive interrupt.
+ *   false = Active low level-sensitive interrupt.
+ *
+ * @param[in] enable
+ *   Set to true if the interrupt will be enabled after the configuration is complete.
+ *   False to leave disabled. See @ref GPIO_IntDisable() and @ref GPIO_IntEnable().
+ ******************************************************************************/
+void GPIO_EM4WUExtIntConfig(GPIO_Port_TypeDef port,
+                            unsigned int pin,
+                            uint32_t intNo,
+                            bool polarity,
+                            bool enable)
+{
+  EFM_ASSERT(GPIO_PORT_PIN_VALID(port, pin));
+
+  // GPIO pin mode set.
+  GPIO_PinModeSet(port, pin, gpioModeInputPull, (unsigned int)!polarity);
+
+  // Enable EM4WU function and set polarity
+  uint32_t polarityMask = (uint32_t)polarity << (intNo + _GPIO_EM4WUEN_EM4WUEN_SHIFT);
+  uint32_t pinmask =  1UL << (intNo + _GPIO_EM4WUEN_EM4WUEN_SHIFT);
+
+  GPIO_EM4EnablePinWakeup(pinmask, polarityMask);
+
+  // Enable EM4WU interrupt
+#if defined(_SILICON_LABS_32B_SERIES_1)
+  BUS_RegBitWrite(&(GPIO->IEN), intNo + _GPIO_IEN_EM4WU_SHIFT, enable);
+#elif defined(_SILICON_LABS_32B_SERIES_2_CONFIG_1)
+  BUS_RegBitWrite(&(GPIO->IEN), intNo + _GPIO_IEN_EM4WUIEN_SHIFT, enable);
+#else
+  BUS_RegBitWrite(&(GPIO->IEN), intNo + _GPIO_IEN_EM4WUIEN0_SHIFT, enable);
+#endif
+}
+#endif
 
 /***************************************************************************//**
  * @brief
@@ -297,11 +364,11 @@ void GPIO_PinModeSet(GPIO_Port_TypeDef port,
   /* There are two registers controlling the pins for each port. The MODEL
    * register controls pins 0-7 and MODEH controls pins 8-15. */
   if (pin < 8) {
-    GPIO->P[port].MODEL = (GPIO->P[port].MODEL & ~(0xFu << (pin * 4)))
-                          | (mode << (pin * 4));
+    // Cast parameter [mode] to 32 bits to fix C99 Undefined Behavior (see SEI CERT C INT34-C)
+    // Compiler assigned 8 bits for enum. Same thing for other branch.
+    BUS_RegMaskedWrite(&(GPIO->P[port].MODEL), 0xFu << (pin * 4), (uint32_t)mode << (pin * 4));
   } else {
-    GPIO->P[port].MODEH = (GPIO->P[port].MODEH & ~(0xFu << ((pin - 8) * 4)))
-                          | (mode << ((pin - 8) * 4));
+    BUS_RegMaskedWrite(&(GPIO->P[port].MODEH), 0xFu << ((pin - 8) * 4), (uint32_t)mode << ((pin - 8) * 4));
   }
 
   if (mode == gpioModeDisabled) {

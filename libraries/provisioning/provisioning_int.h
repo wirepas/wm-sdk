@@ -8,7 +8,6 @@
 
 #include <stdint.h>
 #include "api.h"
-#include "joining.h"
 #include "aessw.h"
 
 /* Wirepas Provisioning Protocol endpoints :

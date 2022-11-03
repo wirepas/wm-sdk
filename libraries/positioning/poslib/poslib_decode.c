@@ -340,7 +340,6 @@ static bool set_mode(poslib_tlv_item_t * item,
                         poslib_settings_t * settings, bool node_specific)
 {
     app_lib_settings_role_t role;
-    uint8_t base_role;
     uint8_t node_mode;
     bool force = false;
 
@@ -357,12 +356,13 @@ static bool set_mode(poslib_tlv_item_t * item,
     }
 
     lib_settings->getNodeRole(&role);
-    base_role = app_lib_settings_get_base_role(role);
 
-    switch(base_role)
+    switch(role)
     {
-        case APP_LIB_SETTINGS_ROLE_SINK:
-        case APP_LIB_SETTINGS_ROLE_HEADNODE:
+        case APP_LIB_SETTINGS_ROLE_SINK_LE:
+        case APP_LIB_SETTINGS_ROLE_SINK_LL:
+        case APP_LIB_SETTINGS_ROLE_HEADNODE_LE:
+        case APP_LIB_SETTINGS_ROLE_HEADNODE_LL:
         {
             /** only node modes for anchors are accepted */
             if(is_node_mode_anchor(node_mode) || force)
@@ -372,7 +372,8 @@ static bool set_mode(poslib_tlv_item_t * item,
             }
             break;
         }
-        case APP_LIB_SETTINGS_ROLE_SUBNODE:
+        case APP_LIB_SETTINGS_ROLE_SUBNODE_LE:
+        case APP_LIB_SETTINGS_ROLE_SUBNODE_LL:
         {    /** only node modes for tags are accepted */
             if(is_node_mode_tag(node_mode) || force)
             {
@@ -392,7 +393,7 @@ static bool set_mode(poslib_tlv_item_t * item,
         }
         default:
         {
-            LOG(LVL_ERROR, "Node role is not set: %d", base_role);
+            LOG(LVL_ERROR, "Node role is not set: %d", role);
             break;
         }
     }

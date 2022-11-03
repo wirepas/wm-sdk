@@ -25,7 +25,7 @@ from Crypto.Random import get_random_bytes
 
 
 from bootloader_config import BootloaderConfig
-
+from socket import htonl
 
 # Python 2 and Python 3 support
 
@@ -151,7 +151,16 @@ class InFile(object):
 
         try:
             # Read version, memory area ID and file name.
-            version, area_id, filename = file_spec.split(":", 2)
+            fields = file_spec.split(":", 2)
+            if fields.__len__() == 3:
+                version, area_id, filename = fields
+            elif fields.__len__() == 2:
+                # Version is not provided, probably useless (as some area do not have versioning)
+                version = "0.0.0.0"
+                area_id, filename = fields
+            else:
+                raise ValueError("invalid input file specification: "
+                             "'%s'" % file_spec)
 
             if version.endswith(".conf"):
                 # conf file provided, version must be read inside
@@ -247,8 +256,9 @@ class Scratchpad(object):
     # Magic 16-byte string for locating a combi scratchpad in Flash
     SCRATCHPAD_V1_TAG = b"SCR1\232\223\060\202\331\353\012\374\061\041\343\067"
 
-    def __init__(self, key, ):
+    def __init__(self, key, platform):
         self.key = key
+        self.platform = platform
         self.cmac = bytearray(self.CMAC_SIZE)
         self.data = []    # List of scratchpad data blocks
 
@@ -278,6 +288,7 @@ class Scratchpad(object):
 
         return crc
 
+
     def create_cipher(self):
         '''
         Create an AES-128 Counter (CTR) mode cipher
@@ -289,10 +300,17 @@ class Scratchpad(object):
 
         # Create a fast counter for AES cipher.
         icb0, icb1, icb2, icb3 = struct.unpack("<4L", self.secure_header)
-        ctr = Counter.new(128, little_endian = True,
+        # Arrange AES nonce (IV) according to target's aes endian
+        if self.platform.aes_little_endian == False:
+            initctr =   htonl(icb3)       | \
+                        htonl(icb2) << 32 | \
+                        htonl(icb1) << 64 | \
+                        htonl(icb0) << 96
+        else:
+            initctr = (icb3 << 96) | (icb2 << 64) | (icb1 << 32) | icb0
+        ctr = Counter.new(128, little_endian = self.platform.aes_little_endian,
                         allow_wraparound = True,
-                        initial_value = (icb3 << 96) | (icb2 << 64) |
-                                        (icb1 << 32) | icb0)
+                        initial_value = initctr)
 
         # Create an AES Counter (CTR) mode cipher.
         return AES.new(cipher_key, AES.MODE_CTR, counter = ctr)
@@ -456,7 +474,7 @@ def main():
         return 1
 
     # Create a scratchpad object
-    scratchpad = Scratchpad(chosenkey)
+    scratchpad = Scratchpad(chosenkey, config.platform)
 
     try:
         # Read input files.

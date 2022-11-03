@@ -32,8 +32,9 @@ node_persistent_settings:
         type:          uint8_t
         #  1: Low energy headnode              (not available with EFR32xG22)
         #  2: Low energy subnode
+        #  4: Advertiser
         # 17: Low latency headnode             (not available with EFR32xG22)
-        range:         1-2,17
+        range:         1-2,4,17
         optional:      false
         #default_value: mandatory fields (optional=false) do not have default value.
     rfu_0:
@@ -81,7 +82,7 @@ poslib_persistent_settings:
     node_mode:
         type:          uint8_t
         optional:      false
-        range:         1-4
+        range:         1-5
         #default_value: mandatory fields (optional=false) do not have default value. 
     node_class:
         type:          uint8_t

@@ -72,14 +72,10 @@ void get_default_settings(poslib_settings_t * settings)
     settings->da.follow_network = POSLIB_DA_FOLLOW_NETWORK;
 }
 
-static void stack_state_cb(stack_state_event_e event)
+static void stack_state_cb(app_lib_stack_event_e event, void * param)
 {
     app_res_e res;
-    if (event != STACK_STATE_STOPPED_EVENT)
-    {
-        // only interested by stopped event
-        return;
-    }
+    // We are registered only for Stack stopped event
     res = lib_settings->setNodeRole(m_new_role);
 
     if (res == APP_RES_OK)
@@ -96,36 +92,48 @@ static app_lib_settings_role_t enforce_node_mode(poslib_settings_t * settings,
                                         app_lib_settings_role_t role)
 {
     app_lib_settings_role_t new_role = role;
-    uint8_t base_role = app_lib_settings_get_base_role(role);
-    uint8_t flags_role = app_lib_settings_get_flags_role(role);
+    bool is_ll_mode = (role == APP_LIB_SETTINGS_ROLE_HEADNODE_LL ||
+                       role == APP_LIB_SETTINGS_ROLE_SUBNODE_LL ||
+                       role == APP_LIB_SETTINGS_ROLE_AUTOROLE_LL ||
+                       role == APP_LIB_SETTINGS_ROLE_SINK_LL);
 
     switch(settings->node_mode)
     {
         case POSLIB_MODE_AUTOSCAN_ANCHOR:
         case POSLIB_MODE_OPPORTUNISTIC_ANCHOR:
-        {
-            if (base_role != APP_LIB_SETTINGS_ROLE_HEADNODE || 
-                !(base_role = APP_LIB_SETTINGS_ROLE_SUBNODE && settings->mbcn.enabled))
+            // Check if it is a headnode or a subnode with mini beacons enabled
+            if (!(role == APP_LIB_SETTINGS_ROLE_HEADNODE_LE ||
+                  role == APP_LIB_SETTINGS_ROLE_HEADNODE_LL ||
+                  (role == APP_LIB_SETTINGS_ROLE_SUBNODE_LE && settings->mbcn.enabled) ||
+                  (role == APP_LIB_SETTINGS_ROLE_SUBNODE_LL && settings->mbcn.enabled)))
             {
-                new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE, flags_role);
+                // Need to force to Headnode with same mode as before:
+                if (is_ll_mode)
+                {
+                    new_role = APP_LIB_SETTINGS_ROLE_HEADNODE_LL;
+                }
+                else
+                {
+                    new_role = APP_LIB_SETTINGS_ROLE_HEADNODE_LE;
+                }
             }
             break;
-        }
         case POSLIB_MODE_NRLS_TAG:
         case POSLIB_MODE_AUTOSCAN_TAG:
-        {
-            new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_SUBNODE, flags_role);
+                if (is_ll_mode)
+                {
+                    new_role = APP_LIB_SETTINGS_ROLE_SUBNODE_LL;
+                }
+                else
+                {
+                    new_role = APP_LIB_SETTINGS_ROLE_SUBNODE_LE;
+                }
             break;
-        }
         case POSLIB_MODE_DA_TAG:
-        {
-            new_role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_ADVERTISER, flags_role);
+            new_role = APP_LIB_SETTINGS_ROLE_ADVERTISER;
             break;
-        }
         default:
-        {
             break;
-        }
     }
     return new_role;
 }
@@ -134,12 +142,11 @@ static uint8_t enforce_node_role(poslib_settings_t * settings,
                                 app_lib_settings_role_t role)
 {
     uint8_t node_mode = settings->node_mode;
-    uint8_t base_role = app_lib_settings_get_base_role(role);
    
-    switch (base_role)
+    switch (role)
     {
-        case APP_LIB_SETTINGS_ROLE_HEADNODE:
-        {
+        case APP_LIB_SETTINGS_ROLE_HEADNODE_LL:
+        case APP_LIB_SETTINGS_ROLE_HEADNODE_LE:
             if (node_mode != POSLIB_MODE_AUTOSCAN_ANCHOR || 
                 node_mode != POSLIB_MODE_OPPORTUNISTIC_ANCHOR)
             {
@@ -147,33 +154,27 @@ static uint8_t enforce_node_role(poslib_settings_t * settings,
                 LOG(LVL_INFO, "Setting node mode to anchor default: %u",  node_mode);
             }
             break;
-        }
-        case APP_LIB_SETTINGS_ROLE_SUBNODE:
-            {
-            if (!(node_mode == POSLIB_MODE_NRLS_TAG || 
-                node_mode == POSLIB_MODE_AUTOSCAN_TAG || 
-                ((node_mode == POSLIB_MODE_AUTOSCAN_ANCHOR || 
-                    node_mode == POSLIB_MODE_OPPORTUNISTIC_ANCHOR) 
+        case APP_LIB_SETTINGS_ROLE_SUBNODE_LL:
+        case APP_LIB_SETTINGS_ROLE_SUBNODE_LE:
+            if (!(node_mode == POSLIB_MODE_NRLS_TAG ||
+                  node_mode == POSLIB_MODE_AUTOSCAN_TAG ||
+                  ((node_mode == POSLIB_MODE_AUTOSCAN_ANCHOR ||
+                    node_mode == POSLIB_MODE_OPPORTUNISTIC_ANCHOR)
                     && settings->mbcn.enabled)))
             {
                 node_mode = POSAPP_TAG_DEFAULT_ROLE;
                 LOG(LVL_INFO, "Setting node mode to tag default: %u",  node_mode);
             }
             break;
-        }
         case APP_LIB_SETTINGS_ROLE_ADVERTISER:
-        {
             if (node_mode != POSLIB_MODE_DA_TAG)
             {
                 node_mode = POSLIB_MODE_DA_TAG;
                 LOG(LVL_INFO, "Setting node mode to DA tag default: %u",  node_mode);
             }
             break;
-        }
         default:
-        {
-            LOG(LVL_ERROR,"Node role %u unknown", base_role);
-        }
+            LOG(LVL_ERROR,"Node role %u unknown", role);
     }
     return node_mode;
 }
@@ -208,7 +209,7 @@ static void check_role(poslib_settings_t * settings, bool force_set_role)
     if (force_set_role && role != new_role)
     {
         app_res_e res;
-        res = Stack_State_addEventCb(stack_state_cb);
+        res = Stack_State_addEventCb(stack_state_cb, 1 << APP_LIB_STATE_STACK_EVENT_STACK_STOPPED);
 
         if (res != APP_RES_OK)
         {
@@ -419,7 +420,7 @@ bool PosApp_Settings_configureNode(void)
     app_addr_t node_address =  getUniqueAddress();
     app_lib_settings_net_addr_t network_address= CONF_NETWORK_ADDRESS;
     app_lib_settings_net_channel_t network_channel = CONF_NETWORK_CHANNEL;
-    app_lib_settings_role_t node_role = app_lib_settings_create_role(CONF_ROLE, CONF_ROLE_FLAG);
+    app_lib_settings_role_t node_role = CONF_ROLE;
 
 #if defined(CONF_USE_PERSISTENT_MEMORY)
     /*Update settings from persistent storage*/

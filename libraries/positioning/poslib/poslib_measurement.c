@@ -19,6 +19,8 @@
 #include "poslib_measurement.h"
 #include "shared_neighbors.h"
 #include "shared_data.h"
+#include "stack_state.h"
+#include "api.h"
 #include "voltage.h"
 
 
@@ -61,14 +63,10 @@ typedef struct
     uint8_t * cursor;
 } poslib_meas_payload_buffer_t;
 
-static uint32_t m_scan_start_time;
 static poslib_meas_table_t m_meas_table;
 
 
 /** Callbacks state variables */
-static uint16_t m_scan_end_cb_id = 0;
-static bool m_scan_end_cb_reg = false;
-
 static uint16_t m_beacon_cb_id = 0;
 static bool m_beacon_cb_reg = false;
 
@@ -82,7 +80,6 @@ static shared_data_item_t m_mbcn_item;
 /** 0 if beacons are found, otherwise time in sec when no beacons */
 static uint32_t m_time_when_no_beacons_s;
 
-static poslib_scan_ctrl_t m_scan_ctrl;
 static bool m_scan_pending = false;
 static bool m_init = false;
 
@@ -106,6 +103,9 @@ static uint16_t m_voltage_flt = 0;
  */
 static void insert_beacon(const poslib_meas_wm_beacon_t * beacon);
 
+// Forward declaration
+static void deregister_callbacks(void);
+
 
 #ifdef POSLIB_CLEANBEACON_USE
 /**
@@ -122,54 +122,36 @@ static void void clean_beacon(uint32_t older_than, uint8_t max_beacons);
 #endif
 
 /**
- * @brief   De register callbacks (beacon cb & scan end) if registered
- *
- * @param   void
- */
-static void deregister_callbacks(void)
-{
-     if (m_scan_end_cb_reg)
-    {
-        Shared_Neighbors_removeScanNborsCb(m_scan_end_cb_id);
-        m_scan_end_cb_reg = false;
-    }
-
-    if (m_beacon_cb_reg)
-    {  
-        Shared_Neighbors_removeBeaconCb(m_beacon_cb_id);
-        m_beacon_cb_reg = false;
-    }
-
-    if (m_mbcn_item.cb != NULL)
-    {
-        Shared_Data_removeDataReceivedCb(&m_mbcn_item);
-        m_mbcn_item.cb = NULL;
-    }
-}
-
-/**
  * @brief   Callback for scan end
  *
  * @param   void
  */
-static void scanend_cb(void)
+static void scanend_cb(app_lib_stack_event_e event, void * param_p)
 {
-    if (!m_opportunistic)
+    app_lib_settings_role_t node_role;
+    app_lib_state_neighbor_scan_info_t * scan_info;
+
+    lib_settings->getNodeRole(&node_role);
+    scan_info = (app_lib_state_neighbor_scan_info_t *) param_p;
+
+    if ((scan_info->complete) || (node_role == APP_LIB_SETTINGS_ROLE_ADVERTISER))
     {
-        deregister_callbacks();
+        if (!m_opportunistic)
+        {
+            deregister_callbacks();
+        }
+        if (m_meas_table.num_beacons == 0 && m_time_when_no_beacons_s == 0)
+        {
+            m_time_when_no_beacons_s =  lib_time->getTimestampS();
+        }
+        else if (m_meas_table.num_beacons != 0)
+        {
+            m_time_when_no_beacons_s = 0;
+        }
     }
 
     PosLibEvent_add(POSLIB_CTRL_EVENT_SCAN_END);
     m_scan_pending = false;
-    
-    if (m_meas_table.num_beacons == 0 && m_time_when_no_beacons_s == 0)
-    {
-        m_time_when_no_beacons_s =  lib_time->getTimestampS();
-    }
-    else if (m_meas_table.num_beacons != 0)
-    {
-        m_time_when_no_beacons_s = 0;
-    }
 }
 
 /**
@@ -250,19 +232,12 @@ void init_mbcn_item()
  */
 static void register_callbacks(void)
 {
-   app_res_e res; 
-    
-    if (!m_scan_end_cb_reg)
+   app_res_e res;
+   res = Stack_State_addEventCb(scanend_cb,
+                                1 << APP_LIB_STATE_STACK_EVENT_SCAN_STOPPED);
+    if (res != APP_RES_OK)
     {
-        res = Shared_Neighbors_addScanNborsCb(scanend_cb, &m_scan_end_cb_id);
-        if (res == APP_RES_OK)
-        {
-            m_scan_end_cb_reg = true;
-        }
-        else
-        {
-            LOG(LVL_ERROR, "Cannot register scan end cb. res %u", res);
-        }
+        LOG(LVL_ERROR, "Cannot register scan end cb. res %u", res);
     }
 
     if (!m_beacon_cb_reg)
@@ -279,6 +254,28 @@ static void register_callbacks(void)
         {
             m_mbcn_item.cb = NULL;
         }
+    }
+}
+
+/**
+ * @brief   De register callbacks (beacon cb & scan end) if registered
+ *
+ * @param   void
+ */
+static void deregister_callbacks(void)
+{
+    Stack_State_removeEventCb(scanend_cb);
+
+    if (m_beacon_cb_reg)
+    {
+        Shared_Neighbors_removeBeaconCb(m_beacon_cb_id);
+        m_beacon_cb_reg = false;
+    }
+
+    if (m_mbcn_item.cb != NULL)
+    {
+        Shared_Data_removeDataReceivedCb(&m_mbcn_item);
+        m_mbcn_item.cb = NULL;
     }
 }
 
@@ -321,9 +318,14 @@ bool PosLibMeas_opportunisticScan(bool enable)
     return true;
 }
 
+static uint32_t stopScanNbors()
+{
+    lib_state->stopScanNbors();
+    return APP_SCHEDULER_STOP_TASK;
+}
+
 bool PosLibMeas_startScan(poslib_scan_ctrl_t * scan_ctrl)
 {
- 
     if (!m_init)
     {
         init_module();
@@ -336,31 +338,37 @@ bool PosLibMeas_startScan(poslib_scan_ctrl_t * scan_ctrl)
         return false;
     }
 
-    switch (scan_ctrl->mode)
+    if (scan_ctrl->mode != SCAN_MODE_STANDARD)
     {
-        case SCAN_MODE_STANDARD:
-        {
-            break;
-        }
-
-        default:
-        {
-            LOG(LVL_ERROR, "Unknown scan mode: %u", scan_ctrl->mode);
-            return false;
-        }
+        LOG(LVL_ERROR, "Unknown scan mode: %u", scan_ctrl->mode);
+        return false;
     }
  
-    memcpy(&m_scan_ctrl, scan_ctrl, sizeof(poslib_scan_ctrl_t));
     clear_measurement_table();
     register_callbacks(); 
+
+    if (lib_state->startScanNbors() != APP_RES_OK)
+    {
+        LOG(LVL_ERROR, "Cannot start scan. mode: %u, duration: %u us",
+            scan_ctrl->mode, scan_ctrl->max_duration_ms);
+        return false;
+    }
     
-    lib_state->setScanDuration(m_scan_ctrl.max_duration_us);
-    lib_state->startScanNbors();
-    m_scan_start_time = lib_time->getTimestampHp();
     m_scan_pending = true;
+
+    // Schedule task to stop the scan after the requested time (!= 0)
+    if (scan_ctrl->max_duration_ms > 0)
+    {
+        if (App_Scheduler_addTask_execTime(stopScanNbors, scan_ctrl->max_duration_ms, 100) != APP_SCHEDULER_RES_OK)
+        {
+            LOG(LVL_ERROR, "Cannot add task to stop scan after %d ms",
+                scan_ctrl->max_duration_ms);
+            // Scan will go till the end
+        }
+    }
     
     LOG(LVL_DEBUG, "Scan requested. mode: %u, duration: %u us", 
-        m_scan_ctrl.mode, m_scan_ctrl.max_duration_us);
+        scan_ctrl->mode, scan_ctrl->max_duration_ms);
 
     PosLibEvent_add(POSLIB_CTRL_EVENT_SCAN_STARTED);
     return true;

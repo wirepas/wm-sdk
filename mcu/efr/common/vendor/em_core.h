@@ -43,6 +43,18 @@
 #include "sl_component_catalog.h"
 #endif
 
+#if defined(SL_CATALOG_EMLIB_CORE_DEBUG_CONFIG_PRESENT)
+#include "emlib_core_debug_config.h"
+#endif
+
+#if !defined(SL_EMLIB_CORE_ENABLE_INTERRUPT_DISABLED_TIMING)
+#define SL_EMLIB_CORE_ENABLE_INTERRUPT_DISABLED_TIMING   0
+#endif
+
+#if (SL_EMLIB_CORE_ENABLE_INTERRUPT_DISABLED_TIMING == 1)
+#include "sl_cycle_counter.h"
+#endif
+
 /***************************************************************************//**
  * @addtogroup core
  * @{
@@ -66,17 +78,31 @@
 
 // Interrupt priorities based on processor architecture
 #if defined(__CM3_REV) || defined(__CM4_REV) || defined(__CM7_REV) \
- || defined(__CM23_REV) || defined(__CM33_REV)
+  || defined(__CM23_REV) || defined(__CM33_REV)
+
+/** Highest priority for core interrupt. */
 #define CORE_INTERRUPT_HIGHEST_PRIORITY 0
+
+/** Default priority for core interrupt. */
 #define CORE_INTERRUPT_DEFAULT_PRIORITY 5
+
+/** Lowest priority for core interrupt. */
 #define CORE_INTERRUPT_LOWEST_PRIORITY 7
 
+/** Default method to disable interrupts in ATOMIC sections. */
 #define CORE_ATOMIC_METHOD_DEFAULT  CORE_ATOMIC_METHOD_BASEPRI
 #elif defined(__CM0_REV) || defined(__CM0PLUS_REV)
+
+/** Highest priority for core interrupt. */
 #define CORE_INTERRUPT_HIGHEST_PRIORITY 0
+
+/** Default priority for core interrupt. */
 #define CORE_INTERRUPT_DEFAULT_PRIORITY 1
+
+/** Lowest priority for core interrupt. */
 #define CORE_INTERRUPT_LOWEST_PRIORITY 3
 
+/** Default method to disable interrupts in ATOMIC sections. */
 #define CORE_ATOMIC_METHOD_DEFAULT  CORE_ATOMIC_METHOD_PRIMASK
 #endif
 
@@ -247,6 +273,19 @@ extern "C" {
 /** Check if inside an IRQ handler. */
 #define CORE_IN_IRQ_CONTEXT()     CORE_InIrqContext()
 
+// Support for cycle counter
+#if (SL_EMLIB_CORE_ENABLE_INTERRUPT_DISABLED_TIMING == 1)
+/** Start counter. */
+#define START_COUNTER(handle) sl_cycle_counter_start(handle)
+/** Stop counter. */
+#define STOP_COUNTER(handle) sl_cycle_counter_stop(handle)
+#else
+/** Start counter. */
+#define START_COUNTER(handle)
+/** Stop counter. */
+#define STOP_COUNTER(handle)
+#endif
+
 /*******************************************************************************
  *************************   TYPEDEFS   ****************************************
  ******************************************************************************/
@@ -299,6 +338,11 @@ void  CORE_InitNvicVectorTable(uint32_t *sourceTable,
                                uint32_t targetSize,
                                void *defaultHandler,
                                bool overwriteActive);
+
+#if (SL_EMLIB_CORE_ENABLE_INTERRUPT_DISABLED_TIMING == 1)
+uint32_t CORE_get_max_time_critical_section(void);
+uint32_t CORE_get_max_time_atomic_section(void);
+#endif
 
 #ifdef __cplusplus
 }

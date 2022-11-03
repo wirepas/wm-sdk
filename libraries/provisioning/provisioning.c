@@ -10,8 +10,7 @@
 #include "shared_data.h"
 #include "node_configuration.h"
 #include "random.h"
-#include "time.h"
-#include "hardware.h"
+#include "api.h"
 #include "aessw.h"
 
 #define DEBUG_LOG_MODULE_NAME "PROV LIB"
@@ -358,7 +357,7 @@ provisioning_res_e process_data_packet(void)
         }
         else
         {
-            res = PROV_RET_INVALID_DATA;
+            res = PROV_RES_INVALID_DATA;
             /* Only factory key (idx=1) is supported. */
             LOG(LVL_WARNING, "State WAIT_DATA : Only key index = 1 "
                              "is supported (secured method).");
@@ -366,7 +365,7 @@ provisioning_res_e process_data_packet(void)
     }
     else
     {
-        res = PROV_RET_INVALID_DATA;
+        res = PROV_RES_INVALID_DATA;
         LOG(LVL_WARNING, "State WAIT_DATA : Invalid method.");
     }
 
@@ -787,7 +786,7 @@ provisioning_ret_e Provisioning_init(provisioning_conf_t * conf)
     m_ptk_received_item.filter.dest_endpoint = PROV_UPLINK_EP;
     m_ptk_received_item.cb = pkt_received_cb;
 
-    Random_init(getUniqueId() ^ lib_time->getTimestampHp() ^ lib_hw->readSupplyVoltage());
+    Random_init(getUniqueId() ^ lib_time->getTimestampHp());
     m_session_id = Random_get8();
 
     provisioning_joining_conf_t joining_conf =
@@ -823,7 +822,7 @@ provisioning_ret_e Provisioning_start(void)
         reset_provisioning();
         m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
         LOG(LVL_ERROR, "%s : Error adding task.", __func__);
-        return PROV_RES_ERROR_INTERNAL;
+        return PROV_RET_INTERNAL_ERROR;
     }
     else
     {

@@ -48,8 +48,8 @@ extern "C" {
  *  @li Keil µVision IDE
  *  @li Plain armgcc
  *
- * Certain compiler features such as alignment is implemented differently in the tools.
- * Therefore, macros such as @ref SL_ALIGN are provided to enable compiler independent
+ * Certain compiler features, such as alignment are implemented differently in the tools.
+ * Therefore, macros such as @ref SL_ALIGN are provided to enable compiler-independent
  * code.
  *
  * @note RAM code macros are implemented in a separate module @ref ramfunc.
@@ -129,10 +129,10 @@ extern "C" {
 #else // !defined(__GNUC__)
 /* GCC compilers */
 
-/** @brief A macro for getting the minimum value. No sideeffects, a and b are evaluated one time only. */
+/** @brief A macro for getting the minimum value. No side effects, a and b are evaluated one time only. */
 #define SL_MIN(a, b) __extension__({ __typeof__(a)_a = (a); __typeof__(b)_b = (b); _a < _b ? _a : _b; })
 
-/** @brief A macro for getting the maximum value. No sideeffects, a and b are evaluated one time only. */
+/** @brief A macro for getting the maximum value. No side effects, a and b are evaluated one time only. */
 #define SL_MAX(a, b) __extension__({ __typeof__(a)_a = (a); __typeof__(b)_b = (b); _a > _b ? _a : _b; })
 
 /** @brief A GCC style macro for handling packed structures. */
@@ -185,6 +185,8 @@ extern "C" {
 
 #endif // !defined(__GNUC__)
 
+/** @cond DO_NOT_INCLUDE_WITH_DOXYGEN */
+
 /** @brief
  *    Macro for marking deprecated functions
  *
@@ -200,6 +202,19 @@ extern "C" {
 #else
 #define SL_DEPRECATED_API_SDK_3_0 __attribute__ ((deprecated))
 #endif
+
+#ifdef SL_SUPPRESS_DEPRECATION_WARNINGS_SDK_3_2
+#define SL_DEPRECATED_API_SDK_3_2
+#else
+#define SL_DEPRECATED_API_SDK_3_2 __attribute__ ((deprecated))
+#endif
+
+#ifdef SL_SUPPRESS_DEPRECATION_WARNINGS_SDK_3_3
+#define SL_DEPRECATED_API_SDK_3_3
+#else
+#define SL_DEPRECATED_API_SDK_3_3 __attribute__ ((deprecated))
+#endif
+/** @endcond */
 
 /***************************************************************************//**
  * @brief
@@ -276,6 +291,21 @@ __STATIC_INLINE uint32_t SL_RBIT(uint32_t value)
 __STATIC_INLINE uint32_t SL_RBIT16(uint32_t value)
 {
   return SL_RBIT(value) >> 16;
+}
+
+/***************************************************************************//**
+ * @brief
+ *   Reverse the bits. Use the RBIT instruction if available, else process.
+ *
+ * @param[in] value
+ *   8-bit data value to reverse.
+ *
+ * @return
+ *   A 8-bit reversed value.
+ ******************************************************************************/
+__STATIC_INLINE uint8_t SL_RBIT8(uint8_t value)
+{
+  return (uint8_t)(SL_RBIT(value) >> 24);
 }
 
 /***************************************************************************//**

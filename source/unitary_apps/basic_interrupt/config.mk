@@ -21,7 +21,7 @@ default_network_channel ?= 2
 app_specific_area_id=0x81FD41
 
 # App version
-app_major=1
+app_major=2
 app_minor=0
 app_maintenance=0
 app_development=0

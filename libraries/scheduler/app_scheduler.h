@@ -53,7 +53,9 @@ typedef enum
     /** Trying to cancel a task that doesn't exist */
     APP_SCHEDULER_RES_UNKNOWN_TASK = 2,
     /** Using the library without previous initialization */
-    APP_SCHEDULER_RES_UNINITIALIZED = 3
+    APP_SCHEDULER_RES_UNINITIALIZED = 3,
+    /** Requested time is too long */
+    APP_SCHEDULER_RES_TOO_LONG_EXECUTION_TIME = 4
 } app_scheduler_res_e;
 
 /**

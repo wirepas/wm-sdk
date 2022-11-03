@@ -20,6 +20,7 @@ $(STACK_HEX): FORCE
 				--mac_profileid=$(mac_profileid)\
 				--mode=$(stack_mode)\
 				--radio=$(radio)\
+				--radio_config=$(radio_config)\
 				--version=$(MIN_STACK_VERSION)
 
 .PHONY: all

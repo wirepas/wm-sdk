@@ -73,8 +73,8 @@ extern "C" {
   void MyPrint(const char* string);
   @endverbatim
 
-  Issues have been observed with armgcc when there is no declarator. It is
-  recommended to have a declarator also for internal functions, but move the
+  Issues have been observed with ARM GCC when there is no declarator. It is
+  recommended to have a declarator also for internal functions but move the
   declarator to the .c file.
 
   In your .c file:
@@ -134,6 +134,12 @@ extern "C" {
 #elif defined(__GNUC__) && (defined(__CROSSWORKS_ARM) || defined(__SES_ARM))
 /* Rowley Crossworks and Segger Embedded Studio */
 #define SL_RAMFUNC_DECLARATOR          __attribute__ ((section(".fast")))
+#define SL_RAMFUNC_DEFINITION_BEGIN    SL_RAMFUNC_DECLARATOR
+#define SL_RAMFUNC_DEFINITION_END
+
+#elif defined(__GNUC__) && defined(CONFIG_SOC_FAMILY_EXX32)
+/* Zephyr environment */
+#define SL_RAMFUNC_DECLARATOR          __attribute__ ((section(".ramfunc")))
 #define SL_RAMFUNC_DEFINITION_BEGIN    SL_RAMFUNC_DECLARATOR
 #define SL_RAMFUNC_DEFINITION_END
 

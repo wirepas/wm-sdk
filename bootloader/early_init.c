@@ -13,11 +13,18 @@
  */
 void custom_early_init(void) __attribute__((weak));
 
+/* Declaration of a weak custom early init that can be overwritten for each
+ * app under $(APP_SRCS_PATH)/bootloader/app_early_init.c
+ */
+void app_early_init(void) __attribute__((weak));
+
 void early_init()
 {
     Power_enableDCDC();
 
     custom_early_init();
+
+    app_early_init();
 }
 
 /* This is the default implementation of the first_boot function. It is defined

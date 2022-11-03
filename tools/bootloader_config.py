@@ -59,6 +59,26 @@ class FlashDesc(object):
     def __str__(self):
         return self.__repr__()
 
+class AesConfig(object):
+    """AES configuration description object
+
+    An object to describe AES specific configuration
+
+    """
+    def __init__(self, aes_little_endian):
+        """Little endian descriptor creation
+
+        Args:
+            aes_little_endian: AES CTR endianess
+        """
+        self.aes_little_endian = aes_little_endian
+
+    def __repr__(self):
+        return "<Little endian:%s>" % \
+               (self.aes_little_endian)
+
+    def __str__(self):
+        return self.__repr__()
 
 class AreaDesc(object):
     """Area description object
@@ -234,58 +254,29 @@ class BootloaderConfig(object):
 
     An object describing the bootloader configuration
     """
-    def __init__(self, flash, areas, keys):
+    def __init__(self, flash, areas, keys, platform):
         """Create a bootloader config
 
         Args:
             flash (FlashDesc): FlashDesc object
             areas (Dic): Dictionary of area object (name, AreaDesc)
             keys (Dic): Dictionary of key object (name, KeyDesc)
+            platform (AesConfig): AES configuration object
         """
         self.flash = flash
         self.areas = areas
         self.keys = keys
+        # If platform configuration is missing set default values here.
+        if platform is None:
+            self.platform = AesConfig(aes_little_endian=True)
+        else:
+            self.platform = platform
 
-    def check_config(self):
-        """Check that the config is valid
-
+    def __check_areas(self):
+        """ Check if mandatory area definitions exists
         Raise exception if it is not the case
         """
-
-        def check_area_overlap(area1, area2):
-            """Check if two area overlap
-
-            Args:
-                area1 (AreaDesc): first area
-                area2 (AreaDesc): second area
-
-            Returns:
-                True if areas overlap, false otherwise
-            """
-            if area1.is_internal() != area2.is_internal():
-                # area1 and area2 are not in same area space
-                # so cannot overlap
-                return False
-
-            if area1.start < area2.start:
-                # area1 is before area2
-                if area1.end < area2.start:
-                    # area1 ends before area2
-                    return False
-            elif area1.start > area2.start:
-                # area1 is after area2
-                if area1.start > area2.end:
-                    # area1 starts after area2
-                    return False
-
-            # Any other case is an overlap
-            return True
-
-        # Check if there is a flash description
-        if self.flash is None:
-            raise ValueError("no flash section in configuration")
-
-        # Check the number of areas
+         # Check the number of areas
         if len(self.areas) == 0:
             raise ValueError("no memory areas in configuration")
         elif len(self.areas) > MAX_NUM_MEMORY_AREAS:
@@ -307,20 +298,118 @@ class BootloaderConfig(object):
         elif not app_area.is_internal():
             raise ValueError("app can only be internal")
 
+    def __check_keys(self):
+        """ Check if security keys exists
+        Raise exception if it is not the case
+        """
         # Check the number of keys
         if len(self.keys) == 0:
             raise ValueError("no keys in configuration")
         if len(self.keys) > MAX_NUM_KEYS:
             raise ValueError("too many keys in configuration")
 
+    def __check_area_overlap(self, area1, area2):
+        """Check if two area overlap
+
+        Args:
+            area1 (AreaDesc): first area
+            area2 (AreaDesc): second area
+
+        Returns:
+            True if areas overlap, false otherwise
+        """
+        if area1.is_internal() != area2.is_internal():
+            # area1 and area2 are not in same area space
+            # so cannot overlap
+            return False
+
+        if area1.start < area2.start:
+            # area1 is before area2
+            if area1.end < area2.start:
+                # area1 ends before area2
+                return False
+        elif area1.start > area2.start:
+            # area1 is after area2
+            if area1.start > area2.end:
+                # area1 starts after area2
+                return False
+
+        # Any other case is an overlap
+        return True
+
+    def check_config(self):
+        """Check that the config is valid
+
+        Raise exception if it is not the case
+        """
+
+        # Check if there is a flash description
+        if self.flash is None:
+            raise ValueError("no flash section in configuration")
+        # Check if all areas exists
+        self.__check_areas()
+        # Check if security keys exists
+        self.__check_keys()
         # Check that there is no area overlap
         for area1 in self.areas.keys():
             # Could be optimized as we check 2 times the same combination
             for area2 in self.areas.keys():
                 if area1 == area2:
                     continue
-                if check_area_overlap(self.areas[area1], self.areas[area2]):
+                if self.__check_area_overlap(self.areas[area1], self.areas[area2]):
                     raise ValueError("area %s and %s overlap" % (area1, area2))
+
+        # Check if there is plaform specific configuration availabale
+        if self.platform is None:
+            raise ValueError("no platform specific configuration")
+
+    @staticmethod
+    def __get_area(cp, section, overlay_dic):
+        """ Gets area name and area's content from section
+        """
+        read_flags = int(cp.get(section, "flags"), 0)
+        # real flags are just bit 0 and 1
+        flags = read_flags & 0x3
+        # area type is bit 2, 3, 4
+        area_type = (read_flags >> 2) & 0x7
+
+        area_id_str = cp.get(section, "id")
+        if overlay_dic is not None:
+            try:
+                area_id = int(overlay_dic[area_id_str], 0)
+            except TypeError:
+                # Not a string, try as int directly
+                area_id = overlay_dic[area_id_str]
+            except KeyError:
+                # No overlay, convert value
+                area_id = int(area_id_str, 0)
+        else:
+            # No overlay set
+            area_id = int(area_id_str, 0)
+
+        try:
+            settings = int(cp.get(section, "settings"), 0)
+        except configparser.NoOptionError:
+            # Settings is not defined for this area
+            settings = None
+
+        if area_type == AreaDesc.BOOTLOADER_TYPE:
+            area = BootloaderAreaDesc(
+                area_id=area_id,
+                address=int(cp.get(section, "address"), 0),
+                length=int(cp.get(section, "length"), 0),
+                flags=flags,
+                settings=settings
+            )
+        else:
+            area = AreaDesc(
+                area_id=area_id,
+                address=int(cp.get(section, "address"), 0),
+                length=int(cp.get(section, "length"), 0),
+                flags=flags,
+                area_type=area_type)
+        return area
+
 
     @classmethod
     def from_ini_files(cls, files, overlay_dic={}):
@@ -348,6 +437,7 @@ class BootloaderConfig(object):
         # Dictionary of keys found
         keys = {}
         flash = None
+        platform = None
 
         # Read configuration files one by one to detect section duplication
         for file in files:
@@ -360,52 +450,9 @@ class BootloaderConfig(object):
                 # Check if it is an area
                 if section.startswith("area:"):
                     area_name = section.split(":")[1]
-
                     if area_name in areas.keys():
                         raise ValueError("area '%s' defined multiple times in files: %s" % (area_name, files))
-
-                    read_flags = int(cp.get(section, "flags"), 0)
-                    # real flags are just bit 0 and 1
-                    flags = read_flags & 0x3
-                    # area type is bit 2, 3, 4
-                    area_type = (read_flags >> 2) & 0x7
-
-                    area_id_str = cp.get(section, "id")
-                    if overlay_dic is not None:
-                        try:
-                            area_id = int(overlay_dic[area_id_str], 0)
-                        except TypeError:
-                            # Not a string, try as int directly
-                            area_id = overlay_dic[area_id_str]
-                        except KeyError:
-                            # No overlay, convert value
-                            area_id = int(area_id_str, 0)
-                    else:
-                        # No overlay set
-                        area_id = int(area_id_str, 0)
-
-                    try:
-                        settings = int(cp.get(section, "settings"), 0)
-                    except configparser.NoOptionError:
-                        # Settings is not defined for this area
-                        settings = None
-
-                    if area_type == AreaDesc.BOOTLOADER_TYPE:
-                        area = BootloaderAreaDesc(
-                            area_id=area_id,
-                            address=int(cp.get(section, "address"), 0),
-                            length=int(cp.get(section, "length"), 0),
-                            flags=flags,
-                            settings=settings
-                        )
-                    else:
-                        area = AreaDesc(
-                            area_id=area_id,
-                            address=int(cp.get(section, "address"), 0),
-                            length=int(cp.get(section, "length"), 0),
-                            flags=flags,
-                            area_type=area_type)
-
+                    area = cls.__get_area(cp, section, overlay_dic)
                     areas[area_name] = area
                     continue
 
@@ -420,7 +467,7 @@ class BootloaderConfig(object):
                     keys[key_name] = key
                     continue
 
-                # Check if flash section
+                # Check if it is a flash section
                 if section == "flash":
                     if flash is not None:
                         raise ValueError("flash section already defined")
@@ -429,11 +476,18 @@ class BootloaderConfig(object):
                                       eraseblock=int(cp.get(section, "eraseblock"), 0))
                     continue
 
+                # Check if it is a platform configuration section
+                if section == "platform":
+                    if platform is not None:
+                        raise ValueError("platform section already defined")
+                    platform = AesConfig(aes_little_endian=(cp.getboolean(section, "aes_little_endian")))
+                    continue
                 print("Warning: unknown section %s" % section)
 
         return cls(flash=flash,
                    areas=areas,
-                   keys=keys)
+                   keys=keys,
+                   platform=platform)
 
     def to_ini_file(self, file):
         """Generate ini file from current config
@@ -470,6 +524,10 @@ class BootloaderConfig(object):
                 config.add_section(section_name)
                 config.set(section_name, 'auth', "".join("{:02X} ".format(x) for x in key.authentication))
                 config.set(section_name, 'encrypt', "".join("{:02X} ".format(x) for x in key.encryption))
+
+        if (self.platform) is not None:
+            config.add_section('platform')
+            config.set('platform', 'aes_little_endian', str(self.platform.aes_little_endian))
 
         with open(file, 'w') as file:
             config.write(file)
@@ -556,12 +614,15 @@ class BootloaderConfig(object):
                                                                   self.keys)
 
     def __str__(self):
-        return "Bootloader config is as folowed:\n" \
+        return "Bootloader config is as followed:\n" \
                "\t[flash] %s \n" \
                "\t[areas] %s \n" \
-               "\t[keys] %s \n" % (self.flash,
+               "\t[keys] %s \n" \
+               "\t[platform] %s \n" \
+                                % (self.flash,
                                    self.areas,
-                                   self.keys)
+                                   self.keys,
+                                   self.platform)
 
 
 def ini_file(string_file):
