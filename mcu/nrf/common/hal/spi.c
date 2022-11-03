@@ -55,11 +55,11 @@ static void configure_gpios(spi_mode_e mode)
     // Configure clock pin (depending on mode)
     if (mode == SPI_MODE_LOW_FIRST || mode == SPI_MODE_LOW_SECOND)
     {
-        nrf_gpio_pin_clear(BOARD_SPI_SCK_PIN);
+        nrf_gpio_pin_set(BOARD_SPI_SCK_PIN);
     }
     else
     {
-        nrf_gpio_pin_set(BOARD_SPI_SCK_PIN);
+        nrf_gpio_pin_clear(BOARD_SPI_SCK_PIN);
     }
 
     NRF_GPIO->PIN_CNF[BOARD_SPI_SCK_PIN] =

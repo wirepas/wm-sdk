@@ -88,13 +88,15 @@ void LDMA_DeInit(void)
 #endif
 #if defined(LDMA_EN_EN)
   LDMA->EN = 0;
+#if defined(LDMA_EN_DISABLING)
+  while (LDMA->EN & _LDMA_EN_DISABLING_MASK) {
+  }
+#endif
 #endif
 
-#if !defined(_SILICON_LABS_32B_SERIES_2_CONFIG_1)
   CMU_ClockEnable(cmuClock_LDMA, false);
-#if defined(_SILICON_LABS_32B_SERIES_2_CONFIG_2) || defined(_SILICON_LABS_32B_SERIES_2_CONFIG_3)
+#if (_SILICON_LABS_32B_SERIES_2_CONFIG > 1)
   CMU_ClockEnable(cmuClock_LDMAXBAR, false);
-#endif
 #endif
 }
 
@@ -159,18 +161,17 @@ void LDMA_Init(const LDMA_Init_t *init)
 #endif
 
   EFM_ASSERT(init->ldmaInitIrqPriority < (1 << __NVIC_PRIO_BITS));
-#if !defined(_SILICON_LABS_32B_SERIES_2_CONFIG_1)
+
   CMU_ClockEnable(cmuClock_LDMA, true);
-#if defined(_SILICON_LABS_32B_SERIES_2_CONFIG_2) || defined(_SILICON_LABS_32B_SERIES_2_CONFIG_3)
+#if (_SILICON_LABS_32B_SERIES_2_CONFIG > 1)
   CMU_ClockEnable(cmuClock_LDMAXBAR, true);
-#endif
 #endif
 
 #if defined(LDMA_EN_EN)
   LDMA->EN = LDMA_EN_EN;
 #endif
 
-  ldmaCtrlVal = init->ldmaInitCtrlNumFixed << _LDMA_CTRL_NUMFIXED_SHIFT;
+  ldmaCtrlVal = (uint32_t)init->ldmaInitCtrlNumFixed << _LDMA_CTRL_NUMFIXED_SHIFT;
 
 #if defined(_LDMA_CTRL_SYNCPRSCLREN_SHIFT) && defined (_LDMA_CTRL_SYNCPRSSETEN_SHIFT)
   ldmaCtrlVal |=  (init->ldmaInitCtrlSyncPrsClrEn << _LDMA_CTRL_SYNCPRSCLREN_SHIFT)
@@ -180,8 +181,8 @@ void LDMA_Init(const LDMA_Init_t *init)
   LDMA->CTRL = ldmaCtrlVal;
 
 #if defined(_LDMA_SYNCHWEN_SYNCCLREN_SHIFT) && defined (_LDMA_SYNCHWEN_SYNCSETEN_SHIFT)
-  LDMA->SYNCHWEN = (init->ldmaInitCtrlSyncPrsClrEn << _LDMA_SYNCHWEN_SYNCCLREN_SHIFT)
-                   | (init->ldmaInitCtrlSyncPrsSetEn << _LDMA_SYNCHWEN_SYNCSETEN_SHIFT);
+  LDMA->SYNCHWEN = ((uint32_t)init->ldmaInitCtrlSyncPrsClrEn << _LDMA_SYNCHWEN_SYNCCLREN_SHIFT)
+                   | ((uint32_t)init->ldmaInitCtrlSyncPrsSetEn << _LDMA_SYNCHWEN_SYNCSETEN_SHIFT);
 #endif
 
 #if defined(_LDMA_CHDIS_MASK)
@@ -219,6 +220,8 @@ void LDMA_Init(const LDMA_Init_t *init)
  *
  * @param[in] descriptor
  *   The transfer descriptor, which can be an array of descriptors linked together.
+ *   Each descriptor's fields stored in RAM will be loaded into the certain
+ *   hardware registers at the proper time to perform the DMA transfer.
  ******************************************************************************/
 void LDMA_StartTransfer(int ch,
                         const LDMA_TransferCfg_t *transfer,
@@ -268,6 +271,13 @@ void LDMA_StartTransfer(int ch,
   EFM_ASSERT(!(((uint32_t)transfer->ldmaLoopCnt << _LDMA_CH_LOOP_LOOPCNT_SHIFT)
                & ~_LDMA_CH_LOOP_LOOPCNT_MASK));
 
+  /* Clear the pending channel interrupt. */
+#if defined (LDMA_HAS_SET_CLEAR)
+  LDMA->IF_CLR = chMask;
+#else
+  LDMA->IFC = chMask;
+#endif
+
 #if defined(LDMAXBAR)
   LDMAXBAR->CH[ch].REQSEL = transfer->ldmaReqSel;
 #else
@@ -276,17 +286,16 @@ void LDMA_StartTransfer(int ch,
   LDMA->CH[ch].LOOP = transfer->ldmaLoopCnt << _LDMA_CH_LOOP_LOOPCNT_SHIFT;
   LDMA->CH[ch].CFG = (transfer->ldmaCfgArbSlots << _LDMA_CH_CFG_ARBSLOTS_SHIFT)
                      | (transfer->ldmaCfgSrcIncSign << _LDMA_CH_CFG_SRCINCSIGN_SHIFT)
-                     | (transfer->ldmaCfgDstIncSign << _LDMA_CH_CFG_DSTINCSIGN_SHIFT);
+                     | (transfer->ldmaCfgDstIncSign << _LDMA_CH_CFG_DSTINCSIGN_SHIFT)
+#if defined(_LDMA_CH_CFG_SRCBUSPORT_MASK)
+                     | (transfer->ldmaCfgStructBusPort << _LDMA_CH_CFG_STRUCTBUSPORT_SHIFT)
+                     | (transfer->ldmaCfgSrcBusPort << _LDMA_CH_CFG_SRCBUSPORT_SHIFT)
+                     | (transfer->ldmaCfgDstBusPort << _LDMA_CH_CFG_DSTBUSPORT_SHIFT)
+#endif
+  ;
 
   /* Set the descriptor address. */
   LDMA->CH[ch].LINK = (uint32_t)descriptor & _LDMA_CH_LINK_LINKADDR_MASK;
-
-  /* Clear the pending channel interrupt. */
-#if defined (LDMA_HAS_SET_CLEAR)
-  LDMA->IF_CLR = chMask;
-#else
-  LDMA->IFC = chMask;
-#endif
 
   /* A critical region. */
   CORE_ENTER_ATOMIC();
@@ -305,13 +314,13 @@ void LDMA_StartTransfer(int ch,
 #if defined (_LDMA_SYNCHWEN_SYNCCLREN_SHIFT) && defined (_LDMA_SYNCHWEN_SYNCSETEN_SHIFT)
 
   LDMA->SYNCHWEN_CLR =
-    ((transfer->ldmaCtrlSyncPrsClrOff << _LDMA_SYNCHWEN_SYNCCLREN_SHIFT)
-     | (transfer->ldmaCtrlSyncPrsSetOff << _LDMA_SYNCHWEN_SYNCSETEN_SHIFT))
+    (((uint32_t)transfer->ldmaCtrlSyncPrsClrOff << _LDMA_SYNCHWEN_SYNCCLREN_SHIFT)
+     | ((uint32_t)transfer->ldmaCtrlSyncPrsSetOff << _LDMA_SYNCHWEN_SYNCSETEN_SHIFT))
     & _LDMA_SYNCHWEN_MASK;
 
   LDMA->SYNCHWEN_SET =
-    ((transfer->ldmaCtrlSyncPrsClrOn << _LDMA_SYNCHWEN_SYNCCLREN_SHIFT)
-     | (transfer->ldmaCtrlSyncPrsSetOn << _LDMA_SYNCHWEN_SYNCSETEN_SHIFT))
+    (((uint32_t)transfer->ldmaCtrlSyncPrsClrOn << _LDMA_SYNCHWEN_SYNCCLREN_SHIFT)
+     | ((uint32_t)transfer->ldmaCtrlSyncPrsSetOn << _LDMA_SYNCHWEN_SYNCSETEN_SHIFT))
     & _LDMA_SYNCHWEN_MASK;
 
 #elif defined (_LDMA_CTRL_SYNCPRSCLREN_SHIFT) && defined (_LDMA_CTRL_SYNCPRSSETEN_SHIFT)
@@ -351,6 +360,36 @@ void LDMA_StartTransfer(int ch,
   CORE_EXIT_ATOMIC();
 }
 
+#if defined(_LDMA_CH_CTRL_EXTEND_MASK)
+/***************************************************************************//**
+ * @brief
+ *   Start an extended DMA transfer.
+ *
+ * @param[in] ch
+ *   A DMA channel.
+ *
+ * @param[in] transfer
+ *   The initialization structure used to configure the transfer.
+ *
+ * @param[in] descriptor_ext
+ *   The extended transfer descriptor, which can be an array of descriptors
+ *   linked together. Each descriptor's fields stored in RAM will be loaded
+ *   into the certain hardware registers at the proper time to perform the DMA
+ *   transfer.
+ ******************************************************************************/
+void LDMA_StartTransferExtend(int ch,
+                              const LDMA_TransferCfg_t *transfer,
+                              const LDMA_DescriptorExtend_t *descriptor_ext)
+{
+  // Ensure destination interleaving supported for given channel.
+  EFM_ASSERT(((1 << ch) & LDMA_ILCHNL));
+
+  LDMA_StartTransfer(ch,
+                     transfer,
+                     (const LDMA_Descriptor_t *)descriptor_ext);
+}
+#endif
+
 /***************************************************************************//**
  * @brief
  *   Stop a DMA transfer.
@@ -367,14 +406,17 @@ void LDMA_StopTransfer(int ch)
 
   EFM_ASSERT(ch < (int)DMA_CHAN_COUNT);
 
+#if defined(_LDMA_CHDIS_MASK)
   CORE_ATOMIC_SECTION(
     LDMA->IEN &= ~chMask;
-#if defined(_LDMA_CHDIS_MASK)
     LDMA->CHDIS = chMask;
-#else
-    BUS_RegMaskedClear(&LDMA->CHEN, chMask);
-#endif
     )
+#else
+  CORE_ATOMIC_SECTION(
+    LDMA->IEN &= ~chMask;
+    BUS_RegMaskedClear(&LDMA->CHEN, chMask);
+    )
+#endif
 }
 
 /***************************************************************************//**
@@ -394,17 +436,19 @@ bool LDMA_TransferDone(int ch)
 
   EFM_ASSERT(ch < (int)DMA_CHAN_COUNT);
 
-  CORE_ATOMIC_SECTION(
-    if (
 #if defined(_LDMA_CHSTATUS_MASK)
-      ((LDMA->CHSTATUS & chMask) == 0)
-#else
-      ((LDMA->CHEN & chMask) == 0)
-#endif
-      && ((LDMA->CHDONE & chMask) == chMask)) {
+  CORE_ATOMIC_SECTION(
+    if (((LDMA->CHSTATUS & chMask) == 0) && ((LDMA->CHDONE & chMask) == chMask)) {
     retVal = true;
   }
     )
+#else
+  CORE_ATOMIC_SECTION(
+    if (((LDMA->CHEN & chMask) == 0) && ((LDMA->CHDONE & chMask) == chMask)) {
+    retVal = true;
+  }
+    )
+#endif
 
   return retVal;
 }
@@ -446,6 +490,7 @@ uint32_t LDMA_TransferRemainingCount(int ch)
     return 0;
   }
 
+  /* +1 because XFERCNT is 0-based. */
   return remaining + 1;
 }
 

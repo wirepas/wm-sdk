@@ -309,7 +309,7 @@ typedef struct
 /** Helper structure to move data from PosLib events*/
 typedef struct
 {
-    uint8_t                        event_id;
+    uint16_t                       event_id;
     app_lib_time_timestamp_hp_t    time_hp;
     uint32_t                       nrls_sleep_time_sec;
 } POSLIB_FLAG_EVENT_info_t;

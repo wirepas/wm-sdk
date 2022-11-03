@@ -18,6 +18,7 @@ entrypoint:
     ldr     r0, 1f
     str     r0, [sp, #4]
     pop     {r0, pc}
+    .align  2
 1:
     .word   _start
     .word   0

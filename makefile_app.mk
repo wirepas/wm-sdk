@@ -64,7 +64,7 @@ include $(MCU_PATH)common/makefile
 # Sources & includes paths
 #
 SRCS += $(APP_SRCS_PATH)app.c
-INCLUDES += -iquote$(API_PATH) -I$(APP_SRCS_PATH)include -I$(UTIL_PATH)
+INCLUDES += -I$(API_PATH) -I$(APP_SRCS_PATH)include -I$(UTIL_PATH)
 
 # Objects list
 OBJS_ = $(SRCS:.c=.o) $(ASM_SRCS:.s=.o)

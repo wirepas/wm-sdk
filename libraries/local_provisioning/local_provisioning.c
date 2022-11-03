@@ -299,13 +299,13 @@ static void enable_proxy(void)
  * @brief Callback when shutdown is going to happen to reset the
  *        configuration
  */
-static void on_stack_state_event_cb(stack_state_event_e event)
+static void on_stack_state_event_cb(app_lib_stack_event_e event, void * param)
 {
-    if (event == STACK_STATE_STOPPED_EVENT && m_reset_node)
+    if (event == APP_LIB_STATE_STACK_EVENT_STACK_STOPPED && m_reset_node)
     {
         lib_settings->resetAll();
     }
-    else if (event == STACK_STATE_STARTED_EVENT)
+    else if (event == APP_LIB_STATE_STACK_EVENT_STACK_STARTED)
     {
         // Someone started the stack, enable the proxy mode
         // if possible.
@@ -330,7 +330,10 @@ Local_provisioning_res_e Local_provisioning_init(local_provisioning_psk_t * psk,
     /* Use them for now until overide by app config for proxy*/
     memcpy(&m_psk, &m_psk_init, sizeof(m_psk));
 
-    Stack_State_addEventCb(on_stack_state_event_cb);
+    /* We are interested by stack STARTED and STOPPED event */
+    Stack_State_addEventCb(on_stack_state_event_cb,
+                           1 << APP_LIB_STATE_STACK_EVENT_STACK_STARTED |
+                           1 << APP_LIB_STATE_STACK_EVENT_STACK_STOPPED);
 
     return LOCAL_PROVISIONING_RES_SUCCESS;
 }

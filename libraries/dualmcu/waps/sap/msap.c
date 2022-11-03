@@ -18,6 +18,7 @@
 #include "persistent.h"
 #include "shared_appconfig.h"
 #include "stack_state.h"
+#include "ds.h"
 
 /* Request handlers */
 static bool stackStart(waps_item_t * item);
@@ -74,6 +75,8 @@ static bool scratchpadSetUpdate(waps_item_t * item);
 static bool scratchpadClear(waps_item_t * item);
 static bool scratchpadWriteTarget(waps_item_t * item);
 static bool scratchpadReadTarget(waps_item_t * item);
+static bool allowScratchpadRead(void);
+static bool scratchpadReadBlock(waps_item_t * item);
 static bool remoteStatus(waps_item_t * item);
 static bool remoteUpdate(waps_item_t * item);
 static bool sleep_request(waps_item_t * item);
@@ -90,7 +93,7 @@ static const uint8_t m_attr_size_lut[] =
     MSAP_ATTR_PDU_BUFF_USAGE_SIZE,
     MSAP_ATTR_PDU_BUFF_CAP_SIZE,
     MSAP_ATTR_NBOR_COUNT_SIZE,
-    MSAP_ATTR_ENERGY_SIZE,
+    MSAP_ATTR_RESERVED_1_SIZE,
     MSAP_ATTR_AUTOSTART_SIZE,
     MSAP_ATTR_ROUTE_COUNT_SIZE,
     MSAP_ATTR_SYSTEM_TIME_SIZE,
@@ -99,6 +102,7 @@ static const uint8_t m_attr_size_lut[] =
     MSAP_ATTR_CURRENT_AC_SIZE,
     MSAP_ATTR_SCRATCHPAD_BLOCK_MAX_SIZE,
     MSAP_ATTR_MCAST_GROUPS_SIZE,
+    MSAP_ATTR_SCRATCHPAD_NUM_BYTES_SIZE,
 };
 
 /** App stack state flags */
@@ -317,6 +321,8 @@ bool Msap_handleFrame(waps_item_t * item)
             return scratchpadWriteTarget(item);
         case WAPS_FUNC_MSAP_SCRATCHPAD_TARGET_READ_REQ:
             return scratchpadReadTarget(item);
+        case WAPS_FUNC_MSAP_SCRATCHPAD_BLOCK_READ_REQ:
+            return scratchpadReadBlock(item);
         case WAPS_FUNC_MSAP_REMOTE_STATUS_REQ:
             return remoteStatus(item);
         case WAPS_FUNC_MSAP_REMOTE_UPDATE_REQ:
@@ -438,7 +444,7 @@ static bool stackStart(waps_item_t * item)
     {
         return false;
     }
-    app_lib_state_stack_state_e state = APP_LIB_STATE_ACCESS_DENIED;
+    app_stack_state_flags_e state = APP_STACK_ACCESS_DENIED;
     /* Check that stack start feature is permitted */
     if (LockBits_isFeaturePermitted(LOCK_BITS_MSAP_STACK_START))
     {
@@ -452,7 +458,8 @@ static bool stackStart(waps_item_t * item)
 
         if (Stack_State_startStack() == APP_RES_OK)
         {
-            state = APP_LIB_STATE_STARTED;
+            DS_Enable(DS_SOURCE_INIT);
+            state = APP_STACK_STARTED;
         }
         else
         {
@@ -539,7 +546,8 @@ static bool attrReadReq(waps_item_t * item)
     }
 
     /* Check that MSAP attribute read feature is permitted */
-    if (attr_id == MSAP_ATTR_SCRATCHPAD_BLOCK_MAX)
+    if ((attr_id == MSAP_ATTR_SCRATCHPAD_BLOCK_MAX) ||
+        (attr_id == MSAP_ATTR_SCRATCHPAD_NUM_BYTES))
     {
         if (!LockBits_isFeaturePermitted(
                 LOCK_BITS_MSAP_SCRATCHPAD_STATUS))
@@ -601,6 +609,7 @@ static attribute_result_e readAttr(attr_t attr_id,
                                    uint8_t attr_size)
 {
     uint32_t tmp;   // Needed for 32-bit alignment
+    app_lib_state_route_info_t route_info;
     app_res_e result = APP_RES_OK;
     switch (attr_id)
     {
@@ -622,15 +631,28 @@ static attribute_result_e readAttr(attr_t attr_id,
             // Deprecated
             result = APP_RES_NOT_IMPLEMENTED;
             break;
-        case MSAP_ATTR_ENERGY:
-            result = lib_state->getEnergy((uint8_t *)&tmp);
-            break;
         case MSAP_ATTR_AUTOSTART:
             lib_storage->readPersistent(&tmp, sizeof(tmp));
             tmp &= MSAP_AUTOSTART;
             break;
         case MSAP_ATTR_ROUTE_COUNT:
-            result = lib_state->getRouteCount((size_t*)&tmp);
+            // Initialize to no route
+            tmp = 0;
+            if (lib_state->getStackState() != APP_LIB_STATE_STARTED)
+            {
+                // Check if stack is started
+                result = APP_RES_INVALID_STACK_STATE;
+            }
+            else
+            {
+                result = lib_state->getRouteInfo(&route_info);
+                if (result == APP_RES_OK &&
+                    route_info.state == APP_LIB_STATE_ROUTE_STATE_VALID)
+                {
+                    // There is a route to sink
+                    tmp = 1;
+                }
+            }
             break;
         case MSAP_ATTR_SYSTEM_TIME:
             tmp = 0;    /* Not handled here */
@@ -659,6 +681,14 @@ static attribute_result_e readAttr(attr_t attr_id,
             break;
         case MSAP_ATTR_MCAST_GROUPS:
             result = Multicast_getGroups(value);
+            break;
+        case MSAP_ATTR_SCRATCHPAD_NUM_BYTES:
+            tmp = (uint32_t) lib_otap->getNumBytes();
+            if (tmp == 0)
+            {
+                /* No scratchpad stored */
+                result = APP_RES_INVALID_CONFIGURATION;
+            }
             break;
         default:
             /* Unsupported attribute */
@@ -736,9 +766,6 @@ static attribute_result_e writeAttr(attr_t attr_id,
     }
     switch (attr_id)
     {
-        case MSAP_ATTR_ENERGY:
-            result = lib_state->setEnergy(tmp);
-            break;
         case MSAP_ATTR_AUTOSTART:
             if(tmp > 1)
             {
@@ -1010,7 +1037,14 @@ static bool startScanNbors(waps_item_t * item)
     if (LockBits_isFeaturePermitted(LOCK_BITS_MSAP_SCAN_NBORS))
     {
         // Start to scan
-        result = lib_state->startScanNbors();
+        if (lib_state->startScanNbors() == APP_RES_OK)
+        {
+            result = MSAP_SCAN_NBORS_SUCCESS;
+        }
+        else
+        {
+            result = MSAP_SCAN_NBORS_INVALID_STATE;
+        }
     }
     // Build response
     Waps_item_init(item,
@@ -1317,6 +1351,163 @@ static bool scratchpadReadTarget(waps_item_t * item)
     return true;
 }
 
+#define CMAC_OMAC1_TAG_OFFSET 32
+#define CMAC_OMAC1_TAG_NUM_BYTES 16
+
+static bool allowScratchpadRead(void)
+{
+#ifdef ALLOW_SCRATCHPAD_READ
+    // Try to mimimize scratchpad reads, as it can reside in slow external
+    // memory. Keep track of some key information about the scratchpad and
+    // only read the CMAC / OMAC1 tag when the information changes
+    static size_t checked_num_bytes = UINT32_MAX;
+    static app_lib_otap_seq_t checked_otap_seq = 0;
+    static uint16_t checked_crc = 0;
+    static app_lib_otap_type_e checked_otap_type = APP_LIB_OTAP_TYPE_BLANK;
+    static app_lib_otap_status_e checked_otap_status = APP_LIB_OTAP_STATUS_OK;
+    static bool checked_result = false;
+
+    // Read information about current scratchpad
+    size_t num_bytes = lib_otap->getNumBytes();
+    app_lib_otap_seq_t otap_seq = lib_otap->getSeq();
+    uint16_t crc = lib_otap->getCrc();
+    app_lib_otap_type_e otap_type = lib_otap->getType();
+    app_lib_otap_status_e otap_status = lib_otap->getStatus();
+
+    // Compare to previously read information
+    if ((num_bytes == checked_num_bytes) &&
+        (otap_seq == checked_otap_seq) &&
+        (crc == checked_crc) &&
+        (otap_type == checked_otap_type) &&
+        (otap_status == checked_otap_status))
+    {
+        // Nothing changed, re-use result
+        return checked_result;
+    }
+
+    // Something changed, update information
+    checked_num_bytes = num_bytes;
+    checked_otap_seq = otap_seq;
+    checked_crc = crc;
+    checked_otap_type = otap_type;
+    checked_otap_status = otap_status;
+    checked_result = false;
+
+    // Read CMAC / OMAC1 tag from scratchpad
+    uint8_t cmac_omac1_tag[CMAC_OMAC1_TAG_NUM_BYTES];
+    if (lib_otap->read(CMAC_OMAC1_TAG_OFFSET,
+                       CMAC_OMAC1_TAG_NUM_BYTES,
+                       cmac_omac1_tag) != APP_RES_OK)
+    {
+        // Could not read scratchpad
+        return checked_result;
+    }
+
+    // Check that the CMAC / OMAC1 tag is a special one, with all 0xff
+    checked_result = true;
+    for (size_t n = 0; n < CMAC_OMAC1_TAG_NUM_BYTES; n++)
+    {
+        if (cmac_omac1_tag[n] != 0xff)
+        {
+            // Not a valid special tag
+            checked_result = false;
+            break;
+        }
+    }
+
+    return checked_result;
+#else // ALLOW_SCRATCHPAD_READ
+    return false;
+#endif // ALLOW_SCRATCHPAD_READ
+}
+
+static bool scratchpadReadBlock(waps_item_t * item)
+{
+    if (item->frame.splen != sizeof(msap_scratchpad_block_read_req_t))
+    {
+        return false;
+    }
+#ifdef ALLOW_SCRATCHPAD_READ
+    msap_scratchpad_block_read_req_t * req = &(item->frame.msap.scratchpad_block_read_req);
+    msap_scratchpad_block_read_e result = MSAP_SCRATCHPAD_BLOCK_READ_SUCCESS;
+    uint32_t start_addr = req->start_addr;
+    size_t num_bytes = req->num_bytes;
+    size_t max_num_bytes = lib_otap->getNumBytes();
+    Waps_item_init(item,
+                   WAPS_FUNC_MSAP_SCRATCHPAD_BLOCK_READ_CNF,
+                   FRAME_MSAP_SCRATCHPAD_BLOCK_READ_CNF_HEADER_SIZE);
+    msap_scratchpad_block_read_cnf_t * cnf = &(item->frame.msap.scratchpad_block_read_cnf);
+
+    /*
+     * Check that scratchpad start feature is permitted,
+     * also used for read access
+     */
+    if (!LockBits_isFeaturePermitted(LOCK_BITS_MSAP_SCRATCHPAD_START))
+    {
+        result = MSAP_SCRATCHPAD_BLOCK_READ_ACCESS_DENIED;
+    }
+    else if (!allowScratchpadRead())
+    {
+        result = MSAP_SCRATCHPAD_BLOCK_READ_ACCESS_DENIED;
+    }
+    else if (((start_addr & 3) != 0) || (start_addr > max_num_bytes))
+    {
+        result = MSAP_SCRATCHPAD_BLOCK_READ_INVALID_START_ADDR;
+    }
+    else if (((num_bytes & 3) != 0) ||
+             (num_bytes > MSAP_SCRATCHPAD_BLOCK_READ_MAX_NUM_BYTES))
+    {
+        result = MSAP_SCRATCHPAD_BLOCK_READ_INVALID_NUM_BYTES;
+    }
+    else if (max_num_bytes == 0)
+    {
+        result = MSAP_SCRATCHPAD_BLOCK_READ_NO_SCRATCHPAD;
+    }
+    else
+    {
+        if ((max_num_bytes - start_addr) < num_bytes)
+        {
+            /* Return remaining bytes, which may be none at all */
+            num_bytes = max_num_bytes - start_addr;
+        }
+
+        /* Update frame size */
+        item->frame.splen = FRAME_MSAP_SCRATCHPAD_BLOCK_READ_CNF_HEADER_SIZE +
+                            num_bytes;
+
+        if (num_bytes > 0)
+        {
+            switch(lib_otap->read(start_addr, num_bytes, &(cnf->bytes)))
+            {
+                case APP_RES_OK:
+                    break;
+                case APP_RES_INVALID_STACK_STATE:
+                    result = MSAP_SCRATCHPAD_BLOCK_READ_INVALID_STATE;
+                    break;
+                case APP_RES_RESOURCE_UNAVAILABLE:
+                    result = MSAP_SCRATCHPAD_BLOCK_READ_NO_SCRATCHPAD;
+                    break;
+                default:
+                case APP_RES_INVALID_VALUE:
+                    result = MSAP_SCRATCHPAD_BLOCK_READ_INVALID_NUM_BYTES;
+                    break;
+            }
+        }
+    }
+#else // ALLOW_SCRATCHPAD_READ
+    (void) allowScratchpadRead;
+    msap_scratchpad_block_read_e result = MSAP_SCRATCHPAD_BLOCK_READ_ACCESS_DENIED;
+    Waps_item_init(item,
+                   WAPS_FUNC_MSAP_SCRATCHPAD_BLOCK_READ_CNF,
+                   FRAME_MSAP_SCRATCHPAD_BLOCK_READ_CNF_HEADER_SIZE);
+    msap_scratchpad_block_read_cnf_t * cnf = &(item->frame.msap.scratchpad_block_read_cnf);
+#endif // ALLOW_SCRATCHPAD_READ
+
+    /* Build response */
+    cnf->result = result;
+    return true;
+}
+
 static bool remoteStatus(waps_item_t * item)
 {
     // Remote status is not implemented by stack anymore
@@ -1356,7 +1547,7 @@ static bool remoteUpdate(waps_item_t * item)
 
 static bool sleep_request(waps_item_t * item)
 {
-    msap_remote_update_e result = MSAP_SLEEP_SUCCESS;
+    msap_sleep_update_e result = MSAP_SLEEP_SUCCESS;
 
     switch(lib_sleep->sleepStackforTime
           (item->frame.msap.sleep_start_req.seconds,
@@ -1387,7 +1578,7 @@ static bool sleep_request(waps_item_t * item)
 
 static bool sleep_stop_request(waps_item_t * item)
 {
-    msap_remote_update_e result = MSAP_SLEEP_SUCCESS;
+    msap_sleep_update_e result = MSAP_SLEEP_SUCCESS;
 
     switch(lib_sleep->wakeupStack())
     {

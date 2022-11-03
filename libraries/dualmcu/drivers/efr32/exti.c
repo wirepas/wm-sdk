@@ -109,7 +109,7 @@ void Wakeup_setEdgeIRQ(exti_irq_config_e edge, bool enable)
     bool risingEdge, fallingEdge;
     edge & EXTI_IRQ_RISING_EDGE ? (risingEdge = true) : (risingEdge = false);
     edge & EXTI_IRQ_FALLING_EDGE ? (fallingEdge = true) : (fallingEdge = false);
-    GPIO_IntConfig(BOARD_USART_GPIO_PORT,  BOARD_USART_RX_PIN,
+    GPIO_IntConfig((GPIO_Port_TypeDef)BOARD_USART_GPIO_PORT,  BOARD_USART_RX_PIN,
                                     risingEdge,
                                     fallingEdge,
                                     enable);
@@ -123,7 +123,7 @@ void __attribute__((__interrupt__)) GPIO_EVEN_IRQHandler(void)
 #elif defined(_SILICON_LABS_32B_SERIES_2_CONFIG_1)
     uint32_t epin = GPIO->IF & _GPIO_IF_EXT_MASK;
     epin &= GPIO->IEN & _GPIO_IEN_EXTIEN_MASK;
-#elif defined(_SILICON_LABS_32B_SERIES_2_CONFIG_2)
+#elif defined(_SILICON_LABS_32B_SERIES_2_CONFIG_2) || defined(_SILICON_LABS_32B_SERIES_2_CONFIG_3)
     uint32_t epin = GPIO->IF & 0x0FFF;
     epin &= GPIO->IEN & 0x0FFF;
 #else
@@ -152,7 +152,7 @@ void __attribute__((__interrupt__)) GPIO_ODD_IRQHandler(void)
 #elif defined(_SILICON_LABS_32B_SERIES_2_CONFIG_1)
     uint32_t opin = GPIO->IF & _GPIO_IF_EXT_MASK;
     opin &= GPIO->IEN & _GPIO_IEN_EXTIEN_MASK;
-#elif defined(_SILICON_LABS_32B_SERIES_2_CONFIG_2)
+#elif defined(_SILICON_LABS_32B_SERIES_2_CONFIG_2) || defined(_SILICON_LABS_32B_SERIES_2_CONFIG_3)
     uint32_t opin = GPIO->IF & 0x0FFF;
     opin &= GPIO->IEN & 0x0FFF;
 #else

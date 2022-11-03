@@ -3,7 +3,7 @@
  * @brief EFR32MG21 DEVINFO register and bit field definitions
  ******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories, Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories, Inc. www.silabs.com</b>
  ******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -144,10 +144,12 @@ typedef struct {
 #define _DEVINFO_PART_FAMILY_FG                                  0x00000000UL                            /**< Mode FG for DEVINFO_PART                    */
 #define _DEVINFO_PART_FAMILY_MG                                  0x00000001UL                            /**< Mode MG for DEVINFO_PART                    */
 #define _DEVINFO_PART_FAMILY_BG                                  0x00000002UL                            /**< Mode BG for DEVINFO_PART                    */
+#define _DEVINFO_PART_FAMILY_MR                                  0x00000007UL                            /**< Mode MR for DEVINFO_PART                    */
 #define DEVINFO_PART_FAMILY_DEFAULT                              (_DEVINFO_PART_FAMILY_DEFAULT << 24)    /**< Shifted mode DEFAULT for DEVINFO_PART       */
 #define DEVINFO_PART_FAMILY_FG                                   (_DEVINFO_PART_FAMILY_FG << 24)         /**< Shifted mode FG for DEVINFO_PART            */
 #define DEVINFO_PART_FAMILY_MG                                   (_DEVINFO_PART_FAMILY_MG << 24)         /**< Shifted mode MG for DEVINFO_PART            */
 #define DEVINFO_PART_FAMILY_BG                                   (_DEVINFO_PART_FAMILY_BG << 24)         /**< Shifted mode BG for DEVINFO_PART            */
+#define DEVINFO_PART_FAMILY_MR                                   (_DEVINFO_PART_FAMILY_MR << 24)         /**< Shifted mode MR for DEVINFO_PART            */
 
 /* Bit fields for DEVINFO MEMINFO */
 #define _DEVINFO_MEMINFO_RESETVALUE                              0x00000000UL                                  /**< Default value for DEVINFO_MEMINFO           */

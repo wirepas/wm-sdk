@@ -93,5 +93,5 @@ include $(WP_LIB_PATH)dualmcu/waps/makefile
 include $(WP_LIB_PATH)dualmcu/drivers/makefile
 endif
 
-SRCS += $(WP_LIB_PATH)/libraries_init.c
+SRCS += $(WP_LIB_PATH)libraries_init.c
 INCLUDES += -I$(WP_LIB_PATH)

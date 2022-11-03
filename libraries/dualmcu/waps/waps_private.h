@@ -9,7 +9,7 @@
 
 #include <stdint.h>
 
-#include "settings.h"
+#include "wms_settings.h"
 
 /**
  * \brief   Get information about queued indications

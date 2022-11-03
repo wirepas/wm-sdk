@@ -132,7 +132,6 @@ static void control_node_ack_cb(uint8_t * bytes, uint8_t len)
         LOG(LVL_INFO, "Update config.");
         LOG(LVL_DEBUG, "  - diag_period_ms: %u", conf.diag_period_ms);
         LOG(LVL_DEBUG, "  - packet_ttl_ms: %u", conf.packet_ttl_ms);
-        LOG(LVL_DEBUG, "  - test_period_ms: %u", conf.test_period_ms);
         /* Config changed; re-init app and library.*/
         memcpy(&m_conf, &conf, sizeof(control_app_conf_t));
         lib_conf.diag_period_ms = m_conf.diag_period_ms;

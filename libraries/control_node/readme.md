@@ -92,9 +92,7 @@ Code example to initialize the library:
     }
 
     // Set the node as low latency router
-    app_res = lib_settings->setNodeRole(
-                app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE,
-                                                APP_LIB_SETTINGS_ROLE_FLAG_LL));
+    app_res = lib_settings->setNodeRole(APP_LIB_SETTINGS_ROLE_HEADNODE_LL);
     if (app_res != APP_RES_OK)
     {
         // Manage error here.

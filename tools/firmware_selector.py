@@ -255,6 +255,9 @@ def main():
     parser.add_argument("--radio", "-r",
         help = "Target radio (if relevant)",
         default = None)
+    parser.add_argument("--radio_config", "-rc",
+        help = "Target radio_config (if relevant)",
+        default = None)
     parser.add_argument("--channel_map", "-b",
         help = "Target band (if relevant)",
         default = None)
@@ -301,6 +304,8 @@ def main():
             target_config['version'] = args.version
         if args.radio not in (None, ''):
             target_config['radio'] = args.radio
+        if args.radio_config not in (None, ''):
+            target_config['radio_config'] = args.radio_config
         if args.channel_map  not in (None, ''):
             target_config['radio_channel_map'] = args.channel_map
         if args.mac_profile not in (None, ''):

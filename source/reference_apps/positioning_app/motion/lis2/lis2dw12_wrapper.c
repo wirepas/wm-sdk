@@ -57,7 +57,7 @@ static uint8_t lis2dw12_get_int_threshold(uint16_t threshold, lis2dw12_fs_t fs)
             lsb = 4*1000/64;
             break;
         case LIS2DW12_8g:
-            lsb = 12*1000/64;
+            lsb = 8*1000/64;
             break;
         case LIS2DW12_16g:
             lsb = 16*1000/64;
@@ -108,7 +108,7 @@ static uint8_t lis2dw12_get_int_duration(uint16_t duration_ms, lis2dw12_odr_t od
             duration = 0;
     }
 
-    return (uint8_t) ((duration > 4) ? 4 : duration);
+    return (uint8_t) ((duration > 3) ? 3 : duration);
 }
 
 bool ACC_init()

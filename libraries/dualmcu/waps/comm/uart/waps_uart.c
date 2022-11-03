@@ -16,7 +16,7 @@
 #include "waps/waps_buffer_sizes.h"
 #include "waps/waps_frames.h" // For frame min/max length constants
 #include "mcu.h"
-#include "settings.h"
+#include "wms_settings.h"
 
 
 /* SLIP special characters */
@@ -312,10 +312,11 @@ static bool is_autopower_in_use(void)
         return true;
     }
 
-    if ((app_lib_settings_get_base_role(node_role) ==
-         APP_LIB_SETTINGS_ROLE_SINK) ||
-         (app_lib_settings_get_flags_role(node_role) &
-         APP_LIB_SETTINGS_ROLE_FLAG_LL))
+    if (node_role == APP_LIB_SETTINGS_ROLE_SINK_LE ||
+        node_role == APP_LIB_SETTINGS_ROLE_SINK_LL ||
+        node_role == APP_LIB_SETTINGS_ROLE_HEADNODE_LL ||
+        node_role == APP_LIB_SETTINGS_ROLE_SUBNODE_LL ||
+        node_role == APP_LIB_SETTINGS_ROLE_AUTOROLE_LL)
     {
         // No need to enable autopower on sink or LL nodes
         // That are main powered

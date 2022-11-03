@@ -166,8 +166,7 @@ a node and start the stack.
 @endcode
 
 A newly flashed device starts with its role set to \ref
-APP_LIB_SETTINGS_ROLE_HEADNODE and with the flag \ref
-APP_LIB_SETTINGS_ROLE_FLAG_AUTOROLE, by default.
+APP_LIB_SETTINGS_ROLE_AUTOROLE_LE by default.
 
 To be able to join a network, the application must set at least a unique
 node address, a common network address and a common network channel.
@@ -228,7 +227,8 @@ having board definition. See documentation @ref define_custom_board "here".
 @section test_application Test application
 
 To practically test the application, a minimum of two boards is needed. One of
-them must be configured as a @ref APP_LIB_SETTINGS_ROLE_SINK "sink" and the
+them must be configured as a @ref APP_LIB_SETTINGS_ROLE_SINK_LE "sink Low Energy" or
+a @ref APP_LIB_SETTINGS_ROLE_SINK_LL "sink Low Latency" and the
 other as a node (i.e. something else than sink). In a first step, the sink can
 be connected to a PC running the Wirepas Terminal.
 

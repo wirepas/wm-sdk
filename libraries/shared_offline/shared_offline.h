@@ -54,6 +54,8 @@ typedef enum
     SHARED_OFFLINE_STATUS_OFFLINE = 0,
     /** No more tasks available */
     SHARED_OFFLINE_STATUS_ONLINE = 1,
+    /* Module is not initialized */
+    SHARED_OFFLINE_STATUS_UNINITIALIZED = 3,
 } shared_offline_status_e;
 
 #define SHARED_OFFLINE_INFINITE_DELAY   (uint32_t)(-1)

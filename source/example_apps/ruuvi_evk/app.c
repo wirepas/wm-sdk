@@ -74,7 +74,7 @@ static bool ruuvi_spi_init(void)
 */
 static void send_data(sensor_data_t *data)
 {
-    size_t count = 0;
+    app_lib_state_route_info_t route_info;
     uint8_t buff[102];
     int len = 102;
 
@@ -82,8 +82,9 @@ static void send_data(sensor_data_t *data)
     len = format_data_tlv(buff, data, len);
 
     /* Only send data if there is a route to the Sink. */
-    app_res_e res = lib_state->getRouteCount(&count);
-    if (res == APP_RES_OK && count > 0 && len != -1)
+    app_res_e res = lib_state->getRouteInfo(&route_info);
+    if (res == APP_RES_OK && route_info.state == APP_LIB_STATE_ROUTE_STATE_VALID
+        && len != -1)
     {
         app_lib_data_to_send_t data_to_send;
         data_to_send.bytes = (const uint8_t *) buff;

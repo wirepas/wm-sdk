@@ -12,8 +12,8 @@ SEARCH_DIR(.)
  */
 MEMORY
 {
-  FLASH (rx)      : ORIGIN = 0x00040000, LENGTH = 256K
-  RAM (rwx)       : ORIGIN = 0x20010000, LENGTH = 188K - 8
+  FLASH (rx)      : ORIGIN = 0x00044000, LENGTH = 256K
+  RAM (rwx)       : ORIGIN = 0x20018400, LENGTH = 155K - 8
   INVALID (rwx)   : ORIGIN = 0xFFFFFFFF, LENGTH = 0 /* Sanity check */
 }
 

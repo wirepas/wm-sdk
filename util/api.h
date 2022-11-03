@@ -15,23 +15,23 @@
 #ifndef API_H_
 #define API_H_
 
-#include "app.h"
-#include "data.h"
-#include "otap.h"
-#include "settings.h"
-#include "state.h"
-#include "storage.h"
-#include "system.h"
-#include "time.h"
-#include "hardware.h"
+#include "wms_app.h"
+#include "wms_data.h"
+#include "wms_otap.h"
+#include "wms_settings.h"
+#include "wms_state.h"
+#include "wms_storage.h"
+#include "wms_system.h"
+#include "wms_time.h"
+#include "wms_hardware.h"
 // BLE beacons
-#include "beacon_tx.h"
-#include "beacon_rx.h"
-#include "sleep.h"
-#include "advertiser.h"
-#include "memory_area.h"
-#include "radio_config.h"
-#include "joining.h"
+#include "wms_beacon_tx.h"
+#include "wms_beacon_rx.h"
+#include "wms_sleep.h"
+#include "wms_advertiser.h"
+#include "wms_memory_area.h"
+#include "wms_radio_config.h"
+#include "wms_joining.h"
 
 // Expose common APIs
 extern const app_global_functions_t *   global_func     __attribute((weak));

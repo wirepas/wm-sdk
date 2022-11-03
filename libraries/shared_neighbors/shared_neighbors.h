@@ -39,26 +39,4 @@ app_res_e Shared_Neighbors_addOnBeaconCb(app_lib_state_on_beacon_cb_f cb_scanned
  */
 app_res_e Shared_Neighbors_removeBeaconCb(uint16_t cb_id);
 
-/**
- * @brief   Add a new callback about state when when neighbor scan is complete.
- * @param   cb_scanned_neighbor
- *          New callback to set
- * @param   cb_id
- *          id to be used with @ref Shared_State_removeScanNborsCb.
- *          Set only if return code is APP_RES_OK.
- * @return  APP_RES_OK if ok. See \ref app_res_e for
- *          other result codes.
- */
-app_res_e Shared_Neighbors_addScanNborsCb
-                     (app_lib_state_on_scan_nbors_cb_f cb_scanned_neighbor,
-                      uint16_t * cb_id);
-
-/**
- * @brief   Remove a neighbor scan complete cb item from the list.
- *          Removed item fields are all set to 0.
- * @param   cb_id
- *          item to remove.
- */
-app_res_e Shared_Neighbors_removeScanNborsCb(uint16_t cb_id);
-
 #endif //_SHARED_NEIGHBORS_H_

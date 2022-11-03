@@ -21,34 +21,28 @@ Applications are categorized into two categories:
 
 @anchor example_applications
 
-Example and uninatry applications are:
+Example and unitary applications are:
 
 <table>
 <tr><th>Application name</th><th>Description</th><th>Notes</th></tr>
 
-<tr><td>@ref aes/app.c "aes"</td>
-<td>Test software AES library</td><td></td></tr>
+<tr><td>@ref battery_voltage_read_app/app.c "battery_voltage_read_app"</td>
+<td>Battery voltage reading demo app </td><td></td></tr>
 
-<tr><td>@ref debug/app.c "debug"</td>
-<td>Using debug prints</td><td></td></tr>
+<tr><td>@ref ble_scanner/app.c "ble_scanner"</td>
+<td>How to receive BLE beacons</td><td>Only 2.4GHz devices</td></tr>
 
-<tr><td>@ref appconfig/app.c "appconfig"</td>
-<td>Receiving application configuration</td><td></td></tr>
+<tr><td>@ref control_node/app.c "control_node"</td>
+<td>To be used with control_router, switch in lighting example</td><td></td></tr>
 
-<tr><td>@ref basic_interrupt/app.c "basic_interrupt"</td>
-<td>How to use interrupt service</td><td>Only Nordic nRF52xx</td></tr>
-
-<tr><td>@ref ble_scanner/app.c "ble_scanner"</td><td>How to receive BLE beacons</td>
-<td>Only 2.4GHz devices</td></tr>
-
-<tr><td>@ref ble_tx/app.c "ble_tx"</td>
-<td>How to transmit BLE beacons</td><td>Only 2.4GHz devices</td></tr>
-
-<tr><td>@ref blink/app.c "blink"</td>
-<td>Very simple blink/hello world application</td><td></td></tr>
+<tr><td>@ref control_router/app.c "control_router"</td>
+<td>To be used with control_node, lighting fixture</td><td></td></tr>
 
 <tr><td>@ref custom_app/app.c "custom_app"</td>
 <td>Simple data transmission and reception</td><td></td></tr>
+
+<tr><td>@ref evaluation_app/app.c "evaluation_app"</td>
+<td>Wirepas Massive discovery application</td><td></td></tr>
 
 <tr><td>@ref inventory_app_router/app.c "inventory_app_router"</td>
 <td>Inventory application using directed-advertiser for headnodes</td>
@@ -58,8 +52,41 @@ Example and uninatry applications are:
 <td>Inventory application using directed-advertiser for advertisers</td>
 <td></td></tr>
 
+<tr><td>@ref low_latency_app/app.c "low_latency_app"</td>
+<td>Low-latency mode demonstration app</td>
+<td></td></tr>
+
 <tr><td>@ref minimal_app/app.c "minimal_app"</td>
-<td>Minimal app that just starts the stack</td><td></td></tr>
+<td>Minimal app that just starts the stack</td>
+<td></td></tr>
+
+<tr><td>@ref ruuvi_evk/app.c "ruuvi_evk"</td>
+<td>Send sensor data </td>
+<td>Only Ruuvitag</td></tr>
+
+<tr><td>@ref aes/app.c "aes"</td>
+<td>Test software AES library</td><td></td></tr>
+
+<tr><td>@ref app_persistent/app.c "app_persistent"</td>
+<td>App persistent feature demo</td><td></td></tr>
+
+<tr><td>@ref appconfig/app.c "appconfig"</td>
+<td>Receiving application configuration</td><td></td></tr>
+
+<tr><td>@ref basic_interrupt/app.c "basic_interrupt"</td>
+<td>How to use interrupt service</td><td>Only Nordic nRF52xx</td></tr>
+
+<tr><td>@ref ble_tx/app.c "ble_tx"</td>
+<td>How to transmit BLE beacons</td><td>Only 2.4GHz devices</td></tr>
+
+<tr><td>@ref blink/app.c "blink"</td>
+<td>Very simple blink/hello world application</td><td></td></tr>
+
+<tr><td>@ref diradv/app.c "diradv"</td>
+<td>Direct Advertiser demo app</td><td></td></tr>
+
+<tr><td>@ref local_provisioning/app.c "local_provisioning"</td>
+<td>Local provisioning demo app</td><td></td></tr>
 
 <tr><td>@ref nfc/app.c "nfc"</td>
 <td>NFC peripheral usage</td><td>Only Nordic nRF52xx</td></tr>
@@ -69,10 +96,6 @@ Example and uninatry applications are:
 
 <tr><td>@ref provisioning_proxy/app.c "provisioning_proxy"</td>
 <td>Using provisioning for a proxy node</td><td></td></tr>
-
-<tr><td>@ref ruuvi_evk/app.c "ruuvi_evk"</td>
-<td>Send sensor data </td>
-<td>Only Ruuvitag</td></tr>
 
 <tr><td>@ref scheduler/app.c "scheduler"</td>
 <td>How to use @ref app_scheduler.h "Application scheduler"</td><td></td></tr>

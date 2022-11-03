@@ -80,6 +80,47 @@ static CMU_LFXOInit_TypeDef m_lfxoInit =
 };
 #endif
 
+#if defined(EFR32FG23)
+static CMU_HFXOInit_TypeDef m_hfxoInit =
+{
+    cmuHfxoCbLsbTimeout_416us,
+    cmuHfxoSteadyStateTimeout_833us,  /* First lock              */
+    cmuHfxoSteadyStateTimeout_83us,   /* Subsequent locks        */
+    0U,                               /* ctuneXoStartup          */
+    0U,                               /* ctuneXiStartup          */
+    32U,                              /* coreBiasStartup         */
+    32U,                              /* imCoreBiasStartup       */
+    cmuHfxoCoreDegen_None,
+    cmuHfxoCtuneFixCap_Both,
+    BOARD_HW_HFXO_CTUNE,              /* ctuneXoAna              */
+    BOARD_HW_HFXO_CTUNE,              /* ctuneXiAna              */
+    60U,                              /* coreBiasAna             */
+    false,                            /* enXiDcBiasAna           */
+    cmuHfxoOscMode_Crystal,
+    false,                            /* forceXo2GndAna          */
+    false,                            /* forceXi2GndAna          */
+    false,                            /* DisOndemand             */
+    false,                            /* ForceEn                 */
+    false,                            /* Enable deep sleep       */
+    false                             /* Lock registers          */
+};
+
+static CMU_LFXOInit_TypeDef m_lfxoInit =
+{
+    BOARD_HW_LFXO_GAIN,               /* gain            */
+    BOARD_HW_LFXO_CTUNE,              /* capTune         */
+    cmuLfxoStartupDelay_4KCycles,     /* timeout         */
+    cmuLfxoOscMode_Crystal,           /* mode            */
+    false,                            /* highAmplitudeEn */
+    true,                             /* agcEn           */
+    false,                            /* failDetEM4WUEn  */
+    false,                            /* failDetEn       */
+    false,                            /* DisOndemand     */
+    false,                            /* ForceEn         */
+    false                             /* Lock registers  */
+};
+#endif
+
 #if defined(NRF52_PLATFORM)
 
 static const hardware_capabilities_t m_hw =
@@ -115,7 +156,7 @@ static const hardware_capabilities_t m_hw =
 
 const hardware_capabilities_t * Hardware_getCapabilities(void)
 {
-#if defined(EFR32MG21) || defined(EFR32MG22)
+#if defined(EFR32MG21) || defined(EFR32MG22) || defined(EFR32FG23)
     // If DevInfo.ModuleInfo contains valid calibration value for HFXO CTUNE,
     // use it.
     if ((DEVINFO->MODULEINFO & _DEVINFO_MODULEINFO_HFXOCALVAL_MASK) == 0) {
