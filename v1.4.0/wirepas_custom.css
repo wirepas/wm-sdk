@@ -1,0 +1,77 @@
+
+:root {
+  #These values overwrite values in doxygen-awesome-css/doxygen-awesome.css#2c3e50
+  --primary-color: #42242a;
+  --page-foreground-color: #42242a;
+  --primary-dark-color: #f04b30;
+  --header-background: #fcf3e8;
+  --primary-light-color: #42242a;
+  --link-color: #3c8bcb;
+}
+
+div.header {
+    color: var(--primary-dark-color);
+    border-bottom: 1px solid var(--separator-color);
+    background-color: var(--page-background-color);
+    background-image: none;
+}
+
+h1, h2, h3, h4, h5 {
+    color: var(--primary-dark-color);
+    margin-top: .9em;
+    font-weight: 600;
+    line-height: initial;
+}
+
+a, a.el:visited, a.el:hover, a.el:focus, a.el:active {
+    color: var(--link-color);
+}
+
+.table-title {
+  width:auto;
+}
+.table-title td:not(last-child) {
+  white-space:nowrap;
+}
+
+.table-title td:last-child {
+    width: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* primary theme color. This will affect the entire websites color scheme: links, arrows, labels, ... */
+    --primary-color: #42242a;
+    --primary-dark-color: #f04b30;
+    --primary-light-color: #42242a;
+    --primary-lighter-color: #cae1f1;
+    --primary-lightest-color: #e9f1f8;
+    /* default box shadow used for raising an element above the normal content. Used in dropdowns, Searchresult, ... */
+    --box-shadow: 0 2px 10px 0 rgba(0,0,0,.1);
+    --odd-color: rgba(0,0,0,.03);
+    --menu-selected-background: rgba(0,0,0,.05);
+    --page-background-color: white;
+    --page-foreground-color: #42242a;
+    --page-secondary-foreground-color: #67727e;
+    --separator-color: #dedede;
+    --side-nav-background: #fbfbfb;
+    --code-background: #f5f5f5;
+    --tablehead-background: #f1f1f1;
+    /* blockquote colors */
+    --blockquote-background: #f5f5f5;
+    --blockquote-foreground: #727272;
+    /* colors for various content boxes: @warning, @note, @deprecated @bug */
+    --warning-color: #fca49b;
+    --warning-color-dark: #b61825;
+    --warning-color-darker: #75070f;
+    --note-color: rgba(255,229,100,.3);
+    --note-color-dark: #c39900;
+    --note-color-darker: #8d7400;
+    --deprecated-color: rgb(214, 216, 224);
+    --deprecated-color-dark: #5b6269;
+    --deprecated-color-darker: #43454a;
+    --bug-color: rgb(246, 208, 178);
+    --bug-color-dark: #a53a00;
+    --bug-color-darker: #5b1d00;
+  }
+}
