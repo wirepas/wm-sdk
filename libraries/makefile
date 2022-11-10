@@ -93,5 +93,14 @@ include $(WP_LIB_PATH)dualmcu/waps/makefile
 include $(WP_LIB_PATH)dualmcu/drivers/makefile
 endif
 
+ifeq ($(IPV6_LIB), yes)
+SRCS += $(WP_LIB_PATH)ipv6_lib/ipv6_lib.c
+SRCS += $(WP_LIB_PATH)ipv6_lib/ipv6_config.c
+SRCS += $(WP_LIB_PATH)ipv6_lib/ipv6.c
+SRCS += $(WP_LIB_PATH)ipv6_lib/icmpv6.c
+SRCS += $(WP_LIB_PATH)ipv6_lib/udp.c
+INCLUDES += -I$(WP_LIB_PATH)ipv6_lib
+endif
+
 SRCS += $(WP_LIB_PATH)libraries_init.c
 INCLUDES += -I$(WP_LIB_PATH)

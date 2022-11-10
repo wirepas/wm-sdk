@@ -41,6 +41,10 @@
 #include "shared_offline.h"
 #endif
 
+#if __has_include("ipv6_lib.h")
+#include "ipv6_lib.h"
+#endif
+
 void Libraries_init(void)
 {
 #if __has_include("app_scheduler.h")
@@ -73,6 +77,10 @@ void Libraries_init(void)
 
 #if __has_include("shared_offline.h")
     Shared_Offline_init();
+#endif
+
+#if __has_include("ipv6_lib.h")
+    Ipv6_lib_init();
 #endif
 
 }

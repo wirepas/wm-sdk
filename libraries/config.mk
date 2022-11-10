@@ -84,6 +84,13 @@ SHARED_DATA=yes
 stack_state_cbs+= + 1
 endif
 
+ifeq ($(IPV6_LIB), yes)
+app_config_filters+= + 1
+stack_state_cbs+= + 1
+SHARED_DATA=yes
+TINY_CBOR=yes
+endif
+
 #########
 # Enabling libraries needed by other libs and check app input
 #########

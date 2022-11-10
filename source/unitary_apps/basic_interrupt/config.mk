@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := pca10056 promistel_rpi_hat pca10100 ublox_b204 pca10040 
+TARGET_BOARDS := ublox_b204 pca10040 pca10100 promistel_rpi_hat pca10056 
 #
 # Network default settings configuration
 #

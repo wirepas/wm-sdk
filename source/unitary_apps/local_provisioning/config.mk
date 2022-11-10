@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := silabs_brd4254a efr32_template pca10059 silabs_brd4180b pca10056 nrf52_template silabs_brd4184a silabs_brd4181b promistel_rpi_hat pca10100 ublox_b204 tbsense2 pca10112 pca10040 bgm220-ek4314a wuerth_261101102 silabs_brd4210a mdbt50q_rx nrf52832_mdk_v2 ruuvitag pan1780 silabs_brd4312a silabs_brd4253a 
+TARGET_BOARDS := pca10112 tbsense2 ublox_b204 pca10059 pca10040 silabs_brd4210a pca10100 wuerth_261101102 nrf52832_mdk_v2 efr32_template promistel_rpi_hat silabs_brd4254a mdbt50q_rx bgm220-ek4314a silabs_brd4184a silabs_brd4312a ruuvitag silabs_brd4180b pan1780 pca10056 silabs_brd4181b silabs_brd4253a nrf52_template 
 # App specific configuration
 #
 

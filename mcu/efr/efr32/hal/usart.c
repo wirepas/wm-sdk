@@ -22,7 +22,12 @@
 static volatile serial_rx_callback_f    m_rx_callback;
 
 // Declare unique ring-buffer size
+#ifdef WIRESHARK
+// Increase it by default for Wireshark plugin
+#define BUFFER_SIZE                     2048u
+#else
 #define BUFFER_SIZE                     512u
+#endif
 #include "ringbuffer.h"
 
 // Buffer for transmissions
