@@ -12,17 +12,23 @@
 #include "board.h"
 #include "board_usart.h"
 #include "api.h"
+#include "gpio.h"
 
 #include "em_cmu.h"
 #include "em_gpio.h"
 #include "em_usart.h"
 
-#if defined(BOARD_USART_TX_PIN) && defined (BOARD_USART_RX_PIN)
+#if defined(BOARD_GPIO_ID_USART_TX) && defined (BOARD_GPIO_ID_USART_RX)
 
 static volatile serial_rx_callback_f    m_rx_callback;
 
 // Declare unique ring-buffer size
+#ifdef WIRESHARK
+// Increase it by default for Wireshark plugin
+#define BUFFER_SIZE                     2048u
+#else
 #define BUFFER_SIZE                     512u
+#endif
 #include "ringbuffer.h"
 
 // Buffer for transmissions
@@ -38,6 +44,14 @@ void __attribute__((__interrupt__))     USART_TX_IRQHandler(void);
 
 bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 {
+#ifdef BOARD_GPIO_ID_VCOM_ENABLE
+    const gpio_out_cfg_t usart_vcom_enable_cfg =
+    {
+        .out_mode_cfg = GPIO_OUT_MODE_PUSH_PULL,
+        .level_default = GPIO_LEVEL_HIGH
+    };
+#endif
+
 #ifdef BOARD_USART_FORCE_BAUDRATE
     // Some hardware only support a given speed, so override the chosen baudrate
     baudrate = BOARD_USART_FORCE_BAUDRATE;
@@ -47,33 +61,10 @@ bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     // Enable GPIO clock
     BOARD_USART_ENABLE_GPIO_CLK;
 
-#ifdef BOARD_USART_VCOM_PORT
+#ifdef BOARD_GPIO_ID_VCOM_ENABLE
     // Enable vcom
-    hal_gpio_set_mode(BOARD_USART_VCOM_PORT,
-                      BOARD_USART_VCOM_PIN,
-                      GPIO_MODE_DISABLED);
-    hal_gpio_clear(BOARD_USART_VCOM_PORT,
-                   BOARD_USART_VCOM_PIN);
-    hal_gpio_set_mode(BOARD_USART_VCOM_PORT,
-                      BOARD_USART_VCOM_PIN,
-                      GPIO_MODE_OUT_PP);
-    hal_gpio_set(BOARD_USART_VCOM_PORT,
-                 BOARD_USART_VCOM_PIN);
+    Gpio_outputSetCfg(BOARD_GPIO_ID_VCOM_ENABLE, &usart_vcom_enable_cfg);
 #endif
-
-    // uart_tx_pin
-    hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
-                      BOARD_USART_TX_PIN,
-                      GPIO_MODE_DISABLED);
-    hal_gpio_clear(BOARD_USART_GPIO_PORT,
-                   BOARD_USART_TX_PIN);
-    // uart_rx_pin
-    hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
-                      BOARD_USART_RX_PIN,
-                      GPIO_MODE_DISABLED);
-    hal_gpio_clear(BOARD_USART_GPIO_PORT,
-                   BOARD_USART_RX_PIN);
-
     // Module variables
     Ringbuffer_reset(m_usart_tx_buffer);
     m_rx_callback = NULL;
@@ -125,6 +116,18 @@ bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 
 void Usart_setEnabled(bool enabled)
 {
+    const gpio_out_cfg_t usart_tx_enable_cfg =
+    {
+        .out_mode_cfg = GPIO_OUT_MODE_PUSH_PULL,
+        .level_default = GPIO_LEVEL_HIGH
+    };
+    const gpio_in_cfg_t usart_tx_disable_cfg =
+    {
+        .event_cb = NULL,
+        .event_cfg = GPIO_IN_EVENT_NONE,
+        .in_mode_cfg = GPIO_IN_PULL_UP
+    };
+
     Sys_enterCriticalSection();
     if(enabled)
     {
@@ -136,9 +139,7 @@ void Usart_setEnabled(bool enabled)
             // Disable deep sleep
             DS_Disable(DS_SOURCE_USART);
             // Set output
-            hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
-                              BOARD_USART_TX_PIN,
-                              GPIO_MODE_OUT_PP);
+            Gpio_outputSetCfg(BOARD_GPIO_ID_USART_TX, &usart_tx_enable_cfg);
         }
         m_enabled++;
     }
@@ -151,11 +152,7 @@ void Usart_setEnabled(bool enabled)
         if(m_enabled == 0)
         {
             // Set light pullup
-            hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
-                              BOARD_USART_TX_PIN,
-                              GPIO_MODE_IN_PULL);
-            hal_gpio_set(BOARD_USART_GPIO_PORT,
-                         BOARD_USART_TX_PIN);
+            Gpio_inputSetCfg(BOARD_GPIO_ID_USART_TX, &usart_tx_disable_cfg);
             // Enable deep sleep
             DS_Enable(DS_SOURCE_USART);
             // Disable clock
@@ -212,6 +209,13 @@ buffer_too_large:
 
 void Usart_enableReceiver(serial_rx_callback_f rx_callback)
 {
+    gpio_in_cfg_t usart_rx_cfg =
+    {
+        .event_cb = NULL,
+        .event_cfg = GPIO_IN_EVENT_NONE,
+        .in_mode_cfg = GPIO_IN_DISABLED
+    };
+
     uint32_t __attribute__((unused))dummy;
     Sys_enterCriticalSection();
     // Set callback
@@ -225,23 +229,16 @@ void Usart_enableReceiver(serial_rx_callback_f rx_callback)
                              USART_RX_IRQHandler);
         BUS_RegBitWrite(&(BOARD_USART->IEN), _USART_IEN_RXDATAV_SHIFT, 1);
         // Set light pull-up resistor
-        hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
-                          BOARD_USART_RX_PIN,
-                          GPIO_MODE_IN_PULL);
-        hal_gpio_set(BOARD_USART_GPIO_PORT,
-                     BOARD_USART_RX_PIN);
-
+        usart_rx_cfg.in_mode_cfg = GPIO_IN_PULL_UP;
+        Gpio_inputSetCfg(BOARD_GPIO_ID_USART_RX, &usart_rx_cfg);
     }
     else
     {
         Sys_disableAppIrq(BOARD_UART_RX_IRQn);
         BUS_RegBitWrite(&(BOARD_USART->IEN), _USART_IEN_RXDATAV_SHIFT, 0);
-        hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
-                          BOARD_USART_RX_PIN,
-                          GPIO_MODE_DISABLED);
-        // Disable pull-up for disabled GPIO:s
-        hal_gpio_clear(BOARD_USART_GPIO_PORT,
-                       BOARD_USART_RX_PIN);
+        // Disable input & input pull-up resistor
+        usart_rx_cfg.in_mode_cfg = GPIO_IN_DISABLED;
+        Gpio_inputSetCfg(BOARD_GPIO_ID_USART_RX, &usart_rx_cfg);
     }
     // Clear all interrupts
     dummy = BOARD_USART->RXDATA;

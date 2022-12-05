@@ -25,12 +25,6 @@
 #define BOARD_USART_ID                  0
 
 /**
- * @brief   GPIO port used
- *
- * Valid values: <code>GPIOA, GPIOB, ...</code>
- */
-#define BOARD_USART_GPIO_PORT           GPIOA
-/**
  * @brief   RX routeloc definition
  *
  * Valid values: <code>USART_ROUTELOC0_RXLOC_LOC0, USART_ROUTELOC0_RXLOC_LOC1,
@@ -46,14 +40,37 @@
 #define BOARD_USART_ROUTELOC_TXLOC      USART_ROUTELOC0_TXLOC_LOC0
 
 /**
- * @brief   Transmission pin number
+ * @brief   GPIO definitions
+ *
+ * If board needs GPIOs, they are defined here. If not defined, a dummy
+ * GPIO driver is compiled, so that applications can use the GPIO driver
+ * unconditionally.
+ *
+ * For Silabs EFR32 family, the list contains GPIO port/pin number pairs.
+ *
+ * @note in order for application to use GPIOs, see @ref source_makefile_hal_gpio
+ * "here".
  */
-#define BOARD_USART_TX_PIN              0
-/**
- * @brief Reception pin number
- */
-#define BOARD_USART_RX_PIN              1
+#define BOARD_GPIO_PIN_LIST            {{GPIOF, 4}, /* PF04 */\
+                                        {GPIOF, 5}, /* PF05 */\
+                                        {GPIOF, 6}, /* PF06 */\
+                                        {GPIOF, 7}, /* PF07 */\
+                                        {GPIOA, 1}, /* PA01. usart rx pin */\
+                                        {GPIOA, 0}, /* PA00. usart tx pin */\
+                                        {GPIOD, 8}} /* PD08. required by the dual_mcu app (indication signal) */
 
+/**
+ * @brief   GPIO IDs
+ *
+ * User friendly name for GPIOs (IDs mapped to the BOARD_GPIO_PIN_LIST table)
+ *
+ */
+#define BOARD_GPIO_ID_LED0              0  // mapped to pin PF04
+#define BOARD_GPIO_ID_LED1              1  // mapped to pin PF05
+#define BOARD_GPIO_ID_BUTTON0           2  // mapped to pin PF06
+#define BOARD_GPIO_ID_BUTTON1           3  // mapped to pin PF07
+#define BOARD_GPIO_ID_USART_TX          4  // mapped to pin PA00
+#define BOARD_GPIO_ID_USART_RX          5  // mapped to pin PA01
 /**
  * @brief   Interrupt pin for dual mcu app, unread indication
  *
@@ -61,24 +78,21 @@
  * announce with GPIO pin that there is incoming indication to be read from
  * device.
  *
- * It is optional definition. If not present, no irq pin is present
+ * It is optional definition.
  */
-#define BOARD_UART_INT_PIN              8
-#define BOARD_UART_INT_PORT             GPIOD
+#define BOARD_GPIO_ID_UART_IRQ           6  // mapped to pin PD08
 
 /**
  * @brief   LED definitions
  *
- * If board contains LEDs, they are defined here. If not defined, a dummy
- * LED driver is compiled, so that applications can use the LED driver
+ * If board contains LEDs, The LED IDs list is defined here. The LED IDs are mapped to GPIO IDs.
+ * If not defined, a dummy LED driver is compiled, so that applications can use the LED driver
  * unconditionally.
- *
- * For Silabs EFR32 family, the list contains GPIO port/pin number pairs.
  *
  * @note in order for application to use LEDs, see @ref source_makefile_hal_led
  * "here".
  */
-#define BOARD_LED_PIN_LIST              {{GPIOF, 4}, {GPIOF, 5}}
+#define BOARD_LED_PIN_LIST              {BOARD_GPIO_ID_LED0, BOARD_GPIO_ID_LED1}
 
 /**
  * @brief   LED GPIO polarity
@@ -92,18 +106,14 @@
 /**
  * @brief   Button definitions
  *
- * Any buttons present on the board are defined here. If not defined, a dummy
- * button driver is compiled, so that applications can use the button driver
+ * If board contains buttons, The button IDs list is defined here. The button IDs are mapped to GPIO IDs.
+ * If not defined, a dummy button driver is compiled, so that applications can use the button driver
  * unconditionally.
- *
- * For Silabs EFR32 family, the list contains GPIO external interrupt numbers,
- * GPIO ports and pins. See \ref BOARD_BUTTON_USE_EVEN_INT below for extra
- * considerations when selecting external interrupt numbers.
  *
  * @note in order for application to use buttons, see @ref
  * source_makefile_hal_button "here".
  */
-#define BOARD_BUTTON_PIN_LIST           {{4, GPIOF, 6}, {6, GPIOF, 7}}
+#define BOARD_BUTTON_ID_LIST            {BOARD_GPIO_ID_BUTTON0, BOARD_GPIO_ID_BUTTON1}
 
 /**
  * @brief   Button GPIO polarity
@@ -123,23 +133,6 @@
  * \ref BOARD_BUTTON_INTERNAL_PULL to true to enable internal pull-up(down).
  * Pull-up(down) is enabled when \ref BOARD_BUTTON_ACTIVE_LOW is true(false).
  */
-#define BOARD_BUTTON_INTERNAL_PULL true
-
-/**
- * @brief   Button GPIO interrupt even/odd selection
- *
- * The EFR32 GPIO block has 16 configurable external interrupt sources. Even
- * and odd numbered interrupt sources are routed to separate interrupt vectors
- * in the processor. If this setting is true, the button interrupts use the
- * even interrupt vector GPIO_EVEN_IRQn, otherwise GPIO_ODD_IRQn.
- *
- * Not all GPIO pins can be mapped to all even or odd external interrupt
- * sources. Please see the GPIO_EXTIPINSELL and GPIO_EXTIPINSELH register
- * documentation in the EFR32xG12 Wireless Gecko Reference Manual.
- *
- * The external interrupt source in \ref BOARD_BUTTON_PIN_LIST above should
- * match this definition, otherwise the buttons won't work.
- */
-#define BOARD_BUTTON_USE_EVEN_INT       true
+#define BOARD_BUTTON_INTERNAL_PULL      true
 
 #endif /* _BOARD_EFR32_TEMPLATE_BOARD_H_ */

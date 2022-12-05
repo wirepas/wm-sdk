@@ -9,6 +9,7 @@
 
 #include "board.h"
 #include "mcu.h"
+#include "gpio.h"
 
 /* Map some registers constant to the USART selected */
 #if BOARD_USART_ID == 0
@@ -61,6 +62,11 @@ static void set_baud(uint32_t baud)
 
 void Usart_init(uint32_t baudrate)
 {
+    const gpio_out_cfg_t usart_tx_gpio_cfg = {
+        .out_mode_cfg = GPIO_OUT_MODE_PUSH_PULL,
+        .level_default = GPIO_LEVEL_LOW
+    };
+
     /* Wait for HFRCO to be ready */
     while ((CMU->SYNCBUSY & CMU_SYNCBUSY_HFRCOBSY) ||
            !(CMU->STATUS & _CMU_STATUS_HFRCORDY_MASK)) {}
@@ -76,10 +82,7 @@ void Usart_init(uint32_t baudrate)
     CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_GPIO;
 
     /* Configure Uart Tx pin */
-    hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
-                      BOARD_USART_TX_PIN,
-                      GPIO_MODE_OUT_PP);
-    hal_gpio_clear(BOARD_USART_GPIO_PORT, BOARD_USART_TX_PIN);
+    Gpio_outputSetCfg(BOARD_GPIO_ID_USART_TX, &usart_tx_gpio_cfg);
 
     /* Must enable clock for configuration period */
     CMU->HFPERCLKEN0 |= BOARD_USART_CMU_BIT;

@@ -212,7 +212,6 @@ void App_init(const app_global_functions_t * functions)
 #endif
 
     LOG(LVL_INFO, "Starting BLE Scanner app");
-    Led_init();
 
     Ble_scanner_init(ble_scanner_filter, on_beacon_received);
 

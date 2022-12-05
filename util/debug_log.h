@@ -193,7 +193,7 @@
 #define LOG_BUFFER(level, buffer, size) \
 { \
     if(((uint8_t) level) <= ((uint8_t) DEBUG_LOG_MAX_LEVEL)) { \
-        for (uint8_t i = 0; i < size; i++) \
+        for (uint16_t i = 0; i < size; i++) \
         { \
             Print_Log("%02X ", buffer[i]); \
             if ((i & 0xF) == 0xF && i != (uint8_t)(size-1)) \
