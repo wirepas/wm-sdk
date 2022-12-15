@@ -14,6 +14,22 @@ SRCS += $(UTIL_PATH)syscalls.c
 SRCS += $(UTIL_PATH)uart_print.c
 endif
 
+ifeq ($(WIRESHARK), yes)
+ifeq ($(APP_PRINTING), yes)
+# Both are using same uart so cannot be used together
+$(error APP_PRINTING and WIRESHARK option are mutually exclusive and cannot both be set to yes)
+endif
+ifneq ($(SHARED_DATA), yes)
+$(error WIRESHARK util lib can only be used if SHARED_DATA is also used in your application)
+endif
+WIRESHARK_PATH = $(UTIL_PATH)wireshark/
+CFLAGS += -DWIRESHARK
+INCLUDES += -I$(WIRESHARK_PATH)
+HAL_UART=yes
+# HAL_UART_BUFFER_SIZE=2048 // Not supported yet
+SRCS += $(WIRESHARK_PATH)wireshark.c
+endif
+
 ifeq ($(TINY_CBOR), yes)
 CBOR_PATH = $(UTIL_PATH)tinycbor/src/
 SRCS += $(CBOR_PATH)cborencoder.c \

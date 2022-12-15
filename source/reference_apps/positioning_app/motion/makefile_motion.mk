@@ -8,12 +8,9 @@ CFLAGS += -DMOTION_SUPPORTED
 
 # Generic accelerometer interface
 SRCS += $(SRCS_PATH)motion/motion.c
-ifeq ($(MCU),nrf52)
-	SRCS += $(SRCS_PATH)gpio_nrf52.c
-else ifeq ($(MCU),efr32)
-	SRCS += $(SRCS_PATH)gpio_efr32.c
-endif
 INCLUDES += -I$(SRCS_PATH)motion/
+# GPIO HAL is required by the motion module
+HAL_GPIO=yes
 
 ###### LIS2DH12 support start ######
 #LIS2DH12 I2C

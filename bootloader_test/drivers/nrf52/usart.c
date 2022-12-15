@@ -9,21 +9,25 @@
 
 #include "board.h"
 #include "mcu.h"
+#include "gpio.h"
 
 void Usart_init(uint32_t baudrate)
 {
-    /* Configure Uart Tx pin */
-    nrf_gpio_cfg(BOARD_USART_TX_PIN,
-                 NRF_GPIO_PIN_DIR_OUTPUT,
-                 NRF_GPIO_PIN_INPUT_CONNECT,
-                 NRF_GPIO_PIN_NOPULL,
-                 NRF_GPIO_PIN_S0S1,
-                 NRF_GPIO_PIN_NOSENSE);
+    gpio_pin_t usart_tx_pin, usart_rx_pin;
 
+    const gpio_out_cfg_t usart_tx_gpio_cfg = {
+        .out_mode_cfg = GPIO_OUT_MODE_PUSH_PULL,
+        .level_default = GPIO_LEVEL_HIGH
+    };
 
     /* GPIO init */
-    NRF_UART0->PSELTXD = BOARD_USART_TX_PIN;
-    NRF_UART0->PSELRXD = BOARD_USART_RX_PIN;
+    Gpio_outputSetCfg(BOARD_GPIO_ID_USART_TX, &usart_tx_gpio_cfg);
+
+    Gpio_getPin(BOARD_GPIO_ID_USART_TX, NULL, &usart_tx_pin);
+    Gpio_getPin(BOARD_GPIO_ID_USART_RX, NULL, &usart_rx_pin);
+
+    NRF_UART0->PSELTXD = usart_tx_pin;
+    NRF_UART0->PSELRXD = usart_rx_pin;
     NRF_UART0->TASKS_STOPTX = 1;
     NRF_UART0->TASKS_STOPRX = 1;
 

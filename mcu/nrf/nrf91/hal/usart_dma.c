@@ -11,6 +11,7 @@
 #include "board.h"
 #include "hal_api.h"
 #include "api.h"
+#include "gpio.h"
 
 /* Only one USART, this is easy */
 static volatile serial_rx_callback_f    m_rx_callback;
@@ -43,7 +44,7 @@ static volatile uint32_t                m_enabled;
 /** Indicate if RX is enabled */
 static bool                             m_rx_enabled;
 
-#if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
+#if defined(BOARD_GPIO_ID_USART_CTS) && defined (BOARD_GPIO_ID_USART_RTS)
 /** Enable or disable HW flow control */
 static void                             set_flow_control(bool hw);
 #endif
@@ -68,13 +69,7 @@ void __attribute__((__interrupt__))     TIMER1_IRQHandler(void);
 bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 {
     bool ret;
-    //uart_tx_pin
-    nrf_gpio_cfg_default(BOARD_USART_TX_PIN);
-    nrf_gpio_pin_set(BOARD_USART_TX_PIN);
-
-    //uart_rx_pin
-    nrf_gpio_cfg_default(BOARD_USART_RX_PIN);
-    nrf_gpio_pin_set(BOARD_USART_RX_PIN);
+    gpio_pin_t usart_tx_pin, usart_rx_pin;
 
     /* Module variables */
     m_enabled = 0;
@@ -82,21 +77,15 @@ bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     m_rx_callback = NULL;
 
     /* GPIO init */
-    NRF_UARTE0->PSEL.TXD = BOARD_USART_TX_PIN;
-    NRF_UARTE0->PSEL.RXD = BOARD_USART_RX_PIN;
+    Gpio_getPin(BOARD_GPIO_ID_USART_TX, NULL, &usart_tx_pin);
+    Gpio_getPin(BOARD_GPIO_ID_USART_RX, NULL, &usart_rx_pin);
+    NRF_UARTE0->PSEL.TXD = usart_tx_pin;
+    NRF_UARTE0->PSEL.RXD = usart_rx_pin;
     NRF_UARTE0->TASKS_STOPTX = 1;
     NRF_UARTE0->TASKS_STOPRX = 1;
     NRF_UARTE0->ENABLE = UARTE_ENABLE_ENABLE_Disabled;
 
-#if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
-    //uart_cts_pin
-    nrf_gpio_cfg_default(BOARD_USART_CTS_PIN);
-    nrf_gpio_pin_set(BOARD_USART_CTS_PIN);
-
-    //uart_rts_pin
-    nrf_gpio_cfg_default(BOARD_USART_RTS_PIN);
-    nrf_gpio_pin_set(BOARD_USART_RTS_PIN);
-
+#if defined(BOARD_GPIO_ID_USART_CTS) && defined (BOARD_GPIO_ID_USART_RTS)
     /* Set flow control */
     set_flow_control(flow_control == UART_FLOW_CONTROL_HW);
 #endif
@@ -124,6 +113,18 @@ bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 
 void Usart_setEnabled(bool enabled)
 {
+    const gpio_out_cfg_t usart_tx_enable_cfg =
+    {
+        .out_mode_cfg = GPIO_OUT_MODE_PUSH_PULL,
+        .level_default = GPIO_LEVEL_HIGH
+    };
+    const gpio_in_cfg_t usart_tx_disable_cfg =
+    {
+        .event_cb = NULL,
+        .event_cfg = GPIO_IN_EVENT_NONE,
+        .in_mode_cfg = GPIO_IN_PULL_NONE
+    };
+
     Sys_enterCriticalSection();
     if (enabled)
     {
@@ -132,12 +133,7 @@ void Usart_setEnabled(bool enabled)
             // Disable deep sleep
             DS_Disable(DS_SOURCE_USART);
             // Set output
-            nrf_gpio_cfg(BOARD_USART_TX_PIN,
-                         NRF_GPIO_PIN_DIR_OUTPUT,
-                         NRF_GPIO_PIN_INPUT_CONNECT,
-                         NRF_GPIO_PIN_NOPULL,
-                         NRF_GPIO_PIN_S0S1,
-                         NRF_GPIO_PIN_NOSENSE);
+            Gpio_outputSetCfg(BOARD_GPIO_ID_USART_TX, &usart_tx_enable_cfg);
             NRF_UARTE0->ENABLE = UARTE_ENABLE_ENABLE_Enabled;
         }
         m_enabled++;
@@ -152,7 +148,7 @@ void Usart_setEnabled(bool enabled)
         {
             NRF_UARTE0->ENABLE = UARTE_ENABLE_ENABLE_Disabled;
             // Set input
-            nrf_gpio_cfg_input(BOARD_USART_TX_PIN, NRF_GPIO_PIN_NOPULL);
+            Gpio_inputSetCfg(BOARD_GPIO_ID_USART_TX, &usart_tx_disable_cfg);
             // Enable deep sleep
             DS_Enable(DS_SOURCE_USART);
         }
@@ -224,7 +220,7 @@ bool Usart_setFlowControl(uart_flow_control_e flow)
 {
     bool ret = false;
 
-#if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
+#if defined(BOARD_GPIO_ID_USART_CTS) && defined (BOARD_GPIO_ID_USART_RTS)
     Sys_enterCriticalSection();
     if (m_enabled == 0)
     {
@@ -276,27 +272,27 @@ uint32_t Usart_sendBuffer(const void * buffer, uint32_t length)
 
 void Usart_enableReceiver(serial_rx_callback_f rx_callback)
 {
+    gpio_in_cfg_t usart_rx_cfg =
+    {
+        .event_cb = NULL,
+        .event_cfg = GPIO_IN_EVENT_NONE,
+        .in_mode_cfg = GPIO_IN_DISABLED
+    };
+
     Sys_enterCriticalSection();
     /* Set callback */
     m_rx_callback = rx_callback;
     if (m_rx_callback)
     {
-        /* Enable interrupt */
         // Enable RX input
-        nrf_gpio_cfg(BOARD_USART_RX_PIN,
-                     NRF_GPIO_PIN_DIR_INPUT,
-                     NRF_GPIO_PIN_INPUT_CONNECT,
-                     NRF_GPIO_PIN_NOPULL,
-                     NRF_GPIO_PIN_S0S1,
-                     NRF_GPIO_PIN_SENSE_LOW);
-
-
+        usart_rx_cfg.in_mode_cfg = GPIO_IN_PULL_NONE;
+        Gpio_inputSetCfg(BOARD_GPIO_ID_USART_RX, &usart_rx_cfg);
     }
     else
     {
-        /* Disable interrupt */
         // Disable RX input: note autopowering uart will not work either
-        nrf_gpio_cfg_default(BOARD_USART_RX_PIN);
+        usart_rx_cfg.in_mode_cfg = GPIO_IN_DISABLED;
+        Gpio_inputSetCfg(BOARD_GPIO_ID_USART_RX, &usart_rx_cfg);
     }
     Sys_exitCriticalSection();
 }
@@ -410,21 +406,27 @@ static void start_tx_lock(void)
     DoubleBuffer_swipe(m_tx_buffers);
 }
 
-#if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
+#if defined(BOARD_GPIO_ID_USART_CTS) && defined (BOARD_GPIO_ID_USART_RTS)
 static void set_flow_control(bool hw)
 {
+    gpio_in_cfg_t usart_flow_control_cfg =
+    {
+        .event_cb = NULL,
+        .event_cfg = GPIO_IN_EVENT_NONE,
+        .in_mode_cfg = GPIO_IN_DISABLED
+    };
+    gpio_pin_t usart_cts_pin;
+
     if (hw)
     {
         // Set input & pull down
-        nrf_gpio_cfg_sense_input(BOARD_USART_CTS_PIN,
-                                 NRF_GPIO_PIN_PULLDOWN,
-                                 NRF_GPIO_PIN_NOSENSE);
-        nrf_gpio_cfg_sense_input(BOARD_USART_RTS_PIN,
-                                 NRF_GPIO_PIN_PULLDOWN,
-                                 NRF_GPIO_PIN_NOSENSE);
+        usart_flow_control_cfg.in_mode_cfg = GPIO_IN_PULL_DOWN;
+        Gpio_inputSetCfg(BOARD_GPIO_ID_USART_CTS, &usart_flow_control_cfg);
+        Gpio_inputSetCfg(BOARD_GPIO_ID_USART_RTS, &usart_flow_control_cfg);
 
+        Gpio_getPin(BOARD_GPIO_ID_USART_CTS, NULL, &usart_cts_pin);
         NRF_UARTE0->PSEL.RTS = 0xFFFFFFFF;
-        NRF_UARTE0->PSEL.CTS = BOARD_USART_CTS_PIN;
+        NRF_UARTE0->PSEL.CTS = usart_cts_pin;
         /* No parity, HW flow control */
         NRF_UARTE0->CONFIG = UARTE_CONFIG_HWFC_Enabled << UARTE_CONFIG_HWFC_Pos;
     }
@@ -435,10 +437,10 @@ static void set_flow_control(bool hw)
         /* No parity, no HW flow control */
         NRF_UARTE0->CONFIG = 0;
 
-        // Deactivate HAL_USART_CTS_PIN
-        nrf_gpio_cfg_default(BOARD_USART_CTS_PIN);
-        // Deactivate HAL_USART_RTS_PIN
-        nrf_gpio_cfg_default(BOARD_USART_RTS_PIN);
+        // Deactivate CTS & RTS pins
+        usart_flow_control_cfg.in_mode_cfg = GPIO_IN_DISABLED;
+        Gpio_inputSetCfg(BOARD_GPIO_ID_USART_CTS, &usart_flow_control_cfg);
+        Gpio_inputSetCfg(BOARD_GPIO_ID_USART_RTS, &usart_flow_control_cfg);
     }
 }
 #endif

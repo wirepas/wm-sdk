@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := pca10059 pca10056 pca10100 pca10040 ruuvitag silabs_brd4180b silabs_brd4184a silabs_brd4181b bgm220-ek4314a 
+TARGET_BOARDS := pca10059 pca10100 pca10056 ruuvitag pca10040 silabs_brd4180b silabs_brd4184a silabs_brd4181b silabs_brd4184a pca10040 bgm220-ek4314a 
 #
 # Network default settings configuration
 #
@@ -46,7 +46,7 @@ default_bletx_interval_ms=1000
 # POSLIB_BLETX_POWER. Fefault bletx power, 8 max used with all radio profiles
 default_bletx_power=8
 
-# Default voltage reporting (yes/no) 
+# Default voltage reporting (yes/no)
 default_voltage_report=yes
 
 # Default logging setting
@@ -55,7 +55,7 @@ default_debug_level=3
 # Read configure values from Peristent Memory in use (yes/no)
 use_persistent_memory=yes
 
-#Enable button for triggering oneshot update (yes/no) 
+#Enable button for triggering oneshot update (yes/no)
 button_enabled=no
 
 #Enable led notification (yes/no)
@@ -81,5 +81,4 @@ app_major=$(sdk_major)
 app_minor=$(sdk_minor)
 app_maintenance=$(sdk_maintenance)
 app_development=2
-
 

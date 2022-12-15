@@ -13,23 +13,36 @@
 #ifndef BOARD_PROMISTEL_RPI_HAT_BOARD_H_
 #define BOARD_PROMISTEL_RPI_HAT_BOARD_H_
 
-// Interrupt pin for dual mcu app, unread indication
-#define BOARD_UART_IRQ_PIN              23
+// List of GPIO pins
+#define BOARD_GPIO_PIN_LIST            {15, /* P0.15 */\
+                                        16, /* P0.16 */\
+                                        24, /* P0.24 */\
+                                        14, /* P0.14 */\
+                                        45, /* P1.13. usart tx pin */\
+                                        29, /* P0.29. usart rx pin */\
+                                        7,  /* P0.07. usart cts pin */\
+                                        5,  /* P0.05. usart rts pin */\
+                                        23} /* P0.23. required by the dual_mcu app (indication signal) */
 
-// Serial port pins
-#define BOARD_USART_TX_PIN              45 //P1.13
-#define BOARD_USART_RX_PIN              29
-#define BOARD_USART_CTS_PIN             7  /* For USE_USART_HW_FLOW_CONTROL */
-#define BOARD_USART_RTS_PIN             5  /* For USE_USART_HW_FLOW_CONTROL */
+// User friendly name for GPIOs (IDs mapped to the BOARD_GPIO_PIN_LIST table)
+#define BOARD_GPIO_ID_LED_R             0 // mapped to pin P0.15
+#define BOARD_GPIO_ID_LED_G             1 // mapped to pin P0.16
+#define BOARD_GPIO_ID_LED_B             2 // mapped to pin P0.24
+#define BOARD_GPIO_ID_BUTTON0           3 // mapped to pin P0.14
+#define BOARD_GPIO_ID_USART_TX          4 // mapped to pin P1.13
+#define BOARD_GPIO_ID_USART_RX          5 // mapped to pin P0.29
+#define BOARD_GPIO_ID_USART_CTS         6 // mapped to pin P0.07
+#define BOARD_GPIO_ID_USART_RTS         7 // mapped to pin P0.05
+#define BOARD_GPIO_ID_UART_IRQ          8 // mapped to pin P0.23
 
-// List of GPIO pins for the LEDs on the board: LED R, G, B
-#define BOARD_LED_PIN_LIST              {15, 16, 24}
+// List of LED IDs
+#define BOARD_LED_ID_LIST               {BOARD_GPIO_ID_LED_R, BOARD_GPIO_ID_LED_G, BOARD_GPIO_ID_LED_B}
 
 // Active low polarity for LEDs
 #define BOARD_LED_ACTIVE_LOW            true
 
-// List of GPIO pins for buttons on the board: User switch
-#define BOARD_BUTTON_PIN_LIST           {14}
+// List of button IDs
+#define BOARD_BUTTON_ID_LIST           {BOARD_GPIO_ID_BUTTON0}
 
 // Active low polarity for buttons
 #define BOARD_BUTTON_ACTIVE_LOW         true

@@ -19,8 +19,8 @@ static uint32_t m_max_time_ms;
  */
 static bool m_initialized = false;
 
-/** Measured time on nrf52 (13us) */
-#define EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US    20
+/** Measured time on nrf52 (13us) and nrf91 (32us) */
+#define EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US    35
 
 /** Maximum execution time application can request from stack (100ms) */
 #define MAX_EXECUTION_TIME_ALLOWED_BY_STACK_US (100 * 1000)
@@ -419,7 +419,10 @@ void App_Scheduler_init()
     }
 
     // Maximum time to postpone the periodic work
-    m_max_time_ms = lib_time->getMaxHpDelay() / 1000;
+    // Add some margin to avoid rounding issue. So take 80% of the max value
+    // In fact it is also used as the value to determine in which time domain
+    // tasks are scheduled (hp or coarse timestamp)
+    m_max_time_ms = lib_time->getMaxHpDelay() / 1000 * 8 / 10;
     m_next_task_p = NULL;
     m_force_reschedule = false;
 

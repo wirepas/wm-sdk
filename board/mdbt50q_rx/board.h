@@ -13,19 +13,27 @@
 #ifndef BOARD_MDBT50Q_RX_H_
 #define BOARD_MDBT50Q_RX_H_
 
-
 // Serial port
 // There is no serial port but a USB connection
 
+// List of GPIO pins
+#define BOARD_GPIO_PIN_LIST             {45, /* P1.13 */\
+                                         43, /* P1.11 */\
+                                         15} /* P0.15 */
 
-// List of GPIO pins for the LEDs on the board: LED 1 P1.13 to LED 2 P1.11
-#define BOARD_LED_PIN_LIST              {45, 43}
+// User friendly name for GPIOs (IDs mapped to the BOARD_GPIO_PIN_LIST table)
+#define BOARD_GPIO_ID_LED0              0  // mapped to pin P1.13
+#define BOARD_GPIO_ID_LED1              1  // mapped to pin P1.11
+#define BOARD_GPIO_ID_BUTTON0           2  // mapped to pin P0.15
+
+// List of LED IDs
+#define BOARD_LED_ID_LIST              {BOARD_GPIO_ID_LED0, BOARD_GPIO_ID_LED1}
 
 // Active low polarity for LEDs
 #define BOARD_LED_ACTIVE_LOW            true
 
-// List of GPIO pins for buttons on the board: Button 1 to Button 4
-#define BOARD_BUTTON_PIN_LIST           {15}
+// List of button IDs
+#define BOARD_BUTTON_ID_LIST            {BOARD_GPIO_ID_BUTTON0}
 
 // Active low polarity for buttons
 #define BOARD_BUTTON_ACTIVE_LOW         true

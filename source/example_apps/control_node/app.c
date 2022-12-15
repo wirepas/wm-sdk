@@ -186,8 +186,6 @@ void App_init(const app_global_functions_t * functions)
         return;
     }
 
-    Button_init();
-
     app_res = lib_settings->setNodeRole(APP_LIB_SETTINGS_ROLE_ADVERTISER);
     if (app_res != APP_RES_OK)
     {

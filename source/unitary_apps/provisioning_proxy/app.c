@@ -146,7 +146,6 @@ void App_init(const app_global_functions_t * functions)
 
     Provisioning_Proxy_init(&conf);
 
-    Button_init();
     Button_register_for_event(0, BUTTON_PRESSED, button_0_cb);
 
     /* Start the stack. */

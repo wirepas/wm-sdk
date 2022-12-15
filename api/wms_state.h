@@ -27,7 +27,7 @@
 #define APP_LIB_STATE_NAME 0x02f9c165 //!< "STATE"
 
 /** @brief Maximum supported library version */
-#define APP_LIB_STATE_VERSION 0x20D
+#define APP_LIB_STATE_VERSION 0x20E
 
 /**
  * @brief   Macro for cost indicating "no route". Used in @ref
@@ -125,7 +125,7 @@ typedef struct
      * is unknown for this neighbor. */
     uint8_t cost;
     /** Radio channel used by the neighbor  */
-    uint8_t channel;
+    app_lib_settings_net_channel_t channel;
     /** Type of the neighbor. @ref app_lib_state_nbor_type_e  */
     uint8_t type;
     /**
@@ -606,6 +606,13 @@ typedef app_res_e (*app_lib_state_get_install_quality_f)
     (app_lib_state_install_quality_t * qual_out);
 
 /**
+ * @brief   Query cluster channel (i.e. operating channel) currently in use
+ * @return  Cluster channel in use
+ */
+typedef app_lib_settings_net_channel_t (*app_lib_state_get_cluster_channel_t)
+    (void);
+
+/**
  * @brief   List of library functions
  */
 typedef struct
@@ -623,6 +630,7 @@ typedef struct
     app_lib_state_scan_stop_f                       stopScanNbors;
     app_lib_state_get_install_quality_f             getInstallQual;
     app_lib_state_set_stack_event_cb_f              setOnStackEventCb;
+    app_lib_state_get_cluster_channel_t             getClusterChannel;
 } app_lib_state_t;
 
 #endif /* APP_LIB_STATE_H_ */

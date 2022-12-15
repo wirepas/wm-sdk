@@ -68,6 +68,8 @@ class InFile(object):
         # Set default values.
         self.area_id = 0x00000000
         self.version = version
+        self.compressable = None
+        self.encryptable = None
         self.compressed = False
         self.encrypted = False
 
@@ -79,58 +81,91 @@ class InFile(object):
             # File specification given, parse it.
             version, self.area_id, filename = self.parse_file_spec(file_spec)
             self.version = self.parse_version(version)
+            self.filename = filename
+            
+            # determine what to do based on the file extension
+            filename_base, filename_ext = os.path.splitext(filename)
+            if filename_ext == '.hex':
+                # Read data from file.
+                memory = hextool.Memory()
+                hextool.load_intel_hex(memory, filename = filename)
 
-            # Read data from file.
-            memory = hextool.Memory()
-            hextool.load_intel_hex(memory, filename = filename)
+                if memory.num_ranges == 0:
+                    # No data found in file.
+                    raise ValueError("file contains no data: '%s'" % filename)
+                elif (memory.max_address -
+                    memory.min_address > self.MAX_NUM_BYTES_PER_FILE):
+                    raise ValueError("file too big: '%s'" % filename)
 
-            if memory.num_ranges == 0:
-                # No data found in file.
-                raise ValueError("file contains no data: '%s'" % filename)
-            elif (memory.max_address -
-                  memory.min_address > self.MAX_NUM_BYTES_PER_FILE):
-                raise ValueError("file too big: '%s'" % filename)
-
-            # Convert Memory object to a flat bytearray.
-            self.data = memory[memory.min_address:memory.max_address]
-            self.raw_data = memory[memory.min_address:memory.max_address]
+                self.compressable = True
+                self.encryptable = True
+                # Convert Memory object to a flat bytearray.
+                self.data = memory[memory.min_address:memory.max_address]
+                self.raw_data = memory[memory.min_address:memory.max_address]
+            elif filename_ext == '.cbor':
+                self.compressable = False
+                self.encryptable = False
+                memory = hextool.Memory()
+                hextool.load_binary(memory, filename = filename)
+                self.data = memory[0:memory.num_bytes]
+                self.raw_data = memory[0:memory.num_bytes]
+            else:
+                raise ValueError("Unsupported file extension: '%s'" % filename)
 
         # Create a file header for uncompressed, unencrypted data.
         self.header = self.make_file_header(self.area_id, len(self.data),
                                             *self.version)
 
     def compress(self):
-        if self.compressed:
-            raise ValueError("data already compressed")
+        if not self.compressable:
+            # the length of the scratchpad file must be multiple of 16, 
+            # extend the bytearray to next multiple of 16
+            data_pld_len = len(self.data)
+            num_blocks = (data_pld_len + self.BLOCK_LENGTH - 1) // \
+                                                                self.BLOCK_LENGTH
+            fill_zeros = num_blocks * InFile.BLOCK_LENGTH - data_pld_len
+            self.data.extend(bytearray([0]*fill_zeros))
+            data_length = len(self.data)
+            pad = data_length - data_pld_len
 
-        # OPTIMIZE: Avoid extra conversions between bytearrays and bytes.
-        # Compress data. zlib.compress() does not accept
-        # bytearrays, so convert bytearray to bytes.
-        compressed_data = bytearray(zlib.compress(bytes(self.data), 9))
+        else:
+            if self.compressed:
+                raise ValueError("data already compressed")
 
-        # Determine compressed data length without
-        # zlib header and Adler-32 checksum.
-        comp_data_len = len(compressed_data) - 2 - 4
+            # OPTIMIZE: Avoid extra conversions between bytearrays and bytes.
+            # Compress data. zlib.compress() does not accept
+            # bytearrays, so convert bytearray to bytes.
+            compressed_data = bytearray(zlib.compress(bytes(self.data), 9))
 
-        # Pad size to a multiple of block length.
-        num_blocks = (comp_data_len + self.BLOCK_LENGTH - 1) // \
-                                                            self.BLOCK_LENGTH
+            # Determine compressed data length without
+            # zlib header and Adler-32 checksum.
+            comp_data_len = len(compressed_data) - 2 - 4
 
-        # Mark data as compressed.
-        self.compressed = True
+            # Pad size to a multiple of block length.
+            num_blocks = (comp_data_len + self.BLOCK_LENGTH - 1) // \
+                                                                self.BLOCK_LENGTH
 
-        # Create a bytearray object for compressed data.
-        self.data = bytearray(num_blocks * InFile.BLOCK_LENGTH)
+            # Mark data as compressed.
+            self.compressed = True
 
-        # Copy compressed data to bytearray, but leave
-        # out zlib header and Adler-32 checksum.
-        self.data[:comp_data_len] = compressed_data[2:-4]
+            # Create a bytearray object for compressed data.
+            self.data = bytearray(num_blocks * InFile.BLOCK_LENGTH)
+
+            # Copy compressed data to bytearray, but leave
+            # out zlib header and Adler-32 checksum.
+            self.data[:comp_data_len] = compressed_data[2:-4]
+            data_length = len(self.data)
+            pad = 0x00000000
 
         # Update the file header now that data length has changed.
-        self.header = self.make_file_header(self.area_id, len(self.data),
-                                            *self.version)
+        self.header = self.make_file_header(self.area_id, data_length,
+                                            *self.version, pad)
 
     def encrypt(self, cipher):
+
+        if not self.encryptable:
+            return
+            
         if self.encrypted:
             raise ValueError("data already encrypted")
 
@@ -211,7 +246,8 @@ class InFile(object):
 
     @staticmethod
     def make_file_header(areaid, length,
-                         ver_major, ver_minor, ver_maint, ver_devel):
+                         ver_major, ver_minor, ver_maint, ver_devel,
+                         pad = 0x00000000):
         '''
         From bootloader.h:
 
@@ -229,15 +265,13 @@ class InFile(object):
             uint8_t maint;
             /** Firmware development version number component */
             uint8_t devel;
-            /** Padding, reserved for future use, must be 0 */
+            /** Padding, reserved for future use, must be < 16 */
             uint32_t pad;
         };
         '''
 
         if areaid < 0 or areaid > 4294967295:
             raise ValueError("memory area ID not 0 .. 4294967295")
-
-        pad = 0x00000000
 
         return struct.pack("<2L4BL", areaid, length,
                         ver_major, ver_minor, ver_maint, ver_devel, pad)
@@ -348,7 +382,7 @@ class Scratchpad(object):
             uint8_t pad;
             /** Scratchpad type information for bootloader: bl_header_type_e */
             uint32_t type;
-            /** Status code from bootloader: bl_header_status_e */
+            /** Status code from bootloader: bl_scratchpad_status_e */
             uint32_t status;
         };
 
