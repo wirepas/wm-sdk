@@ -1,0 +1,26 @@
+var silabs__brd4210a_2board_8h =
+[
+    [ "BOARD_BUTTON_ACTIVE_LOW", "d7/d9b/silabs__brd4210a_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71", null ],
+    [ "BOARD_BUTTON_ID_LIST", "d7/d9b/silabs__brd4210a_2board_8h.html#a154e4a912cfa2fbec72aeba6b69e18ab", null ],
+    [ "BOARD_BUTTON_INTERNAL_PULL", "d7/d9b/silabs__brd4210a_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a", null ],
+    [ "BOARD_GPIO_ID_BUTTON0", "d7/d9b/silabs__brd4210a_2board_8h.html#afa0b2ea5bfdd62a83413c1cb4c5962c5", null ],
+    [ "BOARD_GPIO_ID_BUTTON1", "d7/d9b/silabs__brd4210a_2board_8h.html#ad2a52f8dcf7bd092ce0971357b1d7793", null ],
+    [ "BOARD_GPIO_ID_LED0", "d7/d9b/silabs__brd4210a_2board_8h.html#a2fdeeeca85127dde90914bbede54965f", null ],
+    [ "BOARD_GPIO_ID_LED1", "d7/d9b/silabs__brd4210a_2board_8h.html#a37335d948292661228ec3c91f336fa6d", null ],
+    [ "BOARD_GPIO_ID_SPI_CS", "d7/d9b/silabs__brd4210a_2board_8h.html#af3a22056866caf4155af0caaccb790b4", null ],
+    [ "BOARD_GPIO_ID_USART_RX", "d7/d9b/silabs__brd4210a_2board_8h.html#a56639204a05cd1c81c18d0fcfe22b389", null ],
+    [ "BOARD_GPIO_ID_USART_TX", "d7/d9b/silabs__brd4210a_2board_8h.html#a42ad08f27cb878ef5218163b5318179f", null ],
+    [ "BOARD_GPIO_ID_USART_VCOM", "d7/d9b/silabs__brd4210a_2board_8h.html#a41e1747fec03b9323daeeb3d3d5abb0c", null ],
+    [ "BOARD_GPIO_PIN_LIST", "d7/d9b/silabs__brd4210a_2board_8h.html#a433cf3a73ae6b00dde08e7a245b4a2ec", null ],
+    [ "BOARD_LED_ACTIVE_LOW", "d7/d9b/silabs__brd4210a_2board_8h.html#a43341ad5e17bb5d20c1e528bce7d6133", null ],
+    [ "BOARD_LED_ID_LIST", "d7/d9b/silabs__brd4210a_2board_8h.html#a96e3cca1c7fe33c02f7805cd3de699d0", null ],
+    [ "BOARD_SPI", "d7/d9b/silabs__brd4210a_2board_8h.html#aa135dd09b6c5397a3fefc89817336527", null ],
+    [ "BOARD_SPI_EXTFLASH_MISO_PIN", "d7/d9b/silabs__brd4210a_2board_8h.html#a2df8d0a49361f3f2a3608caf886c5d7e", null ],
+    [ "BOARD_SPI_EXTFLASH_MISO_PORT", "d7/d9b/silabs__brd4210a_2board_8h.html#a03daa18c2ce2f53bbafbe13b58c8800c", null ],
+    [ "BOARD_SPI_EXTFLASH_MOSI_PIN", "d7/d9b/silabs__brd4210a_2board_8h.html#ab6eae11a9cca2fa08ac9718ec92c2fdc", null ],
+    [ "BOARD_SPI_EXTFLASH_MOSI_PORT", "d7/d9b/silabs__brd4210a_2board_8h.html#ac170179cd8f6add821304882fd164bf7", null ],
+    [ "BOARD_SPI_EXTFLASH_SCKL_PIN", "d7/d9b/silabs__brd4210a_2board_8h.html#a0a40bcb9e92bac04506170599b36aaa7", null ],
+    [ "BOARD_SPI_EXTFLASH_SCKL_PORT", "d7/d9b/silabs__brd4210a_2board_8h.html#aa10057a66f627eb0f9acab3a83dc8458", null ],
+    [ "BOARD_SPIROUTE", "d7/d9b/silabs__brd4210a_2board_8h.html#a4dc1591839629d3fe2587cd721e8f288", null ],
+    [ "BOARD_USART_ID", "d7/d9b/silabs__brd4210a_2board_8h.html#a8c090fdc29940fd44b204eb07bf3ff15", null ]
+];

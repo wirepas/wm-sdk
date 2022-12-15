@@ -1,0 +1,26 @@
+var tbsense2_2board_8h =
+[
+    [ "BOARD_BUTTON_ACTIVE_LOW", "d3/d8f/tbsense2_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71", null ],
+    [ "BOARD_BUTTON_ID_LIST", "d3/d8f/tbsense2_2board_8h.html#a154e4a912cfa2fbec72aeba6b69e18ab", null ],
+    [ "BOARD_BUTTON_INTERNAL_PULL", "d3/d8f/tbsense2_2board_8h.html#a8f91fc44ad1f0b5ab77c76564145318a", null ],
+    [ "BOARD_GPIO_ID_BUTTON0", "d3/d8f/tbsense2_2board_8h.html#afa0b2ea5bfdd62a83413c1cb4c5962c5", null ],
+    [ "BOARD_GPIO_ID_BUTTON1", "d3/d8f/tbsense2_2board_8h.html#ad2a52f8dcf7bd092ce0971357b1d7793", null ],
+    [ "BOARD_GPIO_ID_LED_G", "d3/d8f/tbsense2_2board_8h.html#a2d2225bc100605beea12bda9be7148ca", null ],
+    [ "BOARD_GPIO_ID_LED_R", "d3/d8f/tbsense2_2board_8h.html#ac3ef35915e549c2285bb1868719f971f", null ],
+    [ "BOARD_GPIO_ID_UART_IRQ", "d3/d8f/tbsense2_2board_8h.html#aec9d6daae15d7aa523eb194fdc70e4ee", null ],
+    [ "BOARD_GPIO_ID_USART_RX", "d3/d8f/tbsense2_2board_8h.html#a56639204a05cd1c81c18d0fcfe22b389", null ],
+    [ "BOARD_GPIO_ID_USART_TX", "d3/d8f/tbsense2_2board_8h.html#a42ad08f27cb878ef5218163b5318179f", null ],
+    [ "BOARD_GPIO_PIN_LIST", "d3/d8f/tbsense2_2board_8h.html#a433cf3a73ae6b00dde08e7a245b4a2ec", null ],
+    [ "BOARD_I2C_GPIO_PORT", "d3/d8f/tbsense2_2board_8h.html#ad040f55332feda958e433ae2c1f5bcd5", null ],
+    [ "BOARD_I2C_ROUTELOC_SCLLOC", "d3/d8f/tbsense2_2board_8h.html#acb2895a9dbda55c7842898cd59a419ea", null ],
+    [ "BOARD_I2C_ROUTELOC_SDALOC", "d3/d8f/tbsense2_2board_8h.html#a5352ae70f167d76a644efea761ef0d95", null ],
+    [ "BOARD_I2C_SCL_PIN", "d3/d8f/tbsense2_2board_8h.html#a23ceec4235fc4b415f54343cf96ad269", null ],
+    [ "BOARD_I2C_SDA_PIN", "d3/d8f/tbsense2_2board_8h.html#a85ffcb831cf671e2d7420dfcb50f12d4", null ],
+    [ "BOARD_LED_ACTIVE_LOW", "d3/d8f/tbsense2_2board_8h.html#a43341ad5e17bb5d20c1e528bce7d6133", null ],
+    [ "BOARD_LED_ID_LIST", "d3/d8f/tbsense2_2board_8h.html#a96e3cca1c7fe33c02f7805cd3de699d0", null ],
+    [ "BOARD_USART_FORCE_BAUDRATE", "d3/d8f/tbsense2_2board_8h.html#a23a94977182c1741d2ddb5c205858514", null ],
+    [ "BOARD_USART_ID", "d3/d8f/tbsense2_2board_8h.html#a8c090fdc29940fd44b204eb07bf3ff15", null ],
+    [ "BOARD_USART_ROUTELOC_RXLOC", "d3/d8f/tbsense2_2board_8h.html#a81158c22051a8d55513e9fffb3a571a5", null ],
+    [ "BOARD_USART_ROUTELOC_TXLOC", "d3/d8f/tbsense2_2board_8h.html#a890277116f59d930b90361c247375c6f", null ],
+    [ "USE_I2C1", "d3/d8f/tbsense2_2board_8h.html#a0b4954f58fdaddf7d7468296f8fb9c9c", null ]
+];
