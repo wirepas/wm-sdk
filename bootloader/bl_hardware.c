@@ -131,11 +131,26 @@ static const hardware_capabilities_t m_hw =
 };
 #elif defined(NRF91_PLATFORM)
 
+#include "board.h"
+
+#if defined(BOARD_AT_COMMANDS)
+static const char board_at_commands[] = BOARD_AT_COMMANDS;
+#endif // defined(BOARD_AT_COMMANDS)
+
+static const platform_nrf91_t m_platform_nrf91 =
+{
+#if defined(BOARD_AT_COMMANDS)
+    .at_commands = board_at_commands
+#else // defined(BOARD_AT_COMMANDS)
+    .at_commands = NULL
+#endif
+};
+
 static const hardware_capabilities_t m_hw =
 {
     .crystal_32k = BOARD_HW_CRYSTAL_32K,
     .dcdc = BOARD_HW_DCDC,
-    .platform.nrf91 = NULL
+    .platform.nrf91 = &m_platform_nrf91
 };
 #elif defined(EFR32_PLATFORM)
 

@@ -130,6 +130,8 @@ def main():
         key_pair = KeyDesc(auth, encryp)
         key_dic = {"default": key_pair}
         config = BootloaderConfig(None, None, key_dic, None)
+        # Hack: erase platform to avoid default one
+        config.platform = None
 
         # Write it to the output file
         config.to_ini_file(args.out_key_file)

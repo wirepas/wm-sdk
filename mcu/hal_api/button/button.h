@@ -8,6 +8,10 @@
  * \file    button.h
  * \brief   Board-independent button functions
  */
+
+#ifndef BUTTON_H_
+#define BUTTON_H_
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -28,6 +32,10 @@ typedef enum
     BUTTON_RES_OK = 0,
     /** Button id is invalid */
     BUTTON_RES_INVALID_ID = 1,
+    /** Function parameter is invalid */
+    BUTTON_RES_INVALID_PARAM = 2,
+    /** Button initialization has not been performed */
+    BUTTON_RES_UNINITIALIZED = 3
 } button_res_e;
 
 /**
@@ -75,3 +83,5 @@ button_res_e Button_getState(uint8_t button_id,
  * \brief   Get number of buttons
  */
 uint8_t Button_get_number(void);
+
+#endif /* BUTTON_H_ */

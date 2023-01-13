@@ -11,6 +11,7 @@
 #include "board.h"
 #include "board_usart.h"
 #include "api.h"
+#include "gpio.h"
 
 #include "em_cmu.h"
 #include "em_gpio.h"
@@ -66,6 +67,14 @@ static LDMA_Descriptor_t m_tx_dma_descriptor[3];
 
 bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 {
+#ifdef BOARD_GPIO_ID_VCOM_ENABLE
+    const gpio_out_cfg_t usart_vcom_enable_cfg =
+    {
+        .out_mode_cfg = GPIO_OUT_MODE_PUSH_PULL,
+        .level_default = GPIO_LEVEL_HIGH
+    };
+#endif
+
 #ifdef BOARD_USART_FORCE_BAUDRATE
     // Some hardware only support a given speed, so override the chosen baudrate
     baudrate = BOARD_USART_FORCE_BAUDRATE;
@@ -75,32 +84,10 @@ bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     // Enable GPIO clock
     BOARD_USART_ENABLE_GPIO_CLK;
 
-#ifdef BOARD_USART_VCOM_PORT
+#ifdef BOARD_GPIO_ID_VCOM_ENABLE
     // Enable vcom
-    hal_gpio_set_mode(BOARD_USART_VCOM_PORT,
-                      BOARD_USART_VCOM_PIN,
-                      GPIO_MODE_DISABLED);
-    hal_gpio_clear(BOARD_USART_VCOM_PORT,
-                   BOARD_USART_VCOM_PIN);
-    hal_gpio_set_mode(BOARD_USART_VCOM_PORT,
-                      BOARD_USART_VCOM_PIN,
-                      GPIO_MODE_OUT_PP);
-    hal_gpio_set(BOARD_USART_VCOM_PORT,
-                 BOARD_USART_VCOM_PIN);
+    Gpio_outputSetCfg(BOARD_GPIO_ID_VCOM_ENABLE, &usart_vcom_enable_cfg);
 #endif
-
-    // uart_tx_pin
-    hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
-                      BOARD_USART_TX_PIN,
-                      GPIO_MODE_DISABLED);
-    hal_gpio_clear(BOARD_USART_GPIO_PORT,
-                   BOARD_USART_TX_PIN);
-    // uart_rx_pin
-    hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
-                      BOARD_USART_RX_PIN,
-                      GPIO_MODE_DISABLED);
-    hal_gpio_clear(BOARD_USART_GPIO_PORT,
-                   BOARD_USART_RX_PIN);
 
     // Module variables
     m_rx_callback = NULL;
@@ -121,6 +108,19 @@ bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     USART_init.oversampling = usartOVS4;
     USART_init.hwFlowControl = usartHwFlowControlNone;
     USART_InitAsync(BOARD_USART, &USART_init);
+
+    // Set UART TX GPIO
+    hal_gpio_set_mode(BOARD_USART_TX_PORT,
+                      BOARD_USART_TX_PIN,
+                      GPIO_MODE_DISABLED);
+    hal_gpio_clear(BOARD_USART_TX_PORT,
+                   BOARD_USART_TX_PIN);
+    // Set UART RX GPIO
+    hal_gpio_set_mode(BOARD_USART_RX_PORT,
+                      BOARD_USART_RX_PIN,
+                      GPIO_MODE_DISABLED);
+    hal_gpio_clear(BOARD_USART_RX_PORT,
+                   BOARD_USART_RX_PIN);
 
     // Set UART route
     BOARD_USART_ROUTE;
@@ -180,7 +180,7 @@ void Usart_setEnabled(bool enabled)
             // Disable deep sleep
             DS_Disable(DS_SOURCE_USART);
             // Set output
-            hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
+            hal_gpio_set_mode(BOARD_USART_TX_PORT,
                               BOARD_USART_TX_PIN,
                               GPIO_MODE_OUT_PP);
         }
@@ -197,10 +197,10 @@ void Usart_setEnabled(bool enabled)
             wait_end_of_tx();
 
             // Set light pullup
-            hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
+            hal_gpio_set_mode(BOARD_USART_TX_PORT,
                               BOARD_USART_TX_PIN,
                               GPIO_MODE_IN_PULL);
-            hal_gpio_set(BOARD_USART_GPIO_PORT,
+            hal_gpio_set(BOARD_USART_TX_PORT,
                          BOARD_USART_TX_PIN);
             // Enable deep sleep
             DS_Enable(DS_SOURCE_USART);
@@ -502,22 +502,21 @@ void Usart_enableReceiver(serial_rx_callback_f rx_callback)
         BUS_RegBitWrite(&(BOARD_USART->IEN), _USART_IEN_TCMP1_SHIFT, 1);
 
         // Set light pull-up resistor
-        hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
+        hal_gpio_set_mode(BOARD_USART_RX_PORT,
                           BOARD_USART_RX_PIN,
                           GPIO_MODE_IN_PULL);
-        hal_gpio_set(BOARD_USART_GPIO_PORT,
+        hal_gpio_set(BOARD_USART_RX_PORT,
                      BOARD_USART_RX_PIN);
-
     }
     else
     {
         Sys_disableAppIrq(BOARD_UART_RX_IRQn);
         BUS_RegBitWrite(&(BOARD_USART->IEN), _USART_IEN_TCMP1_SHIFT, 0);
-        hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
+        hal_gpio_set_mode(BOARD_USART_RX_PORT,
                           BOARD_USART_RX_PIN,
                           GPIO_MODE_DISABLED);
-        // Disable pull-up for disabled GPIO:s
-        hal_gpio_clear(BOARD_USART_GPIO_PORT,
+        // Disable pull-up for disabled GPIO
+        hal_gpio_clear(BOARD_USART_RX_PORT,
                        BOARD_USART_RX_PIN);
     }
 

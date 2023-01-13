@@ -541,10 +541,10 @@ typedef app_res_e
                                                      uint16_t * max_value_p);
 
 /**
- * @brief   Get access cycle range
+ * @brief   Get access cycle range limits
  *
- * Return the minimum and maximum access cycle value, in milliseconds, that can
- * be used when setting the access cycle range with the @ref
+ * Return the minimum and maximum for valid access cycle range, in milliseconds,
+ * that can be used when setting the access cycle range with the @ref
  * app_lib_settings_set_ac_range_f "lib_settings->setAcRange"() function.
  *
  * @param   min_value_p

@@ -10,7 +10,7 @@ import os
 import argparse
 import textwrap
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, exists
 from shutil import copyfile
 
 # Python 2 and Python 3 support

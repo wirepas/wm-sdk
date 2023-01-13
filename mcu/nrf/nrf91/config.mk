@@ -12,7 +12,7 @@ mac_profile?=dect_nr_19_ghz
 radio?=none
 ifeq ($(MCU_SUB),60)
 	# Hardware magic used for this architecture
-	HW_MAGIC=12
+	HW_MAGIC=0F
 	HW_VARIANT_ID=12
 else
 	$(error "Invalid MCU_SUB for nrf91! $(MCU_SUB) only 60  supported")

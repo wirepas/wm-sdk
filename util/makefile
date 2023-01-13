@@ -5,13 +5,29 @@ SRCS += $(UTIL_PATH)crc.c     \
         $(UTIL_PATH)api.c     \
         $(UTIL_PATH)pack.c \
         $(UTIL_PATH)random.c \
-        $(UTIL_PATH)tlv.c
+        $(UTIL_PATH)tlv.c    \
+        $(UTIL_PATH)syscalls.c
 
 ifeq ($(APP_PRINTING), yes)
 CFLAGS += -DAPP_PRINTING
 HAL_UART=yes
-SRCS += $(UTIL_PATH)syscalls.c
 SRCS += $(UTIL_PATH)uart_print.c
+endif
+
+ifeq ($(WIRESHARK), yes)
+ifeq ($(APP_PRINTING), yes)
+# Both are using same uart so cannot be used together
+$(error APP_PRINTING and WIRESHARK option are mutually exclusive and cannot both be set to yes)
+endif
+ifneq ($(SHARED_DATA), yes)
+$(error WIRESHARK util lib can only be used if SHARED_DATA is also used in your application)
+endif
+WIRESHARK_PATH = $(UTIL_PATH)wireshark/
+CFLAGS += -DWIRESHARK
+INCLUDES += -I$(WIRESHARK_PATH)
+HAL_UART=yes
+# HAL_UART_BUFFER_SIZE=2048 // Not supported yet
+SRCS += $(WIRESHARK_PATH)wireshark.c
 endif
 
 ifeq ($(TINY_CBOR), yes)

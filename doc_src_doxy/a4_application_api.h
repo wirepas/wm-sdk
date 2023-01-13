@@ -273,7 +273,6 @@ are following:
 
 <table>
 <tr><th>Name (related to mcu/hal_api folder)</th><th>Description</th></tr>
-<tr><td>@ref button.h "button.h"</td><td>Button functions</td></tr>
 <tr><td>@ref ds.h "ds.h"</td><td>Deep sleep control module</td></tr>
 <tr><td>@ref radio.h "radio.h"</td><td>Radio FEM (front-end module)
 </td></tr>
@@ -281,6 +280,8 @@ are following:
 </tr>
 <tr><td>@ref hw_delay.h "hw_delay.h"</td><td>Hardware delay module</td></tr>
 <tr><td>@ref i2c.h "i2c.h"</td><td>Simple minimal I2C master driver</td></tr>
+<tr><td>@ref gpio.h "gpio.h"</td><td>GPIO functions</td></tr>
+<tr><td>@ref button.h "button.h"</td><td>Button functions</td></tr>
 <tr><td>@ref led.h "led.h"</td><td>LED functions</td></tr>
 <tr><td>@ref power.h "power.h"</td><td>Enabling of DCDC converter</td></tr>
 <tr><td>@ref spi.h "spi.h"</td><td>Simple minimal SPI master driver</td></tr>

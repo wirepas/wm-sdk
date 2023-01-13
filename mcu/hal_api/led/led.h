@@ -8,6 +8,10 @@
  * \file    led.h
  * \brief   Board-independent LED functions
  */
+
+#ifndef LED_H_
+#define LED_H_
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -20,6 +24,8 @@ typedef enum
     LED_RES_OK = 0,
     /** Led id is invalid */
     LED_RES_INVALID_ID = 1,
+    /** LED iniatialization has not been performed */
+    LED_RES_UNINITIALIZED = 2
 } led_res_e;
 
 /**
@@ -87,3 +93,5 @@ led_res_e Led_toggle(uint8_t led_id);
  * \return  The number of leds available
  */
 uint8_t Led_getNumber(void);
+
+#endif /* LED_H_ */
