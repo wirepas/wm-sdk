@@ -203,14 +203,9 @@ void App_init(const app_global_functions_t * functions)
         return;
     }
 
-    // Initialize buttons
-    Button_init();
     // Query value of button 1
     bool pressed = false;
     Button_getState(0, &pressed);
-
-    // Initialize leds
-    Led_init();
 
     // Override node role
     if (pressed)
@@ -244,4 +239,3 @@ void App_init(const app_global_functions_t * functions)
      */
     lib_state->startStack();
 }
-

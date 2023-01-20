@@ -60,7 +60,7 @@ else ifeq ($(MCU)$(MCU_SUB)$(MCU_MEM_VAR),efr32xg22xxxxf512)
         HW_MAGIC=0B
         HW_VARIANT_ID=0B
     endif
-    CFLAGS += -DEFR32MG22 -DEFR32MG22C224F512IM32
+    CFLAGS += -DEFR32MG22 -DEFR32MG22C224F512IM40
     CFLAGS += -DARM_MATH_ARMV8MML
     CFLAGS += -mfloat-abi=hard -mfpu=fpv5-sp-d16
     # Mcu instruction set

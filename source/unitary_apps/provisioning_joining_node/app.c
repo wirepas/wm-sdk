@@ -153,7 +153,6 @@ void App_init(const app_global_functions_t * functions)
     LOG(LVL_DEBUG, "  - net addr:  %06X", net_addr);
     LOG(LVL_DEBUG, "  - net ch:    %d", net_channel);
 
-    Button_init();
     Button_register_for_event(0, BUTTON_PRESSED, button_0_cb);
 
     if (!Storage_init())

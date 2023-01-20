@@ -15,7 +15,7 @@
 const app_lib_radio_cfg_power_t power_table_efr32xg21_20dBm =
 {
     .rx_current     = 880,  // 8.8 mA RX current
-    .rx_gain_dbm    = 0,    // 0 dBm RX gain
+    .rx_gain_db     = 0,    // 0 dB RX gain
     .power_count    = 8,    // 8 power levels
     .powers =
     {

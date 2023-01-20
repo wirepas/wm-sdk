@@ -1,6 +1,18 @@
-CFLAGS	+= -I$(HAL_API_PATH)
+INCLUDES += -I$(HAL_API_PATH)
+
+SRCS += $(HAL_API_PATH)hal_init.c
 
 # include drivers
-#MCU_PREFIX := $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/
-#include $(MCU_PREFIX)hal/makefile
 include $(MCU_PATH)$(MCU_FAMILY)/makefile
+
+ifeq ($(HAL_BUTTON), yes)
+INCLUDES += -I$(HAL_API_PATH)button
+endif
+
+ifeq ($(HAL_LED), yes)
+INCLUDES += -I$(HAL_API_PATH)led
+endif
+
+ifeq ($(HAL_GPIO), yes)
+INCLUDES += -I$(HAL_API_PATH)gpio
+endif

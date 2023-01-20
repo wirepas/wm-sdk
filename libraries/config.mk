@@ -78,6 +78,7 @@ scheduler_tasks+= + 2
 endif
 
 ifeq ($(DUALMCU_LIB), yes)
+HAL_GPIO=yes
 scheduler_tasks+= + 3
 app_config_filters+= + 1
 SHARED_DATA=yes

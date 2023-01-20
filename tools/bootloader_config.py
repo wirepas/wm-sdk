@@ -98,6 +98,7 @@ class AreaDesc(object):
     PERSISTENT_TYPE = 3
     SCRATCHPAD_TYPE = 4
     USER_TYPE = 5
+    MODEMFW_TYPE = 6
 
     def __init__(self, area_id, address, length, flags, area_type):
         """Area descriptor creation
@@ -119,7 +120,7 @@ class AreaDesc(object):
             raise ValueError("wrong flags for area id=%s", id)
 
         self.flags = flags
-        if area_type < AreaDesc.BOOTLOADER_TYPE or area_type > AreaDesc.USER_TYPE:
+        if area_type < AreaDesc.BOOTLOADER_TYPE or area_type > AreaDesc.MODEMFW_TYPE:
             raise ValueError("wrong area type for area id=%s", id)
         self.type = area_type
 

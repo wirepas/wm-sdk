@@ -53,11 +53,15 @@
 typedef uint32_t app_lib_settings_net_addr_t;
 
 /**
- * @brief Network channel type definition.
- *
- * All nodes on the network must have the same network channel.
+ * @brief Channel type definition.
  */
 typedef uint8_t app_lib_settings_net_channel_t;
+
+/**
+ * @brief   Reserved value for definition of 'no channel' for @ref
+ *          app_lib_settings_net_channel_t
+ */
+#define CHANNEL_NO_CHANNEL  0
 
 typedef enum {
     /** Sink in Low Energy mode */
@@ -541,10 +545,10 @@ typedef app_res_e
                                                      uint16_t * max_value_p);
 
 /**
- * @brief   Get access cycle range
+ * @brief   Get access cycle range limits
  *
- * Return the minimum and maximum access cycle value, in milliseconds, that can
- * be used when setting the access cycle range with the @ref
+ * Return the minimum and maximum for valid access cycle range, in milliseconds,
+ * that can be used when setting the access cycle range with the @ref
  * app_lib_settings_set_ac_range_f "lib_settings->setAcRange"() function.
  *
  * @param   min_value_p
