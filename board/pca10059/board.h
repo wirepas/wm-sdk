@@ -86,17 +86,30 @@ P1.15   47      gpio           1.15           (low freq)
 #define BOARD_USART_CTS_PIN             7  /* For USE_USART_HW_FLOW_CONTROL */
 #define BOARD_USART_RTS_PIN             5  /* For USE_USART_HW_FLOW_CONTROL */
 
-// Pwm output for pwm_driver app
-#define BOARD_PWM_OUTPUT_GPIO           4
+// List of GPIO pins
+#define BOARD_GPIO_PIN_LIST            {6,  /* P0.06 */\
+                                        8,  /* P0.08 */\
+                                        41, /* P1.09 */\
+                                        12, /* P0.12 */\
+                                        38, /* P1.06 */\
+                                        31} /* P0.31. required by the dual_mcu app. usart wakeup pin (= BOARD_USART_RX) */
 
-// List of GPIO pins for the LEDs on the board: LD1, LD2 R, G, B
-#define BOARD_LED_PIN_LIST              {6, 8, 41, 12}
+// User friendly name for GPIOs (IDs mapped to the BOARD_GPIO_PIN_LIST table)
+#define BOARD_GPIO_ID_LED1              0  // mapped to pin P0.06
+#define BOARD_GPIO_ID_LED2              1  // mapped to pin P0.08
+#define BOARD_GPIO_ID_LED_G             2  // mapped to pin P1.09
+#define BOARD_GPIO_ID_LED_B             3  // mapped to pin P0.12
+#define BOARD_GPIO_ID_BUTTON0           4  // mapped to pin P1.06
+#define BOARD_GPIO_ID_USART_WAKEUP      5  // mapped to pin P0.31
+
+// List of LED IDs
+#define BOARD_LED_ID_LIST               {BOARD_GPIO_ID_LED1,  BOARD_GPIO_ID_LED2, BOARD_GPIO_ID_LED_G, BOARD_GPIO_ID_LED_B}
 
 // Active low polarity for LEDs
 #define BOARD_LED_ACTIVE_LOW            true
 
-// List of GPIO pins for buttons on the board: SW1
-//#define BOARD_BUTTON_PIN_LIST           {38}
+// List of button IDs mapped to GPIO IDs: SW1
+#define BOARD_BUTTON_ID_LIST           {BOARD_GPIO_ID_BUTTON0}
 
 // Active low polarity for buttons
 #define BOARD_BUTTON_ACTIVE_LOW         true

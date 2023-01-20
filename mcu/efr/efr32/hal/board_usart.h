@@ -83,9 +83,9 @@
 #error USART ID must be 0 or 1
 #endif // BOARD_USART_ID
 #define BOARD_USART_ROUTE   BOARD_USARTROUTE.RXROUTE = BOARD_USART_RX_PIN << _GPIO_USART_RXROUTE_PIN_SHIFT | \
-                                                       BOARD_USART_GPIO_PORT << _GPIO_USART_RXROUTE_PORT_SHIFT; \
+                                                       BOARD_USART_RX_PORT << _GPIO_USART_RXROUTE_PORT_SHIFT; \
                             BOARD_USARTROUTE.TXROUTE = BOARD_USART_TX_PIN << _GPIO_USART_RXROUTE_PIN_SHIFT | \
-                                                       BOARD_USART_GPIO_PORT << _GPIO_USART_RXROUTE_PORT_SHIFT
+                                                       BOARD_USART_TX_PORT << _GPIO_USART_RXROUTE_PORT_SHIFT
 #define BOARD_USART_PINS    BOARD_USARTROUTE.ROUTEEN = GPIO_USART_ROUTEEN_RXPEN | \
                                                        GPIO_USART_ROUTEEN_TXPEN
 #define BOARD_USART_CLR_IRQ_ALL       BOARD_USART->IF_CLR = _USART_IF_MASK

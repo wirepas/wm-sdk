@@ -275,8 +275,6 @@ void App_init(const app_global_functions_t * functions)
         return;
     }
 
-    Led_init();
-
     ctrl_ret = Control_Router_init(&conf);
     if (ctrl_ret != CONTROL_RET_OK)
     {

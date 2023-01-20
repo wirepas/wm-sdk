@@ -9,6 +9,19 @@
 
 #include <stdbool.h>
 
+#if defined(NRF91_PLATFORM)
+/** \brief  Platform specific descriptions for nRF91. */
+typedef struct
+{
+    /** Pointer to platform specific modem initialization AT commands.
+     *  AT commands are separated from each other with null character ('\0'),
+     *  the end of the list is indicated with double null characters ("\0\0").
+     *  (introduced in bootloader v9).
+     */
+    const char * at_commands;
+} platform_nrf91_t;
+#endif
+
 #if defined(EFR32_PLATFORM)
 #include "em_cmu.h"
 

@@ -16,6 +16,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
+#include "debug_flow.h"
+
+#if defined(EFR32_PLATFORM)
+#include "em_cmu.h"
+#endif
 
 /** \brief  Bootloader interface operations result */
 typedef enum
@@ -47,7 +52,8 @@ typedef enum
     BL_MEM_AREA_TYPE_APPLICATION = 2,  /** Application area */
     BL_MEM_AREA_TYPE_PERSISTENT  = 3,  /** Persistent memory area */
     BL_MEM_AREA_TYPE_SCRATCHPAD  = 4,  /** Dedicated scratchpad area */
-    BL_MEM_AREA_TYPE_USER        = 5   /** User defined area */
+    BL_MEM_AREA_TYPE_USER        = 5,  /** User defined area */
+    BL_MEM_AREA_TYPE_MODEMFW     = 6   /** Modem firmware area */
 } bl_memory_area_type_e;
 
 /** \brief  Flash memory info definition */
@@ -199,23 +205,79 @@ typedef struct
     uint8_t flags;
     /** Scratchpad type information for bootloader: \ref bl_header_type_e */
     uint32_t type;
-    /** Status code from bootloader: \ref bl_header_status_e */
+    /** Status code from bootloader: \ref bl_scratchpad_status_e */
     uint32_t status;
     /** true if scratchpad has is own dedicated area */
     bool dedicated;
+    /** Pointer to the start of modem firmware file data, 
+     *  valid only when status is BL_SCRATCHPAD_STATUS_MODEM_FW_PENDING */
+    const uint8_t * modem_fw_data;
+    /** Length of modem firmware file in bytes, 
+     *  valid only when status is BL_SCRATCHPAD_STATUS_MODEM_FW_PENDING */
+    uint32_t modem_fw_length;
 } bl_scrat_info_t;
+
+#if defined(NRF91_PLATFORM)
+typedef struct
+{
+    /** Pointer to platform specific modem initialization AT commands.
+     *  AT commands are separated from each other with null character ('\0'),
+     *  the end of the list is indicated with double null characters ("\0\0").
+     *  (introduced in bootloader v9).
+     */
+    const char * at_commands;
+} bl_platform_nrf91_t;
+#elif defined(EFR32_PLATFORM)
+/** \brief  Platform specific descriptions for EFR32. */
+typedef struct
+{
+    /** Pointer to platform specific HFXO crystal description
+     *  (introduced in bootloader v8).
+     */
+    const CMU_HFXOInit_TypeDef * hfxoInit;
+    /** Pointer to platform specific LFXO crystal description
+     *  (introduced in bootloader v8).
+     */
+    const CMU_LFXOInit_TypeDef * lfxoInit;
+} bl_platform_efr32_t;
+#endif
+
+/** \brief  Platform specific descriptions. */
+typedef union
+{
+#if defined(NRF52_PLATFORM)
+    /** Platform specific descriptions for nRF52.
+     *  (dummy, introduced in bootloader v8).
+     */
+    const void * nrf52;
+#elif defined(NRF91_PLATFORM)
+    /** Platform specific descriptions for nRF91.
+     *  (dummy, introduced in bootloader v8).
+     */
+    const bl_platform_nrf91_t * nrf91;
+#elif defined(EFR32_PLATFORM)
+    /** Platform specific descriptions for EFR32.
+     *  (introduced in bootloader v8).
+     */
+    const bl_platform_efr32_t * efr32;
+#endif
+} bl_platform_t;
 
 /** \brief  Hardware features that can be installed on a board. */
 typedef struct
 {
     /** True if 32kHz crystal is present; default:true
-     *  (introduced in booloader v7).
+     *  (introduced in bootloader v7).
      */
     bool crystal_32k;
     /** True if DCDC converter is enabled; default:true
-     * (introduced in bootloader v7).
+     *  (introduced in bootloader v7).
      */
     bool dcdc;
+    /** Platform specific descriptions
+     *  (introduced in bootloader v8).
+     */
+    bl_platform_t platform;
 } bl_hardware_capabilities_t;
 
 /**
@@ -429,12 +491,21 @@ typedef bl_interface_res_e
 typedef bl_interface_res_e
     (*bl_scrat_setBootable_f)(void);
 
+typedef bl_interface_res_e (*bl_scrat_setStatus_f)(uint32_t status);
+
 /**
  * \brief   Returns board hardware capabilities.
- * \return  Return a bit field \ref bl_hardware_capabilities_e with
+ * \return  Return a structure \ref bl_hardware_capabilities_t with
  *          hardware features installed on the board.
  */
-typedef const bl_hardware_capabilities_t * (*bl_hardware_getCapabilities_f)(void);
+typedef const bl_hardware_capabilities_t *
+    (*bl_hardware_getCapabilities_f)(void);
+
+/**
+ * \brief   Add flow debugging point.
+ */
+typedef void (*bl_debug_flow_f)(dflow_tag_e tag);
+
 
 typedef struct
 {
@@ -457,12 +528,18 @@ typedef struct
     bl_scrat_write_f                write;
     bl_scrat_getInfo_f              getInfo;
     bl_scrat_setBootable_f          setBootable;
+    bl_scrat_setStatus_f            setStatus;
 } scratchpad_services_t;
 
 typedef struct
 {
     bl_hardware_getCapabilities_f   getCapabilities;
 } hardware_services_t;
+
+typedef struct
+{
+    bl_debug_flow_f   debug_flow;
+} dflow_services_t;
 
 /**
  * \brief   Global interface entry point with a version id
@@ -473,6 +550,7 @@ typedef struct
     const memory_area_services_t * memory_area_services_p;
     const scratchpad_services_t * scratchpad_services_p;
     const hardware_services_t * hardware_services_p;
+    const dflow_services_t * dflow_services_p;
 } bl_interface_t;
 
 #endif /* BL_INTERFACE_H_ */

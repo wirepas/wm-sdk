@@ -160,15 +160,7 @@ def main():
                         metavar="VALUE",
                         required=True,
                         help="Address of the storage area ([area:app_persistent])\n"
-                             "defined in scratchpad_ini/scratchpad_<mcu>.ini file\n"
-                             "Default values per mcu are :\n"
-                             " - NRF52832         : 512000  (0x7D000)\n"
-                             " - NRF52833         : 512000  (0x7D000)\n"
-                             " - NRF52840         : 1036288 (0xFD000)\n"
-                             " - EFR32xg1x (512k) : 518144  (0x7E800)\n"
-                             " - EFR32xg1x (1024k): 1042432 (0xFE800)\n"
-                             " - EFR32xg22 (512k) : 499712  (0x7A000)\n"
-                             " - EFR32xg21 (1024k): 1024000 (0xFA000)")
+                             "defined in mcu/<platform>/ini_files/<chipset>_app.ini file\n")
 
     try:
         args = parser.parse_args()

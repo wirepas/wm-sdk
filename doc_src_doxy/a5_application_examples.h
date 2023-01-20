@@ -281,6 +281,7 @@ This page contains following sections:
 - @subpage source_makefile_app_printing
 - @subpage source_makefile_app_scheduler
 - @subpage source_makefile_cflags
+- @subpage source_makefile_hal_gpio
 - @subpage source_makefile_hal_button
 - @subpage source_makefile_hal_hw_delay
 - @subpage source_makefile_hal_i2c
@@ -338,6 +339,19 @@ CFLAGS += -DNETWORK_ADDRESS=$(default_network_address)
 CFLAGS += -DNETWORK_CHANNEL=$(default_network_channel)
 @endcode
 
+@subsection source_makefile_hal_gpio HAL_GPIO
+
+Using of @ref gpio.h "HAL for GPIOs" can be done by this flag.
+
+Example:
+@code
+# This application use HAL for GPIOs
+HAL_GPIO=yes
+@endcode
+
+@note: in order for application to be able to drive GPIOs, they must be
+defined in specific @ref board_folder "board".
+
 @subsection source_makefile_hal_button HAL_BUTTON
 
 Using of @ref button.h "HAL for buttons" can be done by this flag.
@@ -350,7 +364,6 @@ HAL_BUTTON=yes
 
 @note: in order for application to be able to drive buttons, they must be
 defined in specific @ref board_folder "board".
-@note This option is supported only on nRF52 architectures.
 
 @subsection source_makefile_hal_hw_delay HAL_HW_DELAY
 
