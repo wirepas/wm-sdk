@@ -7,8 +7,8 @@
 #include <stdint.h>
 
 #include "waps_private.h"
-
-#include "io.h"
+#include "uart_wakeup.h"
+#include "gpio.h"
 #include "ds.h"
 #include "usart.h"
 
@@ -57,7 +57,7 @@ static volatile usart_power_state_e m_power_on = USART_POWER_OFF;
 /**
  * \brief   Callback for RX pin state change
  */
-static void                         uart_gpio_isr(void);
+static void                         uart_gpio_isr(gpio_id_t gpio_id, gpio_in_event_e gpio_event);
 
 /**
  * \brief   Turn receiver power off
@@ -73,9 +73,7 @@ void Waps_uart_AutoPowerOn(void)
 {
     Sys_enterCriticalSection();
     m_power_on = USART_POWER_OFF;
-    Wakeup_pinInit(uart_gpio_isr);
-    // Expecting falling edge interrupt
-    Wakeup_setEdgeIRQ(EXTI_IRQ_FALLING_EDGE, true);
+    UartWakeup_enable(uart_gpio_isr);
     m_autopower_enabled = true;
     Sys_exitCriticalSection();
 }
@@ -84,9 +82,7 @@ void Waps_uart_AutoPowerOff(void)
 {
     Sys_enterCriticalSection();
     m_power_on = USART_POWER_OFF;
-    Wakeup_setEdgeIRQ(EXTI_IRQ_FALLING_EDGE, false);
-    Wakeup_clearIrq();
-    Wakeup_off();
+    UartWakeup_disable();
     m_autopower_enabled = false;
     Sys_exitCriticalSection();
 }
@@ -127,21 +123,19 @@ void Waps_uart_powerOff(void)
 }
 
 /** This function expects three preamble bytes, will not work otherwise */
-static void uart_gpio_isr(void)
+static void uart_gpio_isr(gpio_id_t gpio_id, gpio_in_event_e gpio_event)
 {
-    if(m_power_on == USART_POWER_OFF)
+    if((m_power_on == USART_POWER_OFF) && (gpio_event == GPIO_IN_EVENT_FALLING_EDGE))
     {
         /* MCU Wake-up (falling edge)! Start edge trigger VERY quickly */
         Sys_enterCriticalSection();
-        /* Change sense direction and enable rising edge trigger */
-        Wakeup_setEdgeIRQ(EXTI_IRQ_RISING_EDGE, true);
         m_power_on = USART_POWER_UP;
         Sys_exitCriticalSection();
         // Rising edge comes very fast, may not be safe to enter deep sleep
         DS_Disable(DS_SOURCE_USART_POWER);
         wakeup_task();
     }
-    else if(m_power_on == USART_POWER_UP)
+    else if((m_power_on == USART_POWER_UP) && (gpio_event == GPIO_IN_EVENT_RISING_EDGE))
     {
         /* Rising edge (receiver is on!) enable receiver and disable isr */
         Sys_enterCriticalSection();
@@ -152,7 +146,7 @@ static void uart_gpio_isr(void)
         Sys_exitCriticalSection();
         // Uart is now awake, safe to enable deep sleep
         DS_Enable(DS_SOURCE_USART_POWER);
-        Wakeup_setEdgeIRQ(EXTI_IRQ_FALLING_EDGE, false);
+        UartWakeup_disable();
     }
 }
 
@@ -187,6 +181,6 @@ static void power_off(void)
 
     /* Power is now off */
     m_power_on = USART_POWER_OFF;
-    /* Change edge to falling edge and enable power-up pin */
-    Wakeup_setEdgeIRQ(EXTI_IRQ_FALLING_EDGE, true);
+    /* Enable detection of UART RX rising/falling edges, so that the UART receiver can be woken */
+    UartWakeup_enable(uart_gpio_isr);
 }

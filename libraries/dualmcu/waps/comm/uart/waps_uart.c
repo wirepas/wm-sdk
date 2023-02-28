@@ -10,7 +10,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "io.h"
+#include "indication_signal.h"
 #include "usart.h"
 #include "crc.h"
 #include "waps/waps_buffer_sizes.h"
@@ -119,8 +119,8 @@ void Waps_uart_powerReset(void)
     }
 
     // Initialize UART IRQ pin
-    Io_enableUartIrq();
-    Io_clearUartIrq();
+    IndicationSignal_enable();
+    IndicationSignal_clear();
 }
 
 bool Waps_uart_send(const void * buffer, uint32_t size)
@@ -160,12 +160,12 @@ void Waps_uart_setIrq(bool state)
    if(state)
    {
        // Assert IRQ pin
-       Io_setUartIrq();
+       IndicationSignal_set();
    }
    else
    {
        // De-assert IRQ pin
-       Io_clearUartIrq();
+       IndicationSignal_clear();
    }
 }
 

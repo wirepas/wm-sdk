@@ -3,6 +3,18 @@
 
 include makefile_common.mk
 
+# Version of GCC used for Wirepas testing
+GCC_TESTED_VERSION := 10.2.1
+
+# Check the toolchain version with GCC
+GCC_VERSION := $(shell $(CC) -dumpversion)
+ifneq ($(GCC_VERSION), $(findstring $(GCC_VERSION), $(GCC_TESTED_VERSION)))
+$(warning ***********************************************************************)
+$(warning "GCC version used is not the recommended and tested by Wirepas )
+$(warning "Recommended version is : $(GCC_TESTED_VERSION))
+$(warning ***********************************************************************)
+endif
+
 #
 # Targets
 #

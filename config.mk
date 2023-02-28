@@ -11,8 +11,9 @@ target_board=
 # Version of the SDK
 sdk_major=1
 sdk_minor=4
-sdk_maintenance=0
-sdk_development=0
+sdk_maintenance=1
+# Beta version 1. 1 as development version (will be 0 in official release)
+sdk_development=1
 
 
 # Specify the arm toolchain to use (leave it blank if already set in your PATH)

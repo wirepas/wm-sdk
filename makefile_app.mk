@@ -54,7 +54,10 @@ CFLAGS += -DVER_MAJOR=$(app_major) -DVER_MINOR=$(app_minor) -DVER_MAINT=$(app_ma
 -include $(WP_LIB_PATH)makefile
 INCLUDES += -I$(WP_LIB_PATH)
 
-# Include HAL drivers code
+# Include MCU config first
+-include $(MCU_PATH)config.mk
+
+# Include MCU HAL drivers code
 -include $(HAL_API_PATH)makefile
 
 # Include common MCU sources
@@ -107,4 +110,3 @@ clean:
 	$(RM) -rf $(CLEAN)
 
 -include $(DEPS)
-
