@@ -13,6 +13,9 @@ CFLAGS += -DAPP_PRINTING
 HAL_UART=yes
 SRCS += $(UTIL_PATH)uart_print.c
 endif
+ifeq ($(APP_PRINTING), custom)
+CFLAGS += -DAPP_PRINTING
+endif
 
 ifeq ($(WIRESHARK), yes)
 ifeq ($(APP_PRINTING), yes)
