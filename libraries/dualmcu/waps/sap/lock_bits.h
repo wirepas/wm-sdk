@@ -44,7 +44,7 @@ typedef enum
     LOCK_BITS_CSAP_ATTR_READ            = 0x00000200,
     /** Prevent performing factory reset */
     LOCK_BITS_CSAP_FACTORY_RESET        = 0x00001000,
-    /** Prevent scratchpad write operations */
+    /** Prevent scratchpad write and read operations */
     LOCK_BITS_MSAP_SCRATCHPAD_START     = 0x00002000,
     /** Prevent reading scratchpad status (includes CSAP and MSAP attributes) */
     LOCK_BITS_MSAP_SCRATCHPAD_STATUS    = 0x00008000,

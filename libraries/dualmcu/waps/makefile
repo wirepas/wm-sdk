@@ -8,8 +8,11 @@ WAPS_PREFIX := $(WP_LIB_PATH)dualmcu/waps/
 #           - add quality indicator)
 # 15 -> 16 (- use new single mcu api to set app config diag interval
 #             so sequence become obsolete)
+# 16 -> 17 (- Add support for fragmented packet (TX and RX))
+# 17 -> 18 (- add scratchpad read primitive
+#           - add read-only MSAP attribute 14 for stored scratchpad size)
 
-CFLAGS += -DWAPS_VERSION=16
+CFLAGS += -DWAPS_VERSION=18
 
 INCLUDES += -I$(WAPS_PREFIX)
 

@@ -12,7 +12,6 @@
 #include "debug_log.h"
 #include <stdio.h>
 #include <string.h>
-#include "beacon_tx.h"
 #include "shared_beacon.h"
 
 /** Internal structure of a shared beacon */

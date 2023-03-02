@@ -9,6 +9,7 @@
 #include "provisioning.h"
 #include "provisioning_int.h"
 #include "app_scheduler.h"
+#include "stack_state.h"
 
 #define DEBUG_LOG_MODULE_NAME "JOIN LIB"
 #define DEBUG_LOG_MAX_LEVEL LVL_INFO
@@ -137,7 +138,7 @@ static void joining_beacon_rx_cb(
 /**
  * \brief   Route changed callback. Raises route_change event.
  */
-void route_changed_cb(void)
+static void route_changed_cb(app_lib_stack_event_e event, void * param)
 {
     LOG(LVL_INFO, "Event : ROUTE CHANGE.");
     m_events.route_change = 1;
@@ -183,7 +184,7 @@ static void reset_joining(bool stopJoining)
         lib_joining->stopJoiningProcess();
     }
     App_Scheduler_cancelTask(timeout_task);
-    lib_state->setRouteCb(NULL, 0);
+    Stack_State_removeEventCb(route_changed_cb);
     m_state = JOIN_STATE_IDLE;
     memset(&m_events,0,sizeof(m_events));
 }
@@ -310,12 +311,13 @@ static uint32_t state_wait_scan_end(void)
                  *  to catch it early.
                  */
 
-                /* Test if the node is already joined to the joining node.
+                /* Test if the node is already joined to the network from joining beacon.
+                 * If it is the case, route change callback will never be called so skip
+                 * this part
                  */
                 if (lib_settings->getNetworkAddress(&addr) == APP_RES_OK &&
                     lib_settings->getNetworkChannel(&ch) == APP_RES_OK &&
-                    addr != beacon->addr &&
-                    ch != beacon->channel)
+                    !(addr == beacon->addr && ch == beacon->channel))
                 {
                     LOG(LVL_INFO, "State WAIT_SCAN_END : "
                             "start joining process (address : %d, ch : %d).",
@@ -331,7 +333,8 @@ static uint32_t state_wait_scan_end(void)
                     }
                     else
                     {
-                        lib_state->setRouteCb(route_changed_cb, 0);
+                        // Interested by ROUTE changed event
+                        Stack_State_addEventCb(route_changed_cb, 1 << APP_LIB_STATE_STACK_EVENT_ROUTE_CHANGED);
                         m_state = JOIN_STATE_WAIT_ROUTE_CHANGE;
                         if (App_Scheduler_addTask_execTime(timeout_task,
                                                   DELAY_WAIT_END_JOINING_MS,
@@ -442,7 +445,7 @@ static uint32_t state_wait_route_change(void)
     else
     {
         App_Scheduler_cancelTask(timeout_task);
-        lib_state->setRouteCb(NULL, 0);
+        Stack_State_removeEventCb(route_changed_cb);
         LOG(LVL_INFO, "State WAIT_ROUTE_CHANGE : "
                       "network joined successfully (next_hop: %u).",
                       info.next_hop);
@@ -453,7 +456,7 @@ static uint32_t state_wait_route_change(void)
     if(m_events.timeout)
     {
         LOG(LVL_WARNING, "State WAIT_ROUTE_CHANGE : timeout.");
-        lib_state->setRouteCb(NULL, 0);
+        Stack_State_removeEventCb(route_changed_cb);
 
         m_retry++;
 

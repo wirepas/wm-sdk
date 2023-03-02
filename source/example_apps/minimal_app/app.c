@@ -23,8 +23,6 @@
  */
 void App_init(const app_global_functions_t * functions)
 {
-    app_lib_settings_role_t role = app_lib_settings_create_role(APP_LIB_SETTINGS_ROLE_HEADNODE, APP_LIB_SETTINGS_ROLE_FLAG_LL);
-    
     // Basic configuration of the node with a unique node address
     if (configureNodeFromBuildParameters() != APP_RES_OK)
     {
@@ -39,7 +37,6 @@ void App_init(const app_global_functions_t * functions)
      * will not be part of any network. So the device will not be reachable
      * without reflashing it
      */
-    lib_settings->setNodeRole(role);
     lib_state->startStack();
 }
 

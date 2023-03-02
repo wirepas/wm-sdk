@@ -49,38 +49,38 @@ this handle to access the services.
 
 <table>
 <tr><th>Header file</th><th>Handle</th><th>Description</th></tr>
-<tr><td>@ref advertiser.h</td><td>@ref app_lib_advertiser_t "lib_advertiser"
+<tr><td>@ref wms_advertiser.h</td><td>@ref app_lib_advertiser_t "lib_advertiser"
 </td><td>Application library for direct advertiser functionality</td></tr>
-<tr><td>@ref app.h</td><td>NA</td><td>The global macros, types and functions
-available to applications can be found in the app.h header</td></tr>
-<tr><td>@ref beacon_rx.h</td><td>@ref app_lib_beacon_rx_t "lib_beacon_rx"</td>
+<tr><td>@ref wms_app.h</td><td>NA</td><td>The global macros, types and functions
+available to applications can be found in the wms_app.h header</td></tr>
+<tr><td>@ref wms_beacon_rx.h</td><td>@ref app_lib_beacon_rx_t "lib_beacon_rx"</td>
 <td>Application library for Bluetooth LE beacon RX</td></tr>
-<tr><td>@ref beacon_tx.h</td><td>@ref app_lib_beacon_tx_t "lib_beacon_tx"</td>
+<tr><td>@ref wms_beacon_tx.h</td><td>@ref app_lib_beacon_tx_t "lib_beacon_tx"</td>
 <td>Transmission of Bluetooth LE compatible beacons</td></tr>
-<tr><td>@ref data.h</td><td>@ref app_lib_data_t "lib_data"</td><td>Sending and
+<tr><td>@ref wms_data.h</td><td>@ref app_lib_data_t "lib_data"</td><td>Sending and
 receiving data packets</td></tr>
-<tr><td>@ref hardware.h</td><td>@ref app_lib_hardware_t "lib_hw"</td><td>Sharing
+<tr><td>@ref wms_hardware.h</td><td>@ref app_lib_hardware_t "lib_hw"</td><td>Sharing
 of hardware peripherals between stack and application</td></tr>
-<tr><td>@ref joining.h</td><td>@ref app_lib_joining_t "lib_joining"</td><td>Wirepas
+<tr><td>@ref wms_joining.h</td><td>@ref app_lib_joining_t "lib_joining"</td><td>Wirepas
 Open Joining protocol</td></tr>
-<tr><td>@ref memory_area.h</td><td>@ref app_lib_memory_area_t "lib_memory_area"
+<tr><td>@ref wms_memory_area.h</td><td>@ref app_lib_memory_area_t "lib_memory_area"
 </td><td>Access to non-volatile memory areas</td></tr>
-<tr><td>@ref otap.h</td><td>@ref app_lib_otap_t "lib_otap"</td><td>The
+<tr><td>@ref wms_otap.h</td><td>@ref app_lib_otap_t "lib_otap"</td><td>The
 Over-The-Air-Programming (OTAP) library</td></tr>
-<tr><td>@ref radio_config.h</td><td>@ref app_lib_radio_cfg_t "lib_radio_config"</td>
+<tr><td>@ref wms_radio_config.h</td><td>@ref app_lib_radio_cfg_t "lib_radio_config"</td>
 <td>Application library for radio power and front end module control</td></tr>
-<tr><td>@ref settings.h</td><td>@ref app_lib_settings_t "lib_settings"</td><td>
+<tr><td>@ref wms_settings.h</td><td>@ref app_lib_settings_t "lib_settings"</td><td>
 Access to node settings, which are stored in nonvolatile memory</td></tr>
-<tr><td>@ref sleep.h</td><td>@ref app_lib_sleep_t "lib_sleep"</td><td>Sleep
+<tr><td>@ref wms_sleep.h</td><td>@ref app_lib_sleep_t "lib_sleep"</td><td>Sleep
 Wirepas Mesh stack for time periods</td></tr>
-<tr><td>@ref state.h</td><td>@ref app_lib_state_t "lib_state"</td><td>Viewing
+<tr><td>@ref wms_state.h</td><td>@ref app_lib_state_t "lib_state"</td><td>Viewing
 and controlling stack runtime state</td></tr>
-<tr><td>@ref storage.h</td><td>@ref app_lib_storage_t "lib_storage"</td><td>
+<tr><td>@ref wms_storage.h</td><td>@ref app_lib_storage_t "lib_storage"</td><td>
 Small Non-volatile storage area to use for application</td></tr>
-<tr><td>@ref system.h</td><td>@ref app_lib_system_t "lib_system"</td><td>
+<tr><td>@ref wms_system.h</td><td>@ref app_lib_system_t "lib_system"</td><td>
 Low-level functions such as application scheduling, interrupt handling, critical
 sections and power management</td></tr>
-<tr><td>@ref time.h</td><td>@ref app_lib_time_t "lib_time"</td><td>Keeping track
+<tr><td>@ref wms_time.h</td><td>@ref app_lib_time_t "lib_time"</td><td>Keeping track
 of time and comparing timestamps</td></tr>
 </table>
 @note Not all of the services are available in every platform!

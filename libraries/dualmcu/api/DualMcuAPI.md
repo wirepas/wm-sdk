@@ -52,7 +52,7 @@ for the application layer (hereafter referred to as the "application"). The
 services are exposed via Service Access Points ("SAPs"). The SAPs are divided
 into Data SAP (DSAP), Management SAP (MSAP), and Configuration SAP (CSAP). The
 SAP services are provided in the form of primitives and SAP data is exposed as
-attributes.  
+attributes.
 All field lengths are in octets (i.e. units of eight bits), unless otherwise
 stated.
 
@@ -100,7 +100,7 @@ response. The general usage of the primitives is as follows (Also see Figure 1):
 *Figure 1. Primitive usage in the communication between the application and the
 stack*
 
-  
+
 Three different use cases can be identified for the above primitives:
 
 1.  Application issues commands to the stack or needs to send data/information.
@@ -133,7 +133,7 @@ which the stack informs that the request has been taken for processing and in
 addition optional indication with which the stack informs that the request has
 actually been processed.
 
-  
+
 **Note 2:** The stack indications are always notified via IRQ and can be queried
 by the application. The stack never sends data/information to the application on
 its own without the application explicitly requesting it. This enables the
@@ -152,13 +152,13 @@ Attributes are small pieces of data that affect the way the stack works, or are
 used to inform the application of the state of the stack. Before the stack can
 be started in normal operation, a few critical attributes need to be configured
 properly (see section [“Required
-Configuration”](#Required-Configuration)).  
+Configuration”](#Required-Configuration)).
 Attributes can either be read-only, readable and writable, or write-only. The
 attributes can also be persistent or non-persistent. If the attribute is
 persistent, its value will be retained over device power downs and stack stops,
 i.e. the value of an attribute is stored in non-volatile memory. Otherwise, the
 attribute value will be lost when the device is powered down or the stack
-stopped.  
+stopped.
 Note: Although there are no strict restrictions on how often a persistent
 variable can be updated by the application layer, each update causes a tiny bit
 of wear on the non-volatile memory. If a persistent variable is to be updated
@@ -190,7 +190,7 @@ SLIP framing works as follows:
 In addition, two additional END octets are used to wake up the stack side UART
 when starting communication. These END octets are present only when
 communicating towards the stack UART. The stack UART will transmit a single END
-octet in the beginning of a frame.  
+octet in the beginning of a frame.
 The general format of the serial frame is presented in Figure 2. Note that the
 different primitives and corresponding content of the payload (thick border in
 Figure 2) are specified in section “[Stack Service
@@ -201,13 +201,13 @@ The meaning of the different frame fields is described in Table 1.
     <img src="figures/Fig_GenFormat.png">
 </p>
 
-  
+
 *Figure 2. General format of the serial frame*
 
-  
+
 Table 1. General serial frame fields
 
-| **Field**        | **Size** | **Description**  
+| **Field**        | **Size** | **Description**
 |------------------|----------|------------------
 | *END*            | 1        | Frame separator, octet 0xC0.  Starts and ends a SLIP encoded frame. In addition two extra END-octets are used to wake up the stack side UART when starting communication.
 | *Primitive ID*   | 1        | The identified of the used primitive. <p>Different primitives and their primitive identifiers are specified in section [Stack Service Specification](#Stack-Service-Specification). <p>As a general rule: <p>Initiating primitives (request-primitives from the application side and indication-primitives from the stack side) have always the most significant bit set to 0. Responding primitives (confirm-primitives from the stack side and response-primitives from the application side) always have the most significant bit set to 1.  <p> Confirm.primitive_id = 0x80 \| request.primitive_id  Response.primitive_id = 0x80 \| indication.primitive_id
@@ -222,20 +222,20 @@ application MCU and the stack. They are not actually transmitted on the network.
 ## Flow Control
 
 The application MCU is the master in the communication between the application
-and the stack.  
+and the stack.
 The stack UART receiver is enabled by two wake up symbols (as described in
 section [General Frame
 Format](#General-Frame-Format))
 and any octets received via UART are processed in an Interrupt Service Routine
 (ISR). Thus, no serial interface flow control is required when communicating to
 the stack (flow control may be needed in upper level if the stack memory runs
-low due to congestion).  
+low due to congestion).
 Communication is always initiated by the application MCU. Thus, no serial
-interface flow control is required in the application direction either.  
+interface flow control is required in the application direction either.
 The stack informs pending indications via an IRQ signal. The IRQ signal is
 active low. When the stack has pending indications, the IRQ is asserted, i.e.
 the IRQ signal is pulled down. When the stack does not have pending indications,
-the IRQ is not asserted, i.e. the IRQ signal is held high.  
+the IRQ is not asserted, i.e. the IRQ signal is held high.
 The usage of request-confirm and indication-response pairs should always be
 atomic. This means, that a new request should not be sent before a confirmation
 is received for a previous request (application initiated communication) and a
@@ -259,13 +259,13 @@ Default Dual MCU application settings are described in in Table 2.
 ## Endianness and Bit Order
 
 Multi-octet fields are transferred least significant octet first (i.e.
-little-endian).  
+little-endian).
 Octets are transferred most significant bit first.
 
 ## Timing
 
 There is a reception timeout for received UART frames. A transmission of
-complete API frame to the stack MCU shall take no longer than 300 ms.
+complete API frame to the stack MCU shall take no longer than 450 ms.
 
 ## CRC Calculation (CRC-16-CCITT)
 
@@ -286,10 +286,14 @@ the services. Table 3 list all the primitives and their primitive IDs.
 |         | DSAP-DATA_TX.confirm               | 0x81             |
 |         | DSAP-DATA_TX_TT.request            | 0x1F             |
 |         | DSAP-DATA_TX_TT.confirm            | 0x9F             |
+|         | DSAP-DATA_TX_FRAG.request          | 0x0F             |
+|         | DSAP-DATA_TX_FRAG.confirm          | 0x8F             |
 |         | DSAP-DATA_TX.indication            | 0x02             |
 |         | DSAP-DATA_TX.response              | 0x82             |
 |         | DSAP-DATA_RX.indication            | 0x03             |
 |         | DSAP-DATA_RX.response              | 0x83             |
+|         | DSAP-DATA_RX_FRAG.indication       | 0x10             |
+|         | DSAP-DATA_RX_FRAG.response         | 0x90             |
 | MSAP    | MSAP-INDICATION_POLL.request       | 0x04             |
 |         | MSAP-INDICATION_POLL.confirm       | 0x84             |
 |         | MSAP-STACK_START.request           | 0x05             |
@@ -342,6 +346,8 @@ the services. Table 3 list all the primitives and their primitive IDs.
 |         | MSAP-SCRATCHPAD_TARGET_WRITE.confirm | 0xA6           |
 |         | MSAP-SCRATCHPAD_TARGET_READ.request| 0x27             |
 |         | MSAP-SCRATCHPAD_TARGET_READ.confirm| 0xA7             |
+|         | MSAP-SCRATCHPAD_BLOCK_READ.request | 0x28             |
+|         | MSAP-SCRATCHPAD_BLOCK_READ.confirm | 0xA8             |
 |         | MSAP-MAX_QUEUE_TIME_WRITE.request  | 0x4F             |
 |         | MSAP-MAX_QUEUE_TIME_WRITE.confirm  | 0xCF             |
 |         | MSAP-MAX_QUEUE_TIME_READ.request   | 0x50             |
@@ -365,17 +371,17 @@ Format](#General-Frame-Format).
 ## Node Addressing
 
 The Wirepas Mesh Dual-MCU API services use a 32-bit address to indicate sources
-and destinations of packets.  
+and destinations of packets.
 Two special addresses have been reserved. First, address 0x0000 0000 (zero) or
 0xFFFFFFFE (4 294 967 294) is used as the *anySink* address which identifies
 that the source or the destination of a packet is an unspecified sink on the
 network. The highest address 0xFFFF FFFF is used as the *broadcast* address. It
-is used to transmit a downlink packet to all nodes on the network from a sink.  
+is used to transmit a downlink packet to all nodes on the network from a sink.
 Nodes are not allowed to use these two special addresses as their own address.
-Similarly, addresses in multicast address space cannot be used as own address.  
+Similarly, addresses in multicast address space cannot be used as own address.
 The addresses are summarized in Table 4.
 
-  
+
 *Table 4. Addressing summary*
 
 | **Address type** | **Valid address space** | **Description** |
@@ -403,6 +409,10 @@ to set parameters. The DSAP-DATA_TX service includes the following primitives:
 
 -   DSAP-DATA_TX_TT.confirm
 
+-   DSAP-DATA_TX_FRAG.request
+
+-   DSAP-DATA_TX_FRAG.confirm
+
 -   DSAP-DATA_TX.indication
 
 -   DSAP-DATA_TX.response (All response primitives have the same format, see
@@ -424,8 +434,8 @@ data. Frame fields are described in the table below.
 | *DestinationEndpoint* | 1 | 0 – 239          | Destination endpoint number  Also see Note 2.
 | *QoS*          | 1        | 0 or 1           | Quality of service class to be used. The different values are defined as follows:<p> - 0 = Use traffic class 0, i.e. normal priority<p> - 1 = Use traffic class 1, i.e. high priority.
 | *TXOptions*    | 1        | 00xx xxxx  (bitfield, where x can be 0 or 1) | The TX options are indicated as a bit field with individual bits defined as follows:<p> - Bit 0 = 0: Do not generate DSAP-DATA_TX.indication<p> - Bit 0 = 1: Generate DSAP-DATA_TX.indication  Bit 0 is used to register for receiving a DSAP-DATA_TX.indication after the PDU has been successfully transmitted to next hop node or cleared from the PDU buffers due to timeout or congestion. Also see Note 1.<p> - Bit 1 = 1, Use unacknowledged CSMA-CA transmission method<p> - Bit 1 = 0, Use normal transmission method.  See Note 4.<p> - Bits 2-5: Hop limit. Maximum number of hops executed for packet to reach the destination. See Note 5.<p> - Bits 6-7: Reserved <p>Here, bit 0 is the least significant bit and bit 7 is the most significant bit.
-| *APDULength*    | 1        | 1 – 102 | The length of the following APDU in octets 
-| *APDU*          | 1 – 102  | \-      | Application payload 
+| *APDULength*    | 1        | 1 – 102 | The length of the following APDU in octets
+| *APDU*          | 1 – 102  | \-      | Application payload
 | *CRC*           | 2        | \-      | See section [General Frame Format](#General-Frame-Format)
 
 **Note 1:** These fields are used only locally for the communication between the
@@ -434,18 +444,18 @@ network. Only 16 requests where generation of DSAP-DATA_TX.indication is active
 are allowed at the same time. Without generation of the indication, there is
 room for plenty of more requests simultaneously.
 
-  
+
 **Note 2:** The endpoint numbers are used to distinguish different application
 channels. E.g. if the device has multiple sensors it could use different
 endpoint numbers for APDUs containing data from different sensors or different
-endpoint numbers for applications with different functionality.  
-Endpoints 240 – 255 are reserved for Wirepas Mesh stack internal use.  
+endpoint numbers for applications with different functionality.
+Endpoints 240 – 255 are reserved for Wirepas Mesh stack internal use.
 Note 3:Note that a broadcast will only be transmitted (downlink) to the nodes
 directly under the sink's routing tree. To reach all nodes on the network, it is
 necessary to send the broadcast from all sinks. All devices can send traffic to
 themselves (loopback) by using their own address as destination.
 
-  
+
 **Note 4:** The unacknowledged CSMA-CA transmission method can be used in a
 mixed network (i.e. network consisting of both CSMA-CA and TDMA devices) by
 CSMA-CA device originated packets transmission only to CSMA-CA devices. The
@@ -455,7 +465,7 @@ mode sinks), the throughput is better when compared to a 'normal' transmission,
 however there is some penalty in reliability (due to unacknowledged nature of
 transmission).
 
-  
+
 **Note 5:** Hop limit sets the upper value to the number of hops executed for
 packet to reach the destination. By using hop limiting, it is possible to limit
 the distance how far the packet is transmitted to and avoiding causing
@@ -504,6 +514,35 @@ The DSAP-DATA_TX_TT.confirm is issued by the stack as a response to the
 DSAP-DATA_TX_TT.request. It is identical to DSAP-DATA_TX.confirm, explained in
 section [DSAP-DATA_TX.confirm](#DSAP-DATA_TX.confirm).
 
+#### DSAP-DATA_TX_FRAG.request
+
+The DSAP-DATA_TX_FRAG.request is identical to the DSAP-DATA_TX_TT.request, except
+there are some extra field for fragment identification and position.
+Frame fields are described in the table below.
+
+| **Field Name** | **Size** | **Valid Values** | **Description**
+|----------------|----------|------------------|----------------
+| *Primitive ID*        | 1        | 0x0F                                         | Identifier of DSAP-DATA_TX_FRAG.request primitive
+| *Frame ID*            | 1        | 0 – 255                                      | See section [General Frame Format](#General-Frame-Format)
+| *PDUID*               | 2        | 0 – 65534                                    | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
+| *SourceEndpoint*      | 1        | 0 – 239                                      | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
+| *DestinationAddress*  | 4        | 0 – 4294967295                               | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
+| *DestinationEndpoint* | 1        | 0 – 239                                      | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
+| *QoS*                 | 1        | 0 or 1                                       | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
+| *TXOptions*           | 1        | 00xx xxxx  (bitfield, where x can be 0 or 1) | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
+| *BufferingDelay*      | 4        | 0 – 4 294 967 295                            | See description in chapter [DSAP-DATA_TX_TT.request](#DSAP-DATA_TX_TT.request)
+| *FullPacketId*        | 2        | 0 – 4095                                     | Id of the full message this fragment belongs. Only lowest twelve bits are meaningful.
+| *FragmentOffset and flags*      | 2        |  see Description                    | - Bits 0..11:<p> Offset of this fragment inside the full packet (between 0 and 1499) <p> - Bits 12..14:<p> Reserved <p>- Bit 15:<p> Set if fragment is last one of full message
+| *APDULength*          | 1        | 1 – 102                                      | Size of this current fragment.
+| *APDU*                | 1 – 102  | \-                                           | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
+| *CRC*                 | 2        | \-                                           | See section [General Frame Format](#General-Frame-Format)
+
+#### DSAP-DATA_TX_FRAG.confirm
+
+The DSAP-DATA_TX_FRAG.confirm is issued by the stack as a response to the
+DSAP-DATA_TX_FRAG.request. It is identical to DSAP-DATA_TX.confirm, explained in
+section [DSAP-DATA_TX.confirm](#DSAP-DATA_TX.confirm).
+
 #### DSAP-DATA_TX.indication
 
 The DSAP-DATA_TX.indication is issued by the stack as an asynchronous reply for
@@ -535,7 +574,9 @@ primitives:
 
 -   DSAP-DATA_RX.indication
 
--   DSAP-DATA_RX.response (All response primitives have the same format, see
+-   DSAP-DATA_RX_FRAG.indication
+
+-   DSAP-DATA_RX.response and DSAP-DATA_RX_FRAG.response (All response primitives have the same format, see
     section [Response Primitives](#Response-Primitives))
 
 #### DSAP-DATA_RX.indication
@@ -559,6 +600,30 @@ below.
 | *APDU*                | 1 – 102  | \-               | Application payload
 | *CRC*                 | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
 
+#### DSAP-DATA_RX_FRAG.indication
+
+The DSAP-DATA_RX_FRAG.indication is issued by the stack when it receives a data fragment from
+the network destined to this node. Frame fields are described in the table
+below.
+
+| **Field Name** | **Size** | **Valid Values** | **Description**
+|----------------|----------|------------------|----------------
+| *Primitive ID*        | 1        | 0x10             | Identifier of DSAP-DATA_RX_FRAG.indication primitive
+| *Frame ID*            | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
+| *IndicationStatus*    | 1        | 0 or 1           | 0 = No other indications queued1 = More indications queued
+| *SourceAddress*       | 4        | 0 – 4294967295   | Source node address
+| *SourceEndpoint*      | 1        | 0 – 239          | Source endpoint number
+| *DestinationAddress*  | 4        | 0 – 4294967295   | Destination node address
+| *DestinationEndpoint* | 1        | 0 – 239          | Destination endpoint number
+| *QoS + Hop count*     | 1        | 0 – 255          | Bits 0-1 (LSB): Quality of service class to be used. The different values are defined as follows:  <p> - 0 = Use traffic class 0, i.e. normal priority 1 = Use traffic class 1, i.e. high priority <p> - Bits 2-7: Hop count: how many hops were used to transmit the data to the destination (1-n hops)<p> For example, value 0x29 (0b00101001) tells that high priority data was received and ten hops were used to transmit data to the destination.
+| *TravelTime*          | 4        | \-               | Travel time of the PDU on the network. Reported in units of *TravelTime / 128* seconds i.e. *TravelTime \* 7.8125* milliseconds.
+| *FullPacketId*        | 2        | 0 – 4095         | Id of the full message this fragment belongs. Only lowest twelve bits are meaningful
+| *FragmentOffset and flags*      | 2        |  see Description                    | - Bits 0..11:<p> Offset of this fragment inside the full packet (between 0 and 1499) <p> - Bits 12..14:<p> Reserved <p>- Bit 15:<p> Set if fragment is last one of full message
+| *APDULength*          | 1        | \-               | The length of the following fragment in octets
+| *APDU*                | 1 – 102  | \-               | Application payload
+| *CRC*                 | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
+
+
 ## Management Services (MSAP)
 
 The management services are used to control the stack at run-time, as well as
@@ -576,7 +641,7 @@ the following primitives:
 -   MSAP-INDICATION_POLL.confirm
 
 The MSAP-INDICATION_POLL service is used to query indications from the stack.
-This mechanism is used for all indications independent of the service.  
+This mechanism is used for all indications independent of the service.
 The basic flow for receiving indications from the stack goes as follows:
 
 1.  The stack asserts the IRQ signal to indicate that it has pending
@@ -604,7 +669,7 @@ The basic flow for receiving indications from the stack goes as follows:
 The indication exchange stops if a) there are no more pending indications (in
 which case the stack de-asserts the IRQ), or b) the application indicates in a
 response that it does not want to receive more indications at the moment (in
-which case pending indications, if there are any, can be queried later).  
+which case pending indications, if there are any, can be queried later).
 Note:If there are no pending indications when the application issues a
 MSAP-INDICATION_POLL.request (i.e. the request is issued, but IRQ signal is not
 asserted), the stack replies only with MSAP-INDICATION_POLL.confirm and informs
@@ -613,7 +678,7 @@ that there are no pending indications at the moment.
 #### MSAP-INDICATION_POLL.request
 
 The MSAP-INDICATION_POLL.request is issued by the application layer when it
-wants to query stack indications.  
+wants to query stack indications.
 The MSAP-INDICATION_POLL.request frame does not contain any payload.
 
 #### MSAP-INDICATION_POLL.confirm
@@ -642,9 +707,9 @@ MSAP-STACK_START service includes the following primitives:
 The MSAP-STACK_START.request issued by the application layer when the stack
 needs to be started. Frame fields are described in the table below.
 
-| **Field Name** | **Size** | **Valid Values**                   | **Description** |                                                                                              
+| **Field Name** | **Size** | **Valid Values**                   | **Description** |
 |----------------|----------|------------------------------------|-----------------|
-| *Primitive ID* | 1        | 0x05                               | Identifier of MSAP-STACK_START.request primitive 
+| *Primitive ID* | 1        | 0x05                               | Identifier of MSAP-STACK_START.request primitive
 | *Frame ID*     | 1        | 0 – 255                            | See section [General Frame Format](#General-Frame-Format)
 | *StartOptions* | 1        | 0000 000x  (where x can be 0 or 1) | The stack start options are indicated as a bit field with individual bits defined as follows:<p> - Bit 0 = 0: Start stack with auto-start disabled, see Note, below<p> - Bit 0 = 1: Start stack with auto-start enabled<p> - Bit 1: Reserved<p> - Bit 2: Reserved<p> - Bit 3: Reserved<p> - Bit 4: Reserved<p> - Bit 5: Reserved<p> - Bit 6: Reserved<p> -  Bit 7: Reserved<p>where bit 0 is the least significant bit and bit 7 is the most significant bit.
 | *CRC*          | 2        | \-                                 | See section [General Frame Format](#General-Frame-Format)
@@ -659,7 +724,7 @@ MSAP-STACK_START.request. Frame fields are described in the table below.
 
 | **Field Name** | **Size** | **Valid Values** | **Description**
 |----------------|----------|------------------|----------------
-| *Primitive ID* | 1        | 0x85             | Identifier of MSAP-STACK_START.confirm primitive 
+| *Primitive ID* | 1        | 0x85             | Identifier of MSAP-STACK_START.confirm primitive
 | *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
 | *Result*       | 1        | 000x xxxx  (where x can be 0 or 1) | The return result of the corresponding MSAP-STACK_START.request. The result is indicated as a bit field with individual bits defined as follows: <p> - 0x00: Success: Stack started<p> - Bit 0 = 1: Failure: Stack remains stopped<p> - Bit 1 = 1: Failure: Network address missing<p> - Bit 2 = 1: Failure: Node address missing<p> - Bit 3 = 1: Failure: Network channel missing<p> - Bit 4 = 1: Failure: Role missing<p> - Bit 5 = 1: Failure: Application configuration data missing (valid only on sink device)<p> - Bit 6: Reserved<p> -  Bit 7 = 1: Failure: Access denied (see section [cFeatureLockBits](#cFeatureLockBits)) <p>where bit 0 is the least significant bit and bit 7 is the most significant bit.
 | *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
@@ -687,8 +752,8 @@ has the following side effects:
 
 Note:A successful MSAP-STACK_STOP.request sets the MSAP auto-start attribute to
 disabled. For more information on the auto-start feature, see section
-[mAutostart](#mAutostart).  
-  
+[mAutostart](#mAutostart).
+
 The MSAP-STACK_STOP.request frame does not contain any payload.
 
 #### MSAP-STACK_STOP.confirm
@@ -698,7 +763,7 @@ MSAP-STACK_STOP.request. Frame fields are described in the table below.
 
 | **Field Name** | **Size** | **Valid Values** | **Description**
 |----------------|----------|------------------|----------------
-| *Primitive ID* | 1        | 0x06             | Identifier of MSAP-STACK_STOP.confirm primitive 
+| *Primitive ID* | 1        | 0x06             | Identifier of MSAP-STACK_STOP.confirm primitive
 | *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
 | *Result*       | 1        | 0, 1 or 128      | The return result of the corresponding MSAP-STACK_STOP.request. The different values are defined as follows:<p> - 0 = Success: Stack stopped<p> - 1 = Failure: Stack already stopped<p> - 128 = Failure: Access denied (see section [cFeatureLockBits](#cFeatureLockBits))
 | *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
@@ -757,17 +822,17 @@ application parameters, such as measurement interval. The service makes it
 possible to set the data, after which every new node joining the network
 receives the data from its neighbors without the need for end-to-end polling.
 Furthermore, new configurations can be set and updated to the network on the
-run.  
+run.
 The MSAP-APP_CONFIG_DATA_WRITE service includes the following primitives:
 
 -   MSAP-APP_CONFIG_DATA_WRITE.request
 
 -   MSAP-APP_CONFIG_DATA_WRITE.confirm
 
-**Note 1:**The MSAP-APP_CONFIG_DATA_WRITE service can only be used in sink role.  
+**Note 1:**The MSAP-APP_CONFIG_DATA_WRITE service can only be used in sink role.
 **Note 2:** In a network including multiple sinks, the same configuration data
 should be set to all sinks so that it can be guaranteed to disseminate to every
-node.  
+node.
 **Note 3:**Application configuration data is stored in permanent memory
 similarly to the persistent attributes. To avoid memory wearing, do not write
 new values too often (e.g. more often than once per 30 minutes).
@@ -823,7 +888,7 @@ configuration data that was last received from neighboring nodes.
 #### MSAP-APP_CONFIG_DATA_READ.request
 
 The MSAP-APP_CONFIG_DATA_READ.request is issued by the application when it wants
-to read the network configuration data contents.  
+to read the network configuration data contents.
 The MSAP-APP_CONFIG_DATA_READ.request frame does not contain any payload.
 
 #### MSAP-APP_CONFIG_DATA_READ.confirm
@@ -895,7 +960,7 @@ below.
 | *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
 | *AttributeID*  | 2        | Depends on the attribute. See section [MSAP Attributes](#MSAP-Attributes) | The ID of the attribute that is written
 | *AttributeLength* | 1     | \-               | The length (in octets) of the attribute that is written
-| *AttributeValue*  | 1 – 16| \-               | The value that is written to the attribute specified by the set attribute ID 
+| *AttributeValue*  | 1 – 16| \-               | The value that is written to the attribute specified by the set attribute ID
 | *CRC*             | 2     | \-               | See section [General Frame Format](#General-Frame-Format) |
 
 #### MSAP-ATTRIBUTE_WRITE.confirm
@@ -961,13 +1026,13 @@ about neighboring nodes. It contains no payload.
 #### MSAP-GET_NBORS.confirm
 
 MSAP-GET_NBORS.confirm is issued by the stack as a response to the
-MSAP-GET_NBORS.request.  
+MSAP-GET_NBORS.request.
 Information for a maximum of eight neighbors is contained within one
 MSAP-GET_NBORS.confirm frame. The frame size does not change. If number of
 neighbors is less than eight, remaining data in the frame is undefined. If
 access is denied (see section
 [cFeatureLockBits](#cFeatureLockBits))
-a block of zeros is returned.  
+a block of zeros is returned.
 The neighbor info frame contains information for a maximum of eight neighbors.
 Frame fields are described in the table below.
 
@@ -1116,10 +1181,10 @@ This area is called the OTAP scratchpad. OTAP scratchpad can be used to
 distribute new firmware, applications and other large pieces of data to all
 nodes on the network. Nodes keep track of the scratchpad sequence numbers of
 their neighbors, and coordinate the distribution of the most recent OTAP
-scratchpad to all nodes.  
+scratchpad to all nodes.
 Any node can be used to introduce a new OTAP scratchpad to the network, but the
 stack must be in the stopped state while writing the scratchpad data. After the
-stack is started, the OTAP transfer will begin (unless disabled for this node).  
+stack is started, the OTAP transfer will begin (unless disabled for this node).
 Note: It is recommended that the scratchpad data is not rewritten too often, as
 new data is always written to the non-volatile memory of the sink and
 distributed to all nodes on the network. This can cause unnecessary wearing of
@@ -1129,7 +1194,7 @@ the non-volatile memory and unnecessary load to the network.
 
 The MSAP-SCRATCHPAD_START.request is issued by the application when it wants to
 clear and rewrite the Scratchpad contents of this node. Any previous scratchpad
-contents are erased.  
+contents are erased.
 Note:
 
 -   This request is only valid when the stack is in the stopped state
@@ -1140,7 +1205,7 @@ Frame fields are described in the table below.
 
 | **Field Name** | **Size** | **Valid Values** | **Description**
 |----------------|----------|------------------|----------------
-| *Primitive ID* | 1        | 0x17             | Identifier of MSAP-SCRATCHPAD_START.request primitive 
+| *Primitive ID* | 1        | 0x17             | Identifier of MSAP-SCRATCHPAD_START.request primitive
 | *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
 | *ScratchpadLengthInBytes*  | 4  | 96 –       | Total number of bytes of OTAP scratchpad data  The length must be divisible by 16, or the request will fail
 | *ScratchpadSequenceNumber* | 1  | 0 – 255    | Sequence number for filtering old scratchpad contents at the nodes  The sequence number must be increment by 1 every time a new OTAP scratchpad is written. See section [Sequence Numbers](#Sequence-Numbers) for details.  The following sequence numbers are considered special:  The sequence number must be different to the sequence number of the scratchpad already present in the node <p>A value of 255 is means that any scratchpad from the network will override this scratchpad <p>A value of 0 disables OTAP for this node |
@@ -1179,9 +1244,9 @@ Frame fields are described in the table below.
 |-----------------|----------|------------------|----------------
 | *Primitive ID*  | 1        | 0x18             | Identifier of MSAP-SCRATCHPAD_BLOCK.request primitive
 | *Frame ID*      | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
-| *StartAddress*  | 4        | 0 –              | Start address of scratchpad data  Overlapping previous data or leaving gaps is not permitted
-| *NumberOfBytes* | 1        | 1 – 112          | Number of bytes of scratchpad data  Must be a multiple of four bytes
-| *Bytes*         | 1 - 112  | \-               | Bytes of scratchpad data
+| *StartAddress*  | 4        | 0 –              | Byte offset of scratchpad data to write<p>Overlapping previous data or leaving gaps is not permitted
+| *NumberOfBytes* | 1        | 4 – 112          | Number of bytes of scratchpad data to write<p>Must be a multiple of four bytes
+| *Bytes*         | 4 - 112  | \-               | Bytes of scratchpad data
 | *CRC*           | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
 
 #### MSAP-SCRATCHPAD_BLOCK.confirm
@@ -1205,7 +1270,7 @@ issued before another MSAP-SCRATCHPAD_BLOCK.request can be carried out.
 MSAP-SCRATCHPAD_STATUS.request is issued by the application layer to query
 information about the OTAP scratchpad present in the node, as well as
 information about the scratchpad that produced the currently running stack
-firmware.  
+firmware.
 The MSAP-SCRATCHPAD_STATUS.request frame does not contain any payload.
 
 #### MSAP-SCRATCHPAD_STATUS.confirm
@@ -1224,7 +1289,7 @@ status confirmation:
 
 By keeping track of several identifying pieces of information about the OTAP
 scratchpad that produced the currently running stack firmware, it is possible to
-unambiguously determine how the stack firmware ended up in the node.  
+unambiguously determine how the stack firmware ended up in the node.
 If access is denied (see section
 [cFeatureLockBits](#cFeatureLockBits))
 a block of zeros is returned. Frame fields are described in the table below.
@@ -1255,7 +1320,7 @@ scratchpad for processing by the bootloader. The bootloader will process the
 scratchpad contents on next reboot. See section
 [MSAP-STACK_STOP.request](#MSAP-STACK_STOP.request)
 on how to reboot the node. Note, that this request is only valid when the stack
-is in the stopped state.  
+is in the stopped state.
 The MSAP-SCRATCHPAD_UPDATE.request frame does not contain any payload.
 
 #### MSAP-SCRATCHPAD_UPDATE.confirm
@@ -1274,7 +1339,7 @@ MSAP-SCRATCHPAD_UPDATE.request. Frame fields are described in the table below.
 
 The MSAP-SCRATCHPAD_CLEAR.request is issued by the application when it wants to
 erase the OTAP scratchpad. Note, that this request is only valid when the stack
-is in the stopped state.  
+is in the stopped state.
 The MSAP-SCRATCHPAD_CLEAR.request frame does not contain any payload.
 
 #### MSAP-SCRATCHPAD_CLEAR.confirm
@@ -1340,16 +1405,48 @@ MSAP-SCRATCHPAD_TARGET_READ.request. Frame fields are described in the table bel
 | *Param*        | 1        | Depends on action| Same as [MSAP-SCRATCHPAD_TARGET_WRITE.request](#msap-scratchpad_target_write.request)
 | *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
 
+#### MSAP-SCRATCHPAD_BLOCK_READ.request
+
+The MSAP-SCRATCHPAD_BLOCK_READ.request allows reading out the scratchpad present in the node. Only specially created scratchpads can be read out and reading can be prevented altogether with feature lock bits (see section [cFeatureLockBits](#cFeatureLockBits)).
+
+Unlike with [MSAP-SCRATCHPAD_BLOCK.request](#MSAP-SCRATCHPAD_BLOCK.request), the stack does not need to be stopped to read data, and [MSAP-SCRATCHPAD_START.request](#MSAP-SCRATCHPAD_START.request) does not need to be issued before reading. Data can be read in any order, but the start address and number of bytes both need to be a multiple of four.
+
+Frame fields are described in the table below.
+
+| **Field Name**  | **Size** | **Valid Values** | **Description**
+|-----------------|----------|------------------|----------------
+| *Primitive ID*  | 1        | 0x28             | Identifier of MSAP-SCRATCHPAD_BLOCK_READ.request primitive
+| *Frame ID*      | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
+| *StartAddress*  | 4        | 0 –              | Byte offset of data to read from scratchpad<p>Must be a multiple of four bytes
+| *NumberOfBytes* | 1        | 4 – 112          | Number of bytes of scratchpad data to read<p>Must be a multiple of four bytes
+| *CRC*           | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
+
+#### MSAP-SCRATCHPAD_BLOCK_READ.confirm
+
+The MSAP-SCRATCHPAD_BLOCK_READ.confirm is issued by the stack in response to the MSAP-SCRATCHPAD_BLOCK_READ.request. It contains the requested block of data from the scratchpad present in the node.
+
+Frame fields are described in the table below.
+
+| **Field Name** | **Size** | **Valid Values** | **Description**
+|----------------|----------|------------------|----------------
+| *Primitive ID* | 1        | 0xA8             | Identifier of MSAP-SCRATCHPAD_BLOCK_READ.confirm primitive
+| *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
+| *Result*       | 1        | 0 – 5            | The return result of the corresponding MSAP-SCRATCHPAD_BLOCK_READ.request. The different values are defined as follows: <p> - 0 = Success: Block was read<p> - *1 = Reserved*<p> - 2 = Failure: Start address is invalid<p> - 3 = Failure: Number of bytes is invalid<p> - 4 = Failure: No valid OTAP scratchpad present<p> - 5 = Failure: Access denied
+| *Bytes*        | 4 - 112  | \-               | Bytes of scratchpad data
+| *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
+
+**Note:** Trying to read out regular scratchpads will result in error value 5 (Failure: Access denied). Only specially created scratchpads can be read. Access denied error will also occur if reading is prevented by feature lock bits (see section [cFeatureLockBits](#cFeatureLockBits)).
+
 ### MSAP-NON-ROUTER LONG SLEEP (NRLS) Service
 
 The Non-Router Long Sleep (NRLS) is a service used to sleep Wirepas Mesh stack
 for time periods. Once waking-up from the sleep, Wirepas Mesh stack wakes up
 from the sleep without system reset. During Wirepas Mesh stack sleep the NRLS
 services over Dual-MCU API are available. Before entering to NRLS sleep, Wirepas
-Mesh stack needs to be running.  
+Mesh stack needs to be running.
 In order to use NRLS servicethe cNodeRole (as defined in Table 51) needs to be
 configured to stack as 0x03 (non router node). Any other node role settings do
-not allow to use NRLS functionality..  
+not allow to use NRLS functionality..
 The MSAP-NON-ROUTER LONG SLEEP service includes following primitives:
 
 -   MSAP-NRLS.request
@@ -1386,7 +1483,7 @@ node gets disconnected from Mesh network. To disconnect from the network, some
 time is needed for signaling before disconnection is completed (the NRLS time
 does not include this time needed for signaling before going to sleep).
 Signaling before actual stack sleep start might take time up to 30 seconds or
-more depending of used radio.  
+more depending of used radio.
 If the time when waking up from NRLS sleep and going back to NRLS sleep is very
 short and app config is used to signal to the network e.g. overhaul state, good
 practice is to have Appconfig wait time long enough (minimum 4 seconds) to make
@@ -1462,19 +1559,19 @@ MSAP-NRLS_GOTOSLEEP.request. Frame fields are described in the table below.
 
 The maximum message queuing services are used to change or read the current
 value of the time for how long the message is hold in the node's queue before it
-is discarded. Queuing time can be changed to normal and high priority messages.  
+is discarded. Queuing time can be changed to normal and high priority messages.
 Select queuing time carefully, too short value might cause unnecessary message
 drops and too big value filling up message queues. For consistent performance it
-is recommended to use the same queuing time in the whole network.  
+is recommended to use the same queuing time in the whole network.
 Minimum queuing time shall be bigger than access cycle interval in TDMA
 networks. It is recommended to use multiples of access cycle interval (+ extra)
 to give time for message repetitions, higher priority messages taking over the
 access slot etc. Access cycle is not limiting the minimum value in CSMA-CA
-networks.  
+networks.
 Precision of the time when message is discarded depends on the checking interval
 of message's age. Interval is 1s in CSMA-CA and 15s for energy saving reasons in
 TDMA networks i.e. precision is 1s or 15s depending on used channel access
-method.  
+method.
 The MSAP-MAX_MESSAGE_QUEUING service includes following primitives:
 
 -   MSAP-MAX_QUEUE_TIME_WRITE.request
@@ -1558,7 +1655,7 @@ Frame fields are described in the table below.
 
 The MSAP attributes are specified in Table 45.
 
-  
+
 *Table 45. MSAP attributes*
 
 | **Attribute name**                       | **Attribute ID** | **Type** | **Size** |
@@ -1576,6 +1673,7 @@ The MSAP attributes are specified in Table 45.
 | [mCurrentAccessCycle](#mCurrentAccessCycle) | 11               | R        | 2        |
 | [mScratchpadBlockMax](#mScratchpadBlockMax) | 12               | R        | 1        |
 | [mMulticastGroups](#mMulticastGroups)       | 13               | R/W      | 40       |
+| [mScratchpadNumBytes](#mScratchpadNumBytes) | 14               | R        | 4        |
 
 #### mStackStatus
 
@@ -1590,7 +1688,7 @@ The Stack status attribute indicates whether the stack is running or not, and
 whether it can be started. The stack status is a bit field with individual bits
 defined in Table 46.
 
-  
+
 *Table 46. Stack status bits*
 
 | **Bit number** | **Description**                                                                                              |
@@ -1604,7 +1702,7 @@ defined in Table 46.
 | 6              | Reserved                                                                                                     |
 | 7 (MSB)        | Reserved                                                                                                     |
 
-**mPDUBufferUsage**
+#### mPDUBufferUsage
 
 | **Attribute ID** | **2**                |
 |------------------|----------------------|
@@ -1683,18 +1781,18 @@ wraps back to 0 about every 388 days.
 Normally the stack chooses a suitable access cycle automatically, between 2, 4
 or 8 seconds, depending on the amount of network traffic. Some applications may
 need to further limit the access cycle durations in use. Attribute
-*mAccessCycleRange* can be used to do that.  
+*mAccessCycleRange* can be used to do that.
 Two 16-bit values are packed in one 32-bit attribute: top 16 bits contain the
 maximum access cycle duration, bottom 16 bits contain the minimum access cycle
 duration. Access cycle durations are expressed in milliseconds, so valid values
-for minimum and maximum are 2000, 4000 and 8000.  
+for minimum and maximum are 2000, 4000 and 8000.
 If *mAccessCycleRange* is not set, or maximum \> minimum, the stack chooses an
 appropriate access cycle based on the amount of network traffic. If maximum =
 minimum, the user can force the access cycle to a specific duration.
 *mAccessCycleRange* is not set by default. Only a factory reset (see section
 [CSAP-FACTORY_RESET
 Service](#CSAP-FACTORY_RESET-Service))
-can restore *mAccessCycleRange* back to the unset state.  
+can restore *mAccessCycleRange* back to the unset state.
 Note: When CSMA-CA mode is set as device role (see chapter
 [cNodeRole](#cNodeRole)),
 setting *mAccessCycleRange* cannot be done
@@ -1713,7 +1811,7 @@ The *mAccessCycleLimits* attribute can be read to determine the valid values for
 [mAccessCycleRange](#mAccessCycleRange)).
 Similarly to *mAccessCycleRange*, two 16-bit values are packed in one 32-bit
 attribute: top 16 bits contain the maximum valid access cycle duration, bottom
-16 bits contain the minimum valid access cycle duration.  
+16 bits contain the minimum valid access cycle duration.
 In current Wirepas Mesh firmware release, the value of *mAccessCycleLimits* is
 (8000 \<\< 16) + 2000, or 0x1f4007d0, i.e. the minimum valid access cycle
 duration is 2000 ms and the maximum valid access cycle duration is 8000 ms.
@@ -1768,20 +1866,20 @@ long with following value ranges:
 **Note:** Chapter 2.1 defines the multicast addresses to be in range between
 0x80000000-0x80FFFFFF, MSB byte (0x80) is not used in this attribute. As well,
 it is not possible to declare membership to group 0x80000000 (since 3 LSB bytes
-would be 0).  
+would be 0).
 The value of the attribute is the collection of 10 groups. All values **must**
 be given. If device belongs to less than 10 groups, use value 0 of don't care
 value. Devices don't have to belong to any groups (which is default value).
 Don't care values can reside at the middle of the sequence. Same value can
 present multiple times in the sequence. Addresses can reside in the sequence in
-any order.  
+any order.
 When data is transmitted to the multicast groups, all the nodes that belong to
 that group receive the message. Few examples:
 
-  
+
 *Table 47: mMulticastGroups examples*
 
-| **Value of the attribute** | **Description** 
+| **Value of the attribute** | **Description**
 |----------------------------|-----------------
 | *0x01000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000*  *0x00000000 0x00000000*               | Device belongs to multicast group 0x8000 0001 only                                                       |
 | *0x01000000 0x02000000 0x03000000 0x04000000 0x05000000 0x06000000 0x07000000 0x08000000*  *0x09000000 0x0A000000*               | Device belongs to multicast groups 0x8000 0001 – 0x8000 000A.                                            |
@@ -1791,6 +1889,17 @@ that group receive the message. Few examples:
 | *0x01000000 0x01000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000*  *0x00000000 0x00000000*               | Device belongs to multicast group 0x8000 0001 only. It is ok to set same multicast group multiple times. |
 | *0x01000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000*  *0x00000000*                          | Invalid length                                                                                           |
 | *0x01000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000*  *0x00000000 0x00000000*  *0x00000000* | Invalid length                                                                                           |
+
+#### mScratchpadNumBytes
+
+| **Attribute ID** | **14**    |
+|------------------|-----------|
+| Type             | Read only |
+| Size             | 4 octets  |
+| Valid values     | \-        |
+| Default value    | \-        |
+
+The attribute *mScratchpadNumBytes* contains the size of the currently stored scratchpad in bytes. It is the same value as the *ScratchpadLengthInBytes* field in [MSAP-SCRATCHPAD_STATUS.confirm](#MSAP-SCRATCHPAD_STATUS.confirm).
 
 ## Configuration Services (CSAP)
 
@@ -1811,7 +1920,7 @@ the MSAP-ATTRIBUTE_WRITE service (See section [MSAP-ATTRIBUTE_WRITE
 Service](#MSAP-ATTRIBUTE_WRITE-Service)).
 Only differences are used primitive IDs and valid attributes that can be
 read/written. For valid CSAP attributes see section [CSAP
-Attributes](#CSAP-Attributes).  
+Attributes](#CSAP-Attributes).
 Note: The configuration attributes can only be written when the stack is in
 stopped state.
 
@@ -1849,7 +1958,7 @@ below.
 
 | **Field Name** | **Size** | **Valid Values** | **Description**
 |----------------|----------|------------------|----------------
-| *Primitive ID* | 1        | 0x16                                  | Identifier of CSAP-FACTORY_RESET.request primitive 
+| *Primitive ID* | 1        | 0x16                                  | Identifier of CSAP-FACTORY_RESET.request primitive
 | *Frame ID*     | 1        | 0 – 255                               | See section [General Frame Format](#General-Frame-Format)
 | *ResetKey*     | 4        | 0x74 0x49 0x6F 0x44 (“DoIt” in ASCII) | Special key value used to verify that user wants to clear persistent values
 | *CRC*          | 2        | \-                                    | See section [General Frame Format](#General-Frame-Format)
@@ -1923,7 +2032,7 @@ for details.
 transmissions and to filter out both noise and other transmissions which do not
 belong to the same network. The network address must be identical for all nodes
 within the same network. Multiple Wirepas Mesh networks can coexist within an
-area, if they are configured to use different network addresses.  
+area, if they are configured to use different network addresses.
 Due to the way radios detect valid transmissions, some network addresses are
 better than others. A good network address should have no repetition or
 patterns. Examples of poor network addresses: 0x000000, 0xFFFFFF, 0xAAAAAA,
@@ -1943,7 +2052,7 @@ Each network has a default channel, set by the *cNetworkChannel* attribute. The
 network channel must be identical for all nodes within the same network.
 Available radio channel range depends on the radio hardware and frequency band
 of operation. See attribute *cChannelLimits* in section
-[cChannelLimits](#cChannelLimits).  
+[cChannelLimits](#cChannelLimits).
 The network channel is used for finding neighbors in a situation where no
 neighbors are yet known, e.g. right after the stack has started.
 
@@ -1959,10 +2068,10 @@ neighbors are yet known, e.g. right after the stack has started.
 A Wirepas Mesh network consists of sinks, routing nodes and non-routing nodes.
 Attribute *cNodeRole* sets the node role. A valid roles are listed in Table 51.
 
-  
+
 *Table 51. Node roles*
 
-| **Value**   | **Base role**  | **Description** 
+| **Value**   | **Base role**  | **Description**
 |-------------|----------------|----------------
 | 0x00        | Reserved       |
 | 0x01        | Sink           | A device that is usually connected to a server backbone. All data packets sent to the *AnySink* address end up in here. Similarly, all diagnostic data generated by the network itself is transmitted to a sink device
@@ -2094,13 +2203,13 @@ major.minor.maintenance.**development**.
 | Default value    | 0xFF..FF            |
 
 Attribute *cCipherKey* sets the key that is used for encrypting radio
-transmissions. A value of 0xFF..FF means that the key is not set.  
+transmissions. A value of 0xFF..FF means that the key is not set.
 It is not possible to read the encryption key back. However, it is possible to
 detect whether a key is set or not. When reading the key value, the error value
 4 (Failure: Invalid attribute value or attribute value not yet set) indicates
 that key is not set. And error value of 5 (Failure: Write-only attribute)
 indicates that the key has been set. Writing a key value with all bits set
-(0xFF..FF) clears the key.  
+(0xFF..FF) clears the key.
 Note: In order for encryption to be enabled, both Cipher and Authentication keys
 must be set. If only one of them is set, no encryption or authentication is
 performed.
@@ -2116,13 +2225,13 @@ performed.
 
 Attribute *cAuthenticationKey* sets the key that is used for verifying the
 authenticity of received data. A value of 0xFF..FF means that the key is not
-set.  
+set.
 It is not possible to read the authentication key back. However, it is possible
 to detect whether a key is set or not. When reading the key value, the error
 value 4 (Failure: Invalid attribute value or attribute value not yet set)
 indicates that key is not set. And error value of 5 (Failure: Write-only
 attribute) indicates that the key has been set. Writing a key value with all
-bits set (0xFF..FF) clears the key.  
+bits set (0xFF..FF) clears the key.
 Note:In order for encryption to be enabled, both Cipher and Authentication keys
 must be set. If only one of them is set, no encryption or authentication is
 performed.
@@ -2138,7 +2247,7 @@ performed.
 
 Attribute *cChannelLimits* can be read to determine the allowed range of network
 channel numbers. See attribute *cNetworkChannel* in section
-[cNetworkChannel](#cNetworkChannel).  
+[cNetworkChannel](#cNetworkChannel).
 Lower 8 bits are the first available channel, upper 8 bits are the last
 available channel. Available radio channel range depends on the radio hardware
 and frequency band of operation.
@@ -2168,7 +2277,7 @@ Service](#MSAP-APP_CONFIG_DATA_RX-Service).
 The *cHwMagic* attribute indicates the radio hardware used. Hardware identifiers
 are listed in Table 52.
 
-  
+
 *Table 52. Hardware identifiers*
 
 | **Value** | **Radio hardware**                                         |
@@ -2237,18 +2346,18 @@ faster rejoin time to the network with the expense of power consumption.
 | Default value    | 0x11111111        |
 
 Attribute cChannelAllocMap can be used to dedicate radio channels for devices
-that have CB-MAC role definition enabled or devices that do not .  
+that have CB-MAC role definition enabled or devices that do not .
 Each bit in the value represents one radio channel. LSB equals the first
 available channel. If bit is set, the radio channel is dedicated for devices
 that are configured to CB-MAC mode. If bit is not set, the radio channel is
 dedicated for devices that are not configured to CB-MAC mode. The default value
-equals 25% of channels to be dedicated for devices configured to CB-MAC mode.  
+equals 25% of channels to be dedicated for devices configured to CB-MAC mode.
 This attribute is mainly important in dense networks and by using this
 attribute, the amount of devices within radio range can be maximized. For
 example: if none of the devices are configured to CB-MAC mode, it is recommended
-to set this value as 0.  
+to set this value as 0.
 **Note: This attribute must be the same throughout the network to operate
-correctly!**  
+correctly!**
 **Note: WM FW v3.6.0, v3.6.6, v3.6.7, v3.5.32, v3.5.36 releases and v4.0.xx
 release onwards cChannelAllocMap attribute does not exists anymore - writing
 this attribute will return an error code** (1 = Failure: Unsupported attribute
@@ -2266,7 +2375,7 @@ ID).
 Certain stack features can be disabled by using the *cFeatureLockBits* and
 *cFeatureLockKey* (see section
 [cFeatureLockKey](#cFeatureLockKey))
-attributes. Supported feature lock bits are listed in Table 54  
+attributes. Supported feature lock bits are listed in Table 54
 A feature can be disabled by clearing its feature lock bit to zero. By default,
 no features are disabled, i.e. the feature lock bits are all set. Reserved bits
 cannot be set to zero. Feature lock is only in effect when a feature lock key is
@@ -2289,9 +2398,9 @@ set.
 | 0x00000400    | Reserved                                                                                                                  |
 | 0x00000800    | Reserved                                                                                                                  |
 | 0x00001000    | Prevent performing factory reset via Dual-MCU API                                                                         |
-| 0x00002000    | Prevent scratchpad write operations via Dual-MCU API                                                                      |
+| 0x00002000    | Prevent scratchpad write and read operations via Dual-MCU API                                                                      |
 | 0x00004000    | Reserved                                                                                                                  |
-| 0x00008000    | Prevent reading scratchpad status (including *mScratchpadBlockMax* and *cScratchpadSequence* attributes) via Dual-MCU API |
+| 0x00008000    | Prevent reading scratchpad status (including *mScratchpadBlockMax*, *mScratchpadNumBytes* and *cScratchpadSequence* attributes) via Dual-MCU API |
 | 0x00010000    | Reserved                                                                                                                  |
 | 0x00020000    | Reserved                                                                                                                  |
 | 0x00040000    | Reserved                                                                                                                  |
@@ -2322,10 +2431,10 @@ Attribute *cFeatureLockKey* sets the key that is used for enabling the feature
 lock. A value of 0xFF..FF means that the key is not set. Feature lock bits (see
 section
 [cFeatureLockBits](#cFeatureLockBits))
-are only in effect when a key is set.  
+are only in effect when a key is set.
 When a feature lock key is set, it can only be cleared by writing
 *cFeatureLockKey* with the correct key. This clears the key, i.e. sets a key
-value with all bits set (0xFF..FF).  
+value with all bits set (0xFF..FF).
 It is not possible to read the feature lock key back. However, it is possible to
 detect whether a key is set or not. When reading the key value, the error value
 4 (Failure: Invalid attribute value or attribute value not yet set) indicates
@@ -2333,11 +2442,11 @@ that key is not set. And error value of 5 (Failure: Write-only attribute)
 indicates that the key has been set.
 
 # Response Primitives
- 
+
 All stack indications must be acknowledged by the application using a response-primitive. All the
 response-primitives have the same frame format as illustrated in table below. Only thing that
 changes is the Primitive ID. The values of the primitive IDs are listed in [Table 3](#stack-service-specification).
- 
+
 
 | **Primitive ID** | **Frame ID** | **Payload length** | **Result**   | **CRC**  |
 |------------------|--------------|--------------------|--------------|----------|
@@ -2351,7 +2460,7 @@ Frame fields are described in the table below.
 | *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
 | *Result*       | 1        | 0 - 1            | The result field indicates if the application is ready to receive another pending indication (if there are any)<p>The different values are defined as follows: <p> - 0 = Do not send more indications<p> - 1 = Send next pending indication
 | *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
- 
+
 # Sequence Numbers
 
 Some Wirepas Mesh stack services, such as the application configuration data
@@ -2360,7 +2469,7 @@ Service](#MSAP-APP_CONFIG_DATA_WRITE-Service)-[MSAP-APP_CONFIG_DATA_RX
 Service](#MSAP-APP_CONFIG_DATA_RX-Service))
 make use of 8-bit sequence numbers. When new data is entered on the network, the
 sequence number needs to be incremented, so that nodes can differentiate between
-old and new data.  
+old and new data.
 Due to the limited numeric range of an 8-bit sequence number, the following
 wrap-around rule is utilized:
 
@@ -2381,10 +2490,10 @@ Each node requires some configuration in order the Wirepas Mesh stack to operate
 and establish communication. The required services to be configured are
 explained in Table 72.
 
-  
+
 *Table 72. Required node configuration*
 
-| **Service** | **See section** | **Description**  
+| **Service** | **See section** | **Description**
 |-------------|-----------------|------------------
 | *CSAP_ATTRIBUTE_WRITE / cNodeAddress*                  | [cNodeAddress](#cNodeAddress)                                             | A unique device identifier must be set. This is used to distinguish nodes from each other on a network.                                           |
 | *CSAP_ATTRIBUTE_WRITE / cNetworkAddress*               | [cNetworkAddress](#cNetworkAddress)                                       | Device network to join. Each device on a network must share the network address.                                                                  |
@@ -2402,10 +2511,10 @@ This Annex gives an example CRC implementation and test vectors.
 ## Example CRC Implementation
 
 ```C
-#include <stdint.h>  
-// lut table size 512B (256 * 16bit)  
-static const uint16_t crc_ccitt_lut[] =  
-{  
+#include <stdint.h>
+// lut table size 512B (256 * 16bit)
+static const uint16_t crc_ccitt_lut[] =
+{
     0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5, 0x60c6, 0x70e7, \\
     0x8108, 0x9129, 0xa14a, 0xb16b, 0xc18c, 0xd1ad, 0xe1ce, 0xf1ef, \\
     0x1231, 0x0210, 0x3273, 0x2252, 0x52b5, 0x4294, 0x72f7, 0x62d6, \\
@@ -2474,7 +2583,7 @@ uint16_t Crc_fromBuffer(uint8_t * buf, uint32_t len)
 
 # Revision History
 
-| **Date**     | **Version** | **Notes** 
+| **Date**     | **Version** | **Notes**
 |--------------|-------------|----------
 | 30 Jul 2020  | v5.0A       | Initial Version Online
 | 20 Nov 2020  | v5.0.2      | Removed TSAP as not supported in Wirepas Mesh v5 Clarified [UART Configuration](#UART-Configuration) Removed IPv6 AppConfig

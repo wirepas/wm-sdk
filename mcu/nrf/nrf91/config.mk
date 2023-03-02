@@ -9,7 +9,7 @@ HAS_BOOTLOADER=yes
 
 CFLAGS += -DNRF91_PLATFORM
 mac_profile?=dect_nr_19_ghz
-radio?=nrf9160
+radio?=none
 ifeq ($(MCU_SUB),60)
 	# Hardware magic used for this architecture
 	HW_MAGIC=12

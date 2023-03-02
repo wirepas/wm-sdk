@@ -10,7 +10,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "waps/comm/waps_comm.h"
-#include "settings.h"
 
 /**
  * \file    waps_uart.h

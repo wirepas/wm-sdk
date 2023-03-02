@@ -3,7 +3,6 @@
  * @brief      contains the routines with Poslib API and general control.
  * @copyright  Wirepas Ltd 2021
  */
-
 #define DEBUG_LOG_MODULE_NAME "POSLIB CONTROL"
 #ifdef DEBUG_POSLIB_LOG_MAX_LEVEL
 #define DEBUG_LOG_MAX_LEVEL DEBUG_POSLIB_LOG_MAX_LEVEL
@@ -27,6 +26,9 @@
 #include "shared_appconfig.h"
 #include "shared_offline.h"
 #include "poslib_mbcn.h"
+#ifdef ROUTE_CHECK
+#include "stack_state.h"
+#endif
 
 /** Module internal type definitions */
 
@@ -158,7 +160,7 @@ static void data_send_cb(const app_lib_data_sent_status_t * status)
 }
 
 #ifdef ROUTE_CHECK
-static void route_cb(void)
+static void route_cb(app_lib_stack_event_e event, void * param)
 {
     PosLibEvent_add(POSLIB_CTRL_EVENT_ROUTE_CHANGE);
 }
@@ -300,8 +302,8 @@ static bool register_callbacks(void)
     #ifdef ROUTE_CHECK
     /** Route change callback */
     {
-        app_res_e res;
-        res = lib_state->setRouteCb(route_cb, 0);  //FixMe: add shared library
+        app_res_e res = Stack_State_addEventCb(route_cb,
+                                               1 << APP_LIB_STATE_STACK_EVENT_ROUTE_CHANGED);
         if (res != APP_RES_OK)
         {
             ret = false;
@@ -339,8 +341,10 @@ static void deregister_callbacks(void)
         }
     }
 
+    #ifdef ROUTE_CHECK
     /** Route change callback */
-    lib_state->setRouteCb(NULL, 0); //FixMe: add shared library
+    Stack_State_removeEventCb(route_cb);
+    #endif
 }
 
 
@@ -387,23 +391,24 @@ static poslib_ret_e check_role(poslib_settings_t * settings)
  */
 {
     app_lib_settings_role_t role;
-    uint8_t base_role;
     uint8_t poslib_mode = settings->node_mode;
     lib_settings->getNodeRole(&role);
-    base_role = app_lib_settings_get_base_role(role);
 
     switch (poslib_mode)
     {
         case POSLIB_MODE_AUTOSCAN_ANCHOR:
         case POSLIB_MODE_OPPORTUNISTIC_ANCHOR:
         {
-            bool valid = (base_role == APP_LIB_SETTINGS_ROLE_HEADNODE) || 
-                    (base_role == APP_LIB_SETTINGS_ROLE_SINK) ||
-                    (base_role == APP_LIB_SETTINGS_ROLE_SUBNODE && settings->mbcn.enabled);
+            bool valid = (role == APP_LIB_SETTINGS_ROLE_HEADNODE_LL) ||
+                         (role == APP_LIB_SETTINGS_ROLE_HEADNODE_LE) ||
+                         (role == APP_LIB_SETTINGS_ROLE_SINK_LL) ||
+                         (role == APP_LIB_SETTINGS_ROLE_SINK_LE) ||
+                         (role == APP_LIB_SETTINGS_ROLE_SUBNODE_LE && settings->mbcn.enabled) ||
+                         (role == APP_LIB_SETTINGS_ROLE_SUBNODE_LL && settings->mbcn.enabled) ;
 
             if (!valid)
             {
-                LOG(LVL_ERROR, "Anchor mode: %u but role: %u", poslib_mode, base_role);
+                LOG(LVL_ERROR, "Anchor mode: %u but role: %u", poslib_mode, role);
                 return POS_RET_INVALID_PARAM; 
             }
             break;
@@ -411,25 +416,26 @@ static poslib_ret_e check_role(poslib_settings_t * settings)
         case POSLIB_MODE_NRLS_TAG:
         case POSLIB_MODE_AUTOSCAN_TAG:
         {
-            if (base_role != APP_LIB_SETTINGS_ROLE_SUBNODE)
+            if (role != APP_LIB_SETTINGS_ROLE_SUBNODE_LE &&
+                role != APP_LIB_SETTINGS_ROLE_SUBNODE_LL)
             {
-                LOG(LVL_ERROR, "Tag mode: %u but role: %u", poslib_mode, base_role);
+                LOG(LVL_ERROR, "Tag mode: %u but role: %u", poslib_mode, role);
                 return POS_RET_INVALID_PARAM;
             }
             break;
         }
         case POSLIB_MODE_DA_TAG:
         {
-            if (base_role != APP_LIB_SETTINGS_ROLE_ADVERTISER)
+            if (role != APP_LIB_SETTINGS_ROLE_ADVERTISER)
             {
-                LOG(LVL_ERROR, "DA Tag mode: %u but role: %u", poslib_mode, base_role);
+                LOG(LVL_ERROR, "DA Tag mode: %u but role: %u", poslib_mode, role);
                 return POS_RET_INVALID_PARAM;
             }
             break;
         }
         default:
          {
-            LOG(LVL_ERROR, "Unknown node mode: %u, role: %u", poslib_mode, base_role);
+            LOG(LVL_ERROR, "Unknown node mode: %u, role: %u", poslib_mode, role);
             return POS_RET_INVALID_PARAM;
             break;
          }
@@ -793,32 +799,35 @@ poslib_measurements_e get_meas_type()
 
 static void get_node_info(poslib_meas_record_node_info_t * node_info)
 {
-    uint32_t * features = &node_info->features;
+    uint32_t features = node_info->features;
     node_info->node_class = m_pos_settings.node_class;
     node_info->node_mode = m_pos_settings.node_mode;
     node_info->update_s = get_update_period();
 
-    *features = POSLIB_NODE_INFO_FEATURES_VERSION & POSLIB_NODE_INFO_MASK_VERSION;  
+    features = POSLIB_NODE_INFO_FEATURES_VERSION & POSLIB_NODE_INFO_MASK_VERSION;  
     if (m_pos_settings.motion.enabled)
     {
-        *features |= POSLIB_NODE_INFO_FLAG_MOTION_EN;
+        features |= POSLIB_NODE_INFO_FLAG_MOTION_EN;
     }
     if (m_ctrl.events.is_static)
     {
-        *features |= POSLIB_NODE_INFO_FLAG_IS_STATIC;
+        features |= POSLIB_NODE_INFO_FLAG_IS_STATIC;
     }
     if (PosLibBle_getEddystoneStatus())
     {
-        *features |= POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON;
+        features |= POSLIB_NODE_INFO_FLAG_EDDYSTONE_ON;
     }
     if (PosLibBle_getiBeaconStatus())
     {
-        *features |= POSLIB_NODE_INFO_FLAG_IBEACON_ON;
+        features |= POSLIB_NODE_INFO_FLAG_IBEACON_ON;
     }
     if(m_pos_settings.da.routing_enabled)
     {
-        *features |= POSLIB_NODE_INFO_FLAG_MBCN_ON; 
+        features |= POSLIB_NODE_INFO_FLAG_MBCN_ON; 
     }
+
+    node_info->features = features;
+
     LOG(LVL_DEBUG, "Node info feature: %x en: %u", node_info->features, m_pos_settings.motion.enabled); 
 }
 
@@ -889,15 +898,15 @@ static uint8_t send_measurement_message()
 
 static uint32_t get_scan_duration()
 {
-    uint32_t scan_duration_us = APP_LIB_STATE_DEFAULT_SCAN;
+    uint32_t scan_duration_ms = 0;
     
     if (m_pos_settings.mbcn.enabled && 
         m_pos_settings.mbcn.tx_interval_ms < 1000)
     {
-        scan_duration_us = m_pos_settings.mbcn.tx_interval_ms * 1000;
-        scan_duration_us +=  scan_duration_us / SCAN_MARGIN_RATIO;
+        scan_duration_ms = m_pos_settings.mbcn.tx_interval_ms;
+        scan_duration_ms +=  scan_duration_ms / SCAN_MARGIN_RATIO;
     }
-    return scan_duration_us;
+    return scan_duration_ms;
 }
 
 static uint32_t trigger_update_task()
@@ -933,7 +942,7 @@ static uint32_t trigger_update_task()
     //Stack online - trigger scan
     poslib_scan_ctrl_t scan_ctrl = {
         .mode = SCAN_MODE_STANDARD,
-        .max_duration_us = get_scan_duration()};
+        .max_duration_ms = get_scan_duration()};
     PosLibMeas_startScan(&scan_ctrl);
 
     LOG(LVL_DEBUG, "Update triggered at %u", lib_time->getTimestampS());
@@ -1194,6 +1203,7 @@ static void handle_idle_state(poslib_internal_event_t * event)
             {
                 m_motion_mode = MOTION_DEFAULT;
             }
+            PosLibBle_start(&m_pos_settings.ble);
             /* Configuration changed, re-schedule*/
             schedule_next(false);
             break;

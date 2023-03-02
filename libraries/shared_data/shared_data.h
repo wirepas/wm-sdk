@@ -13,7 +13,6 @@
  * This library replaces the following functions and callbacks of the data
  * library:
  *  - @ref app_lib_data_set_data_received_cb_f "lib_data->setDataReceivedCb()",
- *  - @ref app_lib_data_set_data_received_cb_f "lib_data->setBcastDataReceivedCb()"
  *  - @ref app_lib_data_set_data_sent_cb_f "lib_data->setDataSentCb()"
  *  - @ref app_lib_data_send_data_f "lib_data->sendData()"
  * They MUST NOT be used outside of this module.
@@ -121,7 +120,6 @@ struct shared_data_item_s
  * @note    This function is automatically called if library is enabled.
  * @note    If Shared data module is used in application, the
  *          @ref app_lib_data_set_data_received_cb_f "lib_data->setDataReceivedCb()",
- *          @ref app_lib_data_set_data_received_cb_f "lib_data->setBcastDataReceivedCb()"
  *          @ref app_lib_data_set_data_sent_cb_f "lib_data->setDataSentCb()"
  *          and
  *          @ref app_lib_data_send_data_f "lib_data->sendData()"

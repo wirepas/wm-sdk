@@ -243,7 +243,7 @@ void Usart_receiverOff(void)
 {
     Sys_enterCriticalSection();
 
-#if defined(EFR32MG22)
+#if defined(EFR32MG22) || defined(EFR32FG23)
     // Stop Current DMA transfer
     if (CMU->CLKEN0 & CMU_CLKEN0_LDMA)
     {

@@ -174,8 +174,7 @@ bool start_router()
     lib_settings->getNodeRole(&role);
     
     // Activation posible only for LL headnode
-    if ( app_lib_settings_get_base_role(role) != APP_LIB_SETTINGS_ROLE_HEADNODE
-        || !(app_lib_settings_get_flags_role(role) & APP_LIB_SETTINGS_ROLE_FLAG_LL))   
+    if ( role != APP_LIB_SETTINGS_ROLE_HEADNODE_LL)
     {
         LOG(LVL_INFO, "Only LL router supported. Role: %u", role);
         return false;
@@ -338,7 +337,7 @@ static void stop_tag()
     }
 }
 
-void PosLibDa_Stop()
+void PosLibDa_stop()
 {
     stop_router();
     stop_tag();

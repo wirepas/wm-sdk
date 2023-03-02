@@ -4,8 +4,6 @@
  *
  */
 
-#undef USE_DEBUG_PRINT_MODULE
-
 #include "dsap.h"
 #include "dsap_frames.h"
 #include "function_codes.h"
@@ -17,47 +15,183 @@
 #include "waps.h"
 
 /**
- * \brief   Called when a WAPS data packet should be created.
- * \param   item
- *          Received request
- * \return  True, if a reply frame was constructed
- */
-static bool sendPacket(waps_item_t * item);
-
-/**
- * \brief   Called when a WAPS data packet should be created.
- * \note    Identical to \ref sendPacket, except request contains initial
- *          travel time.
- * \param   item
- *          Received request
- * \return  True, if a reply frame was constructed
- */
-static bool sendPacketWithTT(waps_item_t * item);
-
-/**
  * \brief   Update delay (callback from protocol interface)
  * \param   item
  *          Item that gets updated
  */
- /**
-  * \brief   Called when a WAPS data packet should be created.
-  * \param   item
-  *          Received request
-  * \return  True, if a reply frame was constructed
-  */
 static void update_packet_delay(waps_item_t * item);
+
+static uint8_t get_singlemcu_flag_from_dualmcu_tx_option(uint8_t tx_opts)
+{
+    uint8_t flags = 0;
+     // Check TX options
+    if(tx_opts & TX_OPTS_IND_REQ)
+    {
+        flags = APP_LIB_DATA_SEND_FLAG_TRACK;
+    }
+    else
+    {
+        flags = APP_LIB_DATA_SEND_FLAG_NONE;
+    }
+
+    if (tx_opts & TX_OPTS_UNACK_CSMA_CA)
+    {
+        flags |= APP_LIB_DATA_SEND_FLAG_UNACK_CSMA_CA;
+    }
+
+    if (tx_opts & TX_OPTS_HOPLIMIT_MASK)
+    {
+        flags |= APP_LIB_DATA_SEND_SET_HOP_LIMITING;
+    }
+
+    return flags;
+}
+
+static uint8_t get_single_mcu_hop_limit_from_dualmcu_tx_option(uint8_t tx_opts)
+{
+    return (tx_opts & TX_OPTS_HOPLIMIT_MASK) >>
+            TX_OPTS_HOPLIMIT_OFFSET;
+}
+
+static void dataSentCb(const app_lib_data_sent_status_t * status)
+{
+    Waps_packetSent(status->tracking_id,
+                    status->src_endpoint,
+                    status->dest_endpoint,
+                    status->queue_time,
+                    status->dest_address,
+                    status->success);
+}
 
 bool Dsap_handleFrame(waps_item_t * item)
 {
-    switch (item->frame.sfunc)
+    app_lib_data_send_res_e res;
+    size_t capacity = 0;
+    pduid_t apdu_id;
+    app_lib_data_to_send_t data;
+
+    if (item->frame.sfunc == WAPS_FUNC_DSAP_DATA_TX_REQ)
     {
-        case WAPS_FUNC_DSAP_DATA_TX_REQ:
-            return sendPacket(item);
-        case WAPS_FUNC_DSAP_DATA_TX_TT_REQ:
-            return sendPacketWithTT(item);
-        default:
+        dsap_data_tx_req_t * req = &item->frame.dsap.data_tx_req;
+        // Check the size
+        if (item->frame.splen != (FRAME_DSAP_DATA_TX_REQ_HEADER_SIZE +
+            req->apdu_len))
+        {
             return false;
+        }
+        apdu_id = req->apdu_id;
+        // Convert data_tx_req to app_lib_data_to_send_t
+        uint8_t flags = get_singlemcu_flag_from_dualmcu_tx_option(req->tx_opts);
+        data = (app_lib_data_to_send_t)
+        {
+            .src_endpoint = req->src_endpoint,
+            .dest_address = Waddr_to_Addr(req->dst_addr),
+            .dest_endpoint = req->dst_endpoint,
+            .qos = req->qos, // Qos value are align
+            .flags = flags,
+            .num_bytes = req->apdu_len,
+            .bytes = req->apdu,
+            .tracking_id = req->apdu_id,
+            .delay = lib_time->getTimestampCoarse() - item->time, // No initial travel time
+            .hop_limit = get_single_mcu_hop_limit_from_dualmcu_tx_option(req->tx_opts),
+        };
     }
+    else if (item->frame.sfunc == WAPS_FUNC_DSAP_DATA_TX_TT_REQ)
+    {
+        dsap_data_tx_tt_req_t * req = &item->frame.dsap.data_tx_tt_req;
+        // Check the size
+        if (item->frame.splen != (FRAME_DSAP_DATA_TX_TT_REQ_HEADER_SIZE +
+            req->apdu_len))
+        {
+            return false;
+        }
+        apdu_id = req->apdu_id;
+        // Convert data_tx_tt_req to app_lib_data_to_send_t
+        uint8_t flags = get_singlemcu_flag_from_dualmcu_tx_option(req->tx_opts);
+        data = (app_lib_data_to_send_t)
+        {
+            .src_endpoint = req->src_endpoint,
+            .dest_address = Waddr_to_Addr(req->dst_addr),
+            .dest_endpoint = req->dst_endpoint,
+            .qos = req->qos, // Qos value are align
+            .flags = flags,
+            .num_bytes = req->apdu_len,
+            .bytes = req->apdu,
+            .tracking_id = req->apdu_id,
+            .delay = lib_time->getTimestampCoarse() + req->travel_time - item->time,
+            .hop_limit = get_single_mcu_hop_limit_from_dualmcu_tx_option(req->tx_opts),
+        };
+    }
+    else if (item->frame.sfunc == WAPS_FUNC_DSAP_DATA_TX_FRAG_REQ)
+    {
+        dsap_data_tx_frag_req_t * req = &item->frame.dsap.data_tx_frag_req;
+        if (item->frame.splen != (FRAME_DSAP_DATA_TX_FRAG_REQ_HEADER_SIZE +
+            req->apdu_len))
+        {
+            return false;
+        }
+        apdu_id = req->apdu_id;
+        // Convert data_tx_frag_req to app_lib_data_to_send_t
+        uint8_t flags = get_singlemcu_flag_from_dualmcu_tx_option(req->tx_opts);
+        // Add the fragmented flag
+        flags |= APP_LIB_DATA_SEND_FRAGMENTED_PACKET;
+
+        bool last_fragment = (req->fragment_offset_flag & DSAP_FRAG_LAST_FLAG_MASK) == DSAP_FRAG_LAST_FLAG_MASK;
+        size_t fragment_offset = req->fragment_offset_flag & DSAP_FRAG_LENGTH_MASK;
+
+        data = (app_lib_data_to_send_t)
+        {
+            .src_endpoint = req->src_endpoint,
+            .dest_address = Waddr_to_Addr(req->dst_addr),
+            .dest_endpoint = req->dst_endpoint,
+            .qos = req->qos, // Qos value are align
+            .flags = flags,
+            .num_bytes = req->apdu_len,
+            .bytes = req->apdu,
+            .tracking_id = req->apdu_id,
+            .delay = lib_time->getTimestampCoarse() + req->travel_time - item->time,
+            .hop_limit = get_single_mcu_hop_limit_from_dualmcu_tx_option(req->tx_opts),
+            .fragment_info = {
+                .fragment_offset = fragment_offset,
+                .last_fragment = last_fragment,
+                .packet_id = req->full_packet_id,
+            }
+        };
+    }
+    else
+    {
+        return false;
+    }
+
+    // Check that TX feature is permitted
+    if (!LockBits_isFeaturePermitted(LOCK_BITS_DSAP_DATA_TX))
+    {
+        res = APP_LIB_DATA_SEND_RES_ACCESS_DENIED;
+    }
+    else if (data.num_bytes > APDU_MAX_SIZE)
+    {
+        // Enforce the max size of a packet. this value is hardcoded
+        // in many places. Node should be able to send bigger one but
+        // it will be segmented implicitely. To send bigger packets on
+        // dualmcu api, explicit service to send fragment must be used
+        res = APP_LIB_DATA_SEND_RES_INVALID_NUM_BYTES;
+    }
+    else
+    {
+        res = Shared_Data_sendData(&data,
+                                   data.flags & APP_LIB_DATA_SEND_FLAG_TRACK ? dataSentCb : NULL);
+    }
+
+    // Get remaining buffer capacity (do not pre-check and decrement = lie)
+    lib_data->getNumFreeBuffers(&capacity);
+
+    // Send the response
+    Waps_item_init(item, item->frame.sfunc + 0x80, sizeof(dsap_data_tx_cnf_t));
+    item->frame.dsap.data_tx_cnf.apdu_id = apdu_id;
+    item->frame.dsap.data_tx_cnf.buff_cap = (uint8_t) capacity;
+    item->frame.dsap.data_tx_cnf.result = (uint8_t) res;
+
+    return true;
 }
 
 void Dsap_packetSent(pduid_t id,
@@ -87,156 +221,70 @@ void Dsap_packetReceived(const app_lib_data_received_t * data,
                          w_addr_t dst_addr,
                          waps_item_t * output_ptr)
 {
-    // Create indication
     uint8_t hops = data->hops;
-    Waps_item_init(output_ptr,
-                   WAPS_FUNC_DSAP_DATA_RX_IND,
-                   FRAME_DSAP_DATA_RX_IND_HEADER_SIZE + data->num_bytes);
-    dsap_data_rx_ind_t * ind_ptr = &output_ptr->frame.dsap.data_rx_ind;
-    ind_ptr->src_endpoint = data->src_endpoint;
-    ind_ptr->src_addr = data->src_address;
-    ind_ptr->dst_addr = dst_addr;
-    ind_ptr->dst_endpoint = data->dest_endpoint;
-    // Info field
-    ind_ptr->info =
-        (data->qos << RX_IND_INFO_QOS_OFFSET) & RX_IND_INFO_QOS_MASK;
+    uint8_t info = (data->qos << RX_IND_INFO_QOS_OFFSET) & RX_IND_INFO_QOS_MASK;
+
     // Cap maximum hops to 63 which can be represented in interface
     if (hops > RX_IND_INFO_MAX_HOPCOUNT)
     {
         hops = RX_IND_INFO_MAX_HOPCOUNT;
     }
-    ind_ptr->info |=
-        (hops << RX_IND_INFO_HOPCOUNT_OFFSET) & RX_IND_INFO_HOPCOUNT_MASK;
 
-    memcpy(ind_ptr->apdu, data->bytes, data->num_bytes);
-    // Initialize delay and protocol delay incrementing function callback
-    output_ptr->time = lib_time->getTimestampCoarse();
-    output_ptr->pre_cb = update_packet_delay;
-    ind_ptr->delay = data->delay;
-    ind_ptr->queued_indications = 0;
-    ind_ptr->apdu_len = data->num_bytes;
-}
+    // Add it to info field
+    info |= (hops << RX_IND_INFO_HOPCOUNT_OFFSET) & RX_IND_INFO_HOPCOUNT_MASK;
 
-static void dataSentCb(const app_lib_data_sent_status_t * status)
-{
-    Waps_packetSent(status->tracking_id,
-                    status->src_endpoint,
-                    status->dest_endpoint,
-                    status->queue_time,
-                    status->dest_address,
-                    status->success);
-}
-
-static bool sendPacketWithTT(waps_item_t * item)
-{
-    app_lib_data_to_send_t data;
-    size_t capacity = 0;
-    app_lib_data_send_res_e result;
-    app_lib_data_data_sent_cb_f data_cb = NULL;
-
-    dsap_data_tx_tt_req_t * req = &item->frame.dsap.data_tx_tt_req;
-    if (item->frame.splen != (FRAME_DSAP_DATA_TX_TT_REQ_HEADER_SIZE +
-                              req->apdu_len))
+    // Create indication depending if it is a fragmented packet or not
+    if (data->fragment_info != NULL)
     {
-        // Discard request
-        return false;
-    }
+        Waps_item_init(output_ptr,
+                    WAPS_FUNC_DSAP_DATA_RX_FRAG_IND,
+                    FRAME_DSAP_DATA_RX_FRAG_IND_HEADER_SIZE + data->num_bytes);
 
-    // Resp code
-    uint8_t resp_code = WAPS_FUNC_DSAP_DATA_TX_TT_CNF;
-    if(item->frame.sfunc == WAPS_FUNC_DSAP_DATA_TX_REQ)
-    {
-        // Do the switcharoo
-        resp_code = WAPS_FUNC_DSAP_DATA_TX_CNF;
-    }
+        dsap_data_rx_frag_ind_t * ind_ptr = &output_ptr->frame.dsap.data_rx_frag_ind;
 
-    // Check that TX feature is permitted
-    if (!LockBits_isFeaturePermitted(LOCK_BITS_DSAP_DATA_TX))
-    {
-        result = DSAP_TX_ACCESS_DENIED;
-        goto create_response;
-    }
+        ind_ptr->src_endpoint = data->src_endpoint;
+        ind_ptr->src_addr = data->src_address;
+        ind_ptr->dst_addr = dst_addr;
+        ind_ptr->dst_endpoint = data->dest_endpoint;
+        ind_ptr->info = info;
+        ind_ptr->delay = data->delay;
+        ind_ptr->queued_indications = 0;
+        ind_ptr->apdu_len = data->num_bytes;
+        ind_ptr->fragment_offset_flag = data->fragment_info->fragment_offset & DSAP_FRAG_LENGTH_MASK;
+        if (data->fragment_info->last_fragment)
+        {
+            ind_ptr->fragment_offset_flag |= DSAP_FRAG_LAST_FLAG_MASK;
+        }
+        ind_ptr->full_packet_id = data->fragment_info->packet_id;
 
-    // Check TX options
-    if(req->tx_opts & TX_OPTS_IND_REQ)
-    {
-        data.flags = APP_LIB_DATA_SEND_FLAG_TRACK;
-        data_cb = dataSentCb;
+        memcpy(ind_ptr->apdu, data->bytes, data->num_bytes);
     }
     else
     {
-        data.flags = APP_LIB_DATA_SEND_FLAG_NONE;
-    }
-    if (req->tx_opts & TX_OPTS_UNACK_CSMA_CA)
-    {
-        data.flags |= APP_LIB_DATA_SEND_FLAG_UNACK_CSMA_CA;
-    }
-    if (req->tx_opts & TX_OPTS_HOPLIMIT_MASK)
-    {
-        uint8_t hoplimit = (req->tx_opts & TX_OPTS_HOPLIMIT_MASK) >>
-            TX_OPTS_HOPLIMIT_OFFSET;
-        data.flags |= APP_LIB_DATA_SEND_SET_HOP_LIMITING;
-        data.hop_limit = hoplimit;
-    }
+        Waps_item_init(output_ptr,
+            WAPS_FUNC_DSAP_DATA_RX_IND,
+            FRAME_DSAP_DATA_RX_IND_HEADER_SIZE + data->num_bytes);
 
-    // Quality of service
-    switch(req->qos)
-    {
-        case DSAP_QOS_NORMAL:
-            data.qos = APP_LIB_DATA_QOS_NORMAL;
-            break;
-        case DSAP_QOS_HIGH:
-            data.qos = APP_LIB_DATA_QOS_HIGH;
-            break;
-        case DSAP_QOS_UNACKED: // TODO This should be a valid TC to use
-        default:
-            result = DSAP_TX_INV_QOS_PARAM;
-            goto create_response;
+        dsap_data_rx_ind_t * ind_ptr = &output_ptr->frame.dsap.data_rx_ind;
+
+        ind_ptr->src_endpoint = data->src_endpoint;
+        ind_ptr->src_addr = data->src_address;
+        ind_ptr->dst_addr = dst_addr;
+        ind_ptr->dst_endpoint = data->dest_endpoint;
+        ind_ptr->info = info;
+        ind_ptr->delay = data->delay;
+        ind_ptr->queued_indications = 0;
+        ind_ptr->apdu_len = data->num_bytes;
+
+        memcpy(ind_ptr->apdu, data->bytes, data->num_bytes);
     }
 
-    // Add internal delay to travel time field (in addition to initial tt)
-    data.delay = lib_time->getTimestampCoarse() - item->time + req->travel_time;
-    data.bytes        = &req->apdu[0];
-    data.num_bytes    = req->apdu_len;
-    data.dest_address = Waddr_to_Addr(req->dst_addr);
-    data.tracking_id  = req->apdu_id;
-    data.src_endpoint = req->src_endpoint;
-    data.dest_endpoint = req->dst_endpoint;
+    // Initialize delay and protocol delay incrementing function callback
+    output_ptr->time = lib_time->getTimestampCoarse();
+    output_ptr->pre_cb = update_packet_delay;
 
-    // Send packet
-    result = Shared_Data_sendData(&data, data_cb);
-
-    // TODO Attr_manager_getPduBuffCapacity check this
-    // Get remaining buffer capacity (do not pre-check and decrement = lie)
-    lib_data->getNumFreeBuffers(&capacity);
-
-    // Response generation
-create_response:
-    Waps_item_init(item, resp_code, sizeof(dsap_data_tx_cnf_t));
-    item->frame.dsap.data_tx_cnf.apdu_id = req->apdu_id;
-    item->frame.dsap.data_tx_cnf.buff_cap = (uint8_t) capacity;
-    item->frame.dsap.data_tx_cnf.result = (uint8_t) result;
-    return true;
 }
 
-static bool sendPacket(waps_item_t * item)
-{
-    dsap_data_tx_req_t * req = &item->frame.dsap.data_tx_req;
-    dsap_data_tx_tt_req_t * tt_req = (dsap_data_tx_tt_req_t *)req;
-    if (item->frame.splen != (FRAME_DSAP_DATA_TX_REQ_HEADER_SIZE +
-                              req->apdu_len))
-    {
-        return false;
-    }
-    // Marshal to tt_req_t type
-    uint8_t apdu_len = req->apdu_len;
-    memmove(&tt_req->apdu[0], &req->apdu[0], apdu_len);
-    tt_req->apdu_len = apdu_len;
-    tt_req->travel_time = 0;
-    // Fake size to be a bit higher
-    item->frame.splen += sizeof(uint32_t);
-    return sendPacketWithTT(item);
-}
 
 static void update_packet_delay(waps_item_t * item)
 {
@@ -248,6 +296,10 @@ static void update_packet_delay(waps_item_t * item)
         if (item->frame.sfunc == WAPS_FUNC_DSAP_DATA_RX_IND)
         {
             item->frame.dsap.data_rx_ind.delay += local_delay;
+        }
+        else if (item->frame.sfunc == WAPS_FUNC_DSAP_DATA_RX_IND)
+        {
+            item->frame.dsap.data_rx_frag_ind.delay += local_delay;
         }
     }
 }

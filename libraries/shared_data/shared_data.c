@@ -191,7 +191,7 @@ static bool group_query_cb(app_addr_t group_addr)
     shared_data_item_t * item;
     sl_list_t * i = sl_list_begin((sl_list_t *)&m_shared_data_head);
 
-    LOG(LVL_DEBUG, "group_query_cb (group_addr: %u).", group_addr);
+    LOG(LVL_DEBUG, "group_cb (addr: %u)", group_addr);
 
     while (i != sl_list_end((sl_list_t *)&m_shared_data_head))
     {
@@ -226,8 +226,7 @@ static app_lib_data_receive_res_e received_cb(
     shared_data_item_t * item;
     sl_list_t * i = sl_list_begin((sl_list_t *)&m_shared_data_head);
 
-    LOG(LVL_DEBUG, "Received packet "
-        "(dst add: %u, src ep: %d, dest ep: %d).",
+    LOG(LVL_DEBUG, "Rx (%u, %d -> %d)",
         data->dest_address,
         data->src_endpoint,
         data->dest_endpoint);
@@ -249,6 +248,11 @@ static app_lib_data_receive_res_e received_cb(
             }
             else if (cb_res == APP_LIB_DATA_RECEIVE_RES_NO_SPACE)
             {
+                LOG(LVL_DEBUG, "No space for filter (ep: %d -> %d, m: %u)",
+                  item->filter.src_endpoint,
+                  item->filter.dest_endpoint,
+                  item->filter.mode);
+
                 /* Filter cannot receive data anymore, mark it as busy */
                 item->reserved3 = true;
                 /* Report it to stack (It will not be overwritten by anyone else) */
@@ -273,7 +277,7 @@ static void sent_cb(const app_lib_data_sent_status_t * status)
     app_lib_data_data_sent_cb_f cb;
     app_lib_data_tracking_id_t module_id;
 
-    LOG(LVL_DEBUG, "Packet sent cb (id %u)", status->tracking_id);
+    LOG(LVL_DEBUG, "Tx done (id %u)", status->tracking_id);
 
     if(m_tracked_packets[status->tracking_id].cb != NULL)
     {
@@ -305,7 +309,6 @@ app_res_e Shared_Data_init(void)
 
     /* Set callback for received unicast and broadcast messages. */
     lib_data->setDataReceivedCb(received_cb);
-    lib_data->setBcastDataReceivedCb(received_cb);
 
     /* Set callback for multicast group query. */
     lib_settings->registerGroupQuery(group_query_cb);
@@ -361,7 +364,7 @@ app_res_e Shared_Data_addDataReceivedCb(shared_data_item_t * item)
     lib_system->exitCriticalSection();
 
     item->reserved3 = false;
-    LOG(LVL_DEBUG, "Add received cb (src ep: %d, dst ep: %d, mode: %u)",
+    LOG(LVL_DEBUG, "Add Rx cb (ep: %d -> %d, m: %u)",
                    item->filter.src_endpoint,
                    item->filter.dest_endpoint,
                    item->filter.mode);
@@ -371,11 +374,6 @@ app_res_e Shared_Data_addDataReceivedCb(shared_data_item_t * item)
 
 app_res_e Shared_Data_readyToReceive(shared_data_item_t * item)
 {
-    LOG(LVL_DEBUG, "Filter ready again for reception (src ep: %d, dst ep: %d, mode: %u)",
-                   item->filter.src_endpoint,
-                   item->filter.dest_endpoint,
-                   item->filter.mode);
-
     /* Clear the flag from current item if set */
     if (item->reserved3)
     {
@@ -390,7 +388,7 @@ app_res_e Shared_Data_readyToReceive(shared_data_item_t * item)
 
 void Shared_Data_removeDataReceivedCb(shared_data_item_t * item)
 {
-    LOG(LVL_DEBUG, "Remove received cb (src ep: %d, dst ep: %d, mode: %u)",
+    LOG(LVL_DEBUG, "Remove Rx cb (ep: %d -> %d, m: %u)",
                    item->filter.src_endpoint,
                    item->filter.dest_endpoint,
                    item->filter.mode);
@@ -454,6 +452,7 @@ app_lib_data_send_res_e Shared_Data_sendData(
                 // Same tracking id already used by same cb
                 // Two different cbs could reuse the same as they may belongs
                 // to different modules
+                LOG(LVL_DEBUG, "Invalid tracking id");
                 return APP_LIB_DATA_SEND_RES_INVALID_TRACKING_ID;
             }
         }
@@ -461,6 +460,7 @@ app_lib_data_send_res_e Shared_Data_sendData(
         if (free_slot == -1)
         {
             /* No tracking Id available. */
+            LOG(LVL_DEBUG, "No slot for tracked packet");
             return APP_LIB_DATA_SEND_RES_OUT_OF_TRACKING_IDS;
         }
 
@@ -473,7 +473,7 @@ app_lib_data_send_res_e Shared_Data_sendData(
         data->tracking_id = free_slot;
     }
 
-    LOG(LVL_DEBUG, "Send packet (tracking_id: %d, flag: %u).",
+    LOG(LVL_DEBUG, "Tx (id: %d, flag: %u)",
                    data->tracking_id,
                    data->flags);
 

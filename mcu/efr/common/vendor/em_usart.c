@@ -316,7 +316,7 @@ void USART_BaudrateAsyncSet(USART_TypeDef *usart,
                             USART_OVS_TypeDef ovs)
 {
   uint32_t clkdiv;
-  uint32_t oversample;
+  uint32_t oversample = 0;
 
   /* Inhibit divide by 0 */
   EFM_ASSERT(baudrate);
@@ -391,35 +391,37 @@ void USART_BaudrateAsyncSet(USART_TypeDef *usart,
     default:
       /* Invalid input */
       EFM_ASSERT(0);
-      return;
+      break;
   }
 
-  /* Calculate and set CLKDIV with fractional bits.
-   * The added (oversample*baudrate)/2 in the first line is to round the
-   * divisor to the nearest fractional divisor. */
-#if defined(_SILICON_LABS_32B_SERIES_0) && !defined(_EFM32_HAPPY_FAMILY)
-  /* Devices with 2 fractional bits. CLKDIV[7:6] */
-  clkdiv  = 4 * refFreq + (oversample * baudrate) / 2;
-  clkdiv /= oversample * baudrate;
-  clkdiv -= 4;
-  clkdiv *= 64;
-#else
-  /* Devices with 5 fractional bits. CLKDIV[7:3] */
-  clkdiv  = 32 * refFreq + (oversample * baudrate) / 2;
-  clkdiv /= oversample * baudrate;
-  clkdiv -= 32;
-  clkdiv *= 8;
-#endif
+  if (oversample > 0U) {
+    /* Calculate and set CLKDIV with fractional bits.
+     * The added (oversample*baudrate)/2 in the first line is to round the
+     * divisor to the nearest fractional divisor. */
+  #if defined(_SILICON_LABS_32B_SERIES_0) && !defined(_EFM32_HAPPY_FAMILY)
+    /* Devices with 2 fractional bits. CLKDIV[7:6] */
+    clkdiv  = 4 * refFreq + (oversample * baudrate) / 2;
+    clkdiv /= oversample * baudrate;
+    clkdiv -= 4;
+    clkdiv *= 64;
+  #else
+    /* Devices with 5 fractional bits. CLKDIV[7:3] */
+    clkdiv  = 32 * refFreq + (oversample * baudrate) / 2;
+    clkdiv /= oversample * baudrate;
+    clkdiv -= 32;
+    clkdiv *= 8;
+  #endif
 
-  /* Verify that the resulting clock divider is within limits. */
-  EFM_ASSERT(clkdiv <= CLKDIV_MASK);
+    /* Verify that the resulting clock divider is within limits. */
+    EFM_ASSERT(clkdiv <= CLKDIV_MASK);
 
-  /* Make sure that reserved bits are not written to. */
-  clkdiv &= CLKDIV_MASK;
+    /* Make sure that reserved bits are not written to. */
+    clkdiv &= CLKDIV_MASK;
 
-  usart->CTRL  &= ~_USART_CTRL_OVS_MASK;
-  usart->CTRL  |= ovs;
-  usart->CLKDIV = clkdiv;
+    usart->CTRL  &= ~_USART_CTRL_OVS_MASK;
+    usart->CTRL  |= ovs;
+    usart->CLKDIV = clkdiv;
+  }
 }
 
 /***************************************************************************//**
@@ -547,7 +549,7 @@ uint32_t USART_BaudrateCalc(uint32_t refFreq,
    * clkdiv <= _USART_CLKDIV_DIV_MASK (currently 0x1FFFC0 or 0x7FFFF8)
    * and 'oversample' has been reduced to <= 3.
    */
-  divisor = oversample * (256 + clkdiv);
+  divisor = (uint64_t)(oversample * (256 + clkdiv));
 
   quotient  = refFreq / divisor;
   remainder = refFreq % divisor;
@@ -782,10 +784,13 @@ void USART_InitAsync(USART_TypeDef *usart, const USART_InitAsync_TypeDef *init)
   if (init->autoCsEnable) {
     usart->CTRL |= USART_CTRL_AUTOCS;
   }
+  if (init->csInv) {
+    usart->CTRL |= USART_CTRL_CSINV;
+  }
 #if defined(_USART_TIMING_CSHOLD_MASK)
-  usart->TIMING = ((init->autoCsHold << _USART_TIMING_CSHOLD_SHIFT)
+  usart->TIMING = (((uint32_t)init->autoCsHold << _USART_TIMING_CSHOLD_SHIFT)
                    & _USART_TIMING_CSHOLD_MASK)
-                  | ((init->autoCsSetup << _USART_TIMING_CSSETUP_SHIFT)
+                  | (((uint32_t)init->autoCsSetup << _USART_TIMING_CSSETUP_SHIFT)
                      & _USART_TIMING_CSSETUP_MASK);
 
 #endif
@@ -891,10 +896,13 @@ void USART_InitSync(USART_TypeDef *usart, const USART_InitSync_TypeDef *init)
   if (init->autoCsEnable) {
     usart->CTRL |= USART_CTRL_AUTOCS;
   }
+  if (init->csInv) {
+    usart->CTRL |= USART_CTRL_CSINV;
+  }
 #if defined(_USART_TIMING_CSHOLD_MASK)
-  usart->TIMING = ((init->autoCsHold << _USART_TIMING_CSHOLD_SHIFT)
+  usart->TIMING = (((uint32_t)init->autoCsHold << _USART_TIMING_CSHOLD_SHIFT)
                    & _USART_TIMING_CSHOLD_MASK)
-                  | ((init->autoCsSetup << _USART_TIMING_CSSETUP_SHIFT)
+                  | (((uint32_t)init->autoCsSetup << _USART_TIMING_CSSETUP_SHIFT)
                      & _USART_TIMING_CSSETUP_MASK);
 #endif
 
@@ -1022,8 +1030,11 @@ void USART_InitI2s(USART_TypeDef *usart, USART_InitI2s_TypeDef *init)
  * @note
  *   Initialize USART with USART_Init() before setting up the PRS configuration.
  *
- * @param[in] usart A pointer to USART to configure.
- * @param[in] init A pointer to the initialization structure.
+ * @param[in] usart
+ *   A pointer to USART to configure.
+ *
+ * @param[in] init
+ *   A pointer to the initialization structure.
  ******************************************************************************/
 void USART_InitPrsTrigger(USART_TypeDef *usart, const USART_PrsTriggerInit_TypeDef *init)
 {

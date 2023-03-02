@@ -8,7 +8,7 @@
 
 #include <stdint.h>
 #include "api.h"
-#include "joining.h"
+#include "wms_joining.h"
 #include "cbor.h"
 
 /** \brief Return codes of provisioning functions */

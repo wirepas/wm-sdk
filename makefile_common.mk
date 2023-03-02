@@ -1,9 +1,9 @@
 # Version of GCC used for Wirepas testing
-GCC_TESTED_VERSION := 7.2.1
+GCC_TESTED_VERSION := 10.2.1
 
 # Minimum binaries version required by this SDK version
 MIN_BOOTLOADER_VERSION := 7
-MIN_STACK_VERSION := 5.2.0.0
+MIN_STACK_VERSION := 5.3.0.0
 
 # SDK itself
 SDK_PATH := .
@@ -88,20 +88,15 @@ $(warning "Recommended version is : $(GCC_TESTED_VERSION))
 $(warning ***********************************************************************)
 endif
 
-# Optional suffix for application folder
-# It can be used to build several versions of same application
-# with different parameters: app_config0/ and app_config1/
-APP_BUILD_SUFFIX := $(app_build_suffix)
-
-# Name of app
-APP_NAME := $(app_name)$(APP_BUILD_SUFFIX)
-
 # List of available boards found under board/
 AVAILABLE_BOARDS := $(patsubst $(BOARDS_PATH)%/,%,$(sort $(dir $(wildcard $(BOARDS_PATH)*/.))))
 
 # Generic name of stack
 FIRMWARE_NAME := wpc_stack
 
+ifeq ($(target_board),)
+$(error No board defined, please use target_board=... on your command line. Available boards are: $(AVAILABLE_BOARDS))
+endif
 
 BOARD_FOLDER := $(BOARDS_PATH)$(target_board)
 
@@ -116,7 +111,7 @@ BOARD_CONFIG := $(BOARD_FOLDER)/config.mk
 -include $(BOARD_CONFIG)
 
 # Include makefile for mcu family
-include $(MCU_PATH)$(MCU_FAMILY)/makefile
+-include $(MCU_PATH)$(MCU_FAMILY)/makefile
 
 # Folder for Wirepas stack binary image
 IMAGE_PATH := image/
@@ -142,10 +137,23 @@ ifeq (,$(wildcard $(APP_SRCS_PATH)))
 $(error App $(app_name) doesn't exist)
 endif
 
-APP_CONFIG = $(APP_SRCS_PATH)config.mk
+# Check if an alternative config is given
+ifeq ($(app_config),)
+$(info Using default app config: config.mk)
+APP_CONFIG_FILE = config.mk
+APP_NAME := $(app_name)
+else
+APP_CONFIG_FILE = $(app_config).mk
+# Modify app_name for build folder
+APP_NAME := $(app_name)_$(app_config)
+endif
+
+APP_CONFIG = $(APP_SRCS_PATH)$(APP_CONFIG_FILE)
+ifeq (,$(wildcard $(APP_CONFIG)))
+$(error Config file $(APP_CONFIG) doesn't exist)
+endif
 
 # Include app specific config
-# It will generate an error if app doesn't have a config.mk
 include $(APP_CONFIG)
 
 # Build prefixes

@@ -24,26 +24,34 @@
 static bool m_initialized = false;
 
 #if STACK_STATE_CB != 0
-/**  List of callbacks */
-static stack_state_event_cb_f m_stack_state_cbs[STACK_STATE_CB];
 
-static void notify_modules(stack_state_event_e event)
+typedef struct
+{
+    stack_state_event_cb_f cb;
+    uint32_t bitfields;
+} stack_state_cbs_t;
+
+/**  List of callbacks */
+static stack_state_cbs_t m_stack_state_cbs[STACK_STATE_CB];
+
+static void notify_modules(app_lib_stack_event_e event, void * param_p)
 {
     Sys_enterCriticalSection();
     for (uint8_t i = 0; i < STACK_STATE_CB; i++)
     {
-        if (m_stack_state_cbs[i] != NULL)
+        if ((m_stack_state_cbs[i].cb != NULL) &&
+            (m_stack_state_cbs[i].bitfields & (1 << event)))
         {
-            m_stack_state_cbs[i](event);
+            m_stack_state_cbs[i].cb(event, param_p);
         }
     }
     Sys_exitCriticalSection();
 }
 
-static void system_shutdown_cb(void)
+static void onStackEventCb(app_lib_stack_event_e event, void *param_p)
 {
-    LOG(LVL_DEBUG, "received shutdown cb");
-    notify_modules(STACK_STATE_STOPPED_EVENT);
+    // Dispatch event to all registered modules
+    notify_modules(event, param_p);
 }
 #endif
 
@@ -56,13 +64,18 @@ app_res_e Stack_State_init(void)
     }
 
 #if STACK_STATE_CB != 0
+    app_res_e res;
     for (uint8_t i = 0; i < STACK_STATE_CB; i++)
     {
-        m_stack_state_cbs[i] = NULL;
+        m_stack_state_cbs[i].cb = NULL;
     }
 
+    res = lib_state->setOnStackEventCb(onStackEventCb);
+    if (res != APP_RES_OK)
+    {
+        return res;
+    }
 
-    lib_system->setShutdownCb(system_shutdown_cb);
 #endif
     LOG(LVL_DEBUG, "Stack_State_init (%d)", STACK_STATE_CB);
     m_initialized = true;
@@ -75,16 +88,7 @@ app_res_e Stack_State_startStack()
     {
         return APP_RES_INVALID_VALUE;
     }
-    app_res_e res = lib_state->startStack();
-#if STACK_STATE_CB != 0
-    if (res == APP_RES_OK)
-    {
-        // Notifying other registered module from here as
-        // stack doesn't have a callback for that
-        notify_modules(STACK_STATE_STARTED_EVENT);
-    }
-#endif
-    return res;
+    return lib_state->startStack();
 }
 
 app_res_e Stack_State_stopStack()
@@ -101,7 +105,7 @@ bool Stack_State_isStarted()
     return lib_state->getStackState() == APP_LIB_STATE_STARTED;
 }
 
-app_res_e Stack_State_addEventCb(stack_state_event_cb_f callback)
+app_res_e Stack_State_addEventCb(stack_state_event_cb_f callback, uint32_t event_bitfield)
 {
     if (!m_initialized)
     {
@@ -116,18 +120,25 @@ app_res_e Stack_State_addEventCb(stack_state_event_cb_f callback)
         return APP_RES_INVALID_NULL_POINTER;
     }
 
+    if (event_bitfield == 0)
+    {
+        return APP_RES_INVALID_VALUE;
+    }
+
     Sys_enterCriticalSection();
     for (uint8_t i = 0; i < STACK_STATE_CB; i++)
     {
-        if (m_stack_state_cbs[i] == NULL)
+        if (m_stack_state_cbs[i].cb == NULL)
         {
             /* One free room found */
             free_slot = i;
             continue;
         }
-        else if (m_stack_state_cbs[i] == callback)
+        else if (m_stack_state_cbs[i].cb == callback)
         {
             /* Callback already present */
+            // Updating bitfields
+            m_stack_state_cbs[i].bitfields = event_bitfield;
             res = APP_RES_OK;
             break;
         }
@@ -136,14 +147,15 @@ app_res_e Stack_State_addEventCb(stack_state_event_cb_f callback)
     if (res != APP_RES_OK && free_slot >= 0)
     {
         /* Callback was not already present and a free room was found */
-        m_stack_state_cbs[free_slot] = callback;
+        m_stack_state_cbs[free_slot].cb = callback;
+        m_stack_state_cbs[free_slot].bitfields = event_bitfield;
         res = APP_RES_OK;
     }
     Sys_exitCriticalSection();
 
     if (res == APP_RES_OK)
     {
-        LOG(LVL_DEBUG, "Add stack state event cb (0x%x)", callback);
+        LOG(LVL_DEBUG, "Add stack state event cb (0x%x) for events: %x", callback, event_bitfield);
     }
     else
     {
@@ -169,9 +181,9 @@ app_res_e Stack_State_removeEventCb(stack_state_event_cb_f callback)
     Sys_enterCriticalSection();
     for (uint8_t i = 0; i < STACK_STATE_CB; i++)
     {
-        if (m_stack_state_cbs[i] == callback)
+        if (m_stack_state_cbs[i].cb == callback)
         {
-            m_stack_state_cbs[i] = NULL;
+            m_stack_state_cbs[i].cb= NULL;
             res = APP_RES_OK;
         }
     }

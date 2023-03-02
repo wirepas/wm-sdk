@@ -90,12 +90,12 @@ uint16_t Mcu_voltageGet(void)
     ADC0->BIASPROG = ADC_BIASPROG_GPBIASACC_HIGHACC;
 
     /* The maximum clock frequency for adc_clk_sar is 16 MHz
-     * Assume HFPERCLK 38,4MHz
+     * Assume HFPERCLK 38,4MHz (or 39,0MHz with EFR32xG23)
      * ADC_CTRL_PRESC is Clock prescale factor.
      *      ADC_CLK is divided by (PRESC+1) to produce adc_clk_sar
      * ADC_CTRL_TIMEBASE field set equal to produce timing of 1us or greater
      * TIMEBASE calulated like this:
-        * hfperFreq = 38400000
+        * hfperFreq = 38400000 (or 39000000)
         * hfperFreq += 999999;
         * hfperFreq /= 1000000;
         * timebase = hfperFreq -1;

@@ -18,7 +18,7 @@ else ifeq ($(MCU)$(MCU_SUB)$(MCU_MEM_VAR),efr32xg12pxxxf512)
     CFLAGS += -DEFR32FG12 -DEFR32FG12P232F1024GL125
     # Mcu instruction set
     ARCH=armv7e-m
-    #HAL_SYSTEM_C := efr32fg12/system_efr32fg12p.c
+    HAL_SYSTEM_C := efr32fg12/system_efr32fg12p.c
 else ifeq ($(MCU)$(MCU_SUB),efr32xg21)
     ifeq ($(radio),bgm210pa22jia)
         HW_MAGIC=0C
@@ -74,6 +74,21 @@ else ifeq ($(MCU)$(MCU_SUB)$(MCU_MEM_VAR),efr32xg22xxxxf512)
     endif
     ifneq ($(board_hw_crystal_32k),yes)
         $(error "32kHz crystal must be installed on efr32xg22 board")
+    endif
+else ifeq ($(MCU)$(MCU_SUB)$(MCU_MEM_VAR),efr32xg23xxxxf512)
+    HW_MAGIC=10
+    HW_VARIANT_ID=13
+    CFLAGS += -DEFR32FG23 -DEFR32FG23B020F512IM48
+    CFLAGS += -DARM_MATH_ARMV8MML
+    CFLAGS += -mfloat-abi=hard -mfpu=fpv5-sp-d16
+    # Mcu instruction set
+    ARCH=armv8-m.main
+    # Libraries to be build for Cortex-M33
+    CM33 := yes
+    HAL_SYSTEM_C := efr32fg23/Source/system_efr32fg23.c
+    # Bootloader sanity check
+    ifneq ($(board_hw_crystal_32k),no)
+        $(error "32kHz crystal not supported on efr32xg23 board")
     endif
 else
     $(error "Invalid MCU configuration $(MCU)$(MCU_SUB)$(MCU_MEM_VAR)!")

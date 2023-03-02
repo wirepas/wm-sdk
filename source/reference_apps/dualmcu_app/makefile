@@ -30,3 +30,9 @@ DUALMCU_LIB=yes
 
 # Enable local provisioning
 LOCAL_PROVISIONING=yes
+
+# Enable to allow reading scratchpad via dual-MCU API
+allow_scratchpad_read ?= no
+ifeq ($(allow_scratchpad_read),yes)
+    CFLAGS += -DALLOW_SCRATCHPAD_READ
+endif

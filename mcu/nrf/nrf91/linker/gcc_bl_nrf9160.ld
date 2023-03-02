@@ -18,8 +18,8 @@ SEARCH_DIR(.)
 
 MEMORY
 {
-    BOOTLOADER (rx)   : ORIGIN = 0x00000000,                LENGTH = 16K - 1K
-    BLCONFIG (rx)     : ORIGIN = 0x00000000 + 15K,          LENGTH = 1K
+    BOOTLOADER (rx)   : ORIGIN = 0x00000000,                LENGTH = 32K - 1K
+    BLCONFIG (rx)     : ORIGIN = 0x00000000 + 31K,          LENGTH = 1K
     BL_STATIC (rwx)   : ORIGIN = 0x20000000,                LENGTH = 1k
     RAM (rwx)         : ORIGIN = 0x20000000 + 1k,           LENGTH = 255K - 24
     INVALID (rwx)     : ORIGIN = 0xFFFFFFFF,                LENGTH = 0

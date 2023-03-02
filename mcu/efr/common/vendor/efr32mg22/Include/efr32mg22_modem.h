@@ -3,7 +3,7 @@
  * @brief EFR32MG22 MODEM register and bit field definitions
  ******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories, Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories, Inc. www.silabs.com</b>
  ******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -41,451 +41,456 @@
  * @brief EFR32MG22 MODEM Register Declaration.
  *****************************************************************************/
 
+/** MODEM IRCALCOEFWR Register Group Declaration. */
+typedef struct {
+  __IOM uint32_t IRCALCOEFWR;                        /**< IRCAL COEF WR per antenna                          */
+} MODEM_IRCALCOEFWR_TypeDef;
+
 /** MODEM Register Declaration. */
 typedef struct {
-  __IM uint32_t  IPVERSION;                     /**< IP Version                                         */
-  __IOM uint32_t EN;                            /**< Enable peripheral clock to this module             */
-  __IM uint32_t  STATUS;                        /**< Status Register                                    */
-  __IM uint32_t  TIMDETSTATUS;                  /**< Timing Detection Status Register                   */
-  __IM uint32_t  FREQOFFEST;                    /**< Frequency Offset Estimate                          */
-  __IM uint32_t  AFCADJRX;                      /**< AFC Adjustment RX                                  */
-  __IM uint32_t  AFCADJTX;                      /**< AFC Adjustment TX                                  */
-  __IOM uint32_t MIXCTRL;                       /**< Analog mixer control                               */
-  __IOM uint32_t CTRL0;                         /**< Control Register 0                                 */
-  __IOM uint32_t CTRL1;                         /**< Control Register 1                                 */
-  __IOM uint32_t CTRL2;                         /**< Control Register 2                                 */
-  __IOM uint32_t CTRL3;                         /**< Control Register 3                                 */
-  __IOM uint32_t CTRL4;                         /**< Control Register 4                                 */
-  __IOM uint32_t CTRL5;                         /**< Control Register 5                                 */
-  __IOM uint32_t CTRL6;                         /**< Control Register 6                                 */
-  uint32_t       RESERVED0[7U];                 /**< Reserved for future use                            */
-  __IOM uint32_t TXBR;                          /**< Transmit baudrate                                  */
-  __IOM uint32_t RXBR;                          /**< Receive Baudrate                                   */
-  __IOM uint32_t CF;                            /**< Channel Filter                                     */
-  __IOM uint32_t PRE;                           /**< Preamble Register                                  */
-  __IOM uint32_t SYNC0;                         /**< Sync word 0                                        */
-  __IOM uint32_t SYNC1;                         /**< Sync word 1                                        */
-  uint32_t       RESERVED1[4U];                 /**< Reserved for future use                            */
-  __IOM uint32_t TIMING;                        /**< Timing Register                                    */
-  __IOM uint32_t DSSS0;                         /**< DSSS symbol 0 Register                             */
-  __IOM uint32_t MODINDEX;                      /**< Modulation Index                                   */
-  __IOM uint32_t AFC;                           /**< Automatic Frequency Control                        */
-  __IOM uint32_t AFCADJLIM;                     /**< AFC Adjustment Limit                               */
-  __IOM uint32_t SHAPING0;                      /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING1;                      /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING2;                      /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING3;                      /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING4;                      /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING5;                      /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING6;                      /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING7;                      /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING8;                      /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING9;                      /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING10;                     /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING11;                     /**< Shaping Coefficients                               */
-  __IOM uint32_t RAMPCTRL;                      /**< Ramping Register                                   */
-  uint32_t       RESERVED2[1U];                 /**< Reserved for future use                            */
-  __IOM uint32_t RAMPLEV;                       /**< Ramping Register                                   */
-  uint32_t       RESERVED3[4U];                 /**< Reserved for future use                            */
-  __IOM uint32_t DCCOMP;                        /**< DC Offset Compensation Filter Settings             */
-  __IOM uint32_t DCCOMPFILTINIT;                /**< DC Offset compensation Filter                      */
-  __IM uint32_t  DCESTI;                        /**< DC Offset Estimated value                          */
-  __IOM uint32_t SRCCHF;                        /**< SRC ratio values and channel filter                */
-  uint32_t       RESERVED4[1U];                 /**< Reserved for future use                            */
-  __IOM uint32_t DSATHD0;                       /**< DSA detector threshold-0                           */
-  __IOM uint32_t DSATHD1;                       /**< DSA detector threshold-1                           */
-  __IOM uint32_t DSACTRL;                       /**< DSA mode                                           */
-  __IOM uint32_t VITERBIDEMOD;                  /**< Viterbi demodulator                                */
-  __IOM uint32_t VTCORRCFG0;                    /**< Viterbi demodulator                                */
-  uint32_t       RESERVED5[1U];                 /**< Reserved for future use                            */
-  __IOM uint32_t DIGMIXCTRL;                    /**< Digital mixer control register                     */
-  __IOM uint32_t VTCORRCFG1;                    /**< Viterbi demodulator                                */
-  __IOM uint32_t VTTRACK;                       /**< Viterbi demodulator tracking loop                  */
-  __IM uint32_t  BREST;                         /**< Baudrate Estimate                                  */
-  uint32_t       RESERVED6[2U];                 /**< Reserved for future use                            */
-  __IOM uint32_t AUTOCG;                        /**< Automatic clock gating                             */
-  __IOM uint32_t CGCLKSTOP;                     /**< Automatic clock gating                             */
-  uint32_t       RESERVED7[1U];                 /**< Reserved for future use                            */
-  __IOM uint32_t DSATHD2;                       /**< DSA detector threshold-2                           */
-  __IOM uint32_t DIRECTMODE;                    /**< Direct Mode Control                                */
-  __IOM uint32_t LONGRANGE;                     /**< BLE Long Range                                     */
-  __IOM uint32_t LONGRANGE1;                    /**< BLE Long Range Set1                                */
-  __IOM uint32_t LONGRANGE2;                    /**< BLE Long Range Set2                                */
-  __IOM uint32_t LONGRANGE3;                    /**< BLE Long Range Set3                                */
-  __IOM uint32_t LONGRANGE4;                    /**< BLE Long Range Set4                                */
-  __IOM uint32_t LONGRANGE5;                    /**< BLE Long Range Set5                                */
-  __IOM uint32_t LONGRANGE6;                    /**< BLE Long Range Set6                                */
-  __IOM uint32_t LRFRC;                         /**< BLE Long Range FRC interface                       */
-  uint32_t       RESERVED8[4U];                 /**< Reserved for future use                            */
-  __IOM uint32_t DSATHD3;                       /**< DSA detector threshold 3                           */
-  __IOM uint32_t DSATHD4;                       /**< DSA detector threshold 4                           */
-  __IOM uint32_t VTBLETIMING;                   /**< Viterbi BLE timing stamp control                   */
-  uint32_t       RESERVED9[37U];                /**< Reserved for future use                            */
-  __IOM uint32_t IF;                            /**< Interrupt Flags                                    */
-  __IOM uint32_t IEN;                           /**< Interrupt Enable                                   */
-  uint32_t       RESERVED10[2U];                /**< Reserved for future use                            */
-  __IOM uint32_t CMD;                           /**< Command register                                   */
-  __IM uint32_t  FSMSTATUS;                     /**< Demod FSM Status Register                          */
-  __IM uint32_t  STATUS2;                       /**< Status Register 2                                  */
-  __IM uint32_t  STATUS3;                       /**< Status Register 3                                  */
-  __IOM uint32_t IRCAL;                         /**< IRCAL control signals                              */
-  __IM uint32_t  IRCALCOEF;                     /**< IRCAL COEF values                                  */
-  __IOM uint32_t BLEIQDSA;                      /**< BLEIQDSA                                           */
-  __IOM uint32_t BLEIQDSAEXT1;                  /**< BLEIQDSA Extention1                                */
-  __IOM uint32_t SYNCPROPERTIES;                /**< Sync word properties                               */
-  __IOM uint32_t DIGIGAINCTRL;                  /**< Digital Gain Control                               */
-  __IOM uint32_t PRSCTRL;                       /**< Mux control for PRS outputs                        */
-  uint32_t       RESERVED11[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t REALTIMCFE;                    /**< Real time Cost Function Engine CTRL                */
-  __IOM uint32_t SEQIF;                         /**< SEQ Interrupt Flags                                */
-  __IOM uint32_t SEQIEN;                        /**< SEQ Interrupt Enable                               */
-  __IOM uint32_t ETSCTRL;                       /**< Early Time Stamp Control                           */
-  __IOM uint32_t ANTSWCTRL;                     /**< Antenna Switch Control                             */
-  __IOM uint32_t ANTSWSTART;                    /**< Antenna Switch Start                               */
-  __IOM uint32_t ANTSWEND;                      /**< Antenna Switch End                                 */
-  __IOM uint32_t TRECPMPATT;                    /**< Trecs Preamble pattern                             */
-  __IOM uint32_t TRECPMDET;                     /**< Trecs preamble Detection CTRL                      */
-  __IOM uint32_t CFGANTPATT;                    /**< Configure Antenna Pattern                          */
-  __IOM uint32_t ETSTIM;                        /**< Early Time Stamp Timing                            */
-  __IOM uint32_t ANTSWCTRL1;                    /**< Antenna Switch Control 1                           */
-  __IOM uint32_t COCURRMODE;                    /**< CONCURRENT MODE                                    */
-  __IOM uint32_t ANTDIVCTRL;                    /**< Antenna Diversity Mode Control Register            */
-  __IOM uint32_t BLEIQDSAEXT2;                  /**< BLEIQDSA Extention2                                */
-  __IOM uint32_t SPARE;                         /**< Spare register                                     */
-  __IOM uint32_t IRCALCOEFWR;                   /**< IRCAL COEF WR per antenna                          */
-  uint32_t       RESERVED12[861U];              /**< Reserved for future use                            */
-  __IM uint32_t  IPVERSION_SET;                 /**< IP Version                                         */
-  __IOM uint32_t EN_SET;                        /**< Enable peripheral clock to this module             */
-  __IM uint32_t  STATUS_SET;                    /**< Status Register                                    */
-  __IM uint32_t  TIMDETSTATUS_SET;              /**< Timing Detection Status Register                   */
-  __IM uint32_t  FREQOFFEST_SET;                /**< Frequency Offset Estimate                          */
-  __IM uint32_t  AFCADJRX_SET;                  /**< AFC Adjustment RX                                  */
-  __IM uint32_t  AFCADJTX_SET;                  /**< AFC Adjustment TX                                  */
-  __IOM uint32_t MIXCTRL_SET;                   /**< Analog mixer control                               */
-  __IOM uint32_t CTRL0_SET;                     /**< Control Register 0                                 */
-  __IOM uint32_t CTRL1_SET;                     /**< Control Register 1                                 */
-  __IOM uint32_t CTRL2_SET;                     /**< Control Register 2                                 */
-  __IOM uint32_t CTRL3_SET;                     /**< Control Register 3                                 */
-  __IOM uint32_t CTRL4_SET;                     /**< Control Register 4                                 */
-  __IOM uint32_t CTRL5_SET;                     /**< Control Register 5                                 */
-  __IOM uint32_t CTRL6_SET;                     /**< Control Register 6                                 */
-  uint32_t       RESERVED13[7U];                /**< Reserved for future use                            */
-  __IOM uint32_t TXBR_SET;                      /**< Transmit baudrate                                  */
-  __IOM uint32_t RXBR_SET;                      /**< Receive Baudrate                                   */
-  __IOM uint32_t CF_SET;                        /**< Channel Filter                                     */
-  __IOM uint32_t PRE_SET;                       /**< Preamble Register                                  */
-  __IOM uint32_t SYNC0_SET;                     /**< Sync word 0                                        */
-  __IOM uint32_t SYNC1_SET;                     /**< Sync word 1                                        */
-  uint32_t       RESERVED14[4U];                /**< Reserved for future use                            */
-  __IOM uint32_t TIMING_SET;                    /**< Timing Register                                    */
-  __IOM uint32_t DSSS0_SET;                     /**< DSSS symbol 0 Register                             */
-  __IOM uint32_t MODINDEX_SET;                  /**< Modulation Index                                   */
-  __IOM uint32_t AFC_SET;                       /**< Automatic Frequency Control                        */
-  __IOM uint32_t AFCADJLIM_SET;                 /**< AFC Adjustment Limit                               */
-  __IOM uint32_t SHAPING0_SET;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING1_SET;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING2_SET;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING3_SET;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING4_SET;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING5_SET;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING6_SET;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING7_SET;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING8_SET;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING9_SET;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING10_SET;                 /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING11_SET;                 /**< Shaping Coefficients                               */
-  __IOM uint32_t RAMPCTRL_SET;                  /**< Ramping Register                                   */
-  uint32_t       RESERVED15[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t RAMPLEV_SET;                   /**< Ramping Register                                   */
-  uint32_t       RESERVED16[4U];                /**< Reserved for future use                            */
-  __IOM uint32_t DCCOMP_SET;                    /**< DC Offset Compensation Filter Settings             */
-  __IOM uint32_t DCCOMPFILTINIT_SET;            /**< DC Offset compensation Filter                      */
-  __IM uint32_t  DCESTI_SET;                    /**< DC Offset Estimated value                          */
-  __IOM uint32_t SRCCHF_SET;                    /**< SRC ratio values and channel filter                */
-  uint32_t       RESERVED17[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t DSATHD0_SET;                   /**< DSA detector threshold-0                           */
-  __IOM uint32_t DSATHD1_SET;                   /**< DSA detector threshold-1                           */
-  __IOM uint32_t DSACTRL_SET;                   /**< DSA mode                                           */
-  __IOM uint32_t VITERBIDEMOD_SET;              /**< Viterbi demodulator                                */
-  __IOM uint32_t VTCORRCFG0_SET;                /**< Viterbi demodulator                                */
-  uint32_t       RESERVED18[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t DIGMIXCTRL_SET;                /**< Digital mixer control register                     */
-  __IOM uint32_t VTCORRCFG1_SET;                /**< Viterbi demodulator                                */
-  __IOM uint32_t VTTRACK_SET;                   /**< Viterbi demodulator tracking loop                  */
-  __IM uint32_t  BREST_SET;                     /**< Baudrate Estimate                                  */
-  uint32_t       RESERVED19[2U];                /**< Reserved for future use                            */
-  __IOM uint32_t AUTOCG_SET;                    /**< Automatic clock gating                             */
-  __IOM uint32_t CGCLKSTOP_SET;                 /**< Automatic clock gating                             */
-  uint32_t       RESERVED20[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t DSATHD2_SET;                   /**< DSA detector threshold-2                           */
-  __IOM uint32_t DIRECTMODE_SET;                /**< Direct Mode Control                                */
-  __IOM uint32_t LONGRANGE_SET;                 /**< BLE Long Range                                     */
-  __IOM uint32_t LONGRANGE1_SET;                /**< BLE Long Range Set1                                */
-  __IOM uint32_t LONGRANGE2_SET;                /**< BLE Long Range Set2                                */
-  __IOM uint32_t LONGRANGE3_SET;                /**< BLE Long Range Set3                                */
-  __IOM uint32_t LONGRANGE4_SET;                /**< BLE Long Range Set4                                */
-  __IOM uint32_t LONGRANGE5_SET;                /**< BLE Long Range Set5                                */
-  __IOM uint32_t LONGRANGE6_SET;                /**< BLE Long Range Set6                                */
-  __IOM uint32_t LRFRC_SET;                     /**< BLE Long Range FRC interface                       */
-  uint32_t       RESERVED21[4U];                /**< Reserved for future use                            */
-  __IOM uint32_t DSATHD3_SET;                   /**< DSA detector threshold 3                           */
-  __IOM uint32_t DSATHD4_SET;                   /**< DSA detector threshold 4                           */
-  __IOM uint32_t VTBLETIMING_SET;               /**< Viterbi BLE timing stamp control                   */
-  uint32_t       RESERVED22[37U];               /**< Reserved for future use                            */
-  __IOM uint32_t IF_SET;                        /**< Interrupt Flags                                    */
-  __IOM uint32_t IEN_SET;                       /**< Interrupt Enable                                   */
-  uint32_t       RESERVED23[2U];                /**< Reserved for future use                            */
-  __IOM uint32_t CMD_SET;                       /**< Command register                                   */
-  __IM uint32_t  FSMSTATUS_SET;                 /**< Demod FSM Status Register                          */
-  __IM uint32_t  STATUS2_SET;                   /**< Status Register 2                                  */
-  __IM uint32_t  STATUS3_SET;                   /**< Status Register 3                                  */
-  __IOM uint32_t IRCAL_SET;                     /**< IRCAL control signals                              */
-  __IM uint32_t  IRCALCOEF_SET;                 /**< IRCAL COEF values                                  */
-  __IOM uint32_t BLEIQDSA_SET;                  /**< BLEIQDSA                                           */
-  __IOM uint32_t BLEIQDSAEXT1_SET;              /**< BLEIQDSA Extention1                                */
-  __IOM uint32_t SYNCPROPERTIES_SET;            /**< Sync word properties                               */
-  __IOM uint32_t DIGIGAINCTRL_SET;              /**< Digital Gain Control                               */
-  __IOM uint32_t PRSCTRL_SET;                   /**< Mux control for PRS outputs                        */
-  uint32_t       RESERVED24[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t REALTIMCFE_SET;                /**< Real time Cost Function Engine CTRL                */
-  __IOM uint32_t SEQIF_SET;                     /**< SEQ Interrupt Flags                                */
-  __IOM uint32_t SEQIEN_SET;                    /**< SEQ Interrupt Enable                               */
-  __IOM uint32_t ETSCTRL_SET;                   /**< Early Time Stamp Control                           */
-  __IOM uint32_t ANTSWCTRL_SET;                 /**< Antenna Switch Control                             */
-  __IOM uint32_t ANTSWSTART_SET;                /**< Antenna Switch Start                               */
-  __IOM uint32_t ANTSWEND_SET;                  /**< Antenna Switch End                                 */
-  __IOM uint32_t TRECPMPATT_SET;                /**< Trecs Preamble pattern                             */
-  __IOM uint32_t TRECPMDET_SET;                 /**< Trecs preamble Detection CTRL                      */
-  __IOM uint32_t CFGANTPATT_SET;                /**< Configure Antenna Pattern                          */
-  __IOM uint32_t ETSTIM_SET;                    /**< Early Time Stamp Timing                            */
-  __IOM uint32_t ANTSWCTRL1_SET;                /**< Antenna Switch Control 1                           */
-  __IOM uint32_t COCURRMODE_SET;                /**< CONCURRENT MODE                                    */
-  __IOM uint32_t ANTDIVCTRL_SET;                /**< Antenna Diversity Mode Control Register            */
-  __IOM uint32_t BLEIQDSAEXT2_SET;              /**< BLEIQDSA Extention2                                */
-  __IOM uint32_t SPARE_SET;                     /**< Spare register                                     */
-  __IOM uint32_t IRCALCOEFWR_SET;               /**< IRCAL COEF WR per antenna                          */
-  uint32_t       RESERVED25[861U];              /**< Reserved for future use                            */
-  __IM uint32_t  IPVERSION_CLR;                 /**< IP Version                                         */
-  __IOM uint32_t EN_CLR;                        /**< Enable peripheral clock to this module             */
-  __IM uint32_t  STATUS_CLR;                    /**< Status Register                                    */
-  __IM uint32_t  TIMDETSTATUS_CLR;              /**< Timing Detection Status Register                   */
-  __IM uint32_t  FREQOFFEST_CLR;                /**< Frequency Offset Estimate                          */
-  __IM uint32_t  AFCADJRX_CLR;                  /**< AFC Adjustment RX                                  */
-  __IM uint32_t  AFCADJTX_CLR;                  /**< AFC Adjustment TX                                  */
-  __IOM uint32_t MIXCTRL_CLR;                   /**< Analog mixer control                               */
-  __IOM uint32_t CTRL0_CLR;                     /**< Control Register 0                                 */
-  __IOM uint32_t CTRL1_CLR;                     /**< Control Register 1                                 */
-  __IOM uint32_t CTRL2_CLR;                     /**< Control Register 2                                 */
-  __IOM uint32_t CTRL3_CLR;                     /**< Control Register 3                                 */
-  __IOM uint32_t CTRL4_CLR;                     /**< Control Register 4                                 */
-  __IOM uint32_t CTRL5_CLR;                     /**< Control Register 5                                 */
-  __IOM uint32_t CTRL6_CLR;                     /**< Control Register 6                                 */
-  uint32_t       RESERVED26[7U];                /**< Reserved for future use                            */
-  __IOM uint32_t TXBR_CLR;                      /**< Transmit baudrate                                  */
-  __IOM uint32_t RXBR_CLR;                      /**< Receive Baudrate                                   */
-  __IOM uint32_t CF_CLR;                        /**< Channel Filter                                     */
-  __IOM uint32_t PRE_CLR;                       /**< Preamble Register                                  */
-  __IOM uint32_t SYNC0_CLR;                     /**< Sync word 0                                        */
-  __IOM uint32_t SYNC1_CLR;                     /**< Sync word 1                                        */
-  uint32_t       RESERVED27[4U];                /**< Reserved for future use                            */
-  __IOM uint32_t TIMING_CLR;                    /**< Timing Register                                    */
-  __IOM uint32_t DSSS0_CLR;                     /**< DSSS symbol 0 Register                             */
-  __IOM uint32_t MODINDEX_CLR;                  /**< Modulation Index                                   */
-  __IOM uint32_t AFC_CLR;                       /**< Automatic Frequency Control                        */
-  __IOM uint32_t AFCADJLIM_CLR;                 /**< AFC Adjustment Limit                               */
-  __IOM uint32_t SHAPING0_CLR;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING1_CLR;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING2_CLR;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING3_CLR;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING4_CLR;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING5_CLR;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING6_CLR;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING7_CLR;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING8_CLR;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING9_CLR;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING10_CLR;                 /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING11_CLR;                 /**< Shaping Coefficients                               */
-  __IOM uint32_t RAMPCTRL_CLR;                  /**< Ramping Register                                   */
-  uint32_t       RESERVED28[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t RAMPLEV_CLR;                   /**< Ramping Register                                   */
-  uint32_t       RESERVED29[4U];                /**< Reserved for future use                            */
-  __IOM uint32_t DCCOMP_CLR;                    /**< DC Offset Compensation Filter Settings             */
-  __IOM uint32_t DCCOMPFILTINIT_CLR;            /**< DC Offset compensation Filter                      */
-  __IM uint32_t  DCESTI_CLR;                    /**< DC Offset Estimated value                          */
-  __IOM uint32_t SRCCHF_CLR;                    /**< SRC ratio values and channel filter                */
-  uint32_t       RESERVED30[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t DSATHD0_CLR;                   /**< DSA detector threshold-0                           */
-  __IOM uint32_t DSATHD1_CLR;                   /**< DSA detector threshold-1                           */
-  __IOM uint32_t DSACTRL_CLR;                   /**< DSA mode                                           */
-  __IOM uint32_t VITERBIDEMOD_CLR;              /**< Viterbi demodulator                                */
-  __IOM uint32_t VTCORRCFG0_CLR;                /**< Viterbi demodulator                                */
-  uint32_t       RESERVED31[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t DIGMIXCTRL_CLR;                /**< Digital mixer control register                     */
-  __IOM uint32_t VTCORRCFG1_CLR;                /**< Viterbi demodulator                                */
-  __IOM uint32_t VTTRACK_CLR;                   /**< Viterbi demodulator tracking loop                  */
-  __IM uint32_t  BREST_CLR;                     /**< Baudrate Estimate                                  */
-  uint32_t       RESERVED32[2U];                /**< Reserved for future use                            */
-  __IOM uint32_t AUTOCG_CLR;                    /**< Automatic clock gating                             */
-  __IOM uint32_t CGCLKSTOP_CLR;                 /**< Automatic clock gating                             */
-  uint32_t       RESERVED33[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t DSATHD2_CLR;                   /**< DSA detector threshold-2                           */
-  __IOM uint32_t DIRECTMODE_CLR;                /**< Direct Mode Control                                */
-  __IOM uint32_t LONGRANGE_CLR;                 /**< BLE Long Range                                     */
-  __IOM uint32_t LONGRANGE1_CLR;                /**< BLE Long Range Set1                                */
-  __IOM uint32_t LONGRANGE2_CLR;                /**< BLE Long Range Set2                                */
-  __IOM uint32_t LONGRANGE3_CLR;                /**< BLE Long Range Set3                                */
-  __IOM uint32_t LONGRANGE4_CLR;                /**< BLE Long Range Set4                                */
-  __IOM uint32_t LONGRANGE5_CLR;                /**< BLE Long Range Set5                                */
-  __IOM uint32_t LONGRANGE6_CLR;                /**< BLE Long Range Set6                                */
-  __IOM uint32_t LRFRC_CLR;                     /**< BLE Long Range FRC interface                       */
-  uint32_t       RESERVED34[4U];                /**< Reserved for future use                            */
-  __IOM uint32_t DSATHD3_CLR;                   /**< DSA detector threshold 3                           */
-  __IOM uint32_t DSATHD4_CLR;                   /**< DSA detector threshold 4                           */
-  __IOM uint32_t VTBLETIMING_CLR;               /**< Viterbi BLE timing stamp control                   */
-  uint32_t       RESERVED35[37U];               /**< Reserved for future use                            */
-  __IOM uint32_t IF_CLR;                        /**< Interrupt Flags                                    */
-  __IOM uint32_t IEN_CLR;                       /**< Interrupt Enable                                   */
-  uint32_t       RESERVED36[2U];                /**< Reserved for future use                            */
-  __IOM uint32_t CMD_CLR;                       /**< Command register                                   */
-  __IM uint32_t  FSMSTATUS_CLR;                 /**< Demod FSM Status Register                          */
-  __IM uint32_t  STATUS2_CLR;                   /**< Status Register 2                                  */
-  __IM uint32_t  STATUS3_CLR;                   /**< Status Register 3                                  */
-  __IOM uint32_t IRCAL_CLR;                     /**< IRCAL control signals                              */
-  __IM uint32_t  IRCALCOEF_CLR;                 /**< IRCAL COEF values                                  */
-  __IOM uint32_t BLEIQDSA_CLR;                  /**< BLEIQDSA                                           */
-  __IOM uint32_t BLEIQDSAEXT1_CLR;              /**< BLEIQDSA Extention1                                */
-  __IOM uint32_t SYNCPROPERTIES_CLR;            /**< Sync word properties                               */
-  __IOM uint32_t DIGIGAINCTRL_CLR;              /**< Digital Gain Control                               */
-  __IOM uint32_t PRSCTRL_CLR;                   /**< Mux control for PRS outputs                        */
-  uint32_t       RESERVED37[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t REALTIMCFE_CLR;                /**< Real time Cost Function Engine CTRL                */
-  __IOM uint32_t SEQIF_CLR;                     /**< SEQ Interrupt Flags                                */
-  __IOM uint32_t SEQIEN_CLR;                    /**< SEQ Interrupt Enable                               */
-  __IOM uint32_t ETSCTRL_CLR;                   /**< Early Time Stamp Control                           */
-  __IOM uint32_t ANTSWCTRL_CLR;                 /**< Antenna Switch Control                             */
-  __IOM uint32_t ANTSWSTART_CLR;                /**< Antenna Switch Start                               */
-  __IOM uint32_t ANTSWEND_CLR;                  /**< Antenna Switch End                                 */
-  __IOM uint32_t TRECPMPATT_CLR;                /**< Trecs Preamble pattern                             */
-  __IOM uint32_t TRECPMDET_CLR;                 /**< Trecs preamble Detection CTRL                      */
-  __IOM uint32_t CFGANTPATT_CLR;                /**< Configure Antenna Pattern                          */
-  __IOM uint32_t ETSTIM_CLR;                    /**< Early Time Stamp Timing                            */
-  __IOM uint32_t ANTSWCTRL1_CLR;                /**< Antenna Switch Control 1                           */
-  __IOM uint32_t COCURRMODE_CLR;                /**< CONCURRENT MODE                                    */
-  __IOM uint32_t ANTDIVCTRL_CLR;                /**< Antenna Diversity Mode Control Register            */
-  __IOM uint32_t BLEIQDSAEXT2_CLR;              /**< BLEIQDSA Extention2                                */
-  __IOM uint32_t SPARE_CLR;                     /**< Spare register                                     */
-  __IOM uint32_t IRCALCOEFWR_CLR;               /**< IRCAL COEF WR per antenna                          */
-  uint32_t       RESERVED38[861U];              /**< Reserved for future use                            */
-  __IM uint32_t  IPVERSION_TGL;                 /**< IP Version                                         */
-  __IOM uint32_t EN_TGL;                        /**< Enable peripheral clock to this module             */
-  __IM uint32_t  STATUS_TGL;                    /**< Status Register                                    */
-  __IM uint32_t  TIMDETSTATUS_TGL;              /**< Timing Detection Status Register                   */
-  __IM uint32_t  FREQOFFEST_TGL;                /**< Frequency Offset Estimate                          */
-  __IM uint32_t  AFCADJRX_TGL;                  /**< AFC Adjustment RX                                  */
-  __IM uint32_t  AFCADJTX_TGL;                  /**< AFC Adjustment TX                                  */
-  __IOM uint32_t MIXCTRL_TGL;                   /**< Analog mixer control                               */
-  __IOM uint32_t CTRL0_TGL;                     /**< Control Register 0                                 */
-  __IOM uint32_t CTRL1_TGL;                     /**< Control Register 1                                 */
-  __IOM uint32_t CTRL2_TGL;                     /**< Control Register 2                                 */
-  __IOM uint32_t CTRL3_TGL;                     /**< Control Register 3                                 */
-  __IOM uint32_t CTRL4_TGL;                     /**< Control Register 4                                 */
-  __IOM uint32_t CTRL5_TGL;                     /**< Control Register 5                                 */
-  __IOM uint32_t CTRL6_TGL;                     /**< Control Register 6                                 */
-  uint32_t       RESERVED39[7U];                /**< Reserved for future use                            */
-  __IOM uint32_t TXBR_TGL;                      /**< Transmit baudrate                                  */
-  __IOM uint32_t RXBR_TGL;                      /**< Receive Baudrate                                   */
-  __IOM uint32_t CF_TGL;                        /**< Channel Filter                                     */
-  __IOM uint32_t PRE_TGL;                       /**< Preamble Register                                  */
-  __IOM uint32_t SYNC0_TGL;                     /**< Sync word 0                                        */
-  __IOM uint32_t SYNC1_TGL;                     /**< Sync word 1                                        */
-  uint32_t       RESERVED40[4U];                /**< Reserved for future use                            */
-  __IOM uint32_t TIMING_TGL;                    /**< Timing Register                                    */
-  __IOM uint32_t DSSS0_TGL;                     /**< DSSS symbol 0 Register                             */
-  __IOM uint32_t MODINDEX_TGL;                  /**< Modulation Index                                   */
-  __IOM uint32_t AFC_TGL;                       /**< Automatic Frequency Control                        */
-  __IOM uint32_t AFCADJLIM_TGL;                 /**< AFC Adjustment Limit                               */
-  __IOM uint32_t SHAPING0_TGL;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING1_TGL;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING2_TGL;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING3_TGL;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING4_TGL;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING5_TGL;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING6_TGL;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING7_TGL;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING8_TGL;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING9_TGL;                  /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING10_TGL;                 /**< Shaping Coefficients                               */
-  __IOM uint32_t SHAPING11_TGL;                 /**< Shaping Coefficients                               */
-  __IOM uint32_t RAMPCTRL_TGL;                  /**< Ramping Register                                   */
-  uint32_t       RESERVED41[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t RAMPLEV_TGL;                   /**< Ramping Register                                   */
-  uint32_t       RESERVED42[4U];                /**< Reserved for future use                            */
-  __IOM uint32_t DCCOMP_TGL;                    /**< DC Offset Compensation Filter Settings             */
-  __IOM uint32_t DCCOMPFILTINIT_TGL;            /**< DC Offset compensation Filter                      */
-  __IM uint32_t  DCESTI_TGL;                    /**< DC Offset Estimated value                          */
-  __IOM uint32_t SRCCHF_TGL;                    /**< SRC ratio values and channel filter                */
-  uint32_t       RESERVED43[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t DSATHD0_TGL;                   /**< DSA detector threshold-0                           */
-  __IOM uint32_t DSATHD1_TGL;                   /**< DSA detector threshold-1                           */
-  __IOM uint32_t DSACTRL_TGL;                   /**< DSA mode                                           */
-  __IOM uint32_t VITERBIDEMOD_TGL;              /**< Viterbi demodulator                                */
-  __IOM uint32_t VTCORRCFG0_TGL;                /**< Viterbi demodulator                                */
-  uint32_t       RESERVED44[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t DIGMIXCTRL_TGL;                /**< Digital mixer control register                     */
-  __IOM uint32_t VTCORRCFG1_TGL;                /**< Viterbi demodulator                                */
-  __IOM uint32_t VTTRACK_TGL;                   /**< Viterbi demodulator tracking loop                  */
-  __IM uint32_t  BREST_TGL;                     /**< Baudrate Estimate                                  */
-  uint32_t       RESERVED45[2U];                /**< Reserved for future use                            */
-  __IOM uint32_t AUTOCG_TGL;                    /**< Automatic clock gating                             */
-  __IOM uint32_t CGCLKSTOP_TGL;                 /**< Automatic clock gating                             */
-  uint32_t       RESERVED46[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t DSATHD2_TGL;                   /**< DSA detector threshold-2                           */
-  __IOM uint32_t DIRECTMODE_TGL;                /**< Direct Mode Control                                */
-  __IOM uint32_t LONGRANGE_TGL;                 /**< BLE Long Range                                     */
-  __IOM uint32_t LONGRANGE1_TGL;                /**< BLE Long Range Set1                                */
-  __IOM uint32_t LONGRANGE2_TGL;                /**< BLE Long Range Set2                                */
-  __IOM uint32_t LONGRANGE3_TGL;                /**< BLE Long Range Set3                                */
-  __IOM uint32_t LONGRANGE4_TGL;                /**< BLE Long Range Set4                                */
-  __IOM uint32_t LONGRANGE5_TGL;                /**< BLE Long Range Set5                                */
-  __IOM uint32_t LONGRANGE6_TGL;                /**< BLE Long Range Set6                                */
-  __IOM uint32_t LRFRC_TGL;                     /**< BLE Long Range FRC interface                       */
-  uint32_t       RESERVED47[4U];                /**< Reserved for future use                            */
-  __IOM uint32_t DSATHD3_TGL;                   /**< DSA detector threshold 3                           */
-  __IOM uint32_t DSATHD4_TGL;                   /**< DSA detector threshold 4                           */
-  __IOM uint32_t VTBLETIMING_TGL;               /**< Viterbi BLE timing stamp control                   */
-  uint32_t       RESERVED48[37U];               /**< Reserved for future use                            */
-  __IOM uint32_t IF_TGL;                        /**< Interrupt Flags                                    */
-  __IOM uint32_t IEN_TGL;                       /**< Interrupt Enable                                   */
-  uint32_t       RESERVED49[2U];                /**< Reserved for future use                            */
-  __IOM uint32_t CMD_TGL;                       /**< Command register                                   */
-  __IM uint32_t  FSMSTATUS_TGL;                 /**< Demod FSM Status Register                          */
-  __IM uint32_t  STATUS2_TGL;                   /**< Status Register 2                                  */
-  __IM uint32_t  STATUS3_TGL;                   /**< Status Register 3                                  */
-  __IOM uint32_t IRCAL_TGL;                     /**< IRCAL control signals                              */
-  __IM uint32_t  IRCALCOEF_TGL;                 /**< IRCAL COEF values                                  */
-  __IOM uint32_t BLEIQDSA_TGL;                  /**< BLEIQDSA                                           */
-  __IOM uint32_t BLEIQDSAEXT1_TGL;              /**< BLEIQDSA Extention1                                */
-  __IOM uint32_t SYNCPROPERTIES_TGL;            /**< Sync word properties                               */
-  __IOM uint32_t DIGIGAINCTRL_TGL;              /**< Digital Gain Control                               */
-  __IOM uint32_t PRSCTRL_TGL;                   /**< Mux control for PRS outputs                        */
-  uint32_t       RESERVED50[1U];                /**< Reserved for future use                            */
-  __IOM uint32_t REALTIMCFE_TGL;                /**< Real time Cost Function Engine CTRL                */
-  __IOM uint32_t SEQIF_TGL;                     /**< SEQ Interrupt Flags                                */
-  __IOM uint32_t SEQIEN_TGL;                    /**< SEQ Interrupt Enable                               */
-  __IOM uint32_t ETSCTRL_TGL;                   /**< Early Time Stamp Control                           */
-  __IOM uint32_t ANTSWCTRL_TGL;                 /**< Antenna Switch Control                             */
-  __IOM uint32_t ANTSWSTART_TGL;                /**< Antenna Switch Start                               */
-  __IOM uint32_t ANTSWEND_TGL;                  /**< Antenna Switch End                                 */
-  __IOM uint32_t TRECPMPATT_TGL;                /**< Trecs Preamble pattern                             */
-  __IOM uint32_t TRECPMDET_TGL;                 /**< Trecs preamble Detection CTRL                      */
-  __IOM uint32_t CFGANTPATT_TGL;                /**< Configure Antenna Pattern                          */
-  __IOM uint32_t ETSTIM_TGL;                    /**< Early Time Stamp Timing                            */
-  __IOM uint32_t ANTSWCTRL1_TGL;                /**< Antenna Switch Control 1                           */
-  __IOM uint32_t COCURRMODE_TGL;                /**< CONCURRENT MODE                                    */
-  __IOM uint32_t ANTDIVCTRL_TGL;                /**< Antenna Diversity Mode Control Register            */
-  __IOM uint32_t BLEIQDSAEXT2_TGL;              /**< BLEIQDSA Extention2                                */
-  __IOM uint32_t SPARE_TGL;                     /**< Spare register                                     */
-  __IOM uint32_t IRCALCOEFWR_TGL;               /**< IRCAL COEF WR per antenna                          */
+  __IM uint32_t             IPVERSION;           /**< IP Version                                         */
+  __IOM uint32_t            EN;                  /**< Enable peripheral clock to this module             */
+  __IM uint32_t             STATUS;              /**< Status Register                                    */
+  __IM uint32_t             TIMDETSTATUS;        /**< Timing Detection Status Register                   */
+  __IM uint32_t             FREQOFFEST;          /**< Frequency Offset Estimate                          */
+  __IM uint32_t             AFCADJRX;            /**< AFC Adjustment RX                                  */
+  __IM uint32_t             AFCADJTX;            /**< AFC Adjustment TX                                  */
+  __IOM uint32_t            MIXCTRL;             /**< Analog mixer control                               */
+  __IOM uint32_t            CTRL0;               /**< Control Register 0                                 */
+  __IOM uint32_t            CTRL1;               /**< Control Register 1                                 */
+  __IOM uint32_t            CTRL2;               /**< Control Register 2                                 */
+  __IOM uint32_t            CTRL3;               /**< Control Register 3                                 */
+  __IOM uint32_t            CTRL4;               /**< Control Register 4                                 */
+  __IOM uint32_t            CTRL5;               /**< Control Register 5                                 */
+  __IOM uint32_t            CTRL6;               /**< Control Register 6                                 */
+  uint32_t                  RESERVED0[7U];       /**< Reserved for future use                            */
+  __IOM uint32_t            TXBR;                /**< Transmit baudrate                                  */
+  __IOM uint32_t            RXBR;                /**< Receive Baudrate                                   */
+  __IOM uint32_t            CF;                  /**< Channel Filter                                     */
+  __IOM uint32_t            PRE;                 /**< Preamble Register                                  */
+  __IOM uint32_t            SYNC0;               /**< Sync word 0                                        */
+  __IOM uint32_t            SYNC1;               /**< Sync word 1                                        */
+  uint32_t                  RESERVED1[4U];       /**< Reserved for future use                            */
+  __IOM uint32_t            TIMING;              /**< Timing Register                                    */
+  __IOM uint32_t            DSSS0;               /**< DSSS symbol 0 Register                             */
+  __IOM uint32_t            MODINDEX;            /**< Modulation Index                                   */
+  __IOM uint32_t            AFC;                 /**< Automatic Frequency Control                        */
+  __IOM uint32_t            AFCADJLIM;           /**< AFC Adjustment Limit                               */
+  __IOM uint32_t            SHAPING0;            /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING1;            /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING2;            /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING3;            /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING4;            /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING5;            /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING6;            /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING7;            /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING8;            /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING9;            /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING10;           /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING11;           /**< Shaping Coefficients                               */
+  __IOM uint32_t            RAMPCTRL;            /**< Ramping Register                                   */
+  uint32_t                  RESERVED2[1U];       /**< Reserved for future use                            */
+  __IOM uint32_t            RAMPLEV;             /**< Ramping Register                                   */
+  uint32_t                  RESERVED3[4U];       /**< Reserved for future use                            */
+  __IOM uint32_t            DCCOMP;              /**< DC Offset Compensation Filter Settings             */
+  __IOM uint32_t            DCCOMPFILTINIT;      /**< DC Offset compensation Filter                      */
+  __IM uint32_t             DCESTI;              /**< DC Offset Estimated value                          */
+  __IOM uint32_t            SRCCHF;              /**< SRC ratio values and channel filter                */
+  uint32_t                  RESERVED4[1U];       /**< Reserved for future use                            */
+  __IOM uint32_t            DSATHD0;             /**< DSA detector threshold-0                           */
+  __IOM uint32_t            DSATHD1;             /**< DSA detector threshold-1                           */
+  __IOM uint32_t            DSACTRL;             /**< DSA mode                                           */
+  __IOM uint32_t            VITERBIDEMOD;        /**< Viterbi demodulator                                */
+  __IOM uint32_t            VTCORRCFG0;          /**< Viterbi demodulator                                */
+  uint32_t                  RESERVED5[1U];       /**< Reserved for future use                            */
+  __IOM uint32_t            DIGMIXCTRL;          /**< Digital mixer control register                     */
+  __IOM uint32_t            VTCORRCFG1;          /**< Viterbi demodulator                                */
+  __IOM uint32_t            VTTRACK;             /**< Viterbi demodulator tracking loop                  */
+  __IM uint32_t             BREST;               /**< Baudrate Estimate                                  */
+  uint32_t                  RESERVED6[2U];       /**< Reserved for future use                            */
+  __IOM uint32_t            AUTOCG;              /**< Automatic clock gating                             */
+  __IOM uint32_t            CGCLKSTOP;           /**< Automatic clock gating                             */
+  uint32_t                  RESERVED7[1U];       /**< Reserved for future use                            */
+  __IOM uint32_t            DSATHD2;             /**< DSA detector threshold-2                           */
+  __IOM uint32_t            DIRECTMODE;          /**< Direct Mode Control                                */
+  __IOM uint32_t            LONGRANGE;           /**< BLE Long Range                                     */
+  __IOM uint32_t            LONGRANGE1;          /**< BLE Long Range Set1                                */
+  __IOM uint32_t            LONGRANGE2;          /**< BLE Long Range Set2                                */
+  __IOM uint32_t            LONGRANGE3;          /**< BLE Long Range Set3                                */
+  __IOM uint32_t            LONGRANGE4;          /**< BLE Long Range Set4                                */
+  __IOM uint32_t            LONGRANGE5;          /**< BLE Long Range Set5                                */
+  __IOM uint32_t            LONGRANGE6;          /**< BLE Long Range Set6                                */
+  __IOM uint32_t            LRFRC;               /**< BLE Long Range FRC interface                       */
+  uint32_t                  RESERVED8[4U];       /**< Reserved for future use                            */
+  __IOM uint32_t            DSATHD3;             /**< DSA detector threshold 3                           */
+  __IOM uint32_t            DSATHD4;             /**< DSA detector threshold 4                           */
+  __IOM uint32_t            VTBLETIMING;         /**< Viterbi BLE timing stamp control                   */
+  uint32_t                  RESERVED9[37U];      /**< Reserved for future use                            */
+  __IOM uint32_t            IF;                  /**< Interrupt Flags                                    */
+  __IOM uint32_t            IEN;                 /**< Interrupt Enable                                   */
+  uint32_t                  RESERVED10[2U];      /**< Reserved for future use                            */
+  __IOM uint32_t            CMD;                 /**< Command register                                   */
+  __IM uint32_t             FSMSTATUS;           /**< Demod FSM Status Register                          */
+  __IM uint32_t             STATUS2;             /**< Status Register 2                                  */
+  __IM uint32_t             STATUS3;             /**< Status Register 3                                  */
+  __IOM uint32_t            IRCAL;               /**< IRCAL control signals                              */
+  __IM uint32_t             IRCALCOEF;           /**< IRCAL COEF values                                  */
+  __IOM uint32_t            BLEIQDSA;            /**< BLEIQDSA                                           */
+  __IOM uint32_t            BLEIQDSAEXT1;        /**< BLEIQDSA Extention1                                */
+  __IOM uint32_t            SYNCPROPERTIES;      /**< Sync word properties                               */
+  __IOM uint32_t            DIGIGAINCTRL;        /**< Digital Gain Control                               */
+  __IOM uint32_t            PRSCTRL;             /**< Mux control for PRS outputs                        */
+  uint32_t                  RESERVED11[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            REALTIMCFE;          /**< Real time Cost Function Engine CTRL                */
+  __IOM uint32_t            SEQIF;               /**< SEQ Interrupt Flags                                */
+  __IOM uint32_t            SEQIEN;              /**< SEQ Interrupt Enable                               */
+  __IOM uint32_t            ETSCTRL;             /**< Early Time Stamp Control                           */
+  __IOM uint32_t            ANTSWCTRL;           /**< Antenna Switch Control                             */
+  __IOM uint32_t            ANTSWSTART;          /**< Antenna Switch Start                               */
+  __IOM uint32_t            ANTSWEND;            /**< Antenna Switch End                                 */
+  __IOM uint32_t            TRECPMPATT;          /**< Trecs Preamble pattern                             */
+  __IOM uint32_t            TRECPMDET;           /**< Trecs preamble Detection CTRL                      */
+  __IOM uint32_t            CFGANTPATT;          /**< Configure Antenna Pattern                          */
+  __IOM uint32_t            ETSTIM;              /**< Early Time Stamp Timing                            */
+  __IOM uint32_t            ANTSWCTRL1;          /**< Antenna Switch Control 1                           */
+  __IOM uint32_t            COCURRMODE;          /**< CONCURRENT MODE                                    */
+  __IOM uint32_t            ANTDIVCTRL;          /**< Antenna Diversity Mode Control Register            */
+  __IOM uint32_t            BLEIQDSAEXT2;        /**< BLEIQDSA Extention2                                */
+  __IOM uint32_t            SPARE;               /**< Spare register                                     */
+  MODEM_IRCALCOEFWR_TypeDef IRCALCOEFWR[2U];     /**< IRCAL COEFS WR per antenna                         */
+  uint32_t                  RESERVED12[860U];    /**< Reserved for future use                            */
+  __IM uint32_t             IPVERSION_SET;       /**< IP Version                                         */
+  __IOM uint32_t            EN_SET;              /**< Enable peripheral clock to this module             */
+  __IM uint32_t             STATUS_SET;          /**< Status Register                                    */
+  __IM uint32_t             TIMDETSTATUS_SET;    /**< Timing Detection Status Register                   */
+  __IM uint32_t             FREQOFFEST_SET;      /**< Frequency Offset Estimate                          */
+  __IM uint32_t             AFCADJRX_SET;        /**< AFC Adjustment RX                                  */
+  __IM uint32_t             AFCADJTX_SET;        /**< AFC Adjustment TX                                  */
+  __IOM uint32_t            MIXCTRL_SET;         /**< Analog mixer control                               */
+  __IOM uint32_t            CTRL0_SET;           /**< Control Register 0                                 */
+  __IOM uint32_t            CTRL1_SET;           /**< Control Register 1                                 */
+  __IOM uint32_t            CTRL2_SET;           /**< Control Register 2                                 */
+  __IOM uint32_t            CTRL3_SET;           /**< Control Register 3                                 */
+  __IOM uint32_t            CTRL4_SET;           /**< Control Register 4                                 */
+  __IOM uint32_t            CTRL5_SET;           /**< Control Register 5                                 */
+  __IOM uint32_t            CTRL6_SET;           /**< Control Register 6                                 */
+  uint32_t                  RESERVED13[7U];      /**< Reserved for future use                            */
+  __IOM uint32_t            TXBR_SET;            /**< Transmit baudrate                                  */
+  __IOM uint32_t            RXBR_SET;            /**< Receive Baudrate                                   */
+  __IOM uint32_t            CF_SET;              /**< Channel Filter                                     */
+  __IOM uint32_t            PRE_SET;             /**< Preamble Register                                  */
+  __IOM uint32_t            SYNC0_SET;           /**< Sync word 0                                        */
+  __IOM uint32_t            SYNC1_SET;           /**< Sync word 1                                        */
+  uint32_t                  RESERVED14[4U];      /**< Reserved for future use                            */
+  __IOM uint32_t            TIMING_SET;          /**< Timing Register                                    */
+  __IOM uint32_t            DSSS0_SET;           /**< DSSS symbol 0 Register                             */
+  __IOM uint32_t            MODINDEX_SET;        /**< Modulation Index                                   */
+  __IOM uint32_t            AFC_SET;             /**< Automatic Frequency Control                        */
+  __IOM uint32_t            AFCADJLIM_SET;       /**< AFC Adjustment Limit                               */
+  __IOM uint32_t            SHAPING0_SET;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING1_SET;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING2_SET;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING3_SET;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING4_SET;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING5_SET;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING6_SET;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING7_SET;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING8_SET;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING9_SET;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING10_SET;       /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING11_SET;       /**< Shaping Coefficients                               */
+  __IOM uint32_t            RAMPCTRL_SET;        /**< Ramping Register                                   */
+  uint32_t                  RESERVED15[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            RAMPLEV_SET;         /**< Ramping Register                                   */
+  uint32_t                  RESERVED16[4U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DCCOMP_SET;          /**< DC Offset Compensation Filter Settings             */
+  __IOM uint32_t            DCCOMPFILTINIT_SET;  /**< DC Offset compensation Filter                      */
+  __IM uint32_t             DCESTI_SET;          /**< DC Offset Estimated value                          */
+  __IOM uint32_t            SRCCHF_SET;          /**< SRC ratio values and channel filter                */
+  uint32_t                  RESERVED17[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DSATHD0_SET;         /**< DSA detector threshold-0                           */
+  __IOM uint32_t            DSATHD1_SET;         /**< DSA detector threshold-1                           */
+  __IOM uint32_t            DSACTRL_SET;         /**< DSA mode                                           */
+  __IOM uint32_t            VITERBIDEMOD_SET;    /**< Viterbi demodulator                                */
+  __IOM uint32_t            VTCORRCFG0_SET;      /**< Viterbi demodulator                                */
+  uint32_t                  RESERVED18[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DIGMIXCTRL_SET;      /**< Digital mixer control register                     */
+  __IOM uint32_t            VTCORRCFG1_SET;      /**< Viterbi demodulator                                */
+  __IOM uint32_t            VTTRACK_SET;         /**< Viterbi demodulator tracking loop                  */
+  __IM uint32_t             BREST_SET;           /**< Baudrate Estimate                                  */
+  uint32_t                  RESERVED19[2U];      /**< Reserved for future use                            */
+  __IOM uint32_t            AUTOCG_SET;          /**< Automatic clock gating                             */
+  __IOM uint32_t            CGCLKSTOP_SET;       /**< Automatic clock gating                             */
+  uint32_t                  RESERVED20[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DSATHD2_SET;         /**< DSA detector threshold-2                           */
+  __IOM uint32_t            DIRECTMODE_SET;      /**< Direct Mode Control                                */
+  __IOM uint32_t            LONGRANGE_SET;       /**< BLE Long Range                                     */
+  __IOM uint32_t            LONGRANGE1_SET;      /**< BLE Long Range Set1                                */
+  __IOM uint32_t            LONGRANGE2_SET;      /**< BLE Long Range Set2                                */
+  __IOM uint32_t            LONGRANGE3_SET;      /**< BLE Long Range Set3                                */
+  __IOM uint32_t            LONGRANGE4_SET;      /**< BLE Long Range Set4                                */
+  __IOM uint32_t            LONGRANGE5_SET;      /**< BLE Long Range Set5                                */
+  __IOM uint32_t            LONGRANGE6_SET;      /**< BLE Long Range Set6                                */
+  __IOM uint32_t            LRFRC_SET;           /**< BLE Long Range FRC interface                       */
+  uint32_t                  RESERVED21[4U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DSATHD3_SET;         /**< DSA detector threshold 3                           */
+  __IOM uint32_t            DSATHD4_SET;         /**< DSA detector threshold 4                           */
+  __IOM uint32_t            VTBLETIMING_SET;     /**< Viterbi BLE timing stamp control                   */
+  uint32_t                  RESERVED22[37U];     /**< Reserved for future use                            */
+  __IOM uint32_t            IF_SET;              /**< Interrupt Flags                                    */
+  __IOM uint32_t            IEN_SET;             /**< Interrupt Enable                                   */
+  uint32_t                  RESERVED23[2U];      /**< Reserved for future use                            */
+  __IOM uint32_t            CMD_SET;             /**< Command register                                   */
+  __IM uint32_t             FSMSTATUS_SET;       /**< Demod FSM Status Register                          */
+  __IM uint32_t             STATUS2_SET;         /**< Status Register 2                                  */
+  __IM uint32_t             STATUS3_SET;         /**< Status Register 3                                  */
+  __IOM uint32_t            IRCAL_SET;           /**< IRCAL control signals                              */
+  __IM uint32_t             IRCALCOEF_SET;       /**< IRCAL COEF values                                  */
+  __IOM uint32_t            BLEIQDSA_SET;        /**< BLEIQDSA                                           */
+  __IOM uint32_t            BLEIQDSAEXT1_SET;    /**< BLEIQDSA Extention1                                */
+  __IOM uint32_t            SYNCPROPERTIES_SET;  /**< Sync word properties                               */
+  __IOM uint32_t            DIGIGAINCTRL_SET;    /**< Digital Gain Control                               */
+  __IOM uint32_t            PRSCTRL_SET;         /**< Mux control for PRS outputs                        */
+  uint32_t                  RESERVED24[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            REALTIMCFE_SET;      /**< Real time Cost Function Engine CTRL                */
+  __IOM uint32_t            SEQIF_SET;           /**< SEQ Interrupt Flags                                */
+  __IOM uint32_t            SEQIEN_SET;          /**< SEQ Interrupt Enable                               */
+  __IOM uint32_t            ETSCTRL_SET;         /**< Early Time Stamp Control                           */
+  __IOM uint32_t            ANTSWCTRL_SET;       /**< Antenna Switch Control                             */
+  __IOM uint32_t            ANTSWSTART_SET;      /**< Antenna Switch Start                               */
+  __IOM uint32_t            ANTSWEND_SET;        /**< Antenna Switch End                                 */
+  __IOM uint32_t            TRECPMPATT_SET;      /**< Trecs Preamble pattern                             */
+  __IOM uint32_t            TRECPMDET_SET;       /**< Trecs preamble Detection CTRL                      */
+  __IOM uint32_t            CFGANTPATT_SET;      /**< Configure Antenna Pattern                          */
+  __IOM uint32_t            ETSTIM_SET;          /**< Early Time Stamp Timing                            */
+  __IOM uint32_t            ANTSWCTRL1_SET;      /**< Antenna Switch Control 1                           */
+  __IOM uint32_t            COCURRMODE_SET;      /**< CONCURRENT MODE                                    */
+  __IOM uint32_t            ANTDIVCTRL_SET;      /**< Antenna Diversity Mode Control Register            */
+  __IOM uint32_t            BLEIQDSAEXT2_SET;    /**< BLEIQDSA Extention2                                */
+  __IOM uint32_t            SPARE_SET;           /**< Spare register                                     */
+  MODEM_IRCALCOEFWR_TypeDef IRCALCOEFWR_SET[2U]; /**< IRCAL COEFS WR per antenna                         */
+  uint32_t                  RESERVED25[860U];    /**< Reserved for future use                            */
+  __IM uint32_t             IPVERSION_CLR;       /**< IP Version                                         */
+  __IOM uint32_t            EN_CLR;              /**< Enable peripheral clock to this module             */
+  __IM uint32_t             STATUS_CLR;          /**< Status Register                                    */
+  __IM uint32_t             TIMDETSTATUS_CLR;    /**< Timing Detection Status Register                   */
+  __IM uint32_t             FREQOFFEST_CLR;      /**< Frequency Offset Estimate                          */
+  __IM uint32_t             AFCADJRX_CLR;        /**< AFC Adjustment RX                                  */
+  __IM uint32_t             AFCADJTX_CLR;        /**< AFC Adjustment TX                                  */
+  __IOM uint32_t            MIXCTRL_CLR;         /**< Analog mixer control                               */
+  __IOM uint32_t            CTRL0_CLR;           /**< Control Register 0                                 */
+  __IOM uint32_t            CTRL1_CLR;           /**< Control Register 1                                 */
+  __IOM uint32_t            CTRL2_CLR;           /**< Control Register 2                                 */
+  __IOM uint32_t            CTRL3_CLR;           /**< Control Register 3                                 */
+  __IOM uint32_t            CTRL4_CLR;           /**< Control Register 4                                 */
+  __IOM uint32_t            CTRL5_CLR;           /**< Control Register 5                                 */
+  __IOM uint32_t            CTRL6_CLR;           /**< Control Register 6                                 */
+  uint32_t                  RESERVED26[7U];      /**< Reserved for future use                            */
+  __IOM uint32_t            TXBR_CLR;            /**< Transmit baudrate                                  */
+  __IOM uint32_t            RXBR_CLR;            /**< Receive Baudrate                                   */
+  __IOM uint32_t            CF_CLR;              /**< Channel Filter                                     */
+  __IOM uint32_t            PRE_CLR;             /**< Preamble Register                                  */
+  __IOM uint32_t            SYNC0_CLR;           /**< Sync word 0                                        */
+  __IOM uint32_t            SYNC1_CLR;           /**< Sync word 1                                        */
+  uint32_t                  RESERVED27[4U];      /**< Reserved for future use                            */
+  __IOM uint32_t            TIMING_CLR;          /**< Timing Register                                    */
+  __IOM uint32_t            DSSS0_CLR;           /**< DSSS symbol 0 Register                             */
+  __IOM uint32_t            MODINDEX_CLR;        /**< Modulation Index                                   */
+  __IOM uint32_t            AFC_CLR;             /**< Automatic Frequency Control                        */
+  __IOM uint32_t            AFCADJLIM_CLR;       /**< AFC Adjustment Limit                               */
+  __IOM uint32_t            SHAPING0_CLR;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING1_CLR;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING2_CLR;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING3_CLR;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING4_CLR;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING5_CLR;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING6_CLR;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING7_CLR;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING8_CLR;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING9_CLR;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING10_CLR;       /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING11_CLR;       /**< Shaping Coefficients                               */
+  __IOM uint32_t            RAMPCTRL_CLR;        /**< Ramping Register                                   */
+  uint32_t                  RESERVED28[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            RAMPLEV_CLR;         /**< Ramping Register                                   */
+  uint32_t                  RESERVED29[4U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DCCOMP_CLR;          /**< DC Offset Compensation Filter Settings             */
+  __IOM uint32_t            DCCOMPFILTINIT_CLR;  /**< DC Offset compensation Filter                      */
+  __IM uint32_t             DCESTI_CLR;          /**< DC Offset Estimated value                          */
+  __IOM uint32_t            SRCCHF_CLR;          /**< SRC ratio values and channel filter                */
+  uint32_t                  RESERVED30[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DSATHD0_CLR;         /**< DSA detector threshold-0                           */
+  __IOM uint32_t            DSATHD1_CLR;         /**< DSA detector threshold-1                           */
+  __IOM uint32_t            DSACTRL_CLR;         /**< DSA mode                                           */
+  __IOM uint32_t            VITERBIDEMOD_CLR;    /**< Viterbi demodulator                                */
+  __IOM uint32_t            VTCORRCFG0_CLR;      /**< Viterbi demodulator                                */
+  uint32_t                  RESERVED31[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DIGMIXCTRL_CLR;      /**< Digital mixer control register                     */
+  __IOM uint32_t            VTCORRCFG1_CLR;      /**< Viterbi demodulator                                */
+  __IOM uint32_t            VTTRACK_CLR;         /**< Viterbi demodulator tracking loop                  */
+  __IM uint32_t             BREST_CLR;           /**< Baudrate Estimate                                  */
+  uint32_t                  RESERVED32[2U];      /**< Reserved for future use                            */
+  __IOM uint32_t            AUTOCG_CLR;          /**< Automatic clock gating                             */
+  __IOM uint32_t            CGCLKSTOP_CLR;       /**< Automatic clock gating                             */
+  uint32_t                  RESERVED33[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DSATHD2_CLR;         /**< DSA detector threshold-2                           */
+  __IOM uint32_t            DIRECTMODE_CLR;      /**< Direct Mode Control                                */
+  __IOM uint32_t            LONGRANGE_CLR;       /**< BLE Long Range                                     */
+  __IOM uint32_t            LONGRANGE1_CLR;      /**< BLE Long Range Set1                                */
+  __IOM uint32_t            LONGRANGE2_CLR;      /**< BLE Long Range Set2                                */
+  __IOM uint32_t            LONGRANGE3_CLR;      /**< BLE Long Range Set3                                */
+  __IOM uint32_t            LONGRANGE4_CLR;      /**< BLE Long Range Set4                                */
+  __IOM uint32_t            LONGRANGE5_CLR;      /**< BLE Long Range Set5                                */
+  __IOM uint32_t            LONGRANGE6_CLR;      /**< BLE Long Range Set6                                */
+  __IOM uint32_t            LRFRC_CLR;           /**< BLE Long Range FRC interface                       */
+  uint32_t                  RESERVED34[4U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DSATHD3_CLR;         /**< DSA detector threshold 3                           */
+  __IOM uint32_t            DSATHD4_CLR;         /**< DSA detector threshold 4                           */
+  __IOM uint32_t            VTBLETIMING_CLR;     /**< Viterbi BLE timing stamp control                   */
+  uint32_t                  RESERVED35[37U];     /**< Reserved for future use                            */
+  __IOM uint32_t            IF_CLR;              /**< Interrupt Flags                                    */
+  __IOM uint32_t            IEN_CLR;             /**< Interrupt Enable                                   */
+  uint32_t                  RESERVED36[2U];      /**< Reserved for future use                            */
+  __IOM uint32_t            CMD_CLR;             /**< Command register                                   */
+  __IM uint32_t             FSMSTATUS_CLR;       /**< Demod FSM Status Register                          */
+  __IM uint32_t             STATUS2_CLR;         /**< Status Register 2                                  */
+  __IM uint32_t             STATUS3_CLR;         /**< Status Register 3                                  */
+  __IOM uint32_t            IRCAL_CLR;           /**< IRCAL control signals                              */
+  __IM uint32_t             IRCALCOEF_CLR;       /**< IRCAL COEF values                                  */
+  __IOM uint32_t            BLEIQDSA_CLR;        /**< BLEIQDSA                                           */
+  __IOM uint32_t            BLEIQDSAEXT1_CLR;    /**< BLEIQDSA Extention1                                */
+  __IOM uint32_t            SYNCPROPERTIES_CLR;  /**< Sync word properties                               */
+  __IOM uint32_t            DIGIGAINCTRL_CLR;    /**< Digital Gain Control                               */
+  __IOM uint32_t            PRSCTRL_CLR;         /**< Mux control for PRS outputs                        */
+  uint32_t                  RESERVED37[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            REALTIMCFE_CLR;      /**< Real time Cost Function Engine CTRL                */
+  __IOM uint32_t            SEQIF_CLR;           /**< SEQ Interrupt Flags                                */
+  __IOM uint32_t            SEQIEN_CLR;          /**< SEQ Interrupt Enable                               */
+  __IOM uint32_t            ETSCTRL_CLR;         /**< Early Time Stamp Control                           */
+  __IOM uint32_t            ANTSWCTRL_CLR;       /**< Antenna Switch Control                             */
+  __IOM uint32_t            ANTSWSTART_CLR;      /**< Antenna Switch Start                               */
+  __IOM uint32_t            ANTSWEND_CLR;        /**< Antenna Switch End                                 */
+  __IOM uint32_t            TRECPMPATT_CLR;      /**< Trecs Preamble pattern                             */
+  __IOM uint32_t            TRECPMDET_CLR;       /**< Trecs preamble Detection CTRL                      */
+  __IOM uint32_t            CFGANTPATT_CLR;      /**< Configure Antenna Pattern                          */
+  __IOM uint32_t            ETSTIM_CLR;          /**< Early Time Stamp Timing                            */
+  __IOM uint32_t            ANTSWCTRL1_CLR;      /**< Antenna Switch Control 1                           */
+  __IOM uint32_t            COCURRMODE_CLR;      /**< CONCURRENT MODE                                    */
+  __IOM uint32_t            ANTDIVCTRL_CLR;      /**< Antenna Diversity Mode Control Register            */
+  __IOM uint32_t            BLEIQDSAEXT2_CLR;    /**< BLEIQDSA Extention2                                */
+  __IOM uint32_t            SPARE_CLR;           /**< Spare register                                     */
+  MODEM_IRCALCOEFWR_TypeDef IRCALCOEFWR_CLR[2U]; /**< IRCAL COEFS WR per antenna                         */
+  uint32_t                  RESERVED38[860U];    /**< Reserved for future use                            */
+  __IM uint32_t             IPVERSION_TGL;       /**< IP Version                                         */
+  __IOM uint32_t            EN_TGL;              /**< Enable peripheral clock to this module             */
+  __IM uint32_t             STATUS_TGL;          /**< Status Register                                    */
+  __IM uint32_t             TIMDETSTATUS_TGL;    /**< Timing Detection Status Register                   */
+  __IM uint32_t             FREQOFFEST_TGL;      /**< Frequency Offset Estimate                          */
+  __IM uint32_t             AFCADJRX_TGL;        /**< AFC Adjustment RX                                  */
+  __IM uint32_t             AFCADJTX_TGL;        /**< AFC Adjustment TX                                  */
+  __IOM uint32_t            MIXCTRL_TGL;         /**< Analog mixer control                               */
+  __IOM uint32_t            CTRL0_TGL;           /**< Control Register 0                                 */
+  __IOM uint32_t            CTRL1_TGL;           /**< Control Register 1                                 */
+  __IOM uint32_t            CTRL2_TGL;           /**< Control Register 2                                 */
+  __IOM uint32_t            CTRL3_TGL;           /**< Control Register 3                                 */
+  __IOM uint32_t            CTRL4_TGL;           /**< Control Register 4                                 */
+  __IOM uint32_t            CTRL5_TGL;           /**< Control Register 5                                 */
+  __IOM uint32_t            CTRL6_TGL;           /**< Control Register 6                                 */
+  uint32_t                  RESERVED39[7U];      /**< Reserved for future use                            */
+  __IOM uint32_t            TXBR_TGL;            /**< Transmit baudrate                                  */
+  __IOM uint32_t            RXBR_TGL;            /**< Receive Baudrate                                   */
+  __IOM uint32_t            CF_TGL;              /**< Channel Filter                                     */
+  __IOM uint32_t            PRE_TGL;             /**< Preamble Register                                  */
+  __IOM uint32_t            SYNC0_TGL;           /**< Sync word 0                                        */
+  __IOM uint32_t            SYNC1_TGL;           /**< Sync word 1                                        */
+  uint32_t                  RESERVED40[4U];      /**< Reserved for future use                            */
+  __IOM uint32_t            TIMING_TGL;          /**< Timing Register                                    */
+  __IOM uint32_t            DSSS0_TGL;           /**< DSSS symbol 0 Register                             */
+  __IOM uint32_t            MODINDEX_TGL;        /**< Modulation Index                                   */
+  __IOM uint32_t            AFC_TGL;             /**< Automatic Frequency Control                        */
+  __IOM uint32_t            AFCADJLIM_TGL;       /**< AFC Adjustment Limit                               */
+  __IOM uint32_t            SHAPING0_TGL;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING1_TGL;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING2_TGL;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING3_TGL;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING4_TGL;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING5_TGL;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING6_TGL;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING7_TGL;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING8_TGL;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING9_TGL;        /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING10_TGL;       /**< Shaping Coefficients                               */
+  __IOM uint32_t            SHAPING11_TGL;       /**< Shaping Coefficients                               */
+  __IOM uint32_t            RAMPCTRL_TGL;        /**< Ramping Register                                   */
+  uint32_t                  RESERVED41[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            RAMPLEV_TGL;         /**< Ramping Register                                   */
+  uint32_t                  RESERVED42[4U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DCCOMP_TGL;          /**< DC Offset Compensation Filter Settings             */
+  __IOM uint32_t            DCCOMPFILTINIT_TGL;  /**< DC Offset compensation Filter                      */
+  __IM uint32_t             DCESTI_TGL;          /**< DC Offset Estimated value                          */
+  __IOM uint32_t            SRCCHF_TGL;          /**< SRC ratio values and channel filter                */
+  uint32_t                  RESERVED43[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DSATHD0_TGL;         /**< DSA detector threshold-0                           */
+  __IOM uint32_t            DSATHD1_TGL;         /**< DSA detector threshold-1                           */
+  __IOM uint32_t            DSACTRL_TGL;         /**< DSA mode                                           */
+  __IOM uint32_t            VITERBIDEMOD_TGL;    /**< Viterbi demodulator                                */
+  __IOM uint32_t            VTCORRCFG0_TGL;      /**< Viterbi demodulator                                */
+  uint32_t                  RESERVED44[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DIGMIXCTRL_TGL;      /**< Digital mixer control register                     */
+  __IOM uint32_t            VTCORRCFG1_TGL;      /**< Viterbi demodulator                                */
+  __IOM uint32_t            VTTRACK_TGL;         /**< Viterbi demodulator tracking loop                  */
+  __IM uint32_t             BREST_TGL;           /**< Baudrate Estimate                                  */
+  uint32_t                  RESERVED45[2U];      /**< Reserved for future use                            */
+  __IOM uint32_t            AUTOCG_TGL;          /**< Automatic clock gating                             */
+  __IOM uint32_t            CGCLKSTOP_TGL;       /**< Automatic clock gating                             */
+  uint32_t                  RESERVED46[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DSATHD2_TGL;         /**< DSA detector threshold-2                           */
+  __IOM uint32_t            DIRECTMODE_TGL;      /**< Direct Mode Control                                */
+  __IOM uint32_t            LONGRANGE_TGL;       /**< BLE Long Range                                     */
+  __IOM uint32_t            LONGRANGE1_TGL;      /**< BLE Long Range Set1                                */
+  __IOM uint32_t            LONGRANGE2_TGL;      /**< BLE Long Range Set2                                */
+  __IOM uint32_t            LONGRANGE3_TGL;      /**< BLE Long Range Set3                                */
+  __IOM uint32_t            LONGRANGE4_TGL;      /**< BLE Long Range Set4                                */
+  __IOM uint32_t            LONGRANGE5_TGL;      /**< BLE Long Range Set5                                */
+  __IOM uint32_t            LONGRANGE6_TGL;      /**< BLE Long Range Set6                                */
+  __IOM uint32_t            LRFRC_TGL;           /**< BLE Long Range FRC interface                       */
+  uint32_t                  RESERVED47[4U];      /**< Reserved for future use                            */
+  __IOM uint32_t            DSATHD3_TGL;         /**< DSA detector threshold 3                           */
+  __IOM uint32_t            DSATHD4_TGL;         /**< DSA detector threshold 4                           */
+  __IOM uint32_t            VTBLETIMING_TGL;     /**< Viterbi BLE timing stamp control                   */
+  uint32_t                  RESERVED48[37U];     /**< Reserved for future use                            */
+  __IOM uint32_t            IF_TGL;              /**< Interrupt Flags                                    */
+  __IOM uint32_t            IEN_TGL;             /**< Interrupt Enable                                   */
+  uint32_t                  RESERVED49[2U];      /**< Reserved for future use                            */
+  __IOM uint32_t            CMD_TGL;             /**< Command register                                   */
+  __IM uint32_t             FSMSTATUS_TGL;       /**< Demod FSM Status Register                          */
+  __IM uint32_t             STATUS2_TGL;         /**< Status Register 2                                  */
+  __IM uint32_t             STATUS3_TGL;         /**< Status Register 3                                  */
+  __IOM uint32_t            IRCAL_TGL;           /**< IRCAL control signals                              */
+  __IM uint32_t             IRCALCOEF_TGL;       /**< IRCAL COEF values                                  */
+  __IOM uint32_t            BLEIQDSA_TGL;        /**< BLEIQDSA                                           */
+  __IOM uint32_t            BLEIQDSAEXT1_TGL;    /**< BLEIQDSA Extention1                                */
+  __IOM uint32_t            SYNCPROPERTIES_TGL;  /**< Sync word properties                               */
+  __IOM uint32_t            DIGIGAINCTRL_TGL;    /**< Digital Gain Control                               */
+  __IOM uint32_t            PRSCTRL_TGL;         /**< Mux control for PRS outputs                        */
+  uint32_t                  RESERVED50[1U];      /**< Reserved for future use                            */
+  __IOM uint32_t            REALTIMCFE_TGL;      /**< Real time Cost Function Engine CTRL                */
+  __IOM uint32_t            SEQIF_TGL;           /**< SEQ Interrupt Flags                                */
+  __IOM uint32_t            SEQIEN_TGL;          /**< SEQ Interrupt Enable                               */
+  __IOM uint32_t            ETSCTRL_TGL;         /**< Early Time Stamp Control                           */
+  __IOM uint32_t            ANTSWCTRL_TGL;       /**< Antenna Switch Control                             */
+  __IOM uint32_t            ANTSWSTART_TGL;      /**< Antenna Switch Start                               */
+  __IOM uint32_t            ANTSWEND_TGL;        /**< Antenna Switch End                                 */
+  __IOM uint32_t            TRECPMPATT_TGL;      /**< Trecs Preamble pattern                             */
+  __IOM uint32_t            TRECPMDET_TGL;       /**< Trecs preamble Detection CTRL                      */
+  __IOM uint32_t            CFGANTPATT_TGL;      /**< Configure Antenna Pattern                          */
+  __IOM uint32_t            ETSTIM_TGL;          /**< Early Time Stamp Timing                            */
+  __IOM uint32_t            ANTSWCTRL1_TGL;      /**< Antenna Switch Control 1                           */
+  __IOM uint32_t            COCURRMODE_TGL;      /**< CONCURRENT MODE                                    */
+  __IOM uint32_t            ANTDIVCTRL_TGL;      /**< Antenna Diversity Mode Control Register            */
+  __IOM uint32_t            BLEIQDSAEXT2_TGL;    /**< BLEIQDSA Extention2                                */
+  __IOM uint32_t            SPARE_TGL;           /**< Spare register                                     */
+  MODEM_IRCALCOEFWR_TypeDef IRCALCOEFWR_TGL[2U]; /**< IRCAL COEFS WR per antenna                         */
 } MODEM_TypeDef;
 /** @} End of group EFR32MG22_MODEM */
 

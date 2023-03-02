@@ -35,6 +35,11 @@
 #include <stdbool.h>
 #include "em_device.h"
 
+#ifdef BOOTLOADER_ENABLE
+#include "api/btl_interface.h"
+
+#endif
+
 /*----------------------------------------------------------------------------
  * Linker generated Symbols
  *----------------------------------------------------------------------------*/
@@ -48,6 +53,17 @@ extern uint32_t __zero_table_end__;
 extern uint32_t __bss_start__;
 extern uint32_t __bss_end__;
 extern uint32_t __StackTop;
+
+#ifdef BOOTLOADER_ENABLE
+extern MainBootloaderTable_t mainStageTable;
+
+extern void SystemInit2(void);
+
+/*----------------------------------------------------------------------------
+ * Exception / Interrupt Handler Function Prototype
+ *----------------------------------------------------------------------------*/
+typedef void (*pFunc)(void);
+#endif
 
 /*----------------------------------------------------------------------------
  * External References
@@ -182,7 +198,11 @@ const tVectorEntry        __Vectors[] __attribute__ ((section(".vectors"))) = {
   { Default_Handler },                      /*      Reserved                  */
   { Default_Handler },                      /*      Reserved                  */
   { Default_Handler },                      /*      Reserved                  */
+#ifdef BOOTLOADER_ENABLE
+  { (pFunc) & mainStageTable },
+#else
   { Default_Handler },                      /*      Reserved                  */
+#endif
   { SVC_Handler },                          /*      SVCall Handler            */
   { DebugMon_Handler },                     /*      Debug Monitor Handler     */
   { sl_app_properties },                    /*      Application properties    */
@@ -266,6 +286,10 @@ void Reset_Handler(void)
 
 #ifndef __NO_SYSTEM_INIT
   SystemInit();
+#endif
+
+#ifdef BOOTLOADER_ENABLE
+  SystemInit2();
 #endif
 
 /*  Firstly it copies data from read only memory to RAM. There are two schemes

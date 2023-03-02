@@ -87,8 +87,9 @@ typedef enum
     MSAP_ATTR_AC_LIMITS = 10,
     MSAP_ATTR_CURRENT_AC = 11,
     MSAP_ATTR_SCRATCHPAD_BLOCK_MAX = 12,
+    MSAP_ATTR_SCRATCHPAD_NUM_BYTES = 14,
     /* Read / Write */
-    MSAP_ATTR_ENERGY = 5,
+    MSAP_ATTR_RESERVED_1 = 5, /* Old MSAP_ATTR_ENERGY */
     MSAP_ATTR_AUTOSTART = 6,
     MSAP_ATTR_AC_RANGE = 9,
     MSAP_ATTR_MCAST_GROUPS = 13,
@@ -101,7 +102,7 @@ typedef enum
     MSAP_ATTR_PDU_BUFF_USAGE_SIZE = 1,
     MSAP_ATTR_PDU_BUFF_CAP_SIZE = 1,
     MSAP_ATTR_NBOR_COUNT_SIZE = 1,
-    MSAP_ATTR_ENERGY_SIZE = 1,
+    MSAP_ATTR_RESERVED_1_SIZE = 1,
     MSAP_ATTR_AUTOSTART_SIZE = 1,
     MSAP_ATTR_ROUTE_COUNT_SIZE = 1,
     MSAP_ATTR_SYSTEM_TIME_SIZE = 4,
@@ -111,6 +112,7 @@ typedef enum
     MSAP_ATTR_SCRATCHPAD_BLOCK_MAX_SIZE = 1,
     MSAP_ATTR_MCAST_GROUPS_SIZE = \
         MULTICAST_ADDRESS_AMOUNT * sizeof(w_addr_t),
+    MSAP_ATTR_SCRATCHPAD_NUM_BYTES_SIZE = 4,
 } msap_attr_size_e;
 
 /* FUNC_WAPS_MSAP_STACK_START_REQUEST */
@@ -496,6 +498,47 @@ typedef struct __attribute__ ((__packed__))
     uint8_t  param;
 } msap_scratchpad_target_read_cnf_t;
 
+/** Maximum number of bytes in a single scratchpad block */
+#define MSAP_SCRATCHPAD_BLOCK_READ_MAX_NUM_BYTES (MSAP_SCRATCHPAD_BLOCK_MAX_NUM_BYTES)
+
+/** MSAP-SCRATCHPAD_BLOCK_READ request frame */
+typedef struct __attribute__ ((__packed__))
+{
+    /** Byte offset from the beginning of scratchpad memory */
+    uint32_t        start_addr;
+    /** Number of bytes of data */
+    uint8_t         num_bytes;
+} msap_scratchpad_block_read_req_t;
+
+/** Result of MSAP-SCRATCHPAD_BLOCK_READ request */
+typedef enum
+{
+    /** Read request was successful */
+    MSAP_SCRATCHPAD_BLOCK_READ_SUCCESS = 0,
+    /** Stack in invalid state */
+    MSAP_SCRATCHPAD_BLOCK_READ_INVALID_STATE = 1,
+    /** Invalid \ref msap_scratchpad_block_read_req_t::start_addr */
+    MSAP_SCRATCHPAD_BLOCK_READ_INVALID_START_ADDR = 2,
+    /** Invalid \ref msap_scratchpad_block_read_req_t::num_bytes */
+    MSAP_SCRATCHPAD_BLOCK_READ_INVALID_NUM_BYTES = 3,
+    /** No stored scratchpad */
+    MSAP_SCRATCHPAD_BLOCK_READ_NO_SCRATCHPAD = 4,
+    /** Access denied due to feature lock bits */
+    MSAP_SCRATCHPAD_BLOCK_READ_ACCESS_DENIED = 5,
+} msap_scratchpad_block_read_e;
+
+/** MSAP-SCRATCHPAD_BLOCK_READ confirmation frame */
+typedef struct __attribute__ ((__packed__))
+{
+    /** Read result: \see msap_scratchpad_block_read_e */
+    uint8_t result;
+    /** Byte data */
+    uint8_t bytes[MSAP_SCRATCHPAD_BLOCK_READ_MAX_NUM_BYTES];
+} msap_scratchpad_block_read_cnf_t;
+
+#define FRAME_MSAP_SCRATCHPAD_BLOCK_READ_CNF_HEADER_SIZE  \
+    (sizeof(msap_scratchpad_block_read_cnf_t) - MSAP_SCRATCHPAD_BLOCK_READ_MAX_NUM_BYTES)
+
 typedef union
 {
     msap_start_req_t                    start_req;
@@ -522,6 +565,8 @@ typedef union
     msap_install_quality_cnf_t          inst_qual_cnf;
     msap_scratchpad_target_write_req_t  scratchpad_target_write_req;
     msap_scratchpad_target_read_cnf_t   scratchpad_target_read_cnf;
+    msap_scratchpad_block_read_req_t    scratchpad_block_read_req;
+    msap_scratchpad_block_read_cnf_t    scratchpad_block_read_cnf;
 } frame_msap;
 
 #endif /* MSAP_FRAMES_H_ */

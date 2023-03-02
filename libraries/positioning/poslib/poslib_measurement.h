@@ -127,7 +127,7 @@ typedef enum
 typedef struct poslib_measurement
 {
    poslib_scan_mode_e mode;
-   uint32_t max_duration_us; //maximum scan duration [us], (if 0 then scan default time is used)
+   uint32_t max_duration_ms; //maximum scan duration [ms], (if 0 then scan default time is used)
 } poslib_scan_ctrl_t;
 
 

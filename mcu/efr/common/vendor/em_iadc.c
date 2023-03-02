@@ -921,6 +921,7 @@ uint8_t IADC_calcSrcClkPrescale(IADC_TypeDef *iadc,
   uint32_t ret;
 
   EFM_ASSERT(IADC_REF_VALID(iadc));
+  EFM_ASSERT(srcClkFreq);
 
   // Make sure wanted CLK_SRC_ADC clock is below max allowed frequency
   srcClkFreq = SL_MIN(srcClkFreq, IADC_CLK_MAX_FREQ);
@@ -978,6 +979,7 @@ uint32_t IADC_calcAdcClkPrescale(IADC_TypeDef *iadc,
   uint32_t resFreq;
 
   EFM_ASSERT(IADC_REF_VALID(iadc));
+  EFM_ASSERT(adcClkFreq);
 
   // Make sure wanted analog clock is below max allowed frequency for the given
   // mode.

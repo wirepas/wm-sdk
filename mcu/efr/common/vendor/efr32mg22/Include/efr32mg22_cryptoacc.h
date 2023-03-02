@@ -3,7 +3,7 @@
  * @brief EFR32MG22 CRYPTOACC register and bit field definitions
  ******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories, Inc. www.silabs.com</b>
+ * <b>Copyright 2022 Silicon Laboratories, Inc. www.silabs.com</b>
  ******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -517,17 +517,11 @@ typedef struct {
 #define _CRYPTOACC_COMMAND_SELCURVE_DEFAULT            0x00000000UL                                 /**< Mode DEFAULT for CRYPTOACC_COMMAND          */
 #define _CRYPTOACC_COMMAND_SELCURVE_NONE               0x00000000UL                                 /**< Mode NONE for CRYPTOACC_COMMAND             */
 #define _CRYPTOACC_COMMAND_SELCURVE_P256               0x00000001UL                                 /**< Mode P256 for CRYPTOACC_COMMAND             */
-#define _CRYPTOACC_COMMAND_SELCURVE_P384               0x00000002UL                                 /**< Mode P384 for CRYPTOACC_COMMAND             */
-#define _CRYPTOACC_COMMAND_SELCURVE_P521               0x00000003UL                                 /**< Mode P521 for CRYPTOACC_COMMAND             */
 #define _CRYPTOACC_COMMAND_SELCURVE_P192               0x00000004UL                                 /**< Mode P192 for CRYPTOACC_COMMAND             */
-#define _CRYPTOACC_COMMAND_SELCURVE_C25519             0x00000005UL                                 /**< Mode C25519 for CRYPTOACC_COMMAND           */
 #define CRYPTOACC_COMMAND_SELCURVE_DEFAULT             (_CRYPTOACC_COMMAND_SELCURVE_DEFAULT << 20)  /**< Shifted mode DEFAULT for CRYPTOACC_COMMAND  */
 #define CRYPTOACC_COMMAND_SELCURVE_NONE                (_CRYPTOACC_COMMAND_SELCURVE_NONE << 20)     /**< Shifted mode NONE for CRYPTOACC_COMMAND     */
 #define CRYPTOACC_COMMAND_SELCURVE_P256                (_CRYPTOACC_COMMAND_SELCURVE_P256 << 20)     /**< Shifted mode P256 for CRYPTOACC_COMMAND     */
-#define CRYPTOACC_COMMAND_SELCURVE_P384                (_CRYPTOACC_COMMAND_SELCURVE_P384 << 20)     /**< Shifted mode P384 for CRYPTOACC_COMMAND     */
-#define CRYPTOACC_COMMAND_SELCURVE_P521                (_CRYPTOACC_COMMAND_SELCURVE_P521 << 20)     /**< Shifted mode P521 for CRYPTOACC_COMMAND     */
 #define CRYPTOACC_COMMAND_SELCURVE_P192                (_CRYPTOACC_COMMAND_SELCURVE_P192 << 20)     /**< Shifted mode P192 for CRYPTOACC_COMMAND     */
-#define CRYPTOACC_COMMAND_SELCURVE_C25519              (_CRYPTOACC_COMMAND_SELCURVE_C25519 << 20)   /**< Shifted mode C25519 for CRYPTOACC_COMMAND   */
 #define CRYPTOACC_COMMAND_EDWARDS                      (0x1UL << 26)                                /**< Edwards Curve Enable                        */
 #define _CRYPTOACC_COMMAND_EDWARDS_SHIFT               26                                           /**< Shift value for CRYPTOACC_EDWARDS           */
 #define _CRYPTOACC_COMMAND_EDWARDS_MASK                0x4000000UL                                  /**< Bit mask for CRYPTOACC_EDWARDS              */
