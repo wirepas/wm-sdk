@@ -425,7 +425,7 @@ app_lib_data_send_res_e Shared_Data_sendData(
     {
         // It should be a different error code but
         // app_res_e doesn't have UNINITIALIZED error code
-        return APP_RES_RESOURCE_UNAVAILABLE;
+        return (app_lib_data_send_res_e)APP_RES_RESOURCE_UNAVAILABLE;
     }
 
     if (sent_cb == NULL)
