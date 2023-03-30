@@ -34,7 +34,7 @@
 #define OFFSET_KEY_LEN (m_uid_len + 6)
 #define OFFSET_KEY (m_uid_len + 7)
 
-#define MAX_UID_LEN 32
+#define MAX_UID_LEN 79
 #define MAX_KEY_LEN 32
 
 #define STORAGE_AREA_ID 0x8AE573BA
@@ -94,14 +94,15 @@ bool Storage_init()
     if (!read(STORAGE_AREA_ID, &magic, OFFSET_MAGIC, 4) ||
         magic != STORAGE_MAGIC)
     {
+        LOG(LVL_DEBUG, "Error Magic");
         return false;
     }
 
     /* Read Method. */
     if (!read(STORAGE_AREA_ID, &m_method, OFFSET_METHOD, 1) ||
-        (m_method != PROV_METHOD_UNSECURED && m_method != PROV_METHOD_SECURED))
+        (m_method != PROV_METHOD_UNSECURED && m_method != PROV_METHOD_SECURED && m_method != PROV_METHOD_EXTENDED_UID))
     {
-
+        LOG(LVL_DEBUG, "Error Method");
         return false;
     }
 

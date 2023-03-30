@@ -291,7 +291,7 @@ provisioning_res_e process_data_packet(void)
         }
     }
 
-    else if (m_conf.method == PROV_METHOD_SECURED)
+    else if (m_conf.method == PROV_METHOD_SECURED || m_conf.method == PROV_METHOD_EXTENDED_UID)
     {
         if (pdu->data.key_index == 1)
         {
