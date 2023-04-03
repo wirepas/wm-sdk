@@ -1,4 +1,5 @@
 # This is an example file to customize a node running the provisioning joining node appliation
+# using the ExtendedUID method.
 
 # Hex array must start with 0x otherwise it is treated as a string.
 

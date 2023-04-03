@@ -1,16 +1,12 @@
 # This is an example file to customize a node running the provisioning joining node appliation
+# using the secure method.
 
 # Hex array must start with 0x otherwise it is treated as a string.
 
 # Format is:
 #
 # provisioning :
-#    device_uid: (16 bytes string, Representing the UID of the device to be provisioned)
-#    device_uid_type: (1 byte string, Representing the UID type of device_uid)
-#    authenticator_uid: (16 bytes string, Representing the UID of the authenticator)
-#    authenticator_uid_type: (1 byte string, Representing the UID type of authenticator_uid)
-#    Instead of specifying uid components individually, you can specify the whole uid as follows:
-#    uid: (34 bytes string, [0:1 device_uid_type][1:16 device_uid][16:17 authenticator_uid_type][17:33 authenticator_uid])
+#    uid: (bytes string, less than 79 bytes long)
 #    factory_key : (32 bytes string, [0:15 Auth key][16:31 Enc Key]) Needed for secured method.
 #    method : (Unsecured:0, Secured:1, Extended:3) Ex: 0
 
