@@ -3,22 +3,42 @@
 
 include makefile_common.mk
 
+# Version of GCC used for Wirepas testing
+GCC_TESTED_VERSION := 10.3.1
+
+# Check the toolchain version with GCC
+GCC_VERSION := $(shell $(CC) -dumpversion)
+ifneq ($(GCC_VERSION), $(findstring $(GCC_VERSION), $(GCC_TESTED_VERSION)))
+$(warning ***********************************************************************)
+$(warning "GCC version used is not the recommended and tested by Wirepas )
+$(warning "Recommended version is : $(GCC_TESTED_VERSION))
+$(warning ***********************************************************************)
+endif
+
 #
 # Targets
 #
 
 # Scratchpads for OTAP
+
 FULL_SCRATCHPAD_NAME := $(APP_NAME)_$(FIRMWARE_NAME)
 FULL_SCRATCHPAD_BIN := $(BUILDPREFIX_APP)$(FULL_SCRATCHPAD_NAME).otap
 APP_SCRATCHPAD_NAME := $(APP_NAME)
 APP_SCRATCHPAD_BIN := $(BUILDPREFIX_APP)$(APP_SCRATCHPAD_NAME).otap
 STACK_SCRATCHPAD_NAME := $(FIRMWARE_NAME)
 STACK_SCRATCHPAD_BIN := $(BUILDPREFIX_APP)$(STACK_SCRATCHPAD_NAME).otap
+ifneq ($(modemfw_area_id),)
+ifneq ($(radio),none)
+ifneq ($(modem_fw),)
+FULL_SCRATCHPAD_WITH_MODEMFW_NAME := $(APP_NAME)_$(FIRMWARE_NAME)_modem_fw
+FULL_SCRATCHPAD_WITH_MODEMFW_BIN := $(BUILDPREFIX_APP)$(FULL_SCRATCHPAD_WITH_MODEMFW_NAME).otap
+endif
+endif
+endif
 
-BOOTLOADER_CONFIG_INI := $(BUILDPREFIX_APP)bootloader_full_config.ini
 PLATFORM_CONFIG_INI := $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/ini_files/$(MCU)$(MCU_SUB)$(MCU_MEM_VAR)_platform.ini
 
-CLEAN += $(FULL_SCRATCHPAD_BIN) $(APP_SCRATCHPAD_BIN) $(STACK_SCRATCHPAD_BIN) $(BOOTLOADER_CONFIG_INI)
+CLEAN += $(FULL_SCRATCHPAD_BIN) $(APP_SCRATCHPAD_BIN) $(STACK_SCRATCHPAD_BIN) $(FULL_SCRATCHPAD_WITH_MODEMFW_BIN) $(BOOTLOADER_CONFIG_INI)
 
 # Final image for programming
 FINAL_IMAGE_NAME := final_image_$(APP_NAME)
@@ -69,6 +89,15 @@ updater_app_area_id=$(updater_app_specific_area_id)$(HW_VARIANT_ID)
 
 #
 # Functions
+define BUILD_FULL_SCRATCHPAD_WITH_MODEMFW
+	@echo "  Creating Full Scratchpad with modem: $(2) + $(3) + $(4) -> $(1)"
+	$(SCRAT_GEN)    --configfile=$(BOOTLOADER_CONFIG_INI) \
+	                $(1) \
+	                $(modemfw_area_id):$(2) \
+	                $(patsubst %.hex,%.conf,$(3)):$(firmware_area_id):$(3) \
+	                $(app_major).$(app_minor).$(app_maintenance).$(app_development):$(app_area_id):$(4)
+endef
+
 define BUILD_FULL_SCRATCHPAD
 	@echo "  Creating Full Scratchpad: $(2) + $(3) -> $(1)"
 	$(SCRAT_GEN)    --configfile=$(BOOTLOADER_CONFIG_INI) \
@@ -116,7 +145,7 @@ all: $(TARGETS)
 
 app_only: $(APP_HEX) $(APP_SCRATCHPAD_BIN)
 
-otap: $(FULL_SCRATCHPAD_BIN) $(APP_SCRATCHPAD_BIN) $(STACK_SCRATCHPAD_BIN)
+otap: $(FULL_SCRATCHPAD_BIN) $(APP_SCRATCHPAD_BIN) $(STACK_SCRATCHPAD_BIN) $(FULL_SCRATCHPAD_WITH_MODEMFW_BIN)
 
 bootloader: $(BOOTLOADER_HEX)
 
@@ -165,7 +194,7 @@ $(APP_HEX):: initial_setup $(BUILDPREFIX_APP) need_board
 
 # Add $(BOOTLOADER_HEX) to PHONY to always call bootloader makefile
 .PHONY: $(BOOTLOADER_HEX)
-$(BOOTLOADER_HEX): initial_setup need_board
+$(BOOTLOADER_HEX): initial_setup need_board $(BOOTLOADER_CONFIG_INI)
 	@	# Call bootloader makefile to get the hex file of bootloader
 	+$(MAKE) -f makefile_bootloader.mk
 
@@ -182,6 +211,14 @@ $(APP_SCRATCHPAD_BIN): initial_setup $(APP_HEX) $(BOOTLOADER_CONFIG_INI)
 
 $(FULL_SCRATCHPAD_BIN): initial_setup $(STACK_HEX) $(APP_HEX) $(BOOTLOADER_CONFIG_INI)
 	$(call BUILD_FULL_SCRATCHPAD,$(FULL_SCRATCHPAD_BIN),$(STACK_HEX),$(APP_HEX))
+
+ifneq ($(modemfw_area_id),)
+ifneq ($(radio),none)
+$(FULL_SCRATCHPAD_WITH_MODEMFW_BIN): initial_setup $(STACK_HEX) $(APP_HEX) $(BOOTLOADER_CONFIG_INI)
+	$(call BUILD_FULL_SCRATCHPAD_WITH_MODEMFW,$(FULL_SCRATCHPAD_WITH_MODEMFW_BIN),${modem_fw},$(STACK_HEX),$(APP_HEX))
+
+endif
+endif
 
 $(FINAL_IMAGE_HEX): initial_setup $(STACK_HEX) $(APP_HEX) $(BOOTLOADER_HEX) $(BOOTLOADER_CONFIG_INI)
 	$(call BUILD_HEX,$(FINAL_IMAGE_HEX),$(BOOTLOADER_HEX),$(STACK_HEX),$(APP_HEX),$(EXTRA_HEX))

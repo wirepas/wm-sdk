@@ -9,6 +9,14 @@
 #ifndef _TEST_H_
 #define _TEST_H_
 
+/* Number of maximum supported memory areas in tests
+ *
+ * The bootloader used to only support eight memory areas, but that was later
+ * increased to 16. Remember to increase this, if the bootloader supports more
+ * areas in the future.
+ */
+#define MAX_TESTED_MEMORY_AREAS 16
+
 /* Macro to print test startup */
 #define START_TEST(_name_, _desc_) Print_printf("\nTEST [%s]: %s\n", \
                                                 #_name_, #_desc_);

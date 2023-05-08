@@ -3,7 +3,12 @@ include makefile_common.mk
 .DEFAULT_GOAL := all
 
 # Linker script
+ifndef MCU_RAM_VAR
 LDSCRIPT = $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/linker/gcc_app_$(MCU)$(MCU_SUB)$(MCU_MEM_VAR).ld
+else
+LDSCRIPT = $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/linker/gcc_app_$(MCU)$(MCU_SUB)$(MCU_MEM_VAR)_$(MCU_RAM_VAR).ld
+endif
+
 LIBS :=
 
 ifeq ($(filter $(TARGET_BOARDS),$(target_board)),)
@@ -54,7 +59,10 @@ CFLAGS += -DVER_MAJOR=$(app_major) -DVER_MINOR=$(app_minor) -DVER_MAINT=$(app_ma
 -include $(WP_LIB_PATH)makefile
 INCLUDES += -I$(WP_LIB_PATH)
 
-# Include HAL drivers code
+# Include MCU config first
+-include $(MCU_PATH)config.mk
+
+# Include MCU HAL drivers code
 -include $(HAL_API_PATH)makefile
 
 # Include common MCU sources
@@ -107,4 +115,3 @@ clean:
 	$(RM) -rf $(CLEAN)
 
 -include $(DEPS)
-

@@ -27,7 +27,7 @@ app_config_filters=0
 # shared_offline_modules+= + n
 shared_offline_modules=0
 
-# Any library needing shared neighbors cllbacks must increment this variable
+# Any library needing shared neighbors callbacks must increment this variable
 # this way:
 # shared_neighbors_cbs+= + n
 shared_neighbors_cbs=0
@@ -78,10 +78,18 @@ scheduler_tasks+= + 2
 endif
 
 ifeq ($(DUALMCU_LIB), yes)
-scheduler_tasks+= + 3
+HAL_GPIO=yes
+scheduler_tasks+= + 4
 app_config_filters+= + 1
 SHARED_DATA=yes
 stack_state_cbs+= + 1
+endif
+
+# RTC library
+ifeq ($(RTC), yes)
+scheduler_tasks+= + 1
+SHARED_DATA=yes
+APP_SCHEDULER=yes
 endif
 
 #########

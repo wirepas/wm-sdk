@@ -414,24 +414,6 @@ typedef struct __attribute__ ((__packed__))
 
 } msap_sleep_latest_gotosleep_rsp_t;
 
-/** Maximum message queuing time request frame */
-typedef struct __attribute__ ((__packed__))
-{
-    /** Message priority which queuing time to be set/get */
-    app_lib_data_qos_e   priority;
-    /** Maximum queuing time to be set in seconds */
-    uint16_t    time;
-} msap_max_msg_queuing_time_req_t;
-
-/** Confirmation to maximum message queuing read request */
-typedef struct __attribute__ ((__packed__))
-{
-    /** Read result  */
-    app_res_e   result;
-    /** Read value of maximum queuing time */
-    uint16_t    time;
-} msap_max_msg_queuing_time_read_cnf_t;
-
 /** MSAP-GET_INSTALL_QUALITY */
 typedef struct
 {
@@ -560,8 +542,6 @@ typedef union
     msap_sleep_start_req_t              sleep_start_req;
     msap_sleep_state_rsp_t              sleep_state_rsp;
     msap_sleep_latest_gotosleep_rsp_t   sleep_gotosleep_rsp_t;
-    msap_max_msg_queuing_time_req_t     max_msg_queuing_time_req;
-    msap_max_msg_queuing_time_read_cnf_t  max_msg_queuing_time_read_cnf;
     msap_install_quality_cnf_t          inst_qual_cnf;
     msap_scratchpad_target_write_req_t  scratchpad_target_write_req;
     msap_scratchpad_target_read_cnf_t   scratchpad_target_read_cnf;

@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := pca10056 pca10100 tbsense2 pca10040 ruuvitag pan1780 
+TARGET_BOARDS := ruuvitag tbsense2 pan1780 pca10040 pca10056 pca10100 
 # Boards compatible with this app
 #
 # Network default settings configuration

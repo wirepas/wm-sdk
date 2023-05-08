@@ -18,8 +18,20 @@
 #define BOARD_USART_TX_PIN              20
 #define BOARD_USART_RX_PIN              19
 
-// List of GPIO pins for the LEDs on the board: LED R, G, B
-#define BOARD_LED_PIN_LIST              {23, 22, 24}
+// List of GPIO pins
+#define BOARD_GPIO_PIN_LIST            {23, /* P0.23 */\
+                                        22, /* P0.22 */\
+                                        24, /* P0.24 */\
+                                        19} /* P0.19. required by the dual_mcu app. usart wakeup pin (= BOARD_USART_RX) */
+
+// User friendly name for GPIOs (IDs mapped to the BOARD_GPIO_PIN_LIST table)
+#define BOARD_GPIO_ID_LED_R             0  // mapped to pin P0.23
+#define BOARD_GPIO_ID_LED_G             1  // mapped to pin P0.22
+#define BOARD_GPIO_ID_LED_B             2  // mapped to pin P0.24
+#define BOARD_GPIO_ID_USART_WAKEUP      3  // mapped to pin P0.19
+
+// List of LED IDs
+#define BOARD_LED_ID_LIST               {BOARD_GPIO_ID_LED_R, BOARD_GPIO_ID_LED_G, BOARD_GPIO_ID_LED_B}
 
 // Active low polarity for LEDs
 #define BOARD_LED_ACTIVE_LOW            true

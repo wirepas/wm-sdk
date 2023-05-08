@@ -32,7 +32,7 @@
 const app_lib_radio_cfg_power_t m_power_table =
 {
     .rx_current     = 46 + 29,  // 4.6 mA RX current (+2.9 mA LNA current)
-    .rx_gain_dbm    = 13,       // 13 dBm RX gain (from LNA)
+    .rx_gain_db     = 13,       // 13 dB RX gain (from LNA)
     .power_count    = 7,        // 7 power levels
     .powers =
     {

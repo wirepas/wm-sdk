@@ -12,7 +12,12 @@ BOOTLOADER_SRC :=  $(BUILDPREFIX_BOOTLOADER)bootloader.a
 BL_BUILDPREFIX := $(BUILDPREFIX_BOOTLOADER)
 
 # Linker for the bootloader
-LDSCRIPT := $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/linker/gcc_bl_$(MCU)$(MCU_SUB)$(MCU_MEM_VAR).ld
+ifndef MCU_RAM_VAR
+LDSCRIPT = $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/linker/gcc_bl_$(MCU)$(MCU_SUB)$(MCU_MEM_VAR).ld
+else
+LDSCRIPT = $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/linker/gcc_bl_$(MCU)$(MCU_SUB)$(MCU_MEM_VAR)_$(MCU_RAM_VAR).ld
+endif
+
 
 BOOTLOADER_ELF := $(BL_BUILDPREFIX)bootloader.elf
 
@@ -35,11 +40,13 @@ CLEAN := $(OBJS) $(BOOTLOADER_ELF) $(BOOTLOADER_HEX)
 $(BOOTLOADER_SRC): FORCE
 	# Get the right firmware from the image folder
 	$(MKDIR) $(@D)
+	$(eval key_type=$(shell $(BOOT_CONF) --in_file $(BOOTLOADER_CONFIG_INI) --get_key_type))
 	@$(FMW_SEL)	--firmware_path=$(IMAGE_PATH)\
 				--firmware_type="wp_bootloader"\
 				--version=$(MIN_BOOTLOADER_VERSION)\
 				--output_path=$(@D)\
 				--output_name="bootloader"\
+				--key_type=$(key_type)\
 				--unlocked=$(unprotected)\
 				--mcu=$(MCU)\
 				--mcu_sub=$(MCU_SUB)\

@@ -86,7 +86,6 @@ static uint32_t send_data(void)
     data_to_send.src_endpoint = DATA_EP;
     data_to_send.dest_endpoint = DATA_EP;
     data_to_send.qos = APP_LIB_DATA_QOS_HIGH;
-    data_to_send.delay = 0;
     data_to_send.flags = APP_LIB_DATA_SEND_FLAG_NONE;
     data_to_send.tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 

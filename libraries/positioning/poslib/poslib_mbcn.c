@@ -74,17 +74,17 @@ static uint8_t encode_mbcn(poslib_mbcn_config_t * settings, uint8_t * buf, uint8
     {
         record = &settings->records[i];
 
-        if (record->type != POSLIB_MBCN_INVALID_TYPE && 
-            record->type <= POSLIB_MBCN_MAX_TYPE && 
-            record->length != 0 && 
+        if (record->type != POSLIB_MBCN_INVALID_TYPE &&
+            record->type <= POSLIB_MBCN_MAX_TYPE &&
+            record->length != 0 &&
             record->length <= sizeof(record->value))
         {
             item.type = record->type;
             item.length = record->length;
             item.value = (uint8_t *) record->value;
             PosLibTlv_Encode_addItem(&rcd, &item);
-            LOG(LVL_DEBUG, "MBCN add record. type: %u, len: %u, buf: %u", 
-                        record->type, record->length, rcd.index);  
+            LOG(LVL_DEBUG, "MBCN add record. type: %u, len: %u, buf: %u",
+                        record->type, record->length, rcd.index);
         }
     }
     LOG(LVL_DEBUG, "MBCN records: %u", rcd.index);
@@ -95,7 +95,7 @@ void PosLibMbcn_stop()
 {
     App_Scheduler_cancelTask(mbcn_task);
     m_started = false;
-    LOG(LVL_ERROR, "Mini-beacon stopped"); 
+    LOG(LVL_ERROR, "Mini-beacon stopped");
 }
 
 bool PosLibMbcn_start(poslib_mbcn_config_t * settings)
@@ -109,7 +109,7 @@ bool PosLibMbcn_start(poslib_mbcn_config_t * settings)
         m_started = false;
         return false;
     }
-    
+
     if (!m_started)
     {
         // Initialize constant values in mini-beacon data sent structure
@@ -118,15 +118,14 @@ bool PosLibMbcn_start(poslib_mbcn_config_t * settings)
         m_mbcn.src_endpoint = POSLIB_MBCN_SRC_EP;
         m_mbcn.dest_endpoint = POSLIB_MBCN_DEST_EP;
         m_mbcn.qos = APP_LIB_DATA_QOS_NORMAL;
-        m_mbcn.delay = 0;
         m_mbcn.flags = APP_LIB_DATA_SEND_NW_CH_ONLY;
         m_mbcn.tracking_id = 0;
         m_mbcn.hop_limit = 1;
     }
-    
+
     // Fill payload content
     m_payload.seq = 0;
-    m_mbcn.num_bytes = sizeof(m_payload.seq);  
+    m_mbcn.num_bytes = sizeof(m_payload.seq);
     m_mbcn.num_bytes += encode_mbcn(settings, m_payload.data, sizeof(m_payload.data));
 
     //Add the task sending mini-beacons
@@ -163,7 +162,7 @@ bool PosLibMbcn_decode(uint8_t * buf, uint8_t length, poslib_mbcn_data_t * mbcn)
         LOG(LVL_ERROR, "Incorrect input parameters!");
         return false;
     }
-    
+
     mbcn->seq = payload->seq;
     rcd.buffer = payload->data;
     rcd.length = length - sizeof(payload->seq);
@@ -174,7 +173,7 @@ bool PosLibMbcn_decode(uint8_t * buf, uint8_t length, poslib_mbcn_data_t * mbcn)
 
     while (i < sizeof(mbcn->records))
     {
-        res = PosLibTlv_Decode_getNextItem(&rcd, &item); 
+        res = PosLibTlv_Decode_getNextItem(&rcd, &item);
 
         if (res == POSLIB_TLV_RES_OK)
         {
@@ -195,7 +194,7 @@ bool PosLibMbcn_decode(uint8_t * buf, uint8_t length, poslib_mbcn_data_t * mbcn)
 
                 case POSLIB_MBCN_FEATURES:
                 {
-                    
+
                     if (item.length == sizeof(mbcn->features))
                     {
                         memcpy(&mbcn->features, item.value, item.length);

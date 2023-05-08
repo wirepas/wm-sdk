@@ -8,6 +8,7 @@
 #include "hal_api.h"
 #include "spi.h"
 #include "api.h"
+#include "gpio.h"
 #include <string.h>
 #include "bme280_wrapper.h"
 
@@ -46,14 +47,10 @@ static void bme280_delay_ms(uint32_t period)
 */
 void bme280_select_chip(bool select)
 {
-    if (select)
-    {
-        nrf_gpio_pin_clear(BOARD_SPI_BME280_CS_PIN);
-    }
-    else
-    {
-        nrf_gpio_pin_set(BOARD_SPI_BME280_CS_PIN);
-    }
+    gpio_level_e level;
+
+    level = select ? GPIO_LEVEL_LOW : GPIO_LEVEL_HIGH;
+    Gpio_outputWrite(BOARD_GPIO_ID_BME280_SPI_CS, level);
 }
 
 /**

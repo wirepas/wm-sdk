@@ -116,14 +116,14 @@ Following chip variants (at 2.4 GHz only) are supported:
 
 -   EFR32FG12P232F1024G L125/M48    [2.4 GHz only, 1024/128, BGA125/QFN48]
 -   EFR32FG12P432F1024G L125/M48    [2.4 GHz only, 1024/256, BGA125/QFN48]
--   EFR32FG12P433F1024G L125/M48    [2.4 GHz & SubGHz, 1024/256, BGA125/QFN48]
+-   EFR32FG12P433F1024G L125/M48    [2.4 GHz, 1024/256, BGA125/QFN48]
 -   EFR32MG12P232F1024G L125/M48    [2.4 GHz only, 1024/128, BGA125/QFN48]
 -   EFR32MG12P332F1024G L125/M48    [2.4 GHz only, 1024/128, BGA125/QFN48]
 -   EFR32MG12P432F1024G L125/M48    [2.4 GHz only, 1024/256, BGA125/QFN48]
--   EFR32MG12P433F1024G L125/M48    [2.4 GHz & SubGHz, 1024/256, BGA125/QFN48]
+-   EFR32MG12P433F1024G L125/M48    [2.4 GHz, 1024/256, BGA125/QFN48]
 -   EFR32BG12P232F1024G L125/M48    [2.4 GHz only, 1024/128, BGA125/QFN48]
 -   EFR32BG12P432F1024G L125/M48    [2.4 GHz only, 1024/256, BGA125/QFN48]
--   EFR32BG12P433F1024G L125/M48    [2.4 GHz & SubGHz, 1024/256, BGA125/QFN48]
+-   EFR32BG12P433F1024G L125/M48    [2.4 GHz, 1024/256, BGA125/QFN48]
 -   EFR32BG21A010F1024IM32
 -   EFR32BG21A010F512IM32
 -   EFR32BG21A010F768IM32
@@ -137,6 +137,9 @@ Following chip variants (at 2.4 GHz only) are supported:
 -   EFR32BG22C224F512IM40
 -   BGM220PC22HNA
 -   BGM220SC22HNA
+-   EFR32ZG23B020F512IM48
+-   EFR32MG24B310F1536IM48-B
+-   EFR32MG24B210F1536IM48
 
 This page contains following sections:
 - @subpage flash_memory_efr32
@@ -166,6 +169,10 @@ application, according to processor type is following:
 <tr><td>efr32xg21xxxxf768</td><td>50kB</td></tr>
 <tr><td>efr32xg21xxxxf1024</td><td>256kB</td></tr>
 <tr><td>efr32xg22xxxxf512</td><td>50kB</td></tr>
+<tr><td>efr32xg23xxxxf512</td><td>40kB</td></tr>
+<tr><td>efr32xg24xxxxf1024</td><td>256kB</td></tr>
+<tr><td>efr32xg24xxxxf1536_196</td><td>256kB</td></tr>
+<tr><td>efr32xg24xxxxf1536_256</td><td>256kB</td></tr>
 </table>
 
 
@@ -177,11 +184,14 @@ following:
 <tr><th>Processor</th><th>RAM memory</th></tr>
 <tr><td>efr32xg12pxxxf1024</td><td>72kB</td></tr>
 <tr><td>efr32xg12pxxxf512</td><td>8kB</td></tr>
-<tr><td>efr32xg13pxxxf512</td><td>16kB</td></tr>
 <tr><td>efr32xg21xxxxf512</td><td>12kB</td></tr>
 <tr><td>efr32xg21xxxxf768</td><td>12kB</td></tr>
 <tr><td>efr32xg21xxxxf1024</td><td>44kB</td></tr>
 <tr><td>efr32xg22xxxxf512</td><td>4.5kB</td></tr>
+<tr><td>efr32xg23xxxxf512</td><td>12kB</td></tr>
+<tr><td>efr32xg24xxxxf1024</td><td>72kB</td></tr>
+<tr><td>efr32xg22xxxxf1536_196</td><td>140kB</td></tr>
+<tr><td>efr32xg22xxxxf1536_256</td><td>155kB</td></tr>
 </table>
 
 @subsection peripherals_accessible_by_stack_only2 Peripherals accessible by stack only

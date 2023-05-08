@@ -118,8 +118,6 @@ static app_lib_data_receive_res_e received_switch_cb(
         {
             .bytes = (const uint8_t *)&swtch_fwd,
             .num_bytes = sizeof(control_app_switch_fwd_t),
-            /* Propagate the travel time of the packet. */
-            .delay = data->delay,
             .tracking_id = APP_LIB_DATA_NO_TRACKING_ID,
             .qos = APP_LIB_DATA_QOS_NORMAL,
             /* This packet will only be received by CSMA nodes. */
@@ -274,8 +272,6 @@ void App_init(const app_global_functions_t * functions)
         LOG(LVL_ERROR, "Error setting node role (res:%d)", app_res);
         return;
     }
-
-    Led_init();
 
     ctrl_ret = Control_Router_init(&conf);
     if (ctrl_ret != CONTROL_RET_OK)

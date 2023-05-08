@@ -79,7 +79,6 @@ static void switch_event(uint8_t button_id, button_event_e event)
     {
         .bytes = (const uint8_t *)&pkt,
         .num_bytes = sizeof(control_app_switch_t),
-        .delay = 0,
         .tracking_id = APP_LIB_DATA_NO_TRACKING_ID,
         .qos = APP_LIB_DATA_QOS_NORMAL,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,
@@ -185,8 +184,6 @@ void App_init(const app_global_functions_t * functions)
         // It should not happen except if one of the config value is invalid
         return;
     }
-
-    Button_init();
 
     app_res = lib_settings->setNodeRole(APP_LIB_SETTINGS_ROLE_ADVERTISER);
     if (app_res != APP_RES_OK)

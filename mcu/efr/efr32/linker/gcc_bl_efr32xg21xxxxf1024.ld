@@ -62,6 +62,7 @@ SECTIONS
         *scratchpad.*o*(.data* .data)
         *internal_flash*.*o*(.data* .data)
         *external_flash*.*o*(.data* .data)
+        *debug_flow*.*o*(.data* .data)
         /* Customer specific external flash driver must be located in
          * board/board_name/bootloader folder.
          */
@@ -78,6 +79,7 @@ SECTIONS
         *scratchpad.*o*(.bss.* .bss)
         *internal_flash*.*o*(.bss* .bss)
         *external_flash*.*o*(.bss* .bss)
+        *debug_flow*.*o*(.bss* .bss)
         /* Customer specific external flash driver must be located in
          * board/board_name/bootloader folder
          */
