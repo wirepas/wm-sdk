@@ -11,7 +11,10 @@ SEARCH_DIR(.)
  *     not a hard limit and could be increased. As application and scratchpad area
  *     are shared by default, if the application is too big, OTAP may be affected.
  *     Please see the Wirepas documentation about OTAP for more details
- *   - 12 kB (minus 8 bytes) of RAM can be used by the app
+ *   - Up to 16 kB (minus 8 bytes) of RAM can be used by the app. By default
+ *     12 kB (minus 8 bytes), but with custom linker script that can be
+ *     increased up to 16 kB by decreasing the origin (down to 0x2000C000)
+ *     and increasing length (up to 16K - 8).
  */
 MEMORY
 {
