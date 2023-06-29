@@ -10,6 +10,7 @@ const versions = [
 'v1.3.0',
 'v1.4.0',
 'v1.4.1',
+'Idiawi3',
 'latest'
 ];
 
