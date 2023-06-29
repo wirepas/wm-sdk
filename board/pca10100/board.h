@@ -66,26 +66,44 @@ P1.08   40      gpio
 P1.09   41      gpio
 */
 
-// Interrupt pin for dual mcu app, unread indication
-#define BOARD_UART_IRQ_PIN              11
-
 // Serial port pins
 #define BOARD_USART_TX_PIN              6
 #define BOARD_USART_RX_PIN              8
 #define BOARD_USART_CTS_PIN             7  /* For USE_USART_HW_FLOW_CONTROL */
 #define BOARD_USART_RTS_PIN             5  /* For USE_USART_HW_FLOW_CONTROL */
 
-// Pwm output for pwm_driver app
-#define BOARD_PWM_OUTPUT_GPIO           28
+// List of GPIO pins
+#define BOARD_GPIO_PIN_LIST            {13, /* P0.13 */\
+                                        14, /* P0.14 */\
+                                        15, /* P0.15 */\
+                                        16, /* P0.16 */\
+                                        11, /* P0.11 */\
+                                        12, /* P0.12 */\
+                                        24, /* P0.24 */\
+                                        25, /* P0.25 */\
+                                        8,  /* P0.08. required by the dual_mcu app. usart wakeup pin (= BOARD_USART_RX) */\
+                                        11} /* P0.11. required by the dual_mcu app (indication signal) */
 
-// List of GPIO pins for the LEDs on the board: LED 1 to LED 4
-#define BOARD_LED_PIN_LIST              {13, 14, 15, 16}
+// User friendly name for GPIOs (IDs mapped to the BOARD_GPIO_PIN_LIST table)
+#define BOARD_GPIO_ID_LED1              0  // mapped to pin P0.13
+#define BOARD_GPIO_ID_LED2              1  // mapped to pin P0.14
+#define BOARD_GPIO_ID_LED3              2  // mapped to pin P0.15
+#define BOARD_GPIO_ID_LED4              3  // mapped to pin P0.16
+#define BOARD_GPIO_ID_BUTTON1           4  // mapped to pin P0.11
+#define BOARD_GPIO_ID_BUTTON2           5  // mapped to pin P0.12
+#define BOARD_GPIO_ID_BUTTON3           6  // mapped to pin P0.24
+#define BOARD_GPIO_ID_BUTTON4           7  // mapped to pin P0.25
+#define BOARD_GPIO_ID_USART_WAKEUP      8  // mapped to pin P0.08
+#define BOARD_GPIO_ID_UART_IRQ          9  // mapped to pin P0.11
+
+// List of LED IDs
+#define BOARD_LED_ID_LIST               {BOARD_GPIO_ID_LED1, BOARD_GPIO_ID_LED2, BOARD_GPIO_ID_LED3, BOARD_GPIO_ID_LED4}
 
 // Active low polarity for LEDs
 #define BOARD_LED_ACTIVE_LOW            true
 
-// List of GPIO pins for buttons on the board: Button 1 to Button 4
-#define BOARD_BUTTON_PIN_LIST           {11, 12, 24, 25}
+// List of button IDs
+#define BOARD_BUTTON_ID_LIST           {BOARD_GPIO_ID_BUTTON1, BOARD_GPIO_ID_BUTTON2, BOARD_GPIO_ID_BUTTON3, BOARD_GPIO_ID_BUTTON4}
 
 // Active low polarity for buttons
 #define BOARD_BUTTON_ACTIVE_LOW         true

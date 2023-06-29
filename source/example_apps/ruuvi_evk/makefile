@@ -8,6 +8,7 @@ INCLUDES += -I$(APP_SRCS_PATH)BME280_driver/
 INCLUDES += -I$(APP_SRCS_PATH)LIS2DH12_driver/lis2dh12_STdC/driver/
 
 HAL_SPI=yes
+HAL_GPIO=yes
 
 # Use App Scheduler and configure it
 APP_SCHEDULER=yes

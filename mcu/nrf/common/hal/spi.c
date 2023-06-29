@@ -26,8 +26,20 @@ void __attribute__((__interrupt__))     SPI_IRQHandler(void);
 #elif defined(USE_SPI2)
 #define SPI_IRQn    SPIM2_SPIS2_SPI2_IRQn
 #define SPI_DEV     NRF_SPIM2
+#elif defined(USE_SPI3)
+#if MCU_SUB == 832
+#error SPI3 is not available on nrf52832
+#endif
+#define SPI_IRQn    SPIM3_IRQn
+#define SPI_DEV     NRF_SPIM3
 #else
-#error USE_SPI0 or USE_SPI1 or USE_SPI2 must be defined
+#error You must specify either USE_SPI0, USE_SPI1, USE_SPI2 or USE_SPI3 (nrf52833 and nrf52840 only) in your board.h
+#endif
+
+#if MCU_SUB == 832
+#define MAX_XFER_SIZE   UINT8_MAX
+#else
+#define MAX_XFER_SIZE   UINT16_MAX
 #endif
 
 /** Is SPI module initialized */
@@ -294,6 +306,13 @@ spi_res_e SPI_transfer(spi_xfer_t * xfer_p,
     {
         return SPI_RES_INVALID_XFER;
     }
+
+    // Check transfer size
+    if ((xfer_p->write_size > MAX_XFER_SIZE) || (xfer_p->read_size > MAX_XFER_SIZE))
+    {
+        return SPI_RES_INVALID_XFER;
+    }
+
 
     // Enable SPIM module
     SPI_DEV->ENABLE =

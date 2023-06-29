@@ -29,10 +29,13 @@
 #include "shared_beacon.h"
 #include "posapp_settings.h"
 #include "board.h"
-#include "led.h"
-
-#include "gpio.h"
 #include "voltage.h"
+#ifdef BUTTON_ENABLED
+#include "button.h"
+#endif
+#ifdef CONF_USE_LED_NOTIFICATION
+#include "led.h"
+#endif
 #ifdef MOTION_SUPPORTED
 #include "motion.h"
 #endif
@@ -40,10 +43,12 @@
 #include "app_persistent.h"
 #endif
 
+#ifdef BUTTON_ENABLED
+#define BUTTON_ID   0
+#endif
 #ifdef CONF_USE_LED_NOTIFICATION
 #define LED_ON true
 #define LED_OFF false
-
 /** used to share led id to led control task */
 #define LED_ID 0
 #endif
@@ -53,15 +58,15 @@ static uint8_t m_event_config_change_id = POSLIB_FLAG_EVENT_SUBSCRIBERS_MAX;
 static uint8_t m_event_led_on_id = POSLIB_FLAG_EVENT_SUBSCRIBERS_MAX;
 static uint8_t m_event_led_off_id = POSLIB_FLAG_EVENT_SUBSCRIBERS_MAX;
 
+#ifdef BUTTON_ENABLED
 /**
  * @brief   Example function used with PosLib_oneshot().
  *          This function called from HAL button as callback when requested
  *          button is pressed.
  */
-#ifdef BUTTON_ENABLED
-static void button_pressed_cb(uint8_t pin, gpio_event_e event)
+static void button_pressed_cb(uint8_t button_id, button_event_e button_event)
 {
-    LOG(LVL_DEBUG, "Start oneshot. Button event %u button pin %u", event, pin);
+    LOG(LVL_DEBUG, "Start oneshot. Button event %u button id %u", button_event, button_id);
     PosLib_startOneshot();
 }
 
@@ -70,21 +75,13 @@ static void button_pressed_cb(uint8_t pin, gpio_event_e event)
  */
 static void enable_button(void)
 {
-    gpio_res_e res;
-    uint8_t buttons_pins[] = BOARD_BUTTON_PIN_LIST;
-    gpio_pull_e pull = BOARD_BUTTON_INTERNAL_PULL ? GPIO_PULLUP: GPIO_PULLDOWN;
-    gpio_event_e event = BOARD_BUTTON_ACTIVE_LOW ? GPIO_EVENT_HL : GPIO_EVENT_LH;
-    #define DEBOUNCE_MS 100  //FixME: move to general definitions
-    #define BUTTON_ID 0 //FixME: move to general definitions
+    button_res_e res;
 
-    res = GPIO_register_for_event(buttons_pins[BUTTON_ID], 
-                                pull,
-                                event,
-                                DEBOUNCE_MS,
-                                button_pressed_cb);
-    if (res == GPIO_RES_OK)
+    res = Button_register_for_event(BUTTON_ID, BUTTON_PRESSED, button_pressed_cb);
+
+    if (res == BUTTON_RES_OK)
     {
-        LOG(LVL_INFO, "Oneshot request active on button %u", BUTTON_ID);
+        LOG(LVL_INFO, "Oneshot request active on button id %u", BUTTON_ID);
     }
     else
     {
@@ -160,13 +157,14 @@ static void App_posLib_event(POSLIB_FLAG_EVENT_info_t * msg)
 #ifdef MOTION_SUPPORTED
     update_motion(&settings.motion);
 #endif
- 
+
 #ifdef CONF_USE_PERSISTENT_MEMORY
     /** Writing to memory takes time, do it in own task - not in callback */
     App_Scheduler_addTask_execTime(App_persistent_data_write, APP_SCHEDULER_SCHEDULE_ASAP, 500);
 #endif
     }
 }
+
 
 /**
  * @brief   Cb Function for POSLIB_FLAG_EVENT_LED_ON event to set the led on
@@ -214,7 +212,7 @@ static poslib_ret_e App_start_positioning(void)
 
     /** Configuration set to library */
     res = PosLib_setConfig(&settings);
-    
+
     if (res != POS_RET_OK)
     {
         LOG(LVL_ERROR, "PosLib configuration fail. res: %d", res);
@@ -280,11 +278,6 @@ void App_init(const app_global_functions_t* functions)
     /** Initialization of shared libraries */
     enable_button();
 
-#ifdef CONF_USE_LED_NOTIFICATION
-    /** Initialization of hal led services */
-    Led_init();
-#endif
-
     /* Initialize motion sensor if enabled */
     #ifdef MOTION_SUPPORTED
     PosAppMotion_init();
@@ -300,4 +293,5 @@ void App_init(const app_global_functions_t* functions)
 
     //Start positioning
     App_start_positioning();
+
 }

@@ -107,8 +107,6 @@ void App_init(const app_global_functions_t * functions)
     LOG_INIT();
     LOG(LVL_INFO, "Starting");
 
-    Button_init();
-    Led_init();
     Local_provisioning_init(NULL, on_prov_proxy_enabled_cb);
 
     if (Local_provisioning_is_provisioned())

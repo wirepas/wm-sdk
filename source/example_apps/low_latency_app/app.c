@@ -6,7 +6,7 @@
 
 /*
  * @file    app.c
- * @brief   This file is an example application to demonstrate Low-Latency capabilities for a lighting usecase. 
+ * @brief   This file is an example application to demonstrate Low-Latency capabilities for a lighting usecase.
  *          (see README for additional information)
  */
 
@@ -30,7 +30,7 @@
 #include "debug_log.h"
 
 #define MAX_LED_PER_BOARD 4u
-#define SWITCH_ON_COMMAND_PATTERN 0b00000001 
+#define SWITCH_ON_COMMAND_PATTERN 0b00000001
 /** Endpoint used to communicate. */
 #define DATA_EP        (25u)
 
@@ -46,7 +46,7 @@
 
 
 /** Message ID. */
-typedef enum 
+typedef enum
 {
     /** Button pressed message, send to other nodes through active flooding. */
     MSG_ID_SWITCH_COMMAND  = 1,
@@ -99,7 +99,7 @@ typedef struct __attribute__((packed))
 } msg_t;
 
 
-/** 
+/**
  * @brief   LED state control function.
  * @param   led_id
  *          LED ID of led to change state.
@@ -118,7 +118,7 @@ static void set_led_state(uint8_t led_id, uint8_t led_state)
 }
 
 /** Send functions. */
-/** 
+/**
  * @brief Function sending a message to all nodes, with node to node method.
  * @param id : message Id, @ref message_id_e.
  * @param payload : pointer on the data to send.
@@ -133,8 +133,8 @@ static app_lib_data_send_res_e send_node_to_node_msg(message_id_e message_id, ui
     msg.id = (uint8_t)message_id;
 
     /* Fill the message. */
-    memcpy(&msg.payload.switch_status, 
-        (payload_switch_command_t *)payload, 
+    memcpy(&msg.payload.switch_status,
+        (payload_switch_command_t *)payload,
         sizeof(payload_switch_command_t));
     msg_byte_size += sizeof(payload_switch_command_t);
 
@@ -146,7 +146,6 @@ static app_lib_data_send_res_e send_node_to_node_msg(message_id_e message_id, ui
     data_to_send.src_endpoint = DATA_EP;
     data_to_send.dest_endpoint = DATA_EP;
     data_to_send.qos = APP_LIB_DATA_QOS_HIGH;
-    data_to_send.delay = 0;
     data_to_send.flags = APP_LIB_DATA_SEND_FLAG_NONE;
     data_to_send.tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 
@@ -210,16 +209,16 @@ static app_lib_data_receive_res_e data_received_cb(
                 payload_switch_command_t *payload = & msg->payload.switch_status;
                 LOG (LVL_INFO, "Switch command received : button_id = %d, action = %d", payload->button_id, payload->action);
                 /* Check the action type. */
-                if (payload->action == 1) /* Button pressed. */ 
+                if (payload->action == 1) /* Button pressed. */
                 {
-                   set_led_for_button(payload->button_id, payload->action); 
+                   set_led_for_button(payload->button_id, payload->action);
                 }
                 else if (payload->action == 0)
                 {
                     /* Button released, no action yet. */
                 }
             }
-            else 
+            else
             {
                 LOG(LVL_INFO, "Message received doesn't match the size of the expected message.");
             }
@@ -257,7 +256,7 @@ static app_lib_data_receive_res_e data_received_cb(
             {
                LOG(LVL_INFO,
                     "Set new Mcast address : 0x%x",
-                    msg->payload.set_multicast_address.multicast_address); 
+                    msg->payload.set_multicast_address.multicast_address);
                 m_mcast_address=msg->payload.set_multicast_address.multicast_address;
                 app_persistent_res_e res = App_Persistent_write((uint8_t *) &m_mcast_address, sizeof(m_mcast_address));
                 if (res != APP_PERSISTENT_RES_OK)
@@ -307,9 +306,9 @@ static uint32_t task_send_button_pressed_msg(void)
     static uint32_t counter_value = 0;
     payload.counter = counter_value;
     uint8_t led_id = 1;
-    
+
     /* Construct switch command. */
-    payload.button_id = m_button_pressed_id; 
+    payload.button_id = m_button_pressed_id;
     payload.action = 1; /* Always do something when a button is pressed */
     /* Send message. */
     app_lib_data_send_res_e res = send_node_to_node_msg(MSG_ID_SWITCH_COMMAND, (uint8_t *)&payload);
@@ -404,11 +403,6 @@ void App_init(const app_global_functions_t * functions)
         LOG(LVL_ERROR, "Persistent area is not initialized as it should (no area defined?)\n");
     }
 
-    /* Set up LED. */
-    Led_init();
-
-    /* Set up buttons. */
-    Button_init();
     num_buttons = Button_get_number();
 
     for (uint8_t button_id = 0; button_id < num_buttons; button_id++)

@@ -292,7 +292,7 @@ static void enable_proxy(void)
     // add filter for proxy asynchronously in case we are not started yet
     // In fact if a sink, adding filter may trigger immediately cb and enabling
     // joining beacon will work only after stack is really started (app_init has returned)
-    App_Scheduler_addTask_execTime(add_filter_for_proxy, APP_SCHEDULER_SCHEDULE_ASAP, 50);
+    App_Scheduler_addTask_execTime(add_filter_for_proxy, APP_SCHEDULER_SCHEDULE_ASAP, 60);
 }
 
 /**

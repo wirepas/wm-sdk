@@ -92,7 +92,7 @@ static callback_state_t m_legacy_appcfg = {.reg = false, .id = SHARED_INVALID_ID
 
 
 /** Buffer for appconfig */
-static uint8_t m_appcfg[APP_LIB_DATA_MAX_APP_CONFIG_NUM_BYTES]; 
+static uint8_t m_appcfg[APP_LIB_DATA_MAX_APP_CONFIG_NUM_BYTES];
 static uint8_t m_appcfg_len = 0;
 
 /** Control state variables */
@@ -102,7 +102,7 @@ static bool m_poslib_init = false;
 static control_state_t m_ctrl;
 
 /** Events private data */
-//ToDo: generalize event private data later 
+//ToDo: generalize event private data later
 static bool m_data_sent_success = false;
 static poslib_internal_event_type_e m_timeout_event_type = POSLIB_CTRL_EVENT_NONE;
 
@@ -139,7 +139,7 @@ static void on_offline_cb(uint32_t delay_s)
  */
 static void on_online_cb(uint32_t delay_from_deadline_s)
 {
-    LOG(LVL_DEBUG, "Online"); 
+    LOG(LVL_DEBUG, "Online");
     PosLibEvent_add(POSLIB_CTRL_EVENT_ONLINE);
 }
 
@@ -190,7 +190,7 @@ static void process_led_status(poslib_aux_settings_t * aux)
 }
 
 static void process_appcfg()
-{ 
+{
     poslib_settings_t settings = m_pos_settings;
     poslib_aux_settings_t aux = m_aux_settings;
 
@@ -226,7 +226,7 @@ static void appconfig_cb(uint16_t types, uint8_t length, uint8_t * bytes)
     {
         memcpy(&m_appcfg[0], bytes, length);
         m_appcfg_len = length;
-        PosLibEvent_add(POSLIB_CTRL_EVENT_APPCFG); 
+        PosLibEvent_add(POSLIB_CTRL_EVENT_APPCFG);
     }
     else
     {
@@ -239,8 +239,8 @@ static void appconfig_legacy_cb(uint16_t types, uint8_t length, uint8_t * bytes)
     if (types == SHARED_APP_CONFIG_INCOMPATIBLE_FILTER)
     {
         /*Legacy AppCfg is not supported. We just need to inform that app cfg was received*/
-        m_appcfg_len = 0;   
-        PosLibEvent_add(POSLIB_CTRL_EVENT_APPCFG); 
+        m_appcfg_len = 0;
+        PosLibEvent_add(POSLIB_CTRL_EVENT_APPCFG);
     }
     else
     {
@@ -363,16 +363,16 @@ static poslib_ret_e check_params(poslib_settings_t * settings)
         return POS_RET_INVALID_PARAM;
     }
 
-    if (settings->update_period_dynamic_s > POSLIB_MAX_MEAS_RATE_S || 
-        (settings->update_period_dynamic_s < POSLIB_MIN_MEAS_RATE_S && 
+    if (settings->update_period_dynamic_s > POSLIB_MAX_MEAS_RATE_S ||
+        (settings->update_period_dynamic_s < POSLIB_MIN_MEAS_RATE_S &&
          settings->update_period_dynamic_s != 0))
     {
         LOG(LVL_ERROR, "Outside range dynamic period: %d", settings->update_period_static_s);
         return POS_RET_INVALID_PARAM;
     }
 
-    if (settings->update_period_offline_s > POSLIB_MAX_MEAS_RATE_S || 
-        (settings->update_period_offline_s < POSLIB_MIN_MEAS_RATE_S && 
+    if (settings->update_period_offline_s > POSLIB_MAX_MEAS_RATE_S ||
+        (settings->update_period_offline_s < POSLIB_MIN_MEAS_RATE_S &&
          settings->update_period_offline_s != 0))
     {
         LOG(LVL_ERROR, "Outside range offline period: %d", settings->update_period_static_s);
@@ -409,7 +409,7 @@ static poslib_ret_e check_role(poslib_settings_t * settings)
             if (!valid)
             {
                 LOG(LVL_ERROR, "Anchor mode: %u but role: %u", poslib_mode, role);
-                return POS_RET_INVALID_PARAM; 
+                return POS_RET_INVALID_PARAM;
             }
             break;
         }
@@ -467,7 +467,7 @@ static poslib_ret_e check_ble_params(poslib_settings_t * settings)
     {
         if (settings->ble.eddystone.tx_interval_ms >
             APP_LIB_BEACON_TX_MAX_INTERVAL ||
-            settings->ble.eddystone.tx_interval_ms < 
+            settings->ble.eddystone.tx_interval_ms <
             APP_LIB_BEACON_TX_MIN_INTERVAL ||
             settings->ble.eddystone.channels >
                 APP_LIB_BEACON_TX_CHANNELS_ALL)
@@ -479,9 +479,9 @@ static poslib_ret_e check_ble_params(poslib_settings_t * settings)
 
     if (ble_type == POSLIB_IBEACON || ble_type == POSLIB_BEACON_ALL)
     {
-        if (settings-> ble.ibeacon.tx_interval_ms > 
+        if (settings-> ble.ibeacon.tx_interval_ms >
             APP_LIB_BEACON_TX_MAX_INTERVAL ||
-            settings-> ble.ibeacon.tx_interval_ms < 
+            settings-> ble.ibeacon.tx_interval_ms <
             APP_LIB_BEACON_TX_MIN_INTERVAL ||
             settings->ble.ibeacon.channels >
                 APP_LIB_BEACON_TX_CHANNELS_ALL)
@@ -533,11 +533,11 @@ static bool shared_offline_register()
 
     if (!m_shared_offline.reg)
     {
-        
+
         uint8_t id; //FixME: all Shared libraries should use uint8_t, remove when change made
         res = Shared_Offline_register(&id, m_shared_offline_cbs);
         m_shared_offline.id = id;
-        
+
         if (res == SHARED_OFFLINE_RES_OK)
         {
             m_shared_offline.reg = true;
@@ -573,7 +573,7 @@ static bool shared_offline_unregister()
         }
         else
         {
-            LOG(LVL_ERROR, "Cannot unregister shared offline "); //FixMe: 
+            LOG(LVL_ERROR, "Cannot unregister shared offline "); //FixMe:
         }
     }
 
@@ -591,7 +591,7 @@ static app_lib_state_route_state_e get_route_state(void)
 #endif
 
 static void control_init(void)
-{    
+{
     if (!m_poslib_init)
     {
         //m_ctrl init
@@ -615,13 +615,13 @@ poslib_ret_e PosLibCtrl_setConfig(poslib_settings_t * settings)
         return ret;
     }
 
-    if (!m_poslib_configured || 
+    if (!m_poslib_configured ||
         memcmp(&m_pos_settings , settings, sizeof(m_pos_settings)) != 0)
     {
         memcpy(&m_pos_settings , settings, sizeof(m_pos_settings));
         config_change = true;
     }
-   
+
     m_poslib_configured = true;
 
     /* If started notify configuration change */
@@ -664,7 +664,7 @@ poslib_ret_e PosLibCtrl_startPeriodic(void)
     m_ctrl.state = POSLIB_STATE_IDLE;
     m_poslib_started = true;
     App_Scheduler_addTask_execTime(delayed_start, 5000, 500);  //FixME: this is needed to prevent a race condition in NRLS
-    
+
     PosLibBle_start(&m_pos_settings.ble);
 
     if (m_pos_settings.node_mode == POSLIB_MODE_AUTOSCAN_ANCHOR ||
@@ -685,10 +685,10 @@ poslib_ret_e PosLibCtrl_startOneshot(void)
     {
         LOG(LVL_ERROR, "Start oneshot requested but PosLib not configured");
         return POS_RET_NOT_CONFIGURED;
-    }    
+    }
 
     control_init();
-    
+
     if (!register_callbacks())
     {
         LOG(LVL_ERROR, "Cannot register all required callbacks");
@@ -732,13 +732,13 @@ poslib_ret_e PosLibCtrl_motion(poslib_motion_mode_e mode)
     {
         return POS_RET_MOTION_NOT_ENABLED;
     }
-    
+
     if(m_motion_mode != mode)
     {
         m_motion_mode = mode;
         PosLibEvent_add(POSLIB_CTRL_EVENT_MOTION);
     }
-    
+
     return POS_RET_OK;
 }
 
@@ -781,13 +781,13 @@ poslib_measurements_e get_meas_type()
         }
         case POSLIB_MODE_AUTOSCAN_ANCHOR:
         case POSLIB_MODE_OPPORTUNISTIC_ANCHOR:
-        { 
+        {
             meas_type = DEFAULT_MEASUREMENT_TYPE_ANCHOR;
             break;
         }
         default:
         {
-            LOG(LVL_WARNING, "Node mode %u unknown. Default to tag meas. type", 
+            LOG(LVL_WARNING, "Node mode %u unknown. Default to tag meas. type",
                 m_pos_settings.node_mode);
             meas_type = DEFAULT_MEASUREMENT_TYPE_TAG;
             break;
@@ -804,7 +804,7 @@ static void get_node_info(poslib_meas_record_node_info_t * node_info)
     node_info->node_mode = m_pos_settings.node_mode;
     node_info->update_s = get_update_period();
 
-    features = POSLIB_NODE_INFO_FEATURES_VERSION & POSLIB_NODE_INFO_MASK_VERSION;  
+    features = POSLIB_NODE_INFO_FEATURES_VERSION & POSLIB_NODE_INFO_MASK_VERSION;
     if (m_pos_settings.motion.enabled)
     {
         features |= POSLIB_NODE_INFO_FLAG_MOTION_EN;
@@ -823,16 +823,16 @@ static void get_node_info(poslib_meas_record_node_info_t * node_info)
     }
     if(m_pos_settings.da.routing_enabled)
     {
-        features |= POSLIB_NODE_INFO_FLAG_MBCN_ON; 
+        features |= POSLIB_NODE_INFO_FLAG_MBCN_ON;
     }
 
     node_info->features = features;
 
-    LOG(LVL_DEBUG, "Node info feature: %x en: %u", node_info->features, m_pos_settings.motion.enabled); 
+    LOG(LVL_DEBUG, "Node info feature: %x en: %u", node_info->features, m_pos_settings.motion.enabled);
 }
 
 static uint8_t send_measurement_message()
-{   
+{
     #define MAX_PAYLOAD_LEN 102
     size_t available_buffers;
 
@@ -862,7 +862,7 @@ static uint8_t send_measurement_message()
     get_node_info(&node_info);
 
     if (PosLibMeas_getPayload(bytes, sizeof(bytes), m_ctrl.sequence,
-                                get_meas_type(), add_voltage, &node_info, 
+                                get_meas_type(), add_voltage, &node_info,
                                 &num_bytes, &num_meas))
     {
         /** add payload to be sent */
@@ -872,15 +872,14 @@ static uint8_t send_measurement_message()
         payload.src_endpoint = POS_SOURCE_ENDPOINT;;
         payload.dest_endpoint = POS_DESTINATION_ENDPOINT;
         payload.qos = APP_LIB_DATA_QOS_NORMAL;
-        payload.delay = 0;
         payload.flags = APP_LIB_DATA_SEND_FLAG_TRACK;
         payload.tracking_id = 0;
 
         lib_settings->getNodeRole(&role);
-        rc = (role == APP_LIB_SETTINGS_ROLE_ADVERTISER) ? 
+        rc = (role == APP_LIB_SETTINGS_ROLE_ADVERTISER) ?
                     PosLibDa_sendData(&payload, data_send_cb) :
                     Shared_Data_sendData(&payload, data_send_cb);
- 
+
         if (rc == APP_LIB_DATA_SEND_RES_SUCCESS)
         {
            m_ctrl.events.data_sent = true;
@@ -899,8 +898,8 @@ static uint8_t send_measurement_message()
 static uint32_t get_scan_duration()
 {
     uint32_t scan_duration_ms = 0;
-    
-    if (m_pos_settings.mbcn.enabled && 
+
+    if (m_pos_settings.mbcn.enabled &&
         m_pos_settings.mbcn.tx_interval_ms < 1000)
     {
         scan_duration_ms = m_pos_settings.mbcn.tx_interval_ms;
@@ -918,15 +917,15 @@ static uint32_t trigger_update_task()
     shared_offline_register(); //FixMe: handle registration
 
     //Stack offline - wakeup stack
-    if (Shared_Offline_get_status(&elapsed_s, &remaining_s) == 
+    if (Shared_Offline_get_status(&elapsed_s, &remaining_s) ==
         SHARED_OFFLINE_STATUS_OFFLINE)
     {
         res = Shared_Offline_enter_online_state(m_shared_offline.id);
         if ( res == SHARED_OFFLINE_RES_OK)
         {
             LOG(LVL_DEBUG, "Update triggered: stack wakeup");
-            return APP_SCHEDULER_SCHEDULE_ASAP; 
-        } 
+            return APP_SCHEDULER_SCHEDULE_ASAP;
+        }
         else if (res == SHARED_OFFLINE_RES_ALREADY_ONLINE)
         {
             LOG(LVL_WARNING, "Update triggered: stack is online");
@@ -969,7 +968,7 @@ static void set_timeout(poslib_internal_event_type_e type, uint32_t timeout_ms)
 
 static void clear_timeout(void)
 {
-    App_Scheduler_cancelTask(timeout_task); 
+    App_Scheduler_cancelTask(timeout_task);
 }
 
 static void stop_tasks(void)
@@ -989,7 +988,7 @@ static bool update_autoscan(uint32_t delta_s)
         LOG(LVL_ERROR, "Cannot add trigger_update task");
         return false;
     }
-    
+
     LOG(LVL_INFO, "Update scheduled in: %u sec", delta_s);
     return true;
 }
@@ -1011,15 +1010,15 @@ static bool update_nrls(uint32_t delta_s)
         LOG(LVL_ERROR, "Failed to enter offline. res: %u:", res);
         return false;
     }
-    
+
     LOG(LVL_INFO, "Enter offline for %u sec stack %u", delta_s, lib_state->getStackState());
     return true;
 }
 
 static uint32_t get_update_period()
 {
-    
-    if (m_ctrl.outside_wm && 
+
+    if (m_ctrl.outside_wm &&
         m_pos_settings.update_period_offline_s != 0)
     {
         return  m_pos_settings.update_period_offline_s;
@@ -1031,7 +1030,7 @@ static uint32_t get_update_period()
     {
         return m_pos_settings.update_period_dynamic_s;
     }
-    
+
     return m_pos_settings.update_period_static_s;
 }
 
@@ -1039,7 +1038,7 @@ static void schedule_next(bool update_now)
 {
     uint32_t now_s = lib_time->getTimestampS();
     uint32_t next_update_s = 0;
-    uint32_t delta_s = 0; 
+    uint32_t delta_s = 0;
     uint32_t update_period_s = get_update_period();
     bool scheduled = m_ctrl.scheduled;
 
@@ -1053,25 +1052,25 @@ static void schedule_next(bool update_now)
     /* Determine the next update time */
     if (update_now)  // schedule imediatelly
     {
-        next_update_s = now_s;   
+        next_update_s = now_s;
     }
-    else 
+    else
     {
         delta_s = (now_s - m_ctrl.last_update_s) % update_period_s;
         next_update_s = now_s + update_period_s - delta_s;
 
         /* Keep the previous update time if already scheduled and is earlier */
-        if (scheduled && (next_update_s > m_ctrl.next_update_s)) 
+        if (scheduled && (next_update_s > m_ctrl.next_update_s))
         {
             return;
         }
     }
 
-    delta_s = next_update_s - now_s; 
+    delta_s = next_update_s - now_s;
 
-    if (scheduled)  
+    if (scheduled)
     {
-        /* re-schedule if new update time; note that if in NRLS mode a 
+        /* re-schedule if new update time; note that if in NRLS mode a
         wakeup will be triggered */
         if (next_update_s != m_ctrl.next_update_s)
         {
@@ -1089,7 +1088,7 @@ static void schedule_next(bool update_now)
 
         memset(&m_ctrl.events, 0, sizeof(control_events_t));
         m_ctrl.next_update_s = next_update_s;
-        m_ctrl.events.is_static = (m_motion_mode == POSLIB_MOTION_STATIC) 
+        m_ctrl.events.is_static = (m_motion_mode == POSLIB_MOTION_STATIC)
                                     && m_pos_settings.motion.enabled;
 
         switch (m_ctrl.mode)
@@ -1109,7 +1108,7 @@ static void schedule_next(bool update_now)
                     m_ctrl.sequence, MS_TIME_FROM(m_ctrl.update_start_hp));
                 PosLibMeas_opportunisticScan(false);
                 update_autoscan(delta_s); //FixMe: handle return
-                break; 
+                break;
             }
 
             case POSLIB_MODE_OPPORTUNISTIC_ANCHOR:
@@ -1125,7 +1124,7 @@ static void schedule_next(bool update_now)
         }
     }
 
-    LOG(LVL_DEBUG,"<state> Schedule: last: %u next: %u now: %u delta: %u update: %u", 
+    LOG(LVL_DEBUG,"<state> Schedule: last: %u next: %u now: %u delta: %u update: %u",
             m_ctrl.last_update_s,
             m_ctrl.next_update_s,
             now_s,
@@ -1136,7 +1135,7 @@ static void schedule_next(bool update_now)
 static void handle_stopped_state(poslib_internal_event_t * event)
 {
     if (!m_poslib_started && m_poslib_configured && event->type == POSLIB_CTRL_EVENT_ONESHOT)
-    {        
+    {
         m_ctrl.events.oneshot = true;
         schedule_next(true);
     }
@@ -1149,14 +1148,14 @@ static void handle_idle_state(poslib_internal_event_t * event)
         case POSLIB_CTRL_EVENT_SCAN_STARTED:
         {
             LOG(LVL_DEBUG, "Update started - scan");
-            m_ctrl.update_start_hp = lib_time->getTimestampHp();  
+            m_ctrl.update_start_hp = lib_time->getTimestampHp();
             m_ctrl.state = POSLIB_STATE_UPDATE;
             m_ctrl.events.scan_start = true;
             set_timeout(POSLIB_CTRL_EVENT_SCAN_END, TIMEOUT_SCAN_MS);
             break;
         }
-        
-        case POSLIB_CTRL_EVENT_SCAN_END: 
+
+        case POSLIB_CTRL_EVENT_SCAN_END:
         {
             if (m_ctrl.scheduled) //for opportunistic scan
             {
@@ -1168,7 +1167,7 @@ static void handle_idle_state(poslib_internal_event_t * event)
             else
             {
                 LOG(LVL_ERROR, "Scan end received but no update scheduled");
-                //FixMe: handle error   
+                //FixMe: handle error
             }
             break;
         }
@@ -1176,7 +1175,7 @@ static void handle_idle_state(poslib_internal_event_t * event)
         case POSLIB_CTRL_EVENT_ONLINE:
         {
             LOG(LVL_DEBUG, "<state> Update started - online");
-            m_ctrl.update_start_hp = lib_time->getTimestampHp();  
+            m_ctrl.update_start_hp = lib_time->getTimestampHp();
             m_ctrl.state = POSLIB_STATE_UPDATE;
             m_ctrl.events.online = true;
             set_timeout(POSLIB_CTRL_EVENT_SCAN_END, TIMEOUT_SCAN_MS);
@@ -1191,7 +1190,7 @@ static void handle_idle_state(poslib_internal_event_t * event)
                 PosLibMeas_clearMeas();
             }
             LOG(LVL_DEBUG, "<state> Update ended - online. seq: %u, time: %u",
-                                m_ctrl.sequence, 
+                                m_ctrl.sequence,
                                 MS_TIME_FROM(m_ctrl.update_start_hp));
             break;
         }
@@ -1213,7 +1212,7 @@ static void handle_idle_state(poslib_internal_event_t * event)
         {
             LOG(LVL_ERROR, "Timeout occured in idle state: %u", lib_state->getStackState());
             //FixMe: add recovery
-            break;   
+            break;
         }
         case POSLIB_CTRL_EVENT_ONESHOT:
         {
@@ -1253,7 +1252,7 @@ static bool is_update_completed()
 {
     bool ret = m_ctrl.events.data_sent;
 
-    /* Complete if: scan failed | timeout occured */ 
+    /* Complete if: scan failed | timeout occured */
     if (m_ctrl.events.scan_fail || m_ctrl.events.timeout)
     {
         LOG(LVL_DEBUG, "<state> Update completed: scan fail: %u,timeout: %u",
@@ -1264,7 +1263,7 @@ static bool is_update_completed()
     if (m_ctrl.mode == POSLIB_MODE_NRLS_TAG)
     {
         /* In NRLS mode we wait for AppCfg and send complete */
-        ret =  ret && m_ctrl.events.app_cfg && m_ctrl.events.data_sent_complete; 
+        ret =  ret && m_ctrl.events.app_cfg && m_ctrl.events.data_sent_complete;
     }
     return ret;
 }
@@ -1281,7 +1280,7 @@ static void  update_outside_wm()
     }
     else if (bcn > 0 && m_ctrl.outside_wm)
     {
-        PosLibEvent_add(POSLIB_CTRL_EVENT_UNDER_WM); 
+        PosLibEvent_add(POSLIB_CTRL_EVENT_UNDER_WM);
         m_ctrl.outside_wm = false;
     }
 }
@@ -1295,12 +1294,12 @@ static void handle_update_state(poslib_internal_event_t * event)
 {
     switch (event->type)
     {
-        case POSLIB_CTRL_EVENT_SCAN_END: 
+        case POSLIB_CTRL_EVENT_SCAN_END:
         {
             m_ctrl.events.scan_end = true;
             clear_timeout();
             update_outside_wm();
-            LOG(LVL_INFO,"<state> Scan end. time: %u bcn: %u", 
+            LOG(LVL_INFO,"<state> Scan end. time: %u bcn: %u",
                     MS_TIME_FROM(m_ctrl.update_start_hp), PosLibMeas_getBeaconNum());
 
             if (is_scan_valid())
@@ -1329,8 +1328,8 @@ static void handle_update_state(poslib_internal_event_t * event)
         {
             m_ctrl.events.data_sent_complete = true;
             m_ctrl.events.sent_success = m_data_sent_success;
-            LOG(LVL_INFO,"<state> Measurement sent. success: %u time: %u ", 
-                        m_ctrl.events.sent_success, MS_TIME_FROM(m_ctrl.update_start_hp));  
+            LOG(LVL_INFO,"<state> Measurement sent. success: %u time: %u ",
+                        m_ctrl.events.sent_success, MS_TIME_FROM(m_ctrl.update_start_hp));
             break;
         }
 
@@ -1349,7 +1348,7 @@ static void handle_update_state(poslib_internal_event_t * event)
 
             app_lib_state_route_state_e route_state = get_route_state();
             (void)route_state;
-            LOG(LVL_INFO,"<state> Route change. state: %u time: %u", m_ctrl.events.sent_success, 
+            LOG(LVL_INFO,"<state> Route change. state: %u time: %u", m_ctrl.events.sent_success,
                                                     MS_TIME_FROM(m_ctrl.update_start_hp));
 
 
@@ -1365,10 +1364,10 @@ static void handle_update_state(poslib_internal_event_t * event)
 
         case POSLIB_CTRL_EVENT_TIMEOUT:
         {
-            LOG(LVL_ERROR, "<state> Timeout occured - event: %u state %u time_ %u", m_timeout_event_type, 
+            LOG(LVL_ERROR, "<state> Timeout occured - event: %u state %u time_ %u", m_timeout_event_type,
                             lib_state->getStackState(), MS_TIME_FROM(m_ctrl.update_start_hp));
             m_ctrl.events.timeout = true;
-            break;   
+            break;
         }
 
         default:
@@ -1380,7 +1379,7 @@ static void handle_update_state(poslib_internal_event_t * event)
 
     if (is_update_completed())
     {
-        m_ctrl.scheduled = false;   
+        m_ctrl.scheduled = false;
         m_ctrl.last_update_s = m_ctrl.next_update_s;
         PosLibEvent_add(POSLIB_CTRL_EVENT_UPDATE_END);
         schedule_next(false);
@@ -1389,7 +1388,7 @@ static void handle_update_state(poslib_internal_event_t * event)
 
  void PosLibCtrl_processEvent(poslib_internal_event_t * event)
  {
-    
+
     if (m_ctrl.state == POSLIB_STATE_STOPPED)
     {
         handle_stopped_state(event);
@@ -1400,7 +1399,7 @@ static void handle_update_state(poslib_internal_event_t * event)
     }
     else if (m_ctrl.state == POSLIB_STATE_UPDATE)
     {
-        handle_update_state(event);   
+        handle_update_state(event);
     }
     else
     {
@@ -1416,11 +1415,11 @@ static void handle_update_state(poslib_internal_event_t * event)
 
   void PosLibCtrl_setAppConfig(const uint8_t * cfg, uint8_t len)
  {
-    
+
     if (len <= sizeof(m_appcfg))
     {
         memcpy(&m_appcfg, cfg, len);
         m_appcfg_len = len;
     }
-    PosLibEvent_add(POSLIB_CTRL_EVENT_APPCFG); 
+    PosLibEvent_add(POSLIB_CTRL_EVENT_APPCFG);
  }

@@ -215,7 +215,6 @@ static uint32_t send_ack_packet(void)
         .bytes = (uint8_t *)&ack_data,
         .num_bytes = sizeof(pdu_prov_data_ack_t),
         .dest_address = get_dest_address(),
-        .delay = 0,
         .qos = APP_LIB_DATA_QOS_HIGH,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,
         .src_endpoint = PROV_UPLINK_EP,
@@ -499,7 +498,6 @@ static uint32_t state_start(void)
                      m_conf.uid_len +
                      AES_128_KEY_BLOCK_SIZE,
         .dest_address = get_dest_address(),
-        .delay = 0,
         .qos = APP_LIB_DATA_QOS_HIGH,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,
         .src_endpoint = PROV_UPLINK_EP,

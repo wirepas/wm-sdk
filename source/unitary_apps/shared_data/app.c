@@ -163,7 +163,6 @@ static app_lib_data_receive_res_e shared_data_cb(
     data_to_send.bytes = data->bytes;
     data_to_send.num_bytes = data->num_bytes;
     data_to_send.dest_address = data->src_address;
-    data_to_send.delay = 0;
     /* Add a callback to be notified when the packet is sent. */
     data_to_send.qos = APP_LIB_DATA_QOS_HIGH;
     data_to_send.flags = APP_LIB_DATA_SEND_FLAG_NONE;

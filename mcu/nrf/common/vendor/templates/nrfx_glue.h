@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 - 2021, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2023, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -221,6 +221,40 @@ extern "C" {
  */
 #define NRFX_ATOMIC_FETCH_SUB(p_data, value)
 
+/**
+ * @brief Macro for running compare and swap on an atomic object.
+ *
+ * Value is updated to the new value only if it previously equaled old value.
+ *
+ * @param[in,out] p_data    Atomic memory pointer.
+ * @param[in]     old_value Expected old value.
+ * @param[in]     new_value New value.
+ *
+ * @retval true  If value was updated.
+ * @retval false If value was not updated because location was not equal to @p old_value.
+ */
+#define NRFX_ATOMIC_CAS(p_data, old_value, new_value)
+
+/**
+ * @brief Macro for counting leading zeros.
+ *
+ * @param[in] value A word value.
+ *
+ * @return Number of leading 0-bits in @p value, starting at the most significant bit position.
+ *         If x is 0, the result is undefined.
+ */
+#define NRFX_CLZ(value)
+
+/**
+ * @brief Macro for counting trailing zeros.
+ *
+ * @param[in] value A word value.
+ *
+ * @return Number of trailing 0-bits in @p value, starting at the least significant bit position.
+ *         If x is 0, the result is undefined.
+ */
+#define NRFX_CTZ(value)
+
 //------------------------------------------------------------------------------
 
 /**
@@ -239,6 +273,33 @@ extern "C" {
  *        otherwise could defer the actual register modification.
  */
 #define NRFX_EVENT_READBACK_ENABLED 1
+
+//------------------------------------------------------------------------------
+
+/**
+ * @brief Macro for writing back cache lines associated with the specified buffer.
+ *
+ * @param[in] p_buffer Pointer to the buffer.
+ * @param[in] size     Size of the buffer.
+ */
+#define NRFY_CACHE_WB(p_buffer, size)
+
+/**
+ * @brief Macro for invalidating cache lines associated with the specified buffer.
+ *
+ * @param[in] p_buffer Pointer to the buffer.
+ * @param[in] size     Size of the buffer.
+ */
+#define NRFY_CACHE_INV(p_buffer, size)
+
+/**
+ * @brief Macro for writing back and invalidating cache lines associated with
+ *        the specified buffer.
+ *
+ * @param[in] p_buffer Pointer to the buffer.
+ * @param[in] size     Size of the buffer.
+ */
+#define NRFY_CACHE_WBINV(p_buffer, size)
 
 //------------------------------------------------------------------------------
 

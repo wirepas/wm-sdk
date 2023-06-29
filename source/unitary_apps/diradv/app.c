@@ -48,7 +48,6 @@ static app_lib_data_to_send_t m_tx_def_adv =
 {
  .bytes = &m_adv_tx_data[0],
  .num_bytes = sizeof(m_adv_tx_data),
- .delay = 0,
  .tracking_id = APP_LIB_DATA_NO_TRACKING_ID,
  .qos = APP_LIB_DATA_QOS_NORMAL,
  .flags = APP_LIB_DATA_SEND_FLAG_TRACK,
@@ -72,7 +71,6 @@ static app_lib_data_to_send_t m_tx_def_hn =
 {
  .bytes = (const uint8_t *) &m_adv_address,
  .num_bytes = sizeof(m_adv_address),
- .delay = 0,
  .tracking_id = APP_LIB_DATA_NO_TRACKING_ID,
  .qos = APP_LIB_DATA_QOS_NORMAL,
  .flags = APP_LIB_DATA_SEND_FLAG_NONE,
@@ -203,14 +201,9 @@ void App_init(const app_global_functions_t * functions)
         return;
     }
 
-    // Initialize buttons
-    Button_init();
     // Query value of button 1
     bool pressed = false;
     Button_getState(0, &pressed);
-
-    // Initialize leds
-    Led_init();
 
     // Override node role
     if (pressed)
@@ -244,4 +237,3 @@ void App_init(const app_global_functions_t * functions)
      */
     lib_state->startStack();
 }
-

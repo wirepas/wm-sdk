@@ -4,6 +4,7 @@ include makefile_common.mk
 
 
 stack_mode?=normal
+modemfw_name?=
 mac_profile?=ism_24_ghz
 
 $(STACK_HEX): FORCE
@@ -19,6 +20,7 @@ $(STACK_HEX): FORCE
 				--mac_profile=$(mac_profile)\
 				--mac_profileid=$(mac_profileid)\
 				--mode=$(stack_mode)\
+				--modem_fw=$(modemfw_name)\
 				--radio=$(radio)\
 				--radio_config=$(radio_config)\
 				--version=$(MIN_STACK_VERSION)

@@ -11,6 +11,7 @@
 #include "tlv.h"
 #include "app_scheduler.h"
 #include "board.h"
+#include "gpio.h"
 #include "spi.h"
 #include "power.h"
 
@@ -43,18 +44,17 @@ static bool ruuvi_spi_init(void)
 {
     spi_res_e res;
     spi_conf_t conf;
+    gpio_out_cfg_t gpio_conf = {
+        .out_mode_cfg = GPIO_OUT_MODE_PUSH_PULL,
+        .level_default = GPIO_LEVEL_HIGH
+    };
 
     /* Initialize LIS2DH12 Chip select pin. */
-    nrf_gpio_pin_dir_set(BOARD_SPI_LIS2DH12_CS_PIN, NRF_GPIO_PIN_DIR_OUTPUT);
-    nrf_gpio_cfg_output(BOARD_SPI_LIS2DH12_CS_PIN);
-    nrf_gpio_pin_set(BOARD_SPI_LIS2DH12_CS_PIN);
-
+    Gpio_outputSetCfg(BOARD_GPIO_ID_LIS2DX12_SPI_CS, &gpio_conf);
     /* Initialize BME280 Chip select pin. */
-    nrf_gpio_pin_dir_set(BOARD_SPI_BME280_CS_PIN, NRF_GPIO_PIN_DIR_OUTPUT);
-    nrf_gpio_cfg_output(BOARD_SPI_BME280_CS_PIN);
-    nrf_gpio_pin_set(BOARD_SPI_BME280_CS_PIN);
-
+    Gpio_outputSetCfg(BOARD_GPIO_ID_BME280_SPI_CS, &gpio_conf);
     /* Initialize SPI driver. */
+
     conf.bit_order = SPI_ORDER_MSB;
     conf.clock = 4000000;
     conf.mode = SPI_MODE_HIGH_FIRST;
@@ -93,7 +93,6 @@ static void send_data(sensor_data_t *data)
         data_to_send.src_endpoint = SENSOR_DATA_SRC_ENDPOINT;
         data_to_send.dest_endpoint = SENSOR_DATA_DST_ENDPOINT;
         data_to_send.qos = APP_LIB_DATA_QOS_HIGH;
-        data_to_send.delay = 0;
         data_to_send.flags = APP_LIB_DATA_SEND_FLAG_NONE;
         data_to_send.tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 

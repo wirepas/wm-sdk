@@ -90,14 +90,17 @@ def main():
                         help="Address of the storage area ([area:app_persistent]) "
                              "defined in mcu/<mcu>/ini_files/<mcu>_app.ini file\n"
                              "Default values per mcu are :\n"
-                             " - NRF52832         :  499712  (0x7A000)\n"
-                             " - NRF52833         :  499712  (0x7A000)\n"
-                             " - NRF52840         :  1024000 (0xFA000)\n"
-                             " - EFR32xg1x (512k) :  503808  (0x7B000)\n"
-                             " - EFR32xg1x (1024k):  1028096 (0xFB000)\n"
-                             " - EFR32xg22 (512k) :  491520  (0x78000)\n"
-                             " - EFR32xg21 (768k) :  753664  (0xB8000)\n"
-                             " - EFR32xg21 (1024k):  1015808 (0xF8000)")
+                             " - NRF52832         :  499712    (0x7A000)\n"
+                             " - NRF52833         :  499712    (0x7A000)\n"
+                             " - NRF52840         :  1024000   (0xFA000)\n"
+                             " - EFR32xg1x (512k) :  503808    (0x7B000)\n"
+                             " - EFR32xg1x (1024k):  1028096   (0xFB000)\n"
+                             " - EFR32xg22 (512k) :  491520    (0x78000)\n"
+                             " - EFR32xg21 (768k) :  753664    (0xB8000)\n"
+                             " - EFR32xg21 (1024k):  1015808   (0xF8000)\n"
+                             " - EFR32xg23 (512k) :  134709248 (0x8078000)\n"
+                             " - EFR32xg24 (1024k):  135233536 (0x080F8000)\n"
+                             " - EFR32xg24 (1536K):  135757824 (0x08178000)")
 
     try:
         args = parser.parse_args()

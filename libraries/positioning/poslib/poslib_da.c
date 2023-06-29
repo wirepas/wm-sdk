@@ -28,7 +28,7 @@ static shared_data_item_t m_router_pos_item;
 
 //received data filter used by tag to receive ACK data from router
 static shared_data_item_t m_tag_ack_item;
- 
+
 static uint16_t m_sequence = 0;  // the sequence of the rising packets
 
 #define IS_DA_ROUTER(x) (x == APP_LIB_STATE_DIRADV_SUPPORTED)
@@ -36,7 +36,7 @@ static uint16_t m_sequence = 0;  // the sequence of the rising packets
 #define IS_NOT_DA_ROUTER(x) (x == APP_LIB_STATE_DIRADV_NOT_SUPPORTED)
 #define ROUTER_COST_INVALID(x) (x == APP_LIB_STATE_INVALID_ROUTE_COST || x == APP_LIB_STATE_COST_UNKNOWN)
 
-#define MAX_NBORS 20 
+#define MAX_NBORS 20
 #define NBOR_LAST_SEEN_WINDOW 2
 #define NO_ROUTE_FOUND_ADDRESS 0
 
@@ -50,8 +50,8 @@ app_lib_state_nbor_list_t m_nbors_list =
 
 /**
  * @brief   Callback for router positioning data reception
- * @param[in]   item pointer to shared data filter \ref shared_data_item_t        
- * @param[in]   data pointer to received data \ref app_lib_data_received_t         
+ * @param[in]   item pointer to shared data filter \ref shared_data_item_t
+ * @param[in]   data pointer to received data \ref app_lib_data_received_t
  * @return  See \ref app_lib_data_receive_res_e
  */
 static app_lib_data_receive_res_e router_pos_data_cb(const shared_data_item_t * item,
@@ -66,19 +66,18 @@ static app_lib_data_receive_res_e router_pos_data_cb(const shared_data_item_t * 
         .src_endpoint = POS_SOURCE_ENDPOINT,
         .dest_endpoint = POS_DESTINATION_ENDPOINT,
         .qos = APP_LIB_DATA_QOS_NORMAL,
-        .delay = 0,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,
         .tracking_id = 0,
     };
     poslib_meas_message_header_t msg_header;
     poslib_meas_record_da_t da;
     app_lib_data_send_res_e res;
-    
+
     if (item->filter.src_endpoint != POSLIB_DA_SRC_EP &&
             item->filter.dest_endpoint != POSLIB_DA_DEST_EP)
     {
 
-        LOG(LVL_ERROR, "Incorect EP: %u/%u", 
+        LOG(LVL_ERROR, "Incorect EP: %u/%u",
             item->filter.src_endpoint, item->filter.dest_endpoint);
         return APP_LIB_DATA_RECEIVE_RES_HANDLED;
     }
@@ -117,7 +116,6 @@ static app_lib_data_receive_res_e router_pos_data_cb(const shared_data_item_t * 
     // send data
     payload.bytes = bytes;
     payload.num_bytes = len;
-    payload.delay = data->delay; // Inherits incoming packet delay
 
     res = Shared_Data_sendData(&payload, NULL);
     if (res == APP_LIB_DATA_SEND_RES_SUCCESS)
@@ -134,7 +132,7 @@ static app_lib_data_receive_res_e router_pos_data_cb(const shared_data_item_t * 
 
 static bool router_ack_cb(const ack_gen_input_t * in, ack_gen_output_t * out)
 {
-    
+
     if (in->src_endpoint == POS_SOURCE_ENDPOINT &&
         in->dest_endpoint == POS_DESTINATION_ENDPOINT)
     {
@@ -150,7 +148,7 @@ static bool router_ack_cb(const ack_gen_input_t * in, ack_gen_output_t * out)
     {
         out->data = NULL;
         out->length = 0;
-        LOG(LVL_DEBUG, "DA ACK void addr: %u, src_ep: %u, dest_ep: %u app cfg: %u", 
+        LOG(LVL_DEBUG, "DA ACK void addr: %u, src_ep: %u, dest_ep: %u app cfg: %u",
         in->sender, in->src_endpoint, in->dest_endpoint);
     }
     return true;
@@ -172,14 +170,14 @@ bool start_router()
     app_res_e res;
 
     lib_settings->getNodeRole(&role);
-    
+
     // Activation posible only for LL headnode
     if ( role != APP_LIB_SETTINGS_ROLE_HEADNODE_LL)
     {
         LOG(LVL_INFO, "Only LL router supported. Role: %u", role);
         return false;
     }
-    
+
     // FixME: replace with shared DA library when available
     lib_advertiser->setRouterAckGenCb(router_ack_cb);
 
@@ -191,7 +189,7 @@ bool start_router()
         LOG(LVL_ERROR, "Cannot register DA data reception");
         return false;
     }
-    
+
     LOG(LVL_INFO, "DA router started!");
     return true;
 }
@@ -227,15 +225,15 @@ static int compare_neighbours(const void * pa, const void *pb)
     if ((IS_DA_ROUTER(a->diradv_support) && IS_DA_ROUTER(b->diradv_support)) ||
         (IS_UNKNOWN_DA_ROUTER(a->diradv_support) && IS_UNKNOWN_DA_ROUTER(b->diradv_support)))
     {
-        dt = a->last_update - b->last_update; 
+        dt = a->last_update - b->last_update;
         if (abs(dt) > NBOR_LAST_SEEN_WINDOW)
         {
             // select latest updated
             return dt;
         }
         // Select strongest RSSI
-        return (b->norm_rssi - a->norm_rssi); 
-    } 
+        return (b->norm_rssi - a->norm_rssi);
+    }
     else if (IS_DA_ROUTER(a->diradv_support) ||
             (IS_UNKNOWN_DA_ROUTER(a->diradv_support) && IS_NOT_DA_ROUTER(b->diradv_support)))
     {
@@ -249,12 +247,12 @@ static int compare_neighbours(const void * pa, const void *pb)
         return 1;
     }
     // A & B invalid -> equal
-    return 0;    
+    return 0;
 }
 
 /**
  * \brief  Updates neiggbours list stored in m_nbors_list
- *         sorted based on criteria implemented in 
+ *         sorted based on criteria implemented in
  * \return  number of neigbours valid for DA communication
  */
 static void update_neigbours()
@@ -262,13 +260,13 @@ static void update_neigbours()
     m_nbors_list.number_nbors = MAX_NBORS;
     lib_state->getNbors(&m_nbors_list);
 
-    qsort(m_nbors_list.nbors, m_nbors_list.number_nbors, 
+    qsort(m_nbors_list.nbors, m_nbors_list.number_nbors,
             sizeof(m_nbors_list.nbors[0]), compare_neighbours);
 
     for (uint8_t i = 0; i < m_nbors_list.number_nbors; i++)
     {
-        LOG(LVL_DEBUG,"neigh address: %u da: %u type: %u rssi: %i cost: %u last: %u", m_nbors[i].address, 
-                m_nbors[i].diradv_support, m_nbors[i].type, m_nbors[i].norm_rssi,  m_nbors[i].cost,  m_nbors[i].last_update); 
+        LOG(LVL_DEBUG,"neigh address: %u da: %u type: %u rssi: %i cost: %u last: %u", m_nbors[i].address,
+                m_nbors[i].diradv_support, m_nbors[i].type, m_nbors[i].norm_rssi,  m_nbors[i].cost,  m_nbors[i].last_update);
     }
 }
 
@@ -286,7 +284,7 @@ static app_lib_data_receive_res_e tag_ack_cb(const shared_data_item_t * item,
     }
     else
     {
-        LOG(LVL_ERROR, "Incorect EP: %u/%u", 
+        LOG(LVL_ERROR, "Incorect EP: %u/%u",
             item->filter.src_endpoint, item->filter.dest_endpoint);
     }
     return APP_LIB_DATA_RECEIVE_RES_HANDLED;
@@ -306,7 +304,7 @@ static bool start_tag(poslib_da_settings_t * da_settings)
 {
     app_res_e res;
     adv_option_t option;
-    bool ret; 
+    bool ret;
 
     option.follow_network = da_settings->follow_network;
     lib_advertiser->setOptions(&option);
@@ -317,7 +315,7 @@ static bool start_tag(poslib_da_settings_t * da_settings)
 
     if (res == APP_RES_OK)
     {
-        LOG(LVL_DEBUG, "Registered tag DA ACK data EP: %u/%u", 
+        LOG(LVL_DEBUG, "Registered tag DA ACK data EP: %u/%u",
             m_tag_ack_item.filter.src_endpoint,  m_tag_ack_item.filter.dest_endpoint);
     }
     else
@@ -333,7 +331,7 @@ static void stop_tag()
 {
     if (m_tag_ack_item.cb != NULL)
     {
-       Shared_Data_removeDataReceivedCb(&m_tag_ack_item); 
+       Shared_Data_removeDataReceivedCb(&m_tag_ack_item);
     }
 }
 
@@ -346,7 +344,7 @@ void PosLibDa_stop()
 bool PosLibDa_start(poslib_settings_t * settings)
 {
     bool ret = true;
- 
+
     switch(settings->node_mode)
     {
         case POSLIB_MODE_DA_TAG:
@@ -357,7 +355,7 @@ bool PosLibDa_start(poslib_settings_t * settings)
         }
         case POSLIB_MODE_AUTOSCAN_ANCHOR:
         case POSLIB_MODE_OPPORTUNISTIC_ANCHOR:
-        { 
+        {
             if (settings->da.routing_enabled)
             {
                 stop_tag();
@@ -378,7 +376,7 @@ app_lib_data_send_res_e PosLibDa_sendData(app_lib_data_to_send_t * data,
                                             app_lib_data_data_sent_cb_f sent_cb)
 {
     app_lib_settings_role_t role;
-    app_lib_data_send_res_e res = APP_LIB_DATA_SEND_RES_INVALID_DEST_ADDRESS; 
+    app_lib_data_send_res_e res = APP_LIB_DATA_SEND_RES_INVALID_DEST_ADDRESS;
     lib_settings->getNodeRole(&role);
 
     /** If: role is not DA or destination_address is a unicast send directly */
@@ -393,7 +391,7 @@ app_lib_data_send_res_e PosLibDa_sendData(app_lib_data_to_send_t * data,
 
     for (uint8_t i = 0; i < m_nbors_list.number_nbors; i++)
     {
-       
+
        if (ROUTER_COST_INVALID(m_nbors[i].cost))
        {
            continue;

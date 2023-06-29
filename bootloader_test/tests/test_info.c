@@ -18,8 +18,8 @@ static const char * type_lut[] = {"BOOTLOADER ",
 bool info_areas(const memory_area_services_t * mem_area_services)
 {
     bl_interface_res_e bl_res;
-    bl_memory_area_id_t areas[BL_MEMORY_AREA_MAX_AREAS];
-    uint8_t num_areas = BL_MEMORY_AREA_MAX_AREAS;
+    bl_memory_area_id_t areas[MAX_TESTED_MEMORY_AREAS];
+    uint8_t num_areas = MAX_TESTED_MEMORY_AREAS;
     bool res = true;
 
     START_TEST(INFO, List all areas);
@@ -125,8 +125,8 @@ bool info_flash(const memory_area_services_t * mem_area_services)
     bool res = true;
     bl_interface_res_e bl_res;
     bl_memory_area_info_t info;
-    bl_memory_area_id_t areas[BL_MEMORY_AREA_MAX_AREAS];
-    uint8_t num_areas = BL_MEMORY_AREA_MAX_AREAS;
+    bl_memory_area_id_t areas[MAX_TESTED_MEMORY_AREAS];
+    uint8_t num_areas = MAX_TESTED_MEMORY_AREAS;
     bl_memory_area_id_t id;
 
     //Internal flash info
