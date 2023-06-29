@@ -12,7 +12,7 @@ target_board=
 sdk_major=1
 sdk_minor=5
 sdk_maintenance=0
-sdk_development=0
+sdk_development=3
 
 
 # Specify the arm toolchain to use (leave it blank if already set in your PATH)
