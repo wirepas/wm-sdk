@@ -6,11 +6,14 @@
 #ifndef EXTERNAL_FLASH_GD25LB256E_H_
 #define EXTERNAL_FLASH_GD25LB256E_H_
 
-// GD25LB256E chip identification.
-#define GD25LB256E_ID_1 0xC2
-#define GD25LB256E_ID_2 0x28
-#define GD25LB256E_ID_3 0x17
+//GD25LB256E rev 1.9
 
+
+// GD25LB256E chip identificatio (page 19)
+#define GD25LB256E_ID_1 0xC8 //M7-M0
+#define GD25LB256E_ID_2 0x67 //ID23-ID16
+#define GD25LB256E_ID_3 0x19 //ID15-ID8
+#define GD25LB256E_ID_4 0xff //ID7-ID0
 // GD25LB256E Status register.
 typedef enum
 {

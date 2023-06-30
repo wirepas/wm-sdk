@@ -15,18 +15,19 @@
 #define MIN(x,y)    (x < y? x : y)
 
 // http://www.elm-tech.com/en/products/spi-flash-memory/gd25lb256e/gd25lb256e.pdf
+// page 68
 static const flash_info_t m_flash_info = {
-    .flash_size = 8UL * 1024UL * 1024UL,  // 64-mbit flash
+    .flash_size = 32UL * 1024UL * 1024UL,  // 256-mbit flash
     .write_page_size = 256,
     .erase_sector_size = 32UL * 1024UL,   // 32kB
     .write_alignment = 1,
-    .byte_write_time = 100,               // Typical 32, Max 100.
-    .page_write_time = 4000,              // Typical 850, Max 4000.
-    .sector_erase_time = 240000,          // Typical 40000, Max 240000.
-    .byte_write_call_time = 94,           // isBusy time + 4+1 bytes transfered on SPI bus + 20uS code exec time.
-    .page_write_call_time = 2134,         // isBusy time + 4+256 bytes transfered on SPI bus + 20uS code exec time.
-    .sector_erase_call_time = 78,         // isBusy time + 3 bytes transfered on SPI bus + 20uS code exec time.
-    .is_busy_call_time = 44               // 3 bytes transfered on SPI bus + 20uS code exec time.
+    .byte_write_time = 70,               // Typical 30 us, Max 70 us. (first byte)
+    .page_write_time = 1200,              // Typical 300 us, Max 1200 us.
+    .sector_erase_time = 300000,          // Typical 30 ms, Max 300 ms.
+    .byte_write_call_time = 94,           // TODO: isBusy time + 4+1 bytes transfered on SPI bus + 20uS code exec time.
+    .page_write_call_time = 2134,         // TODO: isBusy time + 4+256 bytes transfered on SPI bus + 20uS code exec time.
+    .sector_erase_call_time = 78,         // TODO: isBusy time + 3 bytes transfered on SPI bus + 20uS code exec time.
+    .is_busy_call_time = 44               // TODO: 3 bytes transfered on SPI bus + 20uS code exec time.
 };
 
 //-----------------------------------------------------------------------------
