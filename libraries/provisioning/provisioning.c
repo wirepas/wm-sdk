@@ -415,7 +415,7 @@ static uint32_t state_idle(void)
             /* Generate IV for Secured method. The same IV will be used even
              * for retries.
              */
-            if (m_conf.method == PROV_METHOD_SECURED)
+            if (m_conf.method == PROV_METHOD_SECURED || m_conf.method == PROV_METHOD_EXTENDED_UID)
             {
                 for(int i=0; i < AES_128_KEY_BLOCK_SIZE; i++)
                 {
