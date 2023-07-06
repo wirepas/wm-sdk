@@ -1,0 +1,14 @@
+# This is an example file to customize a node running the provisioning joining node appliation
+# using the insecure method.
+
+# Hex array must start with 0x otherwise it is treated as a string.
+
+# Format is:
+#
+# provisioning :
+#    uid: (bytes string, less than 79 bytes long)
+#    method : (Unsecured:0, Secured:1, Extended:3) Ex: 0
+
+provisioning:
+    uid: 0x41 0xb1 0x85 0x7a 0x0f 0xb6 0xb1 0x48 0xa5 0xe4 0xb9 0xb6 0x03 0x53 0x1b 0x3b
+    method: 0x00

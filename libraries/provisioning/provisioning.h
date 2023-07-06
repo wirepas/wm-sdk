@@ -44,6 +44,7 @@ typedef enum
 {
     PROV_METHOD_UNSECURED = 0, /**< Unsecured provisioning method. */
     PROV_METHOD_SECURED = 1, /**< Secured provisioning method. */
+    PROV_METHOD_EXTENDED_UID = 3 /**< Extended UID provisioning method. */
 } provisioning_method_e;
 
 /**
