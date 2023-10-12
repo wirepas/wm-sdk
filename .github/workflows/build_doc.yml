@@ -24,7 +24,7 @@ jobs:
       with:
         submodules: true
     - name: Generate doc
-      run: make doxygen target_board=pca10040
+      run: make doxygen target_board=silabs_brd2601b
     - name: Set folder for master
       if: ${{ github.event_name == 'push' }}
       run: echo "FOLDER=master" >> $GITHUB_ENV
