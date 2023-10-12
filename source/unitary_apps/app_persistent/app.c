@@ -20,9 +20,7 @@
 #include "api.h"
 #include "node_configuration.h"
 #include "led.h"
-#include "button.h"
 #include "app_persistent.h"
-
 
 #define DEBUG_LOG_MODULE_NAME "APP_PERS"
 #define DEBUG_LOG_MAX_LEVEL LVL_INFO
@@ -45,9 +43,6 @@ void App_init(const app_global_functions_t * functions)
     }
 
     LOG_INIT();
-
-    // Initialize peripherals
-    Led_init();
 
     Led_set(0, true);
 

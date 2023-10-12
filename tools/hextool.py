@@ -790,8 +790,8 @@ def load_intel_hex(memory, fileobj = None, filename = None,
     '''Load contents of an Intel MCS-86 Object ("Intel HEX") format file
     to a Memory object
 
-    Either an open file object (opened for reading in text mode
-    or universal newlines mode) or a filename can be given.
+    Either an open file object (opened for reading in text mode)
+    or a filename can be given.
 
     This function modifies the cursor position and overlap_ok
     attributes of the Memory object.
@@ -802,7 +802,7 @@ def load_intel_hex(memory, fileobj = None, filename = None,
     offset      Offset to add to all addresses in file
     overlap_ok  Allow or disallow overwriting existing data'''
 
-    fileobj, close = _open_file(fileobj, filename, "rU")  # Universal newlines
+    fileobj, close = _open_file(fileobj, filename, "r")
 
     memory.overlap_ok = overlap_ok
 

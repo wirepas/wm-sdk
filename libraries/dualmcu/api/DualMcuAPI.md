@@ -348,10 +348,6 @@ the services. Table 3 list all the primitives and their primitive IDs.
 |         | MSAP-SCRATCHPAD_TARGET_READ.confirm| 0xA7             |
 |         | MSAP-SCRATCHPAD_BLOCK_READ.request | 0x28             |
 |         | MSAP-SCRATCHPAD_BLOCK_READ.confirm | 0xA8             |
-|         | MSAP-MAX_QUEUE_TIME_WRITE.request  | 0x4F             |
-|         | MSAP-MAX_QUEUE_TIME_WRITE.confirm  | 0xCF             |
-|         | MSAP-MAX_QUEUE_TIME_READ.request   | 0x50             |
-|         | MSAP-MAX_QUEUE_TIME_READ.confirm   | 0xD0             |
 | CSAP    | CSAP-ATTRIBUTE_WRITE.request       | 0x0D             |
 |         | CSAP-ATTRIBUTE_WRITE.confirm       | 0x8D             |
 |         | CSAP-ATTRIBUTE_READ.request        | 0x0E             |
@@ -503,7 +499,7 @@ value. Frame fields are described in the table below.
 | *DestinationEndpoint* | 1        | 0 – 239                                      | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
 | *QoS*                 | 1        | 0 or 1                                       | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
 | *TXOptions*           | 1        | 00xx xxxx  (bitfield, where x can be 0 or 1) | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
-| *BufferingDelay*      | 4        | 0 – 4 294 967 295                            | The time the PDU has been in the application buffers before it was transmitted over API.  Expressed in units of 1/128th of a second.
+| *Reserved*      | 4        | 0  | This value is reserved |
 | *APDULength*          | 1        | 1 – 102                                      | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
 | *APDU*                | 1 – 102  | \-                                           | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
 | *CRC*                 | 2        | \-                                           | See section [General Frame Format](#General-Frame-Format)
@@ -530,7 +526,7 @@ Frame fields are described in the table below.
 | *DestinationEndpoint* | 1        | 0 – 239                                      | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
 | *QoS*                 | 1        | 0 or 1                                       | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
 | *TXOptions*           | 1        | 00xx xxxx  (bitfield, where x can be 0 or 1) | See description in chapter [DSAP-DATA_TX.request](#DSAP-DATA_TX.request)
-| *BufferingDelay*      | 4        | 0 – 4 294 967 295                            | See description in chapter [DSAP-DATA_TX_TT.request](#DSAP-DATA_TX_TT.request)
+| *Reserved*      | 4        | 0  | See description in chapter [DSAP-DATA_TX_TT.request](#DSAP-DATA_TX_TT.request)
 | *FullPacketId*        | 2        | 0 – 4095                                     | Id of the full message this fragment belongs. Only lowest twelve bits are meaningful.
 | *FragmentOffset and flags*      | 2        |  see Description                    | - Bits 0..11:<p> Offset of this fragment inside the full packet (between 0 and 1499) <p> - Bits 12..14:<p> Reserved <p>- Bit 15:<p> Set if fragment is last one of full message
 | *APDULength*          | 1        | 1 – 102                                      | Size of this current fragment.
@@ -1365,8 +1361,8 @@ set the OTAP scratchpad target. It can only be set from a sink node.
 | *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
 | *Target sequence* | 1     | 1 – 254          | Target sequence for the scratchpad to handle (needed if action is 1, 2 or 3)
 | *Target CRC*   | 2        | 0 – 65535        | Target CRC for the scratchpad to handle (needed if action is 1, 2 or 3)
-| *Action*       | 1        | 0 - 4            | Which action to apply to the target scratchpad. Actions are: <p> - 0 = No otap. There is no otap in the network (Target sequence and crc are not used in that case) <p> - 1 = Propagate only : target scratchpad is exchanged in network but not processed <p> - 2 = Propagate and process : target scratchpad is exchanged in network and processed by node immediatly upon reception <p> - 3 = Propagate and process with delay : target scratchpad is exchanged in network and processed by node after a given delay specified with param field. Delay starts when this info is received by nodes and when they receive the scratchpad too <p> - 4 = Legacy : Exchange and processing of scratchpad is managed the old way (sequence comparison for exchange and remote api command for processing)
-| *Param*        | 1        | Depends on action| Only interpreted for action 3 to specify a delay. Delay is specified as followed: <p> - bits 7-6 are delay unit: 01 for minutes, 10 for hours and 11 for days (00 is invalid) <p> - bits 5..0 are the delay <p> As an example 0x4A is 10 minutes and 0x2d is 2 days
+| *Action*       | 1        | 0 - 4            | Which action to apply to the target scratchpad. Actions are: <p> - 0 = No otap. There is no otap in the network (Target sequence and crc are not used in that case) <p> - 1 = Propagate only : target scratchpad is exchanged in network but not processed <p> - 2 = Propagate and process : target scratchpad is exchanged in network and processed by node immediatly upon reception <p> - 3 = Propagate and process with delay : target scratchpad is exchanged in network and processed by node after a given delay specified with param field. Delay starts when this info is received by nodes and when they receive the scratchpad too
+| *Param*        | 1        | Depends on action| Only interpreted for action 3 to specify a delay. Delay is specified as followed: <p> - bits 7-6 are delay unit: 01 for minutes, 10 for hours and 11 for days (00 is invalid) <p> - bits 5..0 are the delay <p> As an example 0x4A is 10 minutes and 0xc2 is 2 days
 | *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
 
 #### MSAP-SCRATCHPAD_TARGET_WRITE.confirm
@@ -1554,102 +1550,6 @@ MSAP-NRLS_GOTOSLEEP.request. Frame fields are described in the table below.
 | *Frame ID*                 | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
 | LatestNRLS goto sleep time | 4        | 0 to 0x93A80     | Time in seconds which was used in previous NRLS sleep request starting from application NRLS sleep request until stack enters to NRLS sleep. Time is total time used including application callbacks during that period.
 | *CRC*                      | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
-
-### MSAP-MAX_MESSAGE_QUEUING Service
-
-The maximum message queuing services are used to change or read the current
-value of the time for how long the message is hold in the node's queue before it
-is discarded. Queuing time can be changed to normal and high priority messages.
-Select queuing time carefully, too short value might cause unnecessary message
-drops and too big value filling up message queues. For consistent performance it
-is recommended to use the same queuing time in the whole network.
-Minimum queuing time shall be bigger than access cycle interval in TDMA
-networks. It is recommended to use multiples of access cycle interval (+ extra)
-to give time for message repetitions, higher priority messages taking over the
-access slot etc. Access cycle is not limiting the minimum value in CSMA-CA
-networks.
-Precision of the time when message is discarded depends on the checking interval
-of message's age. Interval is 1s in CSMA-CA and 15s for energy saving reasons in
-TDMA networks i.e. precision is 1s or 15s depending on used channel access
-method.
-The MSAP-MAX_MESSAGE_QUEUING service includes following primitives:
-
--   MSAP-MAX_QUEUE_TIME_WRITE.request
-
--   MSAP-MAX_QUEUE_TIME_WRITE.confirm
-
--   MSAP-MAX_QUEUE_TIME_READ.request
-
--   MSAP-MAX_QUEUE_TIME_READ.confirm
-
-#### MSAP-MAX_QUEUE_TIME_WRITE.request
-
-This request is issued by the application layer to change the maximum queuing
-time for messages.
-
-| **Primitive ID** | **Frame ID** | **Payload length** | **Priority** | **Time** | **CRC**  |
-|------------------|--------------|--------------------|--------------|----------|----------|
-| 1 octet          | 1 octet      | 1 octet            | 1 octet      | 2 octets | 2 octets |
-
-Frame fields are described in the table below.
-
-| **Field Name** | **Size** | **Valid Values** | **Description**
-|----------------|----------|------------------|----------------
-| *Primitive ID* | 1        | 0x4F             | Identifier of MSAP-MAX_QUEUE_TIME_WRITE.request primitive
-| *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
-| *Priority*     | 1        | 0 - 1            | Message priority which queuing time to be set.<p> - 0 = User traffic class 0, i.e. normal priority<p> - 1 = User traffic class 1, i.e. high priority.
-| *Time*         | 4        | 2 – 65534        | Maximum queuing time in seconds.  Read instructions in chapter 2.3.15.   Default time values after factory reset: <p> - Normal priority: 600s = 10 min.<p> - High priority: 300s = 5 min.
-| *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
-
-#### MSAP-MAX_QUEUE_TIME_WRITE.confirm
-
-The MSAP-MAX_QUEUE_TIME_WRITE.confirm is issued in response to the
-MSAP-MAX_QUEUE_TIME_WRITE.request. Frame fields are described in the table
-below.
-
-| **Field Name** | **Size** | **Valid Values** | **Description**
-|----------------|----------|------------------|----------------
-| *Primitive ID* | 1        | 0xCF             | Identifier of MSAP-MAX_QUEUE_TIME_WRITE.confirm primitive
-| *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
-| *Result*       | 1        | 0, 3             | The return result of the corresponding MSAP-MAX_QUEUE_TIME_WRITE.request: <p> - 0 = Success <p> - 3 = Failure: Invalid priority or time
-| *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
-
-#### MSAP-MAX_QUEUE_TIME_READ.request
-
-This request is issued by the application layer to read the current value of the
-maximum queuing time.
-
-| **Primitive ID** | **Frame ID** | **Payload length** | **Priority** | **CRC**  |
-|------------------|--------------|--------------------|--------------|----------|
-| 1 octet          | 1 octet      | 1 octet            | 1 octet      | 2 octets |
-
-Frame fields are described in the table below.
-
-| **Field Name** | **Size** | **Valid Values** | **Description**
-|----------------|----------|------------------|----------------
-| *Primitive ID* | 1        | 0x50             | Identifier of MSAP-MAX_QUEUE_TIME_READ.request primitive
-| *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
-| *Priority*     | 1        | 0 - 1            | Message priority which queuing time to be read. <p> - 0 = User traffic class 0, i.e. normal priority<p> - 1 = User traffic class 1, i.e. high priority
-| *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
-
-#### MSAP-MAX_QUEUE_TIME_READ.confirm
-
-The MSAP-MAX_QUEUE_TIME_READ.confirm is issued in response to the
-MSAP-MAX_QUEUE_TIME_READ.request.
-
-| **Primitive ID** | **Frame ID** | **Payload length** | **Result** | **Time** | **CRC**  |
-|------------------|--------------|--------------------|------------|----------|----------|
-| 1 octet          | 1 octet      | 1 octet            | 1 octet    | 2 octets | 2 octets |
-
-Frame fields are described in the table below.
-
-| **Field Name** | **Size** | **Valid Values** | **Description**
-|----------------|----------|------------------|----------------
-| *Primitive ID* | 1        | 0xD0             | Identifier of MSAP-MAX_QUEUE_TIME_READ.confirm primitive
-| *Frame ID*     | 1        | 0 – 255          | See section [General Frame Format](#General-Frame-Format)
-| *Result*       | 1        | 0, 3             | The return result of the corresponding MSAP-MAX_QUEUE_TIME_READ.request:<p> - 0 = Success<p> - 3 = Failure: Invalid priority
-| *Time*         | 2        | 2 - 65534        | Read value of maximum queuing time in seconds
-| *CRC*          | 2        | \-               | See section [General Frame Format](#General-Frame-Format)
 
 ### MSAP Attributes
 
@@ -2002,7 +1902,6 @@ The CSAP attributes are specified in Table 50.
 | [cHwMagic](#cHwMagic)                         | 17               | R        | 2        |
 | [cStackProfile](#cStackProfile)               | 18               | R        | 2        |
 | [cOfflineScan](#cOfflineScan)                 | 20               | R/W      | 2        |
-| [cChannelAllocMap](#cChannelAllocMap)         | 21               | R/W      | 4        |
 | [cFeatureLockBits](#cFeatureLockBits)         | 22               | R/W      | 4        |
 | [cFeatureLockKey](#cFeatureLockKey)           | 23               | W        | 16       |
 
@@ -2335,33 +2234,6 @@ Attribute *cOfflineScan* sets the maximum limit for offline scanning interval
 value in seconds. When the device does not have a route to the sink, this
 interval is used to find the route. The scanning interval is a tradeoff between
 faster rejoin time to the network with the expense of power consumption.
-
-#### cChannelAllocMap
-
-| **Attribute ID** | **21**            |
-|------------------|-------------------|
-| Type             | Read and write    |
-| Size             | 4 octets          |
-| Valid values     | 0x00 – 0xFFFFFFFE |
-| Default value    | 0x11111111        |
-
-Attribute cChannelAllocMap can be used to dedicate radio channels for devices
-that have CB-MAC role definition enabled or devices that do not .
-Each bit in the value represents one radio channel. LSB equals the first
-available channel. If bit is set, the radio channel is dedicated for devices
-that are configured to CB-MAC mode. If bit is not set, the radio channel is
-dedicated for devices that are not configured to CB-MAC mode. The default value
-equals 25% of channels to be dedicated for devices configured to CB-MAC mode.
-This attribute is mainly important in dense networks and by using this
-attribute, the amount of devices within radio range can be maximized. For
-example: if none of the devices are configured to CB-MAC mode, it is recommended
-to set this value as 0.
-**Note: This attribute must be the same throughout the network to operate
-correctly!**
-**Note: WM FW v3.6.0, v3.6.6, v3.6.7, v3.5.32, v3.5.36 releases and v4.0.xx
-release onwards cChannelAllocMap attribute does not exists anymore - writing
-this attribute will return an error code** (1 = Failure: Unsupported attribute
-ID).
 
 #### cFeatureLockBits
 

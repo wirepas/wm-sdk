@@ -13,6 +13,7 @@
 #include "api.h"
 #include "board_init.h"
 #include "libraries_init.h"
+#include "hal_init.h"
 
 /** Addresses determined by the linker */
 extern unsigned int __text_start__;
@@ -108,6 +109,9 @@ intptr_t _start(const app_global_functions_t * functions,
     /* Open Wirepas public API (it loads all libs pointer to global variables) */
     API_Open(functions);
 
+
+    /* Initialize HAL drivers */
+    Hal_init();
 
     /* Call any board specific initialization */
     Board_init();

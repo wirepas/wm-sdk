@@ -4,7 +4,7 @@ include makefile_common.mk
 
 
 stack_mode?=normal
-mac_profile?=ism_24_ghz
+modemfw_name?=
 
 $(STACK_HEX): FORCE
 	# Get the right stack from the image folder
@@ -19,6 +19,7 @@ $(STACK_HEX): FORCE
 				--mac_profile=$(mac_profile)\
 				--mac_profileid=$(mac_profileid)\
 				--mode=$(stack_mode)\
+				--modem_fw=$(modemfw_name)\
 				--radio=$(radio)\
 				--radio_config=$(radio_config)\
 				--version=$(MIN_STACK_VERSION)

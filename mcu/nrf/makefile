@@ -19,16 +19,12 @@ INCLUDES += -I$(MCU_PATH)$(MCU_FAMILY)/common/
 -include $(MCU_PREFIX)hal/makefile
 
 # Build common HAL drivers for nrf-family
+ifeq ($(HAL_GPIO), yes)
+SRCS += $(NRF_FAMILY_HAL_PREFIX)gpio.c
+endif
+
 ifeq ($(HAL_SPI), yes)
 SRCS += $(NRF_FAMILY_HAL_PREFIX)spi.c
-endif
-
-ifeq ($(HAL_BUTTON), yes)
-SRCS += $(NRF_FAMILY_HAL_PREFIX)button.c
-endif
-
-ifeq ($(HAL_LED), yes)
-SRCS += $(NRF_FAMILY_HAL_PREFIX)led.c
 endif
 
 ifeq ($(HAL_PERSISTENT_MEMORY), yes)
@@ -38,5 +34,4 @@ endif
 ifeq ($(HAL_HW_DELAY), yes)
 SRCS += $(NRF_FAMILY_HAL_PREFIX)hw_delay.c
 endif
-SRCS += $(NRF_FAMILY_HAL_PREFIX)ds.c            \
-        $(NRF_FAMILY_HAL_PREFIX)hal.c
+SRCS += $(NRF_FAMILY_HAL_PREFIX)hal.c

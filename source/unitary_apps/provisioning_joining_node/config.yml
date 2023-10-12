@@ -1,15 +1,25 @@
 # This is an example file to customize a node running the provisioning joining node appliation
+# using the ExtendedUID method.
 
 # Hex array must start with 0x otherwise it is treated as a string.
 
 # Format is:
 #
 # provisioning :
-#    uid : Ex: test_node
-#    factory_key : (32 bytes string, [0:15 Auth key][16:31 Enc Key]) Needed for sercured method.
-#    method : (Unsecured:0 or Secured:1) Ex: 0
+#    device_uid: (16 bytes string, Representing the UID of the device to be provisioned)
+#    device_uid_type: (1 byte string, Representing the UID type of device_uid)
+#    authenticator_uid: (16 bytes string, Representing the UID of the authenticator)
+#    authenticator_uid_type: (1 byte string, Representing the UID type of authenticator_uid)
+#    Instead of specifying uid components individually, you can specify the whole uid as follows:
+#    uid: (34 bytes string, [0:1 device_uid_type][1:16 device_uid][16:17 authenticator_uid_type][17:33 authenticator_uid])
+#    factory_key : (32 bytes string, [0:15 Auth key][16:31 Enc Key]) Needed for secured method.
+#    method : (Unsecured:0, Secured:1, Extended:3) Ex: 0
 
 provisioning:
-    uid: test_node
+    uid: 0x01 0xb3 0x43 0x33 0x00 0x93 0x81 0x08 0x4a 0x8d 0xb3 0xaa 0x9e 0x53 0xd2 0x2a 0x1e 0x01 0x7e 0x71 0xe5 0xd7 0x22 0xef 0x0f 0x4b 0xa8 0x7d 0x44 0xd4 0xe0 0xe5 0xb5 0x7d
+    node_uid: 0x7e 0x71 0xe5 0xd7 0x22 0xef 0x0f 0x4b 0xa8 0x7d 0x44 0xd4 0xe0 0xe5 0xb5 0x7d
+    node_uid_type: 0x01
+    authenticator_uid: 0xb3 0x43 0x33 0x00 0x93 0x81 0x08 0x4a 0x8d 0xb3 0xaa 0x9e 0x53 0xd2 0x2a 0x1e
+    authenticator_uid_type: 0x01
     factory_key : 0x00 0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08 0X09 0X0A 0X0B 0X0C 0X0D 0X0E 0X0F 0x00 0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08 0X09 0X0A 0X0B 0X0C 0X0D 0X0E 0X0F
-    method: 1
+    method: 0x03

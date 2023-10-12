@@ -12,7 +12,7 @@
 
 void Usart_init(uint32_t baudrate)
 {
-    /* Configure Uart Tx pin */
+    /* GPIO init */
     nrf_gpio_cfg(BOARD_USART_TX_PIN,
                  NRF_GPIO_PIN_DIR_OUTPUT,
                  NRF_GPIO_PIN_INPUT_CONNECT,
@@ -20,8 +20,6 @@ void Usart_init(uint32_t baudrate)
                  NRF_GPIO_PIN_S0S1,
                  NRF_GPIO_PIN_NOSENSE);
 
-
-    /* GPIO init */
     NRF_UART0->PSELTXD = BOARD_USART_TX_PIN;
     NRF_UART0->PSELRXD = BOARD_USART_RX_PIN;
     NRF_UART0->TASKS_STOPTX = 1;

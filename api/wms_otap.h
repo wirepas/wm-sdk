@@ -30,7 +30,7 @@
 #define APP_LIB_OTAP_NAME 0x000f2338 //!< "OTAP"
 
 /** @brief Maximum supported library version */
-#define APP_LIB_OTAP_VERSION 0x201
+#define APP_LIB_OTAP_VERSION 0x202
 
 /**
  * @brief Different scratchpad type
@@ -109,9 +109,6 @@ typedef enum
      *  the given delay. Delay starts when node receive the information and the
      *  scratchpad is valid. */
     APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS_WITH_DELAY = 3,
-    /** Exchange and processing of scratchpad is managed the old way
-     *  (sequence comparison). */
-    APP_LIB_OTAP_ACTION_LEGACY = 4,
 } app_lib_otap_action_e;
 
 /**

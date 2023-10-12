@@ -215,7 +215,6 @@ static uint32_t send_ack_packet(void)
         .bytes = (uint8_t *)&ack_data,
         .num_bytes = sizeof(pdu_prov_data_ack_t),
         .dest_address = get_dest_address(),
-        .delay = 0,
         .qos = APP_LIB_DATA_QOS_HIGH,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,
         .src_endpoint = PROV_UPLINK_EP,
@@ -291,7 +290,7 @@ provisioning_res_e process_data_packet(void)
         }
     }
 
-    else if (m_conf.method == PROV_METHOD_SECURED)
+    else if (m_conf.method == PROV_METHOD_SECURED || m_conf.method == PROV_METHOD_EXTENDED_UID)
     {
         if (pdu->data.key_index == 1)
         {
@@ -415,7 +414,7 @@ static uint32_t state_idle(void)
             /* Generate IV for Secured method. The same IV will be used even
              * for retries.
              */
-            if (m_conf.method == PROV_METHOD_SECURED)
+            if (m_conf.method == PROV_METHOD_SECURED || m_conf.method == PROV_METHOD_EXTENDED_UID)
             {
                 for(int i=0; i < AES_128_KEY_BLOCK_SIZE; i++)
                 {
@@ -499,7 +498,6 @@ static uint32_t state_start(void)
                      m_conf.uid_len +
                      AES_128_KEY_BLOCK_SIZE,
         .dest_address = get_dest_address(),
-        .delay = 0,
         .qos = APP_LIB_DATA_QOS_HIGH,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,
         .src_endpoint = PROV_UPLINK_EP,

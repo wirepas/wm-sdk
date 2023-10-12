@@ -17,6 +17,7 @@
 #include "sap/function_codes.h"
 #include "waps.h"
 #include "waps_private.h"
+#include "protocol/waps_protocol_private.h" // To access prot_indication
 #include "sap/persistent.h"
 
 
@@ -59,6 +60,12 @@
   * deep sleep preventation bit removed.
   */
 #define WAPS_TASK_EXEC_TIME_FOR_REMOVE_DS_PREV_US      500
+
+/** Maximum time in ms to perform a gargbage collect on indication queued.
+ *  Every period, the queued indication will be compared to the max
+ *  TTL set in the node to removed if too old
+ */
+#define WAPS_GARBAGE_COLLECT_PERIOD_MS                 5000
 
 /**
  * \brief   Waps_exec is the core of WAPS
@@ -111,6 +118,11 @@ static bool process_request(waps_item_t * item);
  *          Id to search for in indications
  */
 static waps_item_t * find_indication(uint8_t id);
+
+/**
+ * \brief   Delete indication that exceeded their max TTL
+ */
+static uint32_t garbage_collect_old_indication_task(void);
 
 /** WAPS internal message queues */
 sl_list_head_t              waps_ind_queue;
@@ -231,6 +243,9 @@ bool Waps_init(uint32_t baudrate, bool flow_ctrl)
         add_indication(Msap_getStackStatusIndication());
         // Clear the signal here (can be set after Waps_prot_init())
         m_signal = 0;
+
+        // Start a task to remove old indication (according to TTL)
+        App_Scheduler_addTask_execTime(garbage_collect_old_indication_task, WAPS_GARBAGE_COLLECT_PERIOD_MS, 100);
         return true;
     }
 
@@ -254,7 +269,8 @@ uint32_t Waps_exec(void)
             // Request queued for too long time must not be executed
             // In reality, it will only happen when a scratchpad is exchanged and app
             // is not scheduled anymore for very long period > 10s
-            if (lib_time->getTimestampCoarse() - item->time > WAPS_MAX_REQUEST_QUEUING_TIME_COARSE)
+            if (lib_time->getTimestampCoarse() - item->time >
+                WAPS_MAX_REQUEST_QUEUING_TIME_COARSE)
             {
                 // Nothing to do except freeing memory, done just later
             }
@@ -479,4 +495,90 @@ static waps_item_t * find_indication(uint8_t id)
         }
     }
     return item;
+}
+
+static bool is_indication_too_old(waps_item_t * item, uint16_t qos_qt_s[2])
+{
+    uint8_t qos;
+    uint32_t qt, travel_time;
+    uint32_t now = lib_time->getTimestampCoarse();
+
+    // Data RX Ind and DATA RX Frag Ind are handled independently
+    // even if struct are alligned, but more futur proof
+    if (item->frame.sfunc == WAPS_FUNC_DSAP_DATA_RX_IND)
+    {
+        qos = item->frame.dsap.data_rx_ind.info & RX_IND_INFO_QOS_MASK;
+        travel_time = item->frame.dsap.data_rx_ind.delay;
+    }
+    else if (item->frame.sfunc == WAPS_FUNC_DSAP_DATA_RX_FRAG_IND)
+    {
+        qos = item->frame.dsap.data_rx_frag_ind.info & RX_IND_INFO_QOS_MASK;
+        travel_time = item->frame.dsap.data_rx_frag_ind.delay;
+    }
+    else
+    {
+        return false;
+    }
+
+    // Queued time on dualmcu side
+    qt = now - item->time;
+
+    // Check travel_time + queued_time vs limit set
+    if (((travel_time + qt) / 128) > qos_qt_s[qos])
+    {
+        // Too long in transit, delete it
+        return true;
+    }
+
+    return false;
+}
+
+static uint32_t garbage_collect_old_indication_task(void)
+{
+    waps_item_t * item;
+
+    // Add a default value, in case it is not possible to read from stack (Not really possible)
+    uint16_t qos_qt_s[2] = {10 * 60, 5 * 60};
+
+    if (!queued_indications() && (prot_indication == NULL))
+    {
+        // Nothing to be done
+        // Return time could be optimize to min qos time.
+        // If no indication at the moment, next potential clean up will be in min quing time set
+        // but let's keep things simpler
+        return WAPS_GARBAGE_COLLECT_PERIOD_MS;
+    }
+
+    // Check the next indication that is already out of the queue
+    if (prot_indication != NULL)
+    {
+        if (is_indication_too_old(prot_indication, qos_qt_s))
+        {
+            Waps_itemFree(prot_indication);
+            prot_indication = NULL;
+        }
+    }
+
+    // Check all items from the queue one by one
+    item = (waps_item_t *) sl_list_begin(&waps_ind_queue);
+    while (item != NULL)
+    {
+        // Get next immediatelly in case we remove the item
+        waps_item_t * next = (waps_item_t *) sl_list_next((sl_list_t *) item);
+        if (is_indication_too_old(item, qos_qt_s))
+        {
+            // Unfortunately, there is no api in sl_list to remove without
+            // going through the list again, we could play with pointer here, but not
+            // good pattern to access internal sl_list struct.
+            // Anyway, list should never be very long
+            sl_list_remove(&waps_ind_queue, (sl_list_t *) item);
+            // Put back the item to free list and potentially re-enable the RX from stack
+            Waps_itemFree(item);
+        }
+
+        // move to next one
+        item = next;
+    }
+
+    return WAPS_GARBAGE_COLLECT_PERIOD_MS;
 }

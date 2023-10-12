@@ -12,12 +12,18 @@ mac_profile?=dect_nr_19_ghz
 radio?=none
 ifeq ($(MCU_SUB),60)
 	# Hardware magic used for this architecture
-	HW_MAGIC=12
+	HW_MAGIC=0F
 	HW_VARIANT_ID=12
+else ifeq ($(MCU_SUB),61)
+	# Hardware magic used for this architecture
+	HW_MAGIC=12
+	HW_VARIANT_ID=18
 else
-	$(error "Invalid MCU_SUB for nrf91! $(MCU_SUB) only 60  supported")
+	$(error "Invalid MCU_SUB for nrf91! $(MCU_SUB) only 60 and 61 supported")
 endif
 
+modemfw_area_id=0x000004$(HW_MAGIC)
+modemfw_name=firmware.update.image.cbor
 # Add custom flags
 # Remove the -Wunused-parameter flag added by -Wextra as some cortex M4 header do not respect it
 CFLAGS += -Wno-unused-parameter

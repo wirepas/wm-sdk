@@ -141,10 +141,6 @@ void App_init(const app_global_functions_t * functions)
 
     LOG_INIT();
 
-    // Initialize peripherals
-    Led_init();
-    Button_init();
-
     // Launch two periodic task with different period
     App_Scheduler_addTask_execTime(periodic_task_50ms, APP_SCHEDULER_SCHEDULE_ASAP, 5);
     App_Scheduler_addTask_execTime(periodic_task_500ms, APP_SCHEDULER_SCHEDULE_ASAP, 5);

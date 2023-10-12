@@ -57,7 +57,6 @@ void send_nack(prov_nack_type_e type, const app_lib_data_received_t * data)
         .bytes = (uint8_t *)&nack_pdu,
         .num_bytes = sizeof(pdu_prov_nack_t),
         .dest_address = data->src_address,
-        .delay = 0,
         .qos = APP_LIB_DATA_QOS_HIGH,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,
         .src_endpoint = PROV_DOWNLINK_EP,
@@ -243,7 +242,7 @@ static app_lib_data_receive_res_e pkt_received_cb(
     LOG_BUFFER(LVL_DEBUG, data->bytes, data->num_bytes);
 
     /* Check if it is a ACK packet. */
-    if (pdu->pdu_header.type != PROV_PACKET_TYPE_START)
+    if (pdu->pdu_header.type == PROV_PACKET_TYPE_DATA_ACK)
     {
         LOG(LVL_INFO, "ACK received from %08X.", data->src_address);
         return APP_LIB_DATA_RECEIVE_RES_HANDLED;
@@ -339,7 +338,6 @@ static app_lib_data_receive_res_e pkt_received_cb(
         .bytes = data_buffer,
         .num_bytes = PROV_DATA_OFFSET + data_len,
         .dest_address = data->src_address,
-        .delay = 0,
         .qos = APP_LIB_DATA_QOS_HIGH,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,
         .src_endpoint = PROV_DOWNLINK_EP,

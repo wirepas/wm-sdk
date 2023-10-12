@@ -21,8 +21,15 @@
 #define GPIOTE_IRQn     GPIOTE0_IRQn
 #define UART0_IRQn      UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQn
 /** Define the last IRQ number in the interrupt vector */
+#elif MCU_SUB == 61
+#define NRF9120_XXAA
+/** Define NRF_GPIO and GPIOTE_IRQn for nrf9160. */
+#define NRF_GPIO        NRF_P0
+#define GPIOTE_IRQn     GPIOTE0_IRQn
+#define UART0_IRQn      UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQn
+/** Define the last IRQ number in the interrupt vector */
 #else
-#error SUB_MCU Must be 832 or 840 or 60
+#error SUB_MCU Must be 832 or 840 or 60 or 61
 #endif
 
 #include "nrfx.h"

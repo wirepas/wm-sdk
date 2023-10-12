@@ -1,21 +1,21 @@
-# Version of GCC used for Wirepas testing
-GCC_TESTED_VERSION := 10.2.1
-
 # Minimum binaries version required by this SDK version
 MIN_BOOTLOADER_VERSION := 7
-MIN_STACK_VERSION := 5.3.0.0
+MIN_STACK_VERSION := 5.4.0.0
 
 # SDK itself
 SDK_PATH := .
 INCLUDES := -I$(SDK_PATH)
+
+build_directory?= build/
+board_directory?= board/
 
 # General SDK folder structure
 API_PATH := api/
 UTIL_PATH := util/
 HAL_API_PATH := mcu/hal_api/
 WP_LIB_PATH := libraries/
-GLOBAL_BUILD := build/
-BOARDS_PATH := board/
+GLOBAL_BUILD := $(build_directory)
+BOARDS_PATH := $(board_directory)
 BOARDS_PATH_INTERNAL := board_internal/
 MCU_PATH := mcu/
 
@@ -79,15 +79,6 @@ WIZARD      := $(python) tools/sdk_wizard.py
 HEX2ARRAY32 := $(python) tools/hextoarray32.py
 MAKE        := make
 
-# Check the toolchain version with GCC
-GCC_VERSION := $(shell $(CC) -dumpversion)
-ifneq ($(GCC_VERSION), $(findstring $(GCC_VERSION), $(GCC_TESTED_VERSION)))
-$(warning ***********************************************************************)
-$(warning "GCC version used is not the recommended and tested by Wirepas )
-$(warning "Recommended version is : $(GCC_TESTED_VERSION))
-$(warning ***********************************************************************)
-endif
-
 # List of available boards found under board/
 AVAILABLE_BOARDS := $(patsubst $(BOARDS_PATH)%/,%,$(sort $(dir $(wildcard $(BOARDS_PATH)*/.))))
 
@@ -131,6 +122,7 @@ INCLUDES += -I$(MCU_PATH)common/cmsis -I$(BOARD_FOLDER)
 # Folder where the application sources are located (and config file)
 # Can be in different folders, try them one by one
 APP_POSSIBLE_FOLDER := source/*/$(app_name)/ source/$(app_name)/
+APP_POSSIBLE_FOLDER += $(app_extra_folder)/$(app_name)/
 
 APP_SRCS_PATH := $(wildcard $(APP_POSSIBLE_FOLDER))
 ifeq (,$(wildcard $(APP_SRCS_PATH)))
@@ -169,7 +161,10 @@ BOOTLOADER_HEX := $(BUILDPREFIX_BOOTLOADER)bootloader.hex
 BOOTLOADER_TEST_HEX := $(BUILDPREFIX_APP)bootloader_test/bootloader_test.hex
 BOOTLOADER_UPDATER_HEX := $(BUILDPREFIX)bootloader_updater/bootloader_updater.hex
 BOOTLOADER_UPDATER_DATA_BIN := $(BUILDPREFIX)bootloader_updater/bootloader_updater_data.bin
+BOOTLOADER_CONFIG_INI := $(BUILDPREFIX_APP)bootloader_full_config.ini
 
 STACK_HEX := $(BUILDPREFIX_STACK)$(FIRMWARE_NAME).hex
 
 APP_HEX := $(BUILDPREFIX_APP)$(APP_NAME).hex
+
+mac_profile?=ism_24_ghz

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# genscratchpad.py - A tool to generate encrypted scratchpad contents
+# genhex.py - A tool to generate flashable hex files
 #
 # Requires:
 #   - Python 2 v2.7 or newer (uses argparse, hextool.py)
@@ -10,15 +10,12 @@
 
 import sys
 import os
-import re
-import zlib
 import struct
 import argparse
 import textwrap
 import hextool
 
-
-from bootloader_config import BootloaderConfig
+from bootloader_config import BootloaderConfig, KeyDesc
 from genscratchpad import InFile
 
 
@@ -118,6 +115,11 @@ class Flashable(object):
 
         bl_area = self.config.get_bootloader_area()
 
+        # Set authentication and encryption key type, so that memory
+        # addresses for bootloader settings can be calculated.
+        key_type = self.config.get_key_type()
+        bl_area.set_key_type(key_type)
+
         bl_start = bl_area.address
         bl_max_num_bytes = bl_area.length
         bl_end = bl_start + bl_max_num_bytes
@@ -158,7 +160,21 @@ class Flashable(object):
 
         # Add keys in Flash memory image.
         for key in self.config.keys.values():
-            memory += key.authentication
+            if key_type == KeyDesc.KEY_TYPE_OMAC1_AES128CTR:
+                auth_key = key.authentication
+            elif key_type == KeyDesc.KEY_TYPE_SHA256_ECDSA_P256_AES128CTR:
+                auth_key = KeyDesc.get_public_key(key.authentication)
+
+                if len(auth_key) != 65 or auth_key[0] != 0x04:
+                    raise ValueError("not a valid uncompressed public key")
+
+                # Discard first byte, which indicates
+                # whether the key is compressed or not
+                auth_key = auth_key[1:]
+            else:
+                raise ValueError("invalid key type")
+
+            memory += auth_key
             memory += key.encryption
 
         # Sanity check.

@@ -9,9 +9,8 @@
 
 #if defined(EFR32_PLATFORM)
 #include "em_cmu.h"
-#endif
 
-#if defined(EFR32FG12) || defined(EFR32MG12) || defined(EFR32FG13)
+#if (_SILICON_LABS_32B_SERIES == 1)
 static CMU_HFXOInit_TypeDef m_hfxoInit =
 {
     false,               /* Low-noise mode for EFR32 */
@@ -38,9 +37,8 @@ static CMU_LFXOInit_TypeDef m_lfxoInit =
     _CMU_LFXOCTRL_TIMEOUT_DEFAULT,  /* Default start-up delay, 32 K cycles */
     cmuOscMode_Crystal,             /* Crystal oscillator */
 };
-#endif
 
-#if defined(EFR32MG21) || defined(EFR32MG22)
+#elif (_SILICON_LABS_32B_SERIES == 2)
 static CMU_HFXOInit_TypeDef m_hfxoInit =
 {
     cmuHfxoCbLsbTimeout_416us,
@@ -61,47 +59,9 @@ static CMU_HFXOInit_TypeDef m_hfxoInit =
     false,                            /* forceXi2GndAna          */
     false,                            /* DisOndemand             */
     false,                            /* ForceEn                 */
-    false                             /* Lock registers          */
-};
-
-static CMU_LFXOInit_TypeDef m_lfxoInit =
-{
-    BOARD_HW_LFXO_GAIN,               /* gain            */
-    BOARD_HW_LFXO_CTUNE,              /* capTune         */
-    cmuLfxoStartupDelay_4KCycles,     /* timeout         */
-    cmuLfxoOscMode_Crystal,           /* mode            */
-    false,                            /* highAmplitudeEn */
-    true,                             /* agcEn           */
-    false,                            /* failDetEM4WUEn  */
-    false,                            /* failDetEn       */
-    false,                            /* DisOndemand     */
-    false,                            /* ForceEn         */
-    false                             /* Lock registers  */
-};
-#endif
-
-#if defined(EFR32FG23)
-static CMU_HFXOInit_TypeDef m_hfxoInit =
-{
-    cmuHfxoCbLsbTimeout_416us,
-    cmuHfxoSteadyStateTimeout_833us,  /* First lock              */
-    cmuHfxoSteadyStateTimeout_83us,   /* Subsequent locks        */
-    0U,                               /* ctuneXoStartup          */
-    0U,                               /* ctuneXiStartup          */
-    32U,                              /* coreBiasStartup         */
-    32U,                              /* imCoreBiasStartup       */
-    cmuHfxoCoreDegen_None,
-    cmuHfxoCtuneFixCap_Both,
-    BOARD_HW_HFXO_CTUNE,              /* ctuneXoAna              */
-    BOARD_HW_HFXO_CTUNE,              /* ctuneXiAna              */
-    60U,                              /* coreBiasAna             */
-    false,                            /* enXiDcBiasAna           */
-    cmuHfxoOscMode_Crystal,
-    false,                            /* forceXo2GndAna          */
-    false,                            /* forceXi2GndAna          */
-    false,                            /* DisOndemand             */
-    false,                            /* ForceEn                 */
+#if defined(HFXO_CTRL_EM23ONDEMAND)
     false,                            /* Enable deep sleep       */
+#endif // defined(HFXO_CTRL_EM23ONDEMAND)
     false                             /* Lock registers          */
 };
 
@@ -119,25 +79,9 @@ static CMU_LFXOInit_TypeDef m_lfxoInit =
     false,                            /* ForceEn         */
     false                             /* Lock registers  */
 };
-#endif
-
-#if defined(NRF52_PLATFORM)
-
-static const hardware_capabilities_t m_hw =
-{
-    .crystal_32k = BOARD_HW_CRYSTAL_32K,
-    .dcdc = BOARD_HW_DCDC,
-    .platform.nrf52 = NULL
-};
-#elif defined(NRF91_PLATFORM)
-
-static const hardware_capabilities_t m_hw =
-{
-    .crystal_32k = BOARD_HW_CRYSTAL_32K,
-    .dcdc = BOARD_HW_DCDC,
-    .platform.nrf91 = NULL
-};
-#elif defined(EFR32_PLATFORM)
+#else
+#error "Unsupported EFR32 series"
+#endif // (_SILICON_LABS_32B_SERIES == 1)
 
 static const platform_efr32_t m_platform_efr32 =
 {
@@ -152,11 +96,42 @@ static const hardware_capabilities_t m_hw =
     .platform.efr32 = &m_platform_efr32
 };
 
+#elif defined(NRF52_PLATFORM)
+
+static const hardware_capabilities_t m_hw =
+{
+    .crystal_32k = BOARD_HW_CRYSTAL_32K,
+    .dcdc = BOARD_HW_DCDC,
+    .platform.nrf52 = NULL
+};
+#elif defined(NRF91_PLATFORM)
+
+#include "board.h"
+
+#if defined(BOARD_AT_COMMANDS)
+static const char board_at_commands[] = BOARD_AT_COMMANDS;
+#endif // defined(BOARD_AT_COMMANDS)
+
+static const platform_nrf91_t m_platform_nrf91 =
+{
+#if defined(BOARD_AT_COMMANDS)
+    .at_commands = board_at_commands
+#else // defined(BOARD_AT_COMMANDS)
+    .at_commands = NULL
+#endif
+};
+
+static const hardware_capabilities_t m_hw =
+{
+    .crystal_32k = BOARD_HW_CRYSTAL_32K,
+    .dcdc = BOARD_HW_DCDC,
+    .platform.nrf91 = &m_platform_nrf91
+};
 #endif // defined(*_PLATFORM)
 
 const hardware_capabilities_t * Hardware_getCapabilities(void)
 {
-#if defined(EFR32MG21) || defined(EFR32MG22) || defined(EFR32FG23)
+#if defined(EFR32_PLATFORM) && (_SILICON_LABS_32B_SERIES == 2)
     // If DevInfo.ModuleInfo contains valid calibration value for HFXO CTUNE,
     // use it.
     if ((DEVINFO->MODULEINFO & _DEVINFO_MODULEINFO_HFXOCALVAL_MASK) == 0) {

@@ -506,26 +506,6 @@ static attribute_result_e writeAttr(attr_t attr_id,
                 if (result == APP_RES_OK)
                 {
                     Waps_uart_powerReset();
-#ifdef OTAP_FORCE_LEGACY
-                    bool firstboot = false;
-
-                    Persistent_isFirstboot(&firstboot);
-
-                    // Check if first boot and a sink
-                    if ((app_role == APP_LIB_SETTINGS_ROLE_SINK_LE ||
-                         app_role == APP_LIB_SETTINGS_ROLE_SINK_LL) &&
-                         firstboot)
-                    {
-                        if (lib_otap->setTargetScratchpadAndAction(
-                                                    0x00,
-                                                    0x0000,
-                                                    APP_LIB_OTAP_ACTION_LEGACY,
-                                                    0x00) == APP_RES_OK)
-                        {
-                            Persistent_setFirstboot(false);
-                        }
-                    }
-#endif // OTAP_FORCE_LEGACY
                 }
             }
             break;

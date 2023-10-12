@@ -41,7 +41,7 @@ def to_bytes(param):
             else:
                 param = bytes(param, 'utf-8')
         elif type(param) is int:
-            param.to_bytes((param.bit_length() + 7) // 8, byteorder='big')
+            param = param.to_bytes(max(1, (param.bit_length() + 7) // 8), byteorder='big')
     else:
         if type(param) is str:
             if param.upper().startswith("0X"):
@@ -79,7 +79,7 @@ def main():
                 provisioning."))
 
     parser.add_argument("infilespec",
-                        metavar="INFILESPEC", help="yml personalization file")
+                        metavar="INFILESPEC", default="config.yml", help="yml personalization file")
     parser.add_argument("--output", "-o",
                         metavar="OUTFILESPEC",
                         help="The output file")
@@ -90,14 +90,17 @@ def main():
                         help="Address of the storage area ([area:app_persistent]) "
                              "defined in mcu/<mcu>/ini_files/<mcu>_app.ini file\n"
                              "Default values per mcu are :\n"
-                             " - NRF52832         :  499712  (0x7A000)\n"
-                             " - NRF52833         :  499712  (0x7A000)\n"
-                             " - NRF52840         :  1024000 (0xFA000)\n"
-                             " - EFR32xg1x (512k) :  503808  (0x7B000)\n"
-                             " - EFR32xg1x (1024k):  1028096 (0xFB000)\n"
-                             " - EFR32xg22 (512k) :  491520  (0x78000)\n"
-                             " - EFR32xg21 (768k) :  753664  (0xB8000)\n"
-                             " - EFR32xg21 (1024k):  1015808 (0xF8000)")
+                             " - NRF52832         :  499712    (0x7A000)\n"
+                             " - NRF52833         :  499712    (0x7A000)\n"
+                             " - NRF52840         :  1024000   (0xFA000)\n"
+                             " - EFR32xg1x (512k) :  503808    (0x7B000)\n"
+                             " - EFR32xg1x (1024k):  1028096   (0xFB000)\n"
+                             " - EFR32xg22 (512k) :  491520    (0x78000)\n"
+                             " - EFR32xg21 (768k) :  753664    (0xB8000)\n"
+                             " - EFR32xg21 (1024k):  1015808   (0xF8000)\n"
+                             " - EFR32xg23 (512k) :  134709248 (0x8078000)\n"
+                             " - EFR32xg24 (1024k):  135233536 (0x080F8000)\n"
+                             " - EFR32xg24 (1536K):  135757824 (0x08178000)")
 
     try:
         args = parser.parse_args()
@@ -116,7 +119,17 @@ def main():
         return -1
 
     try:
-        uid = to_bytes(cfg['provisioning']['uid'])
+        if "uid" in cfg['provisioning'].keys():
+            uid = to_bytes(cfg['provisioning']["uid"])
+        elif cfg['provisioning']["method"] == 3:
+            node_uid = to_bytes(cfg['provisioning']['node_uid'])
+            node_uid_type = to_bytes(cfg['provisioning']['node_uid_type'])
+            authenticator_uid = to_bytes(cfg['provisioning']['authenticator_uid'])
+            authenticator_uid_type = to_bytes(cfg['provisioning']['authenticator_uid_type'])
+            uid = authenticator_uid_type + authenticator_uid + node_uid_type + node_uid
+        else:
+            raise KeyError
+
         method = to_bytes(cfg['provisioning']['method'])
     except KeyError:
         sys.stdout.write("%s: UID and Method are mandatory\n" % (pgmname))
@@ -126,14 +139,14 @@ def main():
     except KeyError:
         key = b''
 
-    sys.stdout.write("%s - UID: %s (len: %d)\n" % (pgmname, uid, len(uid)))
+    sys.stdout.write("%s - UID: %s (len: %d)\n" % (pgmname, uid.hex(), len(uid)))
     sys.stdout.write(
         "%s - KEY: %s (len: %d)\n" % (pgmname,
                         "".join("{:02X}".format(to_int(x)) for x in key), len(key)))
-    sys.stdout.write("%s - Method: %d\n" % (pgmname, method))
+    sys.stdout.write("%s - Method: %d\n" % (pgmname, int.from_bytes(method, byteorder='big')))
 
     data = struct.pack("<I", STORAGE_MAGIC) + \
-        struct.pack("B", method) + \
+        method + \
         struct.pack("B", len(uid)) + \
         uid + \
         struct.pack("B", len(key)) + \
@@ -148,12 +161,9 @@ def main():
         hextool.save_intel_hex(memory, filename=args.output)
         sys.stdout.write("%s - Output file: %s\n" % (pgmname, args.output))
     else:
-        hextool.save_intel_hex(memory,
-                               filename=os.path.splitext(args.infilespec)[0] +
-                               ".hex")
-        sys.stdout.write("%s - Output file: %s\n" %
-                         (pgmname,
-                          os.path.splitext(args.infilespec)[0] + ".hex"))
+        filename = os.path.splitext(args.infilespec)[0] + ".hex"
+        hextool.save_intel_hex(memory, filename=filename)
+        sys.stdout.write("%s - Output file: %s\n" % (pgmname, filename))
 
 
 # Run main.

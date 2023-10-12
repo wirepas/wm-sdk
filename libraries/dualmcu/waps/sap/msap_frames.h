@@ -349,26 +349,6 @@ typedef struct __attribute__ ((__packed__))
     uint8_t     scan_ready;
 } msap_on_scanned_nbors_ind_t;
 
-/** MSAP-SCRATCHPAD_REMOTE_UPDATE request frame */
-typedef struct __attribute__ ((__packed__))
-{
-    /** Unicast or broadcast targeting */
-    w_addr_t        target;
-    /** Target scratchpad sequence to update */
-    otap_seq_t      seq;
-    /** Reboot delay in seconds */
-    uint16_t        reboot_delay;
-} msap_remote_update_req_t;
-
-/** Result of MSAP-REMOTE_UPDATE request
-    NB: ONLY one return code possible as feature is not
-    implemented anymore and must be used through Remote API
-*/
-typedef enum
-{
-    MSAP_REMOTE_UPDATE_ACCESS_DENIED = 6,
-} msap_remote_update_e;
-
 /** MSAP-GET_NBORS */
 typedef struct __attribute__ ((__packed__))
 {
@@ -413,24 +393,6 @@ typedef struct __attribute__ ((__packed__))
     uint32_t    gotoNRSL_seconds;
 
 } msap_sleep_latest_gotosleep_rsp_t;
-
-/** Maximum message queuing time request frame */
-typedef struct __attribute__ ((__packed__))
-{
-    /** Message priority which queuing time to be set/get */
-    app_lib_data_qos_e   priority;
-    /** Maximum queuing time to be set in seconds */
-    uint16_t    time;
-} msap_max_msg_queuing_time_req_t;
-
-/** Confirmation to maximum message queuing read request */
-typedef struct __attribute__ ((__packed__))
-{
-    /** Read result  */
-    app_res_e   result;
-    /** Read value of maximum queuing time */
-    uint16_t    time;
-} msap_max_msg_queuing_time_read_cnf_t;
 
 /** MSAP-GET_INSTALL_QUALITY */
 typedef struct
@@ -555,13 +517,10 @@ typedef union
     msap_scratchpad_status_cnf_t        scratchpad_status_cnf;
     msap_remote_status_req_t            remote_status_req;
     msap_remote_status_ind_t            remote_status_ind;
-    msap_remote_update_req_t            remote_update_req;
     msap_on_scanned_nbors_ind_t         on_scanned_nbors;
     msap_sleep_start_req_t              sleep_start_req;
     msap_sleep_state_rsp_t              sleep_state_rsp;
     msap_sleep_latest_gotosleep_rsp_t   sleep_gotosleep_rsp_t;
-    msap_max_msg_queuing_time_req_t     max_msg_queuing_time_req;
-    msap_max_msg_queuing_time_read_cnf_t  max_msg_queuing_time_read_cnf;
     msap_install_quality_cnf_t          inst_qual_cnf;
     msap_scratchpad_target_write_req_t  scratchpad_target_write_req;
     msap_scratchpad_target_read_cnf_t   scratchpad_target_read_cnf;
