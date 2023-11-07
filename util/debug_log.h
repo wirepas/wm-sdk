@@ -195,7 +195,7 @@
     if(((uint8_t) level) <= ((uint8_t) DEBUG_LOG_MAX_LEVEL)) { \
         for (uint8_t i = 0; i < size; i++) \
         { \
-            Print_Log("%02X ", buffer[i]); \
+            Print_Log("%02X ", ((uint8_t *)buffer)[i]); \
             if ((i & 0xF) == 0xF && i != (uint8_t)(size-1)) \
             { \
                 Print_Log("\n"); \
