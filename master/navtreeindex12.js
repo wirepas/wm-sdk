@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"dd/da9/pca10112_2makefile__board_8mk_source.html":[8,1,10,2],
 "dd/db3/unionwaps__frame__t_8____unnamed____.html":[6,170],
 "dd/db3/unionwaps__frame__t_8____unnamed____.html#a308a06d29886078735d08413a656b2a8":[6,170,3],
 "dd/db3/unionwaps__frame__t_8____unnamed____.html#a5dbca3fddcc9f7c21ecca09fb903401e":[6,170,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "df/d1a/silabs__brd4181b_2board_8h.html#aa1002840655a30f1b3bef09d00e7d8ba":[8,1,14,0,3],
 "df/d1a/silabs__brd4181b_2board_8h.html#ac206a3fdd4723341044664ddbf85f6d3":[8,1,14,0,2],
 "df/d1a/silabs__brd4181b_2board_8h.html#ac5c54565e5266fd2bf7f9b8bace2ae9c":[8,1,14,0,9],
-"df/d1a/silabs__brd4181b_2board_8h.html#ad4dadd89e2628f808d599207a20b3b70":[8,1,14,0,6],
-"df/d1a/silabs__brd4181b_2board_8h_source.html":[8,1,14,0]
+"df/d1a/silabs__brd4181b_2board_8h.html#ad4dadd89e2628f808d599207a20b3b70":[8,1,14,0,6]
 };

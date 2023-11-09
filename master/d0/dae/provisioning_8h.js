@@ -39,7 +39,8 @@ var provisioning_8h =
     [ "Provisioning_stop", "d0/dae/provisioning_8h.html#ac66c226cba79da112c0b259cdf958b38", null ],
     [ "provisioning_method_e", "d0/dae/provisioning_8h.html#ac27601a4f3f8b1b11e8eba070f6ced1b", [
       [ "PROV_METHOD_UNSECURED", "d0/dae/provisioning_8h.html#ac27601a4f3f8b1b11e8eba070f6ced1ba7d08ecc7c1f194272e2e64f1cbdd0486", null ],
-      [ "PROV_METHOD_SECURED", "d0/dae/provisioning_8h.html#ac27601a4f3f8b1b11e8eba070f6ced1badd480848ff77e8753cf79687991db316", null ]
+      [ "PROV_METHOD_SECURED", "d0/dae/provisioning_8h.html#ac27601a4f3f8b1b11e8eba070f6ced1badd480848ff77e8753cf79687991db316", null ],
+      [ "PROV_METHOD_EXTENDED_UID", "d0/dae/provisioning_8h.html#ac27601a4f3f8b1b11e8eba070f6ced1ba7fe5b0de01782c89f92a996b0c5868cf", null ]
     ] ],
     [ "provisioning_res_e", "d0/dae/provisioning_8h.html#a6d4b29ca58ea67e8612eeb1556ffe853", [
       [ "PROV_RES_SUCCESS", "d0/dae/provisioning_8h.html#a6d4b29ca58ea67e8612eeb1556ffe853a1dffa35a099bc1dea325ca0f11f45645", null ],

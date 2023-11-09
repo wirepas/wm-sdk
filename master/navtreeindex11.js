@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"dc/dac/io_8h.html#a7e83224600f53adba6732351c23416ba":[8,5,2,0,0,3],
 "dc/dac/io_8h.html#ae6ffb2eba5e3f26ad937b17d11f8895f":[8,5,2,0,0,1],
 "dc/dac/io_8h.html#aff8832c7d3ef5a35fabaa582dceaa338":[8,5,2,0,0,2],
 "dc/dac/io_8h_source.html":[8,5,2,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "dd/d9c/programming_interface.html#ram_memory":[4,4,6],
 "dd/d9c/programming_interface.html#stack_api":[4,0],
 "dd/d9c/programming_interface.html#util_api":[4,5],
-"dd/da9/pca10112_2makefile__board_8mk.html":[8,1,10,2],
-"dd/da9/pca10112_2makefile__board_8mk_source.html":[8,1,10,2]
+"dd/da9/pca10112_2makefile__board_8mk.html":[8,1,10,2]
 };

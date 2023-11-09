@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"d5/d63/dualmcu__lib_8h.html#aa267ba0cb0c8fa9778930ad837301e36":[8,5,2,2,1],
 "d5/d63/dualmcu__lib_8h.html#aa267ba0cb0c8fa9778930ad837301e36a24a57d67346994c29144687e66cfa5eb":[8,5,2,2,1,1],
 "d5/d63/dualmcu__lib_8h.html#aa267ba0cb0c8fa9778930ad837301e36a42014a979fdce9f769b4c82ae000621d":[8,5,2,2,1,0],
 "d5/d63/dualmcu__lib_8h.html#ab51e6d4045f7d54ded85cd33ba5fa167":[8,5,2,2,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "d6/d21/poslib_8h.html#a5d0675d5c215389b2bcb488c1d55fd64":[8,5,4,1,40],
 "d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0":[8,5,4,1,31],
 "d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a3366e5471ccc84350b4a2cb64d0a4693":[8,5,4,1,31,1],
-"d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a3f995fd38202c16037d875117277664a":[8,5,4,1,31,4],
-"d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a46de9831e828941eac98879d4a75f1a6":[8,5,4,1,31,0]
+"d6/d21/poslib_8h.html#a5e4d8a9e71deab9296ce60867adfbbc0a3f995fd38202c16037d875117277664a":[8,5,4,1,31,4]
 };

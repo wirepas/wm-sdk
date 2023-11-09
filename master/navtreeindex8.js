@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"d8/da1/wms__radio__config_8h.html#aa6e6417b37d0dddc03c2caa9c41af352":[8,0,9,4,0],
 "d8/da1/wms__radio__config_8h.html#aac3240e302e32e1edae779e568f1e86a":[8,0,9,6],
 "d8/da1/wms__radio__config_8h.html#aafd23f4cdb21088b3bf553a42675dfef":[8,0,9,2,3],
 "d8/da1/wms__radio__config_8h.html#ab0b852f49c49a92a3817d248fbfebd77":[8,0,9,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "d9/df8/efr32__template_2board_8h.html#ac5c54565e5266fd2bf7f9b8bace2ae9c":[8,1,1,0,13],
 "d9/df8/efr32__template_2board_8h.html#aca8fcd9d16228b415f8158d08dfa416e":[8,1,1,0,7],
 "d9/df8/efr32__template_2board_8h.html#ad4dadd89e2628f808d599207a20b3b70":[8,1,1,0,8],
-"d9/df8/efr32__template_2board_8h_source.html":[8,1,1,0],
-"da/d1b/function__codes_8h.html":[8,5,2,1,2,5]
+"d9/df8/efr32__template_2board_8h_source.html":[8,1,1,0]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"da/d1b/function__codes_8h.html":[8,5,2,1,2,5],
 "da/d1b/function__codes_8h.html#a05072f32294c9de0e72543107820f082":[8,5,2,1,2,5,11],
 "da/d1b/function__codes_8h.html#a1334d12387caa39ddff53238ed4e1a37":[8,5,2,1,2,5,9],
 "da/d1b/function__codes_8h.html#a1b0fe0ac892c991b24ac77381b6f221e":[8,5,2,1,2,5,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "db/d41/board_2promistel__rpi__hat_2config_8mk.html":[8,1,11,1],
 "db/d41/board_2promistel__rpi__hat_2config_8mk_source.html":[8,1,11,1],
 "db/d41/pca10100_2board_8h.html":[8,1,9,0],
-"db/d41/pca10100_2board_8h.html#a0af72e93971553bc01429840dbcede95":[8,1,9,0,8],
-"db/d41/pca10100_2board_8h.html#a22dc8bf341319e58e0377f0a58770d71":[8,1,9,0,0]
+"db/d41/pca10100_2board_8h.html#a0af72e93971553bc01429840dbcede95":[8,1,9,0,8]
 };

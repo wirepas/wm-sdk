@@ -15871,7 +15871,7 @@ $(document).ready(function(){initNavTree('search.html',''); initResizable(); });
     <field name="name">provisioning.h</field>
     <field name="url">d0/dae/provisioning_8h_source.html#l00001</field>
     <field name="keywords"></field>
-    <field name="text">PROV_METHOD_UNSECURED PROV_METHOD_SECURED provisioning_method_e PROV_RES_SUCCESS PROV_RES_TIMEOUT PROV_RES_NACK PROV_RES_INVALID_DATA PROV_RES_INVALID_PACKET PROV_RES_ERROR_SENDING_DATA PROV_RES_ERROR_SCANNING_BEACONS PROV_RES_ERROR_JOINING PROV_RES_ERROR_NO_ROUTE PROV_RES_STOPPED PROV_RES_ERROR_INTERNAL provisioning_res_e PROV_RET_OK PROV_RET_INVALID_STATE PROV_RET_INVALID_PARAM PROV_RET_INVALID_DATA PROV_RET_JOINING_LIB_ERROR PROV_RET_INTERNAL_ERROR provisioning_ret_e</field>
+    <field name="text">PROV_METHOD_UNSECURED PROV_METHOD_SECURED PROV_METHOD_EXTENDED_UID provisioning_method_e PROV_RES_SUCCESS PROV_RES_TIMEOUT PROV_RES_NACK PROV_RES_INVALID_DATA PROV_RES_INVALID_PACKET PROV_RES_ERROR_SENDING_DATA PROV_RES_ERROR_SCANNING_BEACONS PROV_RES_ERROR_JOINING PROV_RES_ERROR_NO_ROUTE PROV_RES_STOPPED PROV_RES_ERROR_INTERNAL provisioning_res_e PROV_RET_OK PROV_RET_INVALID_STATE PROV_RET_INVALID_PARAM PROV_RET_INVALID_DATA PROV_RET_JOINING_LIB_ERROR PROV_RET_INTERNAL_ERROR provisioning_ret_e</field>
   </doc>
   <doc>
     <field name="type">source</field>
@@ -16025,208 +16025,215 @@ $(document).ready(function(){initNavTree('search.html',''); initResizable(); });
     <field name="name">provisioning.h</field>
     <field name="url">d0/dae/provisioning_8h_source.html#l00046</field>
     <field name="keywords"></field>
-    <field name="text">PROV_METHOD_SECURED provisioning_method_e</field>
+    <field name="text">PROV_METHOD_SECURED</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00057</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00047</field>
+    <field name="keywords"></field>
+    <field name="text">PROV_METHOD_EXTENDED_UID provisioning_method_e</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning.h</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00058</field>
     <field name="keywords"></field>
     <field name="text">bool provisioning_end_cb_f provisioning_res_e result</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00070</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00071</field>
     <field name="keywords"></field>
     <field name="text">void provisioning_user_data_cb_f uint32_t id CborType type uint8_t data uint8_t len app_lib_joining_received_beacon_t</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00087</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00088</field>
     <field name="keywords"></field>
     <field name="text">app_lib_joining_received_beacon_t beacons</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00093</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00094</field>
     <field name="keywords"></field>
     <field name="text"></field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00096</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00097</field>
     <field name="keywords"></field>
     <field name="text">uint8_t enc_key APP_LIB_SETTINGS_AES_KEY_NUM_BYTES</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00098</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00099</field>
     <field name="keywords"></field>
     <field name="text">uint8_t auth_key APP_LIB_SETTINGS_AES_KEY_NUM_BYTES</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00100</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00101</field>
     <field name="keywords"></field>
     <field name="text">app_lib_settings_net_addr_t net_addr</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00102</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00103</field>
     <field name="keywords"></field>
     <field name="text">app_lib_settings_net_channel_t net_chan provisioning_proxy_net_param_t</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00123</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00124</field>
     <field name="keywords"></field>
     <field name="text">bool provisioning_proxy_start_cb_f uint8_t uid uint8_t uid_len provisioning_method_e method provisioning_proxy_net_param_t net_param</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00132</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00133</field>
     <field name="keywords"></field>
     <field name="text"></field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00135</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00136</field>
     <field name="keywords"></field>
     <field name="text">provisioning_method_e method</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00137</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00138</field>
     <field name="keywords"></field>
     <field name="text">uint8_t nb_retry</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00139</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00140</field>
     <field name="keywords"></field>
     <field name="text">uint16_t timeout_s</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00141</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00142</field>
     <field name="keywords"></field>
     <field name="text">uint8_t uid</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00143</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00144</field>
     <field name="keywords"></field>
     <field name="text">uint8_t uid_len</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00148</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00149</field>
     <field name="keywords"></field>
     <field name="text">uint8_t key</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00150</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00151</field>
     <field name="keywords"></field>
     <field name="text">uint8_t key_len</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00152</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00153</field>
     <field name="keywords"></field>
     <field name="text">provisioning_end_cb_f end_cb</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00154</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00155</field>
     <field name="keywords"></field>
     <field name="text">provisioning_user_data_cb_f user_data_cb</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00156</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00157</field>
     <field name="keywords"></field>
     <field name="text">provisioning_joining_beacon_cb_f beacon_joining_cb provisioning_conf_t</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00166</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00167</field>
     <field name="keywords"></field>
     <field name="text"></field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00169</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00170</field>
     <field name="keywords"></field>
     <field name="text">uint8_t payload</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00171</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00172</field>
     <field name="keywords"></field>
     <field name="text">uint8_t num_bytes</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00173</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00174</field>
     <field name="keywords"></field>
     <field name="text">int8_t tx_power</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00175</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00176</field>
     <field name="keywords"></field>
     <field name="text">is_local_unsec_allowed</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00177</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00178</field>
     <field name="keywords"></field>
     <field name="text">is_local_sec_allowed</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00182</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00183</field>
     <field name="keywords"></field>
     <field name="text">uint8_t key</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00184</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00185</field>
     <field name="keywords"></field>
     <field name="text">uint8_t key_len</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning.h</field>
-    <field name="url">d0/dae/provisioning_8h_source.html#l00186</field>
+    <field name="url">d0/dae/provisioning_8h_source.html#l00187</field>
     <field name="keywords"></field>
     <field name="text">provisioning_proxy_start_cb_f start_cb provisioning_proxy_conf_t provisioning_ret_e Provisioning_init provisioning_conf_t conf provisioning_ret_e Provisioning_start provisioning_ret_e Provisioning_stop provisioning_ret_e Provisioning_Proxy_init provisioning_proxy_conf_t conf provisioning_ret_e Provisioning_Proxy_start provisioning_ret_e Provisioning_Proxy_stop</field>
   </doc>
@@ -16310,282 +16317,261 @@ $(document).ready(function(){initNavTree('search.html',''); initResizable(); });
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00049</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00054</field>
     <field name="keywords"></field>
     <field name="text"></field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00055</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00061</field>
     <field name="keywords"></field>
     <field name="text"></field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00058</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00064</field>
     <field name="keywords"></field>
     <field name="text"></field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00063</field>
-    <field name="keywords"></field>
-    <field name="text"></field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00066</field>
-    <field name="keywords"></field>
-    <field name="text"></field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00068</field>
-    <field name="keywords"></field>
-    <field name="text">PROV_DATA_ID_ENC_KEY</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00069</field>
     <field name="keywords"></field>
-    <field name="text">PROV_DATA_ID_AUTH_KEY</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00070</field>
-    <field name="keywords"></field>
-    <field name="text">PROV_DATA_ID_NET_ADDR</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00071</field>
-    <field name="keywords"></field>
-    <field name="text">PROV_DATA_ID_NET_CHAN</field>
+    <field name="text"></field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00072</field>
     <field name="keywords"></field>
-    <field name="text">PROV_DATA_ID_NODE_ADDR</field>
+    <field name="text"></field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00073</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00074</field>
     <field name="keywords"></field>
-    <field name="text">PROV_DATA_ID_NODE_ROLE provisioning_data_ids_e</field>
+    <field name="text">PROV_DATA_ID_ENC_KEY</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00075</field>
+    <field name="keywords"></field>
+    <field name="text">PROV_DATA_ID_AUTH_KEY</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00076</field>
     <field name="keywords"></field>
-    <field name="text"></field>
+    <field name="text">PROV_DATA_ID_NET_ADDR</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00077</field>
+    <field name="keywords"></field>
+    <field name="text">PROV_DATA_ID_NET_CHAN</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00078</field>
     <field name="keywords"></field>
-    <field name="text">PROV_PACKET_TYPE_START</field>
+    <field name="text">PROV_DATA_ID_NODE_ADDR</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00079</field>
     <field name="keywords"></field>
-    <field name="text">PROV_PACKET_TYPE_DATA</field>
+    <field name="text">PROV_DATA_ID_NODE_ROLE provisioning_data_ids_e</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00080</field>
-    <field name="keywords"></field>
-    <field name="text">PROV_PACKET_TYPE_DATA_ACK</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00081</field>
-    <field name="keywords"></field>
-    <field name="text">PROV_PACKET_TYPE_NACK prov_packet_type_e</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00084</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00082</field>
     <field name="keywords"></field>
     <field name="text"></field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00084</field>
+    <field name="keywords"></field>
+    <field name="text">PROV_PACKET_TYPE_START</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00085</field>
+    <field name="keywords"></field>
+    <field name="text">PROV_PACKET_TYPE_DATA</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00086</field>
     <field name="keywords"></field>
-    <field name="text">PROV_NACK_TYPE_NOT_AUTHORIZED</field>
+    <field name="text">PROV_PACKET_TYPE_DATA_ACK</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00087</field>
     <field name="keywords"></field>
-    <field name="text">PROV_NACK_TYPE_METHOD_NOT_SUPPORTED</field>
+    <field name="text">PROV_PACKET_TYPE_NACK prov_packet_type_e</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00088</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00090</field>
     <field name="keywords"></field>
-    <field name="text">PROV_NACK_TYPE_INVALID_DATA</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00089</field>
-    <field name="keywords"></field>
-    <field name="text">PROV_NACK_TYPE_INVALID_KEY_IDX prov_nack_type_e</field>
+    <field name="text"></field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00092</field>
     <field name="keywords"></field>
-    <field name="text">__attribute__ __packed__</field>
+    <field name="text">PROV_NACK_TYPE_NOT_AUTHORIZED</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00093</field>
+    <field name="keywords"></field>
+    <field name="text">PROV_NACK_TYPE_METHOD_NOT_SUPPORTED</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00094</field>
     <field name="keywords"></field>
-    <field name="text">uint8_t type</field>
+    <field name="text">PROV_NACK_TYPE_INVALID_DATA</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00095</field>
     <field name="keywords"></field>
-    <field name="text">app_addr_t address</field>
+    <field name="text">PROV_NACK_TYPE_INVALID_KEY_IDX prov_nack_type_e</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00096</field>
-    <field name="keywords"></field>
-    <field name="text">uint8_t session_id pdu_prov_hdr_t</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00099</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00098</field>
     <field name="keywords"></field>
     <field name="text">__attribute__ __packed__</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00100</field>
+    <field name="keywords"></field>
+    <field name="text">uint8_t type</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00101</field>
     <field name="keywords"></field>
-    <field name="text">pdu_prov_hdr_t pdu_header</field>
+    <field name="text">app_addr_t address</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00102</field>
     <field name="keywords"></field>
-    <field name="text">uint8_t method</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00103</field>
-    <field name="keywords"></field>
-    <field name="text">uint8_t iv AES_128_KEY_BLOCK_SIZE uint8_t uid PROV_PDU_SIZE</field>
+    <field name="text">uint8_t session_id pdu_prov_hdr_t</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00105</field>
     <field name="keywords"></field>
-    <field name="text">pdu_prov_hdr_t AES_128_KEY_BLOCK_SIZE pdu_prov_start_t</field>
+    <field name="text">__attribute__ __packed__</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00107</field>
+    <field name="keywords"></field>
+    <field name="text">pdu_prov_hdr_t pdu_header</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00108</field>
     <field name="keywords"></field>
-    <field name="text">__attribute__ __packed__</field>
+    <field name="text">uint8_t method</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00110</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00109</field>
     <field name="keywords"></field>
-    <field name="text">pdu_prov_hdr_t pdu_header</field>
+    <field name="text">uint8_t iv AES_128_KEY_BLOCK_SIZE uint8_t uid PROV_PDU_SIZE</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00111</field>
     <field name="keywords"></field>
-    <field name="text">uint8_t key_index</field>
+    <field name="text">pdu_prov_hdr_t AES_128_KEY_BLOCK_SIZE pdu_prov_start_t</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00112</field>
-    <field name="keywords"></field>
-    <field name="text">uint16_t counter</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00113</field>
-    <field name="keywords"></field>
-    <field name="text">uint8_t data PROV_PDU_SIZE PROV_DATA_OFFSET PROV_MIC_SIZE pdu_prov_data_t</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00119</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00114</field>
     <field name="keywords"></field>
     <field name="text">__attribute__ __packed__</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00121</field>
-    <field name="keywords"></field>
-    <field name="text">pdu_prov_hdr_t pdu_header pdu_prov_data_ack_t</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00124</field>
-    <field name="keywords"></field>
-    <field name="text">__attribute__ __packed__</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00126</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00116</field>
     <field name="keywords"></field>
     <field name="text">pdu_prov_hdr_t pdu_header</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00117</field>
+    <field name="keywords"></field>
+    <field name="text">uint8_t key_index</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00118</field>
+    <field name="keywords"></field>
+    <field name="text">uint16_t counter</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00119</field>
+    <field name="keywords"></field>
+    <field name="text">uint8_t data PROV_PDU_SIZE PROV_DATA_OFFSET PROV_MIC_SIZE pdu_prov_data_t</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00125</field>
+    <field name="keywords"></field>
+    <field name="text">__attribute__ __packed__</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00127</field>
     <field name="keywords"></field>
-    <field name="text">uint8_t nack_type pdu_prov_nack_t</field>
+    <field name="text">pdu_prov_hdr_t pdu_header pdu_prov_data_ack_t</field>
   </doc>
   <doc>
     <field name="type">source</field>
@@ -16599,103 +16585,124 @@ $(document).ready(function(){initNavTree('search.html',''); initResizable(); });
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00132</field>
     <field name="keywords"></field>
-    <field name="text">__attribute__ __packed__ pdu_prov_hdr_t pdu_header uint8_t pld PROV_PDU_SIZE pdu_prov_hdr_t</field>
+    <field name="text">pdu_prov_hdr_t pdu_header</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00137</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00133</field>
     <field name="keywords"></field>
-    <field name="text">pdu_prov_start_t start</field>
+    <field name="text">uint8_t nack_type pdu_prov_nack_t</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00136</field>
+    <field name="keywords"></field>
+    <field name="text">__attribute__ __packed__</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00138</field>
     <field name="keywords"></field>
+    <field name="text">__attribute__ __packed__ pdu_prov_hdr_t pdu_header uint8_t pld PROV_PDU_SIZE pdu_prov_hdr_t</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00143</field>
+    <field name="keywords"></field>
+    <field name="text">pdu_prov_start_t start</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00144</field>
+    <field name="keywords"></field>
     <field name="text">pdu_prov_data_t data</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00139</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00145</field>
     <field name="keywords"></field>
     <field name="text">pdu_prov_data_ack_t data_ack</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00140</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00146</field>
     <field name="keywords"></field>
     <field name="text">pdu_prov_nack_t nack pdu_prov_t</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00146</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00152</field>
     <field name="keywords"></field>
     <field name="text"></field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00149</field>
-    <field name="keywords"></field>
-    <field name="text">provisioning_end_cb_f end_cb</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00151</field>
-    <field name="keywords"></field>
-    <field name="text">provisioning_user_data_cb_f user_data_cb</field>
-  </doc>
-  <doc>
-    <field name="type">source</field>
-    <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00153</field>
-    <field name="keywords"></field>
-    <field name="text">uint8_t buffer</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
     <field name="url">d9/d27/provisioning__int_8h_source.html#l00155</field>
     <field name="keywords"></field>
+    <field name="text">provisioning_end_cb_f end_cb</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00157</field>
+    <field name="keywords"></field>
+    <field name="text">provisioning_user_data_cb_f user_data_cb</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00159</field>
+    <field name="keywords"></field>
+    <field name="text">uint8_t buffer</field>
+  </doc>
+  <doc>
+    <field name="type">source</field>
+    <field name="name">provisioning_int.h</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00161</field>
+    <field name="keywords"></field>
     <field name="text">uint8_t length provisioning_data_conf_t</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00164</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00170</field>
     <field name="keywords"></field>
     <field name="text">void provisioning_joining_end_cb_f provisioning_res_e result</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00169</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00175</field>
     <field name="keywords"></field>
     <field name="text"></field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00172</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00178</field>
     <field name="keywords"></field>
     <field name="text">provisioning_joining_beacon_cb_f joining_cb</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00174</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00180</field>
     <field name="keywords"></field>
     <field name="text">provisioning_joining_end_cb_f end_cb</field>
   </doc>
   <doc>
     <field name="type">source</field>
     <field name="name">provisioning_int.h</field>
-    <field name="url">d9/d27/provisioning__int_8h_source.html#l00176</field>
+    <field name="url">d9/d27/provisioning__int_8h_source.html#l00182</field>
     <field name="keywords"></field>
     <field name="text">uint8_t nb_retry provisioning_joining_conf_t provisioning_ret_e Provisioning_Data_decode provisioning_data_conf_t conf dry_run provisioning_ret_e Provisioning_Joining_init provisioning_joining_conf_t conf provisioning_ret_e Provisioning_Joining_start provisioning_ret_e Provisioning_Joining_stop</field>
   </doc>
@@ -33078,6 +33085,13 @@ $(document).ready(function(){initNavTree('search.html',''); initResizable(); });
     <field name="url">d0/dae/provisioning_8h.html#ac27601a4f3f8b1b11e8eba070f6ced1badd480848ff77e8753cf79687991db316</field>
     <field name="keywords">PROV_METHOD_SECURED</field>
     <field name="text">Secured provisioning method</field>
+  </doc>
+  <doc>
+    <field name="type">enumvalue</field>
+    <field name="name">PROV_METHOD_EXTENDED_UID</field>
+    <field name="url">d0/dae/provisioning_8h.html#ac27601a4f3f8b1b11e8eba070f6ced1ba7fe5b0de01782c89f92a996b0c5868cf</field>
+    <field name="keywords">PROV_METHOD_EXTENDED_UID</field>
+    <field name="text">Extended UID provisioning method</field>
   </doc>
   <doc>
     <field name="type">variable</field>
