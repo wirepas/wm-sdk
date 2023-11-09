@@ -1,0 +1,16 @@
+# This is an example file to customize a node running the provisioning joining node appliation
+# using the secure method.
+
+# Hex array must start with 0x otherwise it is treated as a string.
+
+# Format is:
+#
+# provisioning :
+#    uid: (bytes string, less than 79 bytes long)
+#    factory_key : (32 bytes string, [0:15 Auth key][16:31 Enc Key]) Needed for secured method.
+#    method : (Unsecured:0, Secured:1, Extended:3) Ex: 0
+
+provisioning:
+    uid: 0x58 0xc8 0x12 0xad 0x37 0xe8 0x36 0x4a 0xa1 0x1f 0x1c 0xbc 0x63 0x3e 0x8e 0x34
+    factory_key : 0x00 0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08 0X09 0X0A 0X0B 0X0C 0X0D 0X0E 0X0F 0x00 0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08 0X09 0X0A 0X0B 0X0C 0X0D 0X0E 0X0F
+    method: 0x01

@@ -15,7 +15,7 @@ import struct
 SCRATCHPAD_V1_TAG = b"SCR1\232\223\060\202\331\353\012\374\061\041\343\067"
 
 # Maximum number of bytes in an input file
-MAX_NUM_BYTES_PER_FILE = (8 * 1024 * 1024)  # Eight megabytes
+MAX_NUM_BYTES_PER_FILE = (1024 * 1024)  # One megabyte
 
 # Special CMAC tag constant value that marks a custom readable scratchpad
 CMAC_TAG_CONSTANT = b"\xff" * 16

@@ -173,3 +173,5 @@ BOOTLOADER_UPDATER_DATA_BIN := $(BUILDPREFIX)bootloader_updater/bootloader_updat
 STACK_HEX := $(BUILDPREFIX_STACK)$(FIRMWARE_NAME).hex
 
 APP_HEX := $(BUILDPREFIX_APP)$(APP_NAME).hex
+
+mac_profile?=ism_24_ghz

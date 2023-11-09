@@ -37,6 +37,11 @@ endif
 # And version numbers
 CFLAGS += -DVER_MAJOR=$(app_major) -DVER_MINOR=$(app_minor) -DVER_MAINT=$(app_maintenance) -DVER_DEV=$(app_development)
 
+# Mac profile
+ifeq ("$(mac_profile)","ism_24_ghz")
+    CFLAGS += -DMAC_PROFILE_ISM24
+endif
+
 # Include board init part
 -include board/makefile
 
