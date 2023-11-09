@@ -9,9 +9,9 @@ app_name=custom_app
 target_board=
 
 # Version of the SDK
-sdk_major=1
-sdk_minor=4
-sdk_maintenance=1
+sdk_major=0
+sdk_minor=0
+sdk_maintenance=0
 sdk_development=0
 
 

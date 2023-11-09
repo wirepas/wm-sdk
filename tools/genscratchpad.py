@@ -53,7 +53,7 @@ class InFile(object):
     '''An input file'''
 
     # Maximum number of bytes in an input file
-    MAX_NUM_BYTES_PER_FILE = (8 * 1024 * 1024)  # Eight megabytes
+    MAX_NUM_BYTES_PER_FILE = (1024 * 1024)  # One megabyte
 
     # Data block length, in bytes
     BLOCK_LENGTH = 16

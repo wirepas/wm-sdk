@@ -43,10 +43,16 @@
 #define PROV_DATA_MAX_USER_ID 255
 
 /** Network address for sending and receiving joining beacons */
-#define JOINING_NETWORK_ADDRESS 0x89d3b8 // "JBTX"
+#define JOINING_NETWORK_ADDRESS 0x9E4ADC // "JBTX"
 
 /** Network channel for sending and receiving joining beacons */
+// For Massive, joining network channel is 36
+#ifdef MAC_PROFILE_ISM24
+#define JOINING_NETWORK_CHANNEL 36
+// For other mac profile (SubGhz and 5G Mesh), channel 4 is used
+#else
 #define JOINING_NETWORK_CHANNEL 4
+#endif
 
 /** Time to scan for joining beacons, in milliseconds.
  *  \ref JOINING_RX_TIMEOUT and \ref JOINING_TX_INTERVAL needs to
