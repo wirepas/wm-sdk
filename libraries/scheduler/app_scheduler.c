@@ -37,11 +37,23 @@ typedef struct
 /** Structure of a task */
 typedef struct
 {
+#if APP_SCHEDULER_ENABLE_ARGS_PASSING
+    union
+    {
+        task_cb_f                       func; /* Cb of this task */
+        const task_with_args_st *       p_task_with_args; /* Cb of this task */
+    };
+#else
     task_cb_f                           func; /* Cb of this task */
+#endif
     timestamp_t                         next_ts;/* When is the next execution */
     uint32_t                            exec_time_us; /* Time needed for execution */
     bool                                updated; /* Updated in IRQ context? */
     bool                                removed; /* Task removed, to be released */
+#if APP_SCHEDULER_ENABLE_ARGS_PASSING
+    bool                                has_args;
+#endif
+
 } task_t;
 
 /**  List of tasks */
@@ -195,6 +207,10 @@ static bool is_timestamp_before(timestamp_t * ts1_p, timestamp_t * ts2_p)
  */
 static void perform_task(task_t * task)
 {
+
+#ifdef APP_SCHEDULER_ENABLE_ARGS_PASSING
+    const task_with_args_st* p_task_with_args = NULL;
+#endif
     task_cb_f task_cb = NULL;
     uint32_t next = APP_SCHEDULER_STOP_TASK;
 
@@ -204,13 +220,29 @@ static void perform_task(task_t * task)
         return;
     }
 
-    task_cb = task->func;
-    if (task_cb == NULL)
+#ifdef APP_SCHEDULER_ENABLE_ARGS_PASSING
+    if(task->has_args)
     {
-        return;
+        p_task_with_args = task->p_task_with_args;
+        if ((p_task_with_args == NULL) || (p_task_with_args->func == NULL))
+        {
+            // There is an issue, no next task
+            return;
+        }
+        // Execute the context task selected
+        next = p_task_with_args->func(p_task_with_args->p_args);
     }
-    // Execute the task selected
-    next = task_cb();
+    else
+#endif
+    {
+        task_cb = task->func;
+        if (task_cb == NULL)
+        {
+            return;
+        }
+        // Execute the task selected
+        next = task_cb();
+    }
 
     // Update its next execution time under critical section
     // to avoid overriding new value set by IRQ
@@ -223,7 +255,16 @@ static void perform_task(task_t * task)
         {
             // Task doesn't have to be executed again
             // so safe to release it
-            task->func = NULL;
+#ifdef APP_SCHEDULER_ENABLE_ARGS_PASSING
+            if(task->has_args)
+            {
+                task->p_task_with_args = NULL;
+            }
+            else
+#endif
+            {
+                task->func = NULL;
+            }
         }
         else
         {
@@ -354,6 +395,7 @@ static bool add_task_to_table_locked(task_t * task_p)
     for (uint8_t i = 0; i < APP_SCHEDULER_ALL_TASKS; i++)
     {
         // First check if task already exist
+        // func is in union so compare in both cases is valid
         if (m_tasks[i].func == task_p->func)
         {
             // Task found, just update the next timestamp and exit
@@ -440,6 +482,9 @@ app_scheduler_res_e App_Scheduler_addTask_execTime(task_cb_f cb,
         .exec_time_us = exec_time_us,
         .updated = false,
         .removed = false,
+#if APP_SCHEDULER_ENABLE_ARGS_PASSING
+        .has_args = false,
+#endif
     };
     app_scheduler_res_e res;
     get_timestamp(&new_task.next_ts, delay_ms);
@@ -520,3 +565,90 @@ app_scheduler_res_e App_Scheduler_cancelTask(task_cb_f cb)
 
     return res;
 }
+
+
+#if APP_SCHEDULER_ENABLE_ARGS_PASSING
+app_scheduler_res_e App_Scheduler_addTask_with_args_execTime(const task_with_args_st* p_task,
+                                                          uint32_t delay_ms,
+                                                          uint32_t exec_time_us)
+{
+    task_t new_task = {
+        .p_task_with_args = p_task,
+        .exec_time_us = exec_time_us,
+        .updated = false,
+        .removed = false,
+        .has_args = true,
+    };
+    app_scheduler_res_e res;
+    get_timestamp(&new_task.next_ts, delay_ms);
+
+    if (!m_initialized)
+    {
+        return APP_SCHEDULER_RES_UNINITIALIZED;
+    }
+
+    Sys_enterCriticalSection();
+
+    if (!add_task_to_table_locked(&new_task))
+    {
+        res = APP_SCHEDULER_RES_NO_MORE_TASK;
+    }
+    else
+    {
+        // Check if reschedule is needed:
+        // - No next task
+        // - Updating current next scheduled task
+        // - New task is before next task
+        if (m_next_task_p == NULL
+            || (m_next_task_p->p_task_with_args == p_task)
+            || is_timestamp_before(&new_task.next_ts, &m_next_task_p->next_ts))
+        {
+            m_force_reschedule = true;
+            // Call our periodic work to update the next task ASAP
+            // with short exec time as no task will be executed
+            lib_system->setPeriodicCb(periodic_work,
+                                      0,
+                                      EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US);
+        }
+        res = APP_SCHEDULER_RES_OK;
+    }
+
+    Sys_exitCriticalSection();
+
+    return res;
+}
+
+app_scheduler_res_e App_Scheduler_cancelTask_with_args(const task_with_args_st* p_task)
+{
+    app_scheduler_res_e res;
+
+    if (!m_initialized)
+    {
+        return APP_SCHEDULER_RES_UNINITIALIZED;
+    }
+
+    Sys_enterCriticalSection();
+
+    // func and p_task_with_args are in union so casting will work here
+    task_t * removed_task = remove_task_from_table_locked((task_cb_f) p_task);
+    if (removed_task != NULL)
+    {
+        // Force our task to be reschedule asap to do the cleanup of the task
+        // and potentially change the next task to be schedule
+        m_force_reschedule = true;
+        lib_system->setPeriodicCb(periodic_work,
+                                  0,
+                                  EXECUTION_TIME_NEEDED_FOR_SCHEDULING_US);
+
+        res = APP_SCHEDULER_RES_OK;
+    }
+    else
+    {
+        res = APP_SCHEDULER_RES_UNKNOWN_TASK;
+    }
+
+    Sys_exitCriticalSection();
+
+    return res;
+}
+#endif

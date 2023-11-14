@@ -43,7 +43,7 @@ ifeq ("$(mac_profile)","ism_24_ghz")
 endif
 
 # Include board init part
--include board/makefile
+-include $(BOARDS_PATH)makefile
 
 # Include app specific makefile
 -include $(APP_SRCS_PATH)makefile

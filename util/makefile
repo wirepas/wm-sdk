@@ -14,6 +14,18 @@ SRCS += $(UTIL_PATH)syscalls.c
 SRCS += $(UTIL_PATH)uart_print.c
 endif
 
+
+ifeq ($(APP_PRINTING_VIA_RTT), yes)
+CFLAGS += -DAPP_PRINTING_VIA_RTT
+RTT_PATH = $(UTIL_PATH)RTT/
+SRCS += $(RTT_PATH)SEGGER_RTT.c \
+        $(RTT_PATH)SEGGER_RTT_printf.c \
+        $(RTT_PATH)SEGGER_RTT_Syscalls_GCC.c \
+        $(UTIL_PATH)syscalls.c
+# ASM_SRCS += $(RTT_PATH)SEGGER_RTT_ASM_ARMv7M.s
+INCLUDES += -I$(RTT_PATH)
+endif
+
 ifeq ($(TINY_CBOR), yes)
 CBOR_PATH = $(UTIL_PATH)tinycbor/src/
 SRCS += $(CBOR_PATH)cborencoder.c \

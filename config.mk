@@ -24,3 +24,6 @@ arm_toolchain=
 # and fallback to "python" cmd
 python_interpreter=
 
+# Override default board and source paths if needed here
+BOARDS_PATH := ../board/
+APPLICATIONS_PATH := ../source/
