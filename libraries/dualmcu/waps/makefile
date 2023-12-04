@@ -11,8 +11,12 @@ WAPS_PREFIX := $(WP_LIB_PATH)dualmcu/waps/
 # 16 -> 17 (- Add support for fragmented packet (TX and RX))
 # 17 -> 18 (- add scratchpad read primitive
 #           - add read-only MSAP attribute 14 for stored scratchpad size)
+# 18 -> 19 (- removed initial delay from  WAPS_FUNC_DSAP_DATA_TX_TT_REQ & 
+#             WAPS_FUNC_DSAP_DATA_TX_FRAG_REQ
+#           - Removed queueing time services
+#           - Removed remote update services)
 
-CFLAGS += -DWAPS_VERSION=18
+CFLAGS += -DWAPS_VERSION=19
 
 INCLUDES += -I$(WAPS_PREFIX)
 

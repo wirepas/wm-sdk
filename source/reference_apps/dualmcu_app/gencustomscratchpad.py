@@ -15,7 +15,7 @@ import struct
 SCRATCHPAD_V1_TAG = b"SCR1\232\223\060\202\331\353\012\374\061\041\343\067"
 
 # Maximum number of bytes in an input file
-MAX_NUM_BYTES_PER_FILE = (1024 * 1024)  # One megabyte
+MAX_NUM_BYTES_PER_FILE = (8 * 1024 * 1024)  # Eight megabytes
 
 # Special CMAC tag constant value that marks a custom readable scratchpad
 CMAC_TAG_CONSTANT = b"\xff" * 16
@@ -54,7 +54,7 @@ def make_header(data):
         uint8_t pad;
         /** Scratchpad type information for bootloader: bl_header_type_e */
         uint32_t type;
-        /** Status code from bootloader: bl_header_status_e */
+        /** Status code from bootloader: bl_scratchpad_status_e */
         uint32_t status;
     };
 

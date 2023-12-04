@@ -119,11 +119,6 @@ void App_init(const app_global_functions_t * functions)
         return;
     }
 
-    // Set up LEDs
-    Led_init();
-
-    // Set up buttons
-    Button_init();
     uint_fast8_t num_buttons = Button_get_number();
     for (uint_fast8_t button_id = 0; button_id < num_buttons; button_id++)
     {

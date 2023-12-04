@@ -22,8 +22,8 @@ MEMORY
 {
     BOOTLOADER (rx)   : ORIGIN = 0x00000000,                LENGTH = 16K - 1K
     BLCONFIG (rx)     : ORIGIN = 0x00000000 + 15K,          LENGTH = 1K
-    BL_STATIC (rwx)   : ORIGIN = 0x20000000 + 24,           LENGTH = 512 - 24
-    RAM (rwx)         : ORIGIN = 0x20000000 + 512,          LENGTH = 32K - 512
+    BL_STATIC (rwx)   : ORIGIN = 0x20000000 + 24,           LENGTH = 1K - 24
+    RAM (rwx)         : ORIGIN = 0x20000000 + 1K,           LENGTH = 32K - 1K
     INVALID (rwx)     : ORIGIN = 0xFFFFFFFF,                LENGTH = 0
 }
 
@@ -62,6 +62,7 @@ SECTIONS
         *scratchpad.*o*(.data* .data)
         *internal_flash*.*o*(.data* .data)
         *external_flash*.*o*(.data* .data)
+        *debug_flow*.*o*(.data* .data)
         /* Customer specific external flash driver must be located in
          * board/board_name/bootloader folder.
          */
@@ -78,6 +79,7 @@ SECTIONS
         *scratchpad.*o*(.bss.* .bss)
         *internal_flash*.*o*(.bss* .bss)
         *external_flash*.*o*(.bss* .bss)
+        *debug_flow*.*o*(.bss* .bss)
         /* Customer specific external flash driver must be located in
          * board/board_name/bootloader folder
          */

@@ -20,12 +20,6 @@ uart_fc ?= false
 CFLAGS += -DUART_BAUDRATE=$(uart_br)
 CFLAGS += -DUART_FLOWCONTROL=$(uart_fc)
 
-# Force Otap action to LEGACY at firstboot (flash or otap)
-otap_force_legacy ?= no
-ifeq ($(otap_force_legacy),yes)
-    CFLAGS += -DOTAP_FORCE_LEGACY
-endif
-
 DUALMCU_LIB=yes
 
 # Enable local provisioning

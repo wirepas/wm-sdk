@@ -78,13 +78,10 @@ static bool scratchpadReadTarget(waps_item_t * item);
 static bool allowScratchpadRead(void);
 static bool scratchpadReadBlock(waps_item_t * item);
 static bool remoteStatus(waps_item_t * item);
-static bool remoteUpdate(waps_item_t * item);
 static bool sleep_request(waps_item_t * item);
 static bool sleep_stop_request(waps_item_t * item);
 static bool sleep_state_request(waps_item_t * item);
 static bool sleep_gotosleepinfo_request(waps_item_t * item);
-static bool max_msg_queuing_time_write_req(waps_item_t * item);
-static bool max_msg_queuing_time_read_req(waps_item_t * item);
 
 /* Map attr id to attr length */
 static const uint8_t m_attr_size_lut[] =
@@ -325,8 +322,6 @@ bool Msap_handleFrame(waps_item_t * item)
             return scratchpadReadBlock(item);
         case WAPS_FUNC_MSAP_REMOTE_STATUS_REQ:
             return remoteStatus(item);
-        case WAPS_FUNC_MSAP_REMOTE_UPDATE_REQ:
-            return remoteUpdate(item);
         case WAPS_FUNC_MSAP_GET_NBORS_REQ:
             return getNbors(item);
         case WAPS_FUNC_MSAP_SCAN_NBORS_REQ:
@@ -345,10 +340,6 @@ bool Msap_handleFrame(waps_item_t * item)
             return sleep_state_request(item);
         case WAPS_FUNC_MSAP_STACK_SLEEP_GOTOSLEEPINFO_REQ:
             return sleep_gotosleepinfo_request(item);
-        case WAPS_FUNC_MSAP_MAX_MSG_QUEUEING_TIME_WRITE_REQ:
-            return max_msg_queuing_time_write_req(item);
-        case WAPS_FUNC_MSAP_MAX_MSG_QUEUEING_TIME_READ_REQ:
-            return max_msg_queuing_time_read_req(item);
         default:
             return false;
     }
@@ -1527,24 +1518,6 @@ static bool remoteStatus(waps_item_t * item)
     return true;
 }
 
-static bool remoteUpdate(waps_item_t * item)
-{
-    // Remote status is not implemented by stack anymore
-    // Return an existing error code to keep compatibility
-    msap_remote_update_e result = MSAP_REMOTE_UPDATE_ACCESS_DENIED;
-
-    if (item->frame.splen != sizeof(msap_remote_update_req_t))
-    {
-        return false;
-    }
-
-    Waps_item_init(item,
-                   WAPS_FUNC_MSAP_REMOTE_UPDATE_CNF,
-                   sizeof(simple_cnf_t));
-    item->frame.simple_cnf.result = result;
-    return true;
-}
-
 static bool sleep_request(waps_item_t * item)
 {
     msap_sleep_update_e result = MSAP_SLEEP_SUCCESS;
@@ -1627,46 +1600,3 @@ static bool sleep_gotosleepinfo_request(waps_item_t * item)
     return true;
 }
 
-static bool max_msg_queuing_time_write_req(waps_item_t * item)
-{
-    bool status                 = false;
-    app_res_e result            = APP_RES_INVALID_VALUE;
-    waps_func_e conf            = WAPS_FUNC_MSAP_MAX_MSG_QUEUEING_TIME_WRITE_CNF;
-
-    if (item->frame.splen == sizeof (msap_max_msg_queuing_time_req_t))
-    {
-        app_lib_data_qos_e prio = item->
-                                  frame.msap.max_msg_queuing_time_req.priority;
-        uint16_t time = item->frame.msap.max_msg_queuing_time_req.time;
-        result = lib_data->setMaxMsgQueuingTime(prio,time);
-        status = true;
-    }
-    Waps_item_init(item, conf, sizeof(simple_cnf_t));
-    item->frame.simple_cnf.result = result;
-
-    return status;
-}
-
-static bool max_msg_queuing_time_read_req(waps_item_t * item)
-{
-    bool status                 = false;
-    app_res_e result            = APP_RES_INVALID_VALUE;
-    waps_func_e conf            = WAPS_FUNC_MSAP_MAX_MSG_QUEUEING_TIME_READ_CNF;
-    uint16_t time = 0;
-
-    if (item->frame.splen == sizeof(item->
-                                 frame.msap.max_msg_queuing_time_req.priority))
-    {
-        app_lib_data_qos_e prio = item->
-                                  frame.msap.max_msg_queuing_time_req.priority;
-
-        result = lib_data->getMaxMsgQueuingTime(prio,&time);
-        status = true;
-    }
-    Waps_item_init(item, conf, sizeof(msap_max_msg_queuing_time_read_cnf_t));
-    item->frame.msap.max_msg_queuing_time_read_cnf.time = time;
-    item->frame.msap.max_msg_queuing_time_read_cnf.result = result;
-    item->frame.splen = sizeof(item->frame.msap.max_msg_queuing_time_read_cnf);
-
-    return status;
-}

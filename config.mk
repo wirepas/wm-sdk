@@ -10,8 +10,8 @@ target_board=
 
 # Version of the SDK
 sdk_major=1
-sdk_minor=4
-sdk_maintenance=2
+sdk_minor=5
+sdk_maintenance=1
 sdk_development=0
 
 

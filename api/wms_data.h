@@ -29,7 +29,7 @@
 #define APP_LIB_DATA_NAME 0x0003f161 //!< "DATA"
 
 /** \brief Maximum supported library version */
-#define APP_LIB_DATA_VERSION    0x20B
+#define APP_LIB_DATA_VERSION    0x20D
 
 /**
  * @brief Type of tracking ID for data packets
@@ -240,9 +240,9 @@ typedef enum
     /** Fragmented mode is disabled so fragmented packet
      *  received by stack will be reassembled by stack and
      *  sent to app as a single full packet to app.
-     *  This mode will use quite a lot a RAM on stack side
-     *  and is not recommended for a sink receiving a lot of
-     *  traffic.
+     *  This mode may use lot of RAM on stack side
+     *  and is not available for sink as it can receive many
+     *  packets from different sources in parallel.
      */
     APP_LIB_DATA_FRAGMENTED_MODE_DISABLED  = 1,
 } app_lib_data_fragmented_mode_e;
@@ -336,10 +336,6 @@ typedef struct
     size_t num_bytes;
     /** Destination address of packet */
     app_addr_t dest_address;
-    /** Initial end-to-end transmission delay, in 1 / 128 seconds. This could
-     *  be used, for example, to represent actual measurement time if done
-     *  earlier but generated for transmission on later time moment. */
-    uint32_t delay;
     /**
      * Packet tracking ID
      */
@@ -692,56 +688,6 @@ typedef size_t
 
 
 /**
- * \brief   Set maximum queuing time for messages
- * \param   priority
- *          Message priority which queuing time to be set
- * \param   time
- *          Queuing time in seconds. Accepted range: 2 - 65534s.
- *          Select queuing time carefully, too short value might cause
- *          unnecessary message drops and too big value filling up message
- *          queues. For consistent performance it is recommended to use the
- *          same queuing time in the whole network.
- *
- * \note    Minimum queuing time shall be bigger than access cycle
- *          interval in time-slotted mode networks. It is recommended to use
- *          multiples of access cycle interval (+ extra) to give time for
- *          message repetitions, higher priority messages taking over the access
- *          slot etc. Access cycle is not limiting the minimum value in
- *          CSMA-CA networks.
- * \return  Result code, @ref APP_RES_OK if successful
- *          @ref APP_RES_INVALID_VALUE if unsupported message priority or time
- *
- * Example:
- * @code
- * // Set queueing time for low priority to 5 seconds
- * lib_data->setMaxMsgQueuingTime(APP_LIB_DATA_QOS_NORMAL, 5);
- * @endcode
- */
-typedef app_res_e
-    (*app_lib_data_set_max_msg_queuing_time_f)(app_lib_data_qos_e priority,
-                                               uint16_t time);
-
-/**
- * \brief   Get maximum queuing time of messages
- * \param   priority
- *          Message priority which queuing time to be read
- * \param   time_p
- *          Pointer where to store maximum queuing time
- * \return  Result code, @ref APP_RES_OK if ok,
- *          @ref APP_RES_INVALID_VALUE if unsupported message priority,
- *          @ref APP_RES_INVALID_NULL_POINTER if @p time_p is null
- *
- * Example:
- * @code
- * uint16_t qos_normal_qt;
- * lib_data->getMaxMsgQueuingTime(APP_LIB_DATA_QOS_NORMAL, &qos_normal_qt);
- * @endcode
- */
-typedef app_res_e
-    (*app_lib_data_get_max_msg_queuing_time_f)(app_lib_data_qos_e priority,
-                                               uint16_t * time_p);
-
-/**
  * \brief   Write @ref appconfig "app config DATA"
  * \param   bytes
  *          Pointer to app config data to write. The format can be decided by
@@ -858,8 +804,6 @@ typedef struct
     app_lib_data_allow_reception_f allowReception;
     app_lib_data_read_app_config_f readAppConfig;
     app_lib_data_get_app_config_num_bytes_f getAppConfigNumBytes;
-    app_lib_data_set_max_msg_queuing_time_f  setMaxMsgQueuingTime;
-    app_lib_data_get_max_msg_queuing_time_f  getMaxMsgQueuingTime;
     app_lib_data_write_app_config_data_f writeAppConfigData;
     app_lib_data_write_diagnostic_interval_f writeDiagnosticInterval;
     app_lib_data_set_local_mc_f setLocalMulticastInfo;

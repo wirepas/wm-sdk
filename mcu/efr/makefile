@@ -1,5 +1,5 @@
 MCU_PREFIX := $(MCU_PATH)$(MCU_FAMILY)/$(MCU)/
-MCU_CONFIG := $(MCU_PREFIX)/config.mk
+MCU_CONFIG := $(MCU_PREFIX)config.mk
 MCU_COMMON := $(MCU_PATH)$(MCU_FAMILY)/common
 
 # Add include path for nrfx vendor files

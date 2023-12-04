@@ -43,13 +43,6 @@ void __attribute__((__interrupt__))     UART0_IRQHandler(void);
 bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 {
     bool ret;
-    //uart_tx_pin
-    nrf_gpio_cfg_default(BOARD_USART_TX_PIN);
-    nrf_gpio_pin_set(BOARD_USART_TX_PIN);
-
-    //uart_rx_pin
-    nrf_gpio_cfg_default(BOARD_USART_RX_PIN);
-    nrf_gpio_pin_set(BOARD_USART_RX_PIN);
 
     /* Module variables */
     m_enabled = false;
@@ -58,6 +51,11 @@ bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     m_tx_active = false;
 
     /* GPIO init */
+    nrf_gpio_cfg_default(BOARD_USART_TX_PIN);
+    nrf_gpio_pin_set(BOARD_USART_TX_PIN);
+    nrf_gpio_cfg_default(BOARD_USART_RX_PIN);
+    nrf_gpio_pin_set(BOARD_USART_RX_PIN);
+
     NRF_UART0->PSELTXD = BOARD_USART_TX_PIN;
     NRF_UART0->PSELRXD = BOARD_USART_RX_PIN;
     NRF_UART0->TASKS_STOPTX = 1;
@@ -324,9 +322,8 @@ static void set_flow_control(bool hw)
         /* No parity, no HW flow control */
         NRF_UART0->CONFIG = 0;
 
-        // Deactivate HAL_USART_CTS_PIN
+        // Deactivate CTS & RTS pins
         nrf_gpio_cfg_default(BOARD_USART_CTS_PIN);
-        // Deactivate HAL_USART_RTS_PIN
         nrf_gpio_cfg_default(BOARD_USART_RTS_PIN);
     }
 }

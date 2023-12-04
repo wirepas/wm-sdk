@@ -27,9 +27,9 @@ int8_t Storage_getUID(const uint8_t ** uid)
     *uid = (uint8_t *)&NRF_FICR->DEVICEID[0];
 #elif defined(NRF91_PLATFORM)
     *uid = (uint8_t *)&NRF_FICR->DEVICEID[0];
-#elif defined (EFR32MG21) || defined (EFR32MG22)
-    *uid = (uint8_t *)DEVINFO->EUI64L;
-#elif defined (EFR32FG12) || defined (EFR32FG13)
+#elif(_SILICON_LABS_32B_SERIES == 2)
+    *uid = (uint8_t *)&DEVINFO->EUI64L;
+#elif(_SILICON_LABS_32B_SERIES == 1)
     *uid = (uint8_t *)&DEVINFO->UNIQUEL;
 #else
 #error MCU not supported.

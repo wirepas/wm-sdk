@@ -42,9 +42,9 @@ typedef struct
 typedef struct
 {
     uint8_t *   write_ptr;  //< Pointer to bytes to write (Must be NULL for pure read)
-    uint8_t     write_size; //< Number of bytes to write (Must be 0 for pure read)
+    size_t      write_size; //< Number of bytes to write (Must be 0 for pure read)
     uint8_t *   read_ptr;   //< Pointer to store bytes to read (Must be NULL for pure write)
-    uint8_t     read_size;  //< Number of bytes to read (Must be 0 for pure write)
+    size_t      read_size;  //< Number of bytes to read (Must be 0 for pure write)
     uint32_t    custom;     //< Custom param (can be used to implement state machine)
 } spi_xfer_t;
 

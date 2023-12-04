@@ -240,8 +240,6 @@ static uint32_t backup_route_task(void)
 
     m_send_handle[1].sent = true;
     m_data.dest_address = m_send_handle[1].address;
-    /* Add eleasped time since first try to travel time. */
-    m_data.delay = lib_time->getTimestampCoarse() - m_time_sent;
     res = Shared_Data_sendData(&m_data, packet_sent_cb);
     if (res != APP_LIB_DATA_SEND_RES_SUCCESS)
     {
@@ -304,8 +302,6 @@ static void packet_sent_cb(const app_lib_data_sent_status_t * status)
            {
                 app_lib_data_send_res_e res;
                 m_data.dest_address = m_send_handle[1].address;
-                /* Add eleasped time since first try to travel time. */
-                m_data.delay = lib_time->getTimestampCoarse() - m_time_sent;
                 res = Shared_Data_sendData(&m_data, packet_sent_cb);
                 m_send_handle[1].sent = true;
                 LOG(LVL_WARNING, "Sending to primary router failed, try backup");
@@ -400,7 +396,6 @@ static uint32_t diagnostic_task(void)
     {
         .bytes = (const uint8_t *)&diag,
         .num_bytes = sizeof(control_diag_t),
-        .delay = 0,
         .tracking_id = APP_LIB_DATA_NO_TRACKING_ID,
         .qos = APP_LIB_DATA_QOS_NORMAL,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,
