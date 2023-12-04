@@ -22,6 +22,7 @@ jobs:
       run: |
         touch custom_bootloader_keys.ini
         echo "[key:default]" >> custom_bootloader_keys.ini
+        echo "keytype = OMAC1_AES128CTR" >> custom_bootloader_keys.ini
         echo "auth = 01 02 03 04 05 06 07 08 01 02 03 04 05 06 07 08" >> custom_bootloader_keys.ini
         echo "encrypt = 01 02 03 04 05 06 07 08 01 02 03 04 05 06 07 08" >> custom_bootloader_keys.ini
     - name: Build all apps
