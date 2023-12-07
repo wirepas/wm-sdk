@@ -16,10 +16,10 @@
  *
  * Non-Router Long Sleep libraries can be used with Wirepas Mesh stack which is
  * configured to be running as Non-Router mode without any role extensions
- * (@ref APP_LIB_SETTINGS_ROLE_SUBNODE in @ref app_lib_settings_base_role_e and
- * @ref APP_LIB_SETTINGS_ROLE_FLAG_RESV in @ref app_lib_settings_flag_role_e).
- * Any other @ref app_lib_settings_base_role_e and @ref
- * app_lib_settings_flag_role_e definitions do not allow to use NRLS
+ * ( @c APP_LIB_SETTINGS_ROLE_SUBNODE in @c app_lib_settings_base_role_e and
+ * @c APP_LIB_SETTINGS_ROLE_FLAG_RESV in @c app_lib_settings_flag_role_e).
+ * Any other @c app_lib_settings_base_role_e and 
+ * @c app_lib_settings_flag_role_e definitions do not allow to use NRLS
  * functionality.
  *
  * Library services are accessed via @ref app_lib_sleep_t "lib_sleep"
@@ -156,7 +156,7 @@ typedef uint32_t (*app_lib_sleep_get_gotosleep)(void);
 /**
  * @brief   Callback called when stack starts sleep
  *
- * Used with @ref app_lib_sleep_sleep_callback_f "lib_sleep->setOnsleepCb()"
+ * Used with @c app_lib_sleep_sleep_callback_f "lib_sleep->setOnsleepCb()"
  * service
  */
 typedef void (*applib_on_sleep_callback_f)(void);

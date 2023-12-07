@@ -12,12 +12,12 @@
 #include "board.h"
 
 /** LIS2DW12 interrupt pin for motion monitoring, @note Only one pin shall be defined in board.h */
-#ifdef BOARD_LIS2DW12_INT1_PIN
+#ifdef BOARD_GPIO_ID_LIS2DX12_INT1
 #define LIS2DW12_MOTION_USE_INT1
-#define MOTION_MON_INT_PIN BOARD_LIS2DW12_INT1_PIN
+#define MOTION_MON_INT_GPIO_ID BOARD_GPIO_ID_LIS2DX12_INT1
 #elif defined BOARD_LIS2DW12_INT2_PIN
 #define LIS2DW12_MOTION_USE_INT2
-#define MOTION_MON_INT_PIN BOARD_LIS2DW12_INT2_PIN
+#define MOTION_MON_INT_GPIO_ID BOARD_GPIO_ID_LIS2DW12_INT2
 #endif
 
 /** LIS2DW12 montion monitoring sampling rate */

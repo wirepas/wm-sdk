@@ -9,6 +9,10 @@
 #define DEBUG_LOG_MAX_LEVEL LVL_NOLOG
 #include "debug_log.h"
 
+#ifdef WIRESHARK
+#include "wireshark.h"
+#endif
+
 /** Some helpers macros for packet filtering. */
 #define IS_UNICAST(mode) (mode == SHARED_DATA_NET_MODE_UNICAST)
 #define IS_BROADCAST(mode) (mode == SHARED_DATA_NET_MODE_BROADCAST)
@@ -224,6 +228,21 @@ static app_lib_data_receive_res_e received_cb(
 {
     app_lib_data_receive_res_e res = APP_LIB_DATA_RECEIVE_RES_NOT_FOR_APP;
     shared_data_item_t * item;
+
+#ifdef WIRESHARK
+    Wireshark_print(
+        data->src_address,
+        data->dest_address,
+        data->qos,
+        data->src_endpoint,
+        data->dest_endpoint,
+        data->rssi,
+        data->delay_hp,
+        data->bytes,
+        data->num_bytes
+        );
+#endif
+
     sl_list_t * i = sl_list_begin((sl_list_t *)&m_shared_data_head);
 
     LOG(LVL_DEBUG, "Rx (%u, %d -> %d)",
@@ -299,6 +318,11 @@ app_res_e Shared_Data_init(void)
         // Library already initialized
         return APP_RES_OK;
     }
+
+#ifdef WIRESHARK
+    Wireshark_init();
+#endif
+
 
     sl_list_init(&m_shared_data_head);
 
@@ -477,6 +501,27 @@ app_lib_data_send_res_e Shared_Data_sendData(
 
     /* Send the data packet. */
     res = lib_data->sendData(data);
+
+    if (res == APP_LIB_DATA_SEND_RES_SUCCESS)
+    {
+        app_addr_t node_addr;
+        lib_settings->getNodeAddress(&node_addr);
+
+#ifdef WIRESHARK
+        Wireshark_print(
+        // no rssi nor delay so 0 for both
+            node_addr,
+            data->dest_address,
+            data->qos,
+            data->src_endpoint,
+            data->dest_endpoint,
+            0,
+            0,
+            data->bytes,
+            data->num_bytes
+            );
+#endif
+    }
 
     /* Free resources if packet is tracked. */
     if (res != APP_LIB_DATA_SEND_RES_SUCCESS && sent_cb != NULL)

@@ -105,7 +105,6 @@ static app_lib_data_receive_res_e dataReceivedFunc(
         data_to_send.src_endpoint = 0;
         data_to_send.dest_endpoint = 0;
         data_to_send.qos = APP_LIB_DATA_QOS_NORMAL;
-        data_to_send.delay = 0;
         data_to_send.flags = APP_LIB_DATA_SEND_FLAG_NONE;
         data_to_send.tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 
@@ -132,7 +131,6 @@ static app_lib_data_receive_res_e dataReceivedFunc(
     data_to_send.src_endpoint = 0;
     data_to_send.dest_endpoint = 0;
     data_to_send.qos = APP_LIB_DATA_QOS_NORMAL;
-    data_to_send.delay = 0;
     data_to_send.flags = APP_LIB_DATA_SEND_FLAG_NONE;
     data_to_send.tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 

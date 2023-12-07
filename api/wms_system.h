@@ -79,8 +79,8 @@ typedef enum
     APP_LIB_SYSTEM_HARDWARE_MAGIC_NRF52840      = 6,
     /** Silicon Labs EFR32XG12 512 kB Flash, 64 kB RAM */
     APP_LIB_SYSTEM_HARDWARE_MAGIC_EFR32XG12_512 = 7,
-    /** Obsolete reserved value */
-    APP_LIB_SYSTEM_HARDWARE_RESERVED_8          = 8,
+    /** Silicon Labs EFR32xG13 512 kB Flash, 64 kB RAM */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_EFR32XG13     = 8,
     /** Nordic Semiconductor nRF52833 */
     APP_LIB_SYSTEM_HARDWARE_MAGIC_NRF52833      = 9,
     /** Silicon Labs EFR32xG21 */
@@ -93,10 +93,14 @@ typedef enum
     APP_LIB_SYSTEM_HARDWARE_MAGIC_BGM220PC22HNA = 13,
     /** Silicon Labs BGM220SC22HNA */
     APP_LIB_SYSTEM_HARDWARE_MAGIC_BGM220SC22HNA = 14,
-    /** Nordic Semiconductor nRF9160 */
+    /** Nordic Semiconductor nRF9160 (legacy) */
     APP_LIB_SYSTEM_HARDWARE_MAGIC_NRF9160       = 15,
     /** Silicon Labs EFR32xG23 */
     APP_LIB_SYSTEM_HARDWARE_MAGIC_EFR32XG23     = 16,
+    /** Silicon Labs EFR32xG24 */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_EFR32XG24     = 17,
+    /** Nordic Semiconductor nRF9161 or nRF9131, a.k.a. nRF9120 */
+    APP_LIB_SYSTEM_HARDWARE_MAGIC_NRF9120       = 18,
 } app_lib_system_hardware_magic_e;
 
 /**
@@ -125,14 +129,22 @@ typedef enum
     APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_6          = 6,
     /** Obsolete reserved value */
     APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_7          = 7,
-    /** Obsolete reserved value */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_8          = 8,
+    /** India 865 MHz with SubG Phy */
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_SUB_INDIA865        = 8,
     /** Obsolete reserved value */
     APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_9          = 9,
     /** Obsolete reserved value  */
     APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_10         = 10,
-    /** Obsolete reserved value  */
-    APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_11         = 11
+    /** Aus 915 MHz with SubG Phy */
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_SUB_AUS915          = 11,
+    /** Smart metering  */
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_DECT_TS_103_874_2   = 12,
+    /** Obsolete reserved value */
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_13         = 13,
+    /** Obsolete reserved value */
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_14         = 14,
+    /** Obsolete reserved value */
+    APP_LIB_SYSTEM_PROTOCOL_PROFILE_RESERVED_15         = 15,
 } app_lib_system_protocol_profile_e;
 
 /**
@@ -154,7 +166,7 @@ typedef struct
  *
  * This callback is called after every interrupt, until
  * the stack is started by calling @ref app_lib_state_start_stack_f
- * "lib_state->startStack()" function in the State library (@ref state.h). If
+ * "lib_state->startStack()" function in the State library ( @ref wms_state.h). If
  * the stack is running initially, the startup callback is not called at all.
  * Any code, including interrupts can use @ref app_lib_system_set_startup_cb_f
  * "lib_system->setStartupCb()" function to set or change the startup callback.
@@ -170,7 +182,7 @@ typedef void (*app_lib_system_startup_cb_f)(void);
  *
  * This callback is called when the @ref
  * app_lib_state_stop_stack_f "lib_state->stopStack"() function in the State
- * library (@ref state.h) is called, or some other reason (e.g. OTAP, Remote
+ * library ( @ref wms_state.h) is called, or some other reason (e.g. OTAP, Remote
  * API) is causing the stack to stop. The @ref app_lib_system_set_shutdown_cb_f
  * "lib_system->setShutdownCb"() function can be used to set or change the
  * shutdown callback.
@@ -221,7 +233,7 @@ typedef void (*app_lib_system_irq_handler_f)(void);
  *          The function to be executed, or NULL to unset
  * @return  Result code, always @ref APP_RES_OK
  * @note    The callback will be called once after returning from
- *          @ref app_init "App_init()" and then each time after an enabled
+ *          @c app_init "App_init()" and then each time after an enabled
  *          interrupt handler is run, until the stack is started in the callback
  */
 typedef app_res_e
@@ -261,7 +273,7 @@ typedef app_res_e
  * app_lib_time_get_max_delay_hp_us_f "lib_time->getMaxHpDelay()" service (This
  * value is around 30 minutes).
  *
- * For more information on scheduling, see @ref cooperative_mcu_access.
+ * For more information on scheduling, see @c cooperative_mcu_access.
  *
  * @param   work_cb
  *          The function to be executed, or NULL to unset
@@ -274,7 +286,7 @@ typedef app_res_e
  * @note    When the callback returns @ref APP_LIB_SYSTEM_STOP_PERIODIC,
  *          it will not be called again
  * @note    Unlike most services, this service is safe to be used from
- *          @ref fast_interrupt "fast interrupt execution context"
+ *          @c fast_interrupt "fast interrupt execution context"
  */
 typedef app_res_e
     (*app_lib_system_set_periodic_cb_f)(app_lib_system_periodic_cb_f work_cb,

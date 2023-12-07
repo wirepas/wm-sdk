@@ -16,17 +16,16 @@
 #include "hal_api.h"
 #include "debug_log.h"
 #include "i2c.h"
+#include "gpio.h"
 #include "api.h"
 #include "lis2_dev.h"
 
 #ifdef LIS2DH12_I2C
 #define LIS2_I2C_ADD_L LIS2DH12_I2C_ADD_L
 #define LIS2_I2C_ADD_H LIS2DH12_I2C_ADD_H
-#define BOARD_I2C_LIS2_SA0  BOARD_I2C_LIS2DH12_SA0
 #elif defined LIS2DW12_I2C
 #define LIS2_I2C_ADD_L LIS2DW12_I2C_ADD_L
 #define LIS2_I2C_ADD_H LIS2DW12_I2C_ADD_H
-#define BOARD_I2C_LIS2_SA0  BOARD_I2C_LIS2DW12_SA0
 #endif
 
 /** Maximum I2C write transfer */
@@ -102,10 +101,10 @@ static int32_t lis2_readI2C(void * handle,
     if (res == I2C_RES_OK || res == I2C_RES_ALREADY_INITIALIZED)
     {
         i2c_xfer_t xfer_rx = {
-        .address =  m_lis2_address,          
-        .write_ptr = tx,          
-        .write_size = 1,         
-        .read_ptr = rx,     
+        .address =  m_lis2_address,
+        .write_ptr = tx,
+        .write_size = 1,
+        .read_ptr = rx,
         .read_size = len,
         .custom = 0};
 
@@ -121,7 +120,15 @@ static int32_t lis2_readI2C(void * handle,
 
 void LIS2_dev_init(stmdev_ctx_t * dev)
 {
-    m_lis2_address = (BOARD_I2C_LIS2_SA0 == 0) ? LIS2_I2C_ADD_L >> 1 : 
+    gpio_out_cfg_t gpio_conf = {
+        .out_mode_cfg = GPIO_OUT_MODE_PUSH_PULL,
+        .level_default = BOARD_I2C_LIS2DX12_SA0 ? GPIO_LEVEL_HIGH : GPIO_LEVEL_LOW
+    };
+
+    Gpio_outputSetCfg(BOARD_GPIO_ID_LIS2DX12_SA0, &gpio_conf);
+
+
+    m_lis2_address = (BOARD_I2C_LIS2DX12_SA0 == 0) ? LIS2_I2C_ADD_L >> 1 :
                                                     LIS2_I2C_ADD_H >> 1;
     dev->handle = NULL;
     dev->write_reg = lis2_writeI2C;

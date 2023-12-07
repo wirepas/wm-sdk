@@ -30,7 +30,7 @@
 #define APP_LIB_OTAP_NAME 0x000f2338 //!< "OTAP"
 
 /** @brief Maximum supported library version */
-#define APP_LIB_OTAP_VERSION 0x201
+#define APP_LIB_OTAP_VERSION 0x202
 
 /**
  * @brief Different scratchpad type
@@ -109,9 +109,6 @@ typedef enum
      *  the given delay. Delay starts when node receive the information and the
      *  scratchpad is valid. */
     APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS_WITH_DELAY = 3,
-    /** Exchange and processing of scratchpad is managed the old way
-     *  (sequence comparison). */
-    APP_LIB_OTAP_ACTION_LEGACY = 4,
 } app_lib_otap_action_e;
 
 /**
@@ -415,7 +412,7 @@ typedef app_res_e
  *          The delay to process the scratchpad. Only needed if action is
  *          @ref APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS_WITH_DELAY. This
  *          delay can't be 0 minute/hour/day.
- * @return  @ref Result code, @ref APP_RES_OK if successful.
+ * @return  Result code, @ref APP_RES_OK if successful.
  * @note    Returns @ref APP_RES_INVALID_VALUE if delay is the same than the
  *          actual one when action is
  *          @ref APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS_WITH_DELAY. This use
@@ -474,9 +471,9 @@ typedef app_res_e (*app_lib_otap_set_target_scratchpad_and_action_f)(
  *          The action to do with the target scratchpad
  * @param   delay
  *          The delay to process the scratchpad. Only needed if action is
- *          @ref APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS_WITH_DELAY.
+ *          @c APP_LIB_OTAP_ACTION_PROPAGATE_AND_PROCESS_WITH_DELAY.
  *
- * @return  @ref Result code, @ref APP_RES_OK if successful
+ * @return  Result code, @ref APP_RES_OK if successful
  */
 typedef app_res_e
     (*app_lib_otap_get_target_scratchpad_and_action_f)(

@@ -54,7 +54,7 @@ def make_header(data):
         uint8_t pad;
         /** Scratchpad type information for bootloader: bl_header_type_e */
         uint32_t type;
-        /** Status code from bootloader: bl_header_status_e */
+        /** Status code from bootloader: bl_scratchpad_status_e */
         uint32_t status;
     };
 

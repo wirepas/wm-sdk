@@ -14,7 +14,7 @@
  * Settings such as node role, unique node address, network address and channel,
  * encryption and authentication keys as well performance-related settings such
  * as access cycle limits can be stored and recalled. Also see the State library
- * @ref state.h for starting and stopping the stack.
+ * @ref wms_state.h for starting and stopping the stack.
  *
  * Library services are accessed via @ref app_lib_settings_t "lib_settings"
  * handle.
@@ -53,11 +53,15 @@
 typedef uint32_t app_lib_settings_net_addr_t;
 
 /**
- * @brief Network channel type definition.
- *
- * All nodes on the network must have the same network channel.
+ * @brief Channel type definition.
  */
 typedef uint8_t app_lib_settings_net_channel_t;
+
+/**
+ * @brief   Reserved value for definition of 'no channel' for @ref
+ *          app_lib_settings_net_channel_t
+ */
+#define CHANNEL_NO_CHANNEL  0
 
 typedef enum {
     /** Sink in Low Energy mode */
@@ -286,9 +290,8 @@ typedef app_res_e
     (*app_lib_settings_set_network_channel_f)(app_lib_settings_net_channel_t channel);
 
 /**
- * Get node role. Utility functions @ref
- * app_lib_settings_get_base_role() and @ref
- * app_lib_settings_get_flags_role() can be used to split the
+ * Get node role. Utility functions @c app_lib_settings_get_base_role() 
+ * and @c app_lib_settings_get_flags_role() can be used to split the
  * node value to a base role and role flag bits, respectively.
  *
  * @param   role_p
@@ -471,8 +474,8 @@ typedef app_res_e
  *          APP_RES_INVALID_VALUE if @p ac_min_value or @p ac_max_value is
  *          invalid
  *
- * @note    This setting is not possible when device role has flag @ref
- *          APP_LIB_SETTINGS_ROLE_FLAG_LL mode set. Instead, those devices
+ * @note    This setting is not possible when device role has flag 
+ *          @c APP_LIB_SETTINGS_ROLE_FLAG_LL mode set. Instead, those devices
  *          always have automatic access cycle selection enabled.
  */
 typedef app_res_e
@@ -512,7 +515,7 @@ typedef app_res_e
  * </table>
  *
  * To manually start a neighbor scan, function startScanNbors() in the State
- * library (@ref state.h) can be used.
+ * library ( @ref wms_state.h) can be used.
  *
  * @param   max_scan
  *          Minimum maximum scanning interval value
@@ -541,10 +544,10 @@ typedef app_res_e
                                                      uint16_t * max_value_p);
 
 /**
- * @brief   Get access cycle range
+ * @brief   Get access cycle range limits
  *
- * Return the minimum and maximum access cycle value, in milliseconds, that can
- * be used when setting the access cycle range with the @ref
+ * Return the minimum and maximum for valid access cycle range, in milliseconds,
+ * that can be used when setting the access cycle range with the @ref
  * app_lib_settings_set_ac_range_f "lib_settings->setAcRange"() function.
  *
  * @param   min_value_p
@@ -633,9 +636,7 @@ typedef app_res_e
  * network should be configured to have the same reserved channels. Reserving
  * the network channel will result in undefined behavior.
  *
- * The reserved channels array is not stored in permanent memory. To reserve
- * channels, function @ref app_lib_settings_set_reserved_channels_f "lib_settings->setReservedChannels"() has to be
- * called in App_init() before the stack is started.
+ * The reserved channels array is not stored in permanent memory.
  *
  * @param   channels
  *          Pointer to bit array to load the reserved channels
@@ -646,7 +647,6 @@ typedef app_res_e
  *          Number of bytes pointed by @p channels_p
  * @return  Result code, @ref APP_RES_OK if successful,
  *          @ref APP_RES_INVALID_NULL_POINTER if @p channels_p is NULL,
- *          @ref APP_RES_INVALID_STACK_STATE if stack is running,
  *          @ref APP_RES_INVALID_VALUE if a bit in @p channels_p is set for a
  *          channel larger than the maximum channel number
  * @note    @p channels_p bit array can be shorter than the maximum number of

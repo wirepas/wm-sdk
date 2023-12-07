@@ -9,7 +9,7 @@
  *
  * A small number of bytes is reserved for the application in the same area
  * where the stack firmware stores its own persistent settings (the Settings
- * library, @ref settings.h). The Storage library can be used to read and write
+ * library, @ref wms_settings.h). The Storage library can be used to read and write
  * this data. Currently, 32 bytes is reserved for the application.
  *
  * Library services are accessed via @ref app_lib_storage_t "lib_storage"

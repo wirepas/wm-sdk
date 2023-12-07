@@ -16,6 +16,7 @@
 #include "hal_api.h"
 #include "debug_log.h"
 #include "spi.h"
+#include "gpio.h"
 #include "api.h"
 #include "lis2_dev.h"
 
@@ -45,14 +46,10 @@ static spi_conf_t m_spi_conf = {
  */
 void lis2_select_chip(bool select)
 {
-    if (select)
-    {
-        nrf_gpio_pin_clear(BOARD_SPI_LIS2_CS_PIN);
-    }
-    else
-    {
-        nrf_gpio_pin_set(BOARD_SPI_LIS2_CS_PIN);
-    }
+    gpio_level_e level;
+
+    level = select ? GPIO_LEVEL_LOW : GPIO_LEVEL_HIGH;
+    Gpio_outputWrite(BOARD_GPIO_ID_LIS2DX12_SPI_CS, level);
 }
 
 /**
@@ -145,10 +142,13 @@ static int32_t lis2_spi_write(void *handle,
 
 void LIS2_dev_init(stmdev_ctx_t * dev)
 {
-    nrf_gpio_pin_dir_set(BOARD_SPI_LIS2_CS_PIN, NRF_GPIO_PIN_DIR_OUTPUT);
-    nrf_gpio_cfg_output(BOARD_SPI_LIS2_CS_PIN);
-    nrf_gpio_pin_set(BOARD_SPI_LIS2_CS_PIN);
-    LOG(LVL_DEBUG, "BOARD_SPI_LIS2_CS_PIN: %u", BOARD_SPI_LIS2_CS_PIN);
+    gpio_out_cfg_t gpio_conf = {
+        .out_mode_cfg = GPIO_OUT_MODE_PUSH_PULL,
+        .level_default = GPIO_LEVEL_HIGH
+    };
+
+    Gpio_outputSetCfg(BOARD_GPIO_ID_LIS2DX12_SPI_CS, &gpio_conf);
+    LOG(LVL_DEBUG, "BOARD_GPIO_ID_LIS2DX12_SPI_CS: %u", BOARD_GPIO_ID_LIS2DX12_SPI_CS);
     dev->handle = NULL;
     dev->write_reg = lis2_spi_write;
     dev->read_reg = lis2_spi_read;

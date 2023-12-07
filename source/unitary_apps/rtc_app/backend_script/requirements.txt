@@ -1,0 +1,8 @@
+# matplotlib
+matplotlib==3.6.2
+
+# wirepas
+wirepas-mqtt-library==1.0
+
+# pandas
+pandas==1.5.2

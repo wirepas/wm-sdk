@@ -10,7 +10,7 @@ import os
 import argparse
 import textwrap
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, exists
 from shutil import copyfile
 
 # Python 2 and Python 3 support
@@ -106,6 +106,8 @@ class FirmwareConfig(object):
                         return False
                 elif key == "mcu_mem_var":
                     # Handle in previous case
+                    continue
+                elif key == "modem_fw":
                     continue
                 else:
                     # print("{} vs {}".format(self.general[key], target_config[key]))
@@ -274,6 +276,13 @@ def main():
     parser.add_argument("--mode", "-mo",
         help = "Special mode for the binary",
         default = None)
+    parser.add_argument("--modem_fw", "-mfw",
+        help = "Modem firmware image file name",
+        default = None)
+    parser.add_argument("--key_type", "-kt",
+        help = "Supported key types in bootloader "
+               "(only valid if type is wp_bootloader)",
+        default = None)
 
     try:
         args = parser.parse_args()
@@ -295,6 +304,21 @@ def main():
         target_config['type'] = args.firmware_type
         target_config['mcu'] = args.mcu
 
+        # Mandatory fields for "wp_bootloader"
+        if args.firmware_type == "wp_bootloader":
+            if args.key_type == "OMAC1_AES128CTR":
+                auth_type = "cmac"
+            elif args.key_type == "ES256_AES128CTR":
+                auth_type = "es256"
+            else:
+                raise RuntimeError(
+                    "Invalid or missing key_type: {}".format(args.key_type))
+            target_config['auth_type'] = auth_type
+        else:
+            if args.key_type not in (None, ''):
+                raise RuntimeError("Argument key_type is for "
+                                   "--firmware_type=wp_bootloader only")
+
         # Optional fields
         if args.mcu_sub not in (None, ''):
             target_config['mcu_sub'] = args.mcu_sub
@@ -314,6 +338,8 @@ def main():
             target_config['mac_profileid'] = args.mac_profileid
         if args.mode not in (None, ''):
             target_config['mode'] = args.mode
+        if args.modem_fw not in (None, ''):
+            target_config['modem_fw'] = args.modem_fw
 
         if args.firmware_type == "wp_bootloader":
             # Set it as a string instead of bool to ease the following check
@@ -355,6 +381,12 @@ def main():
                 # Copy conf file and firmware binary to output folder
                 copyfile(conf_file, os.path.join(args.output_path, args.output_name + '.conf'))
                 copyfile(binary_file, os.path.join(args.output_path, args.output_name + firmware_suffix))
+                if args.modem_fw is not None and len(args.modem_fw) != 0 and args.radio != "none":
+                    binary_path = os.path.split(conf_file)[0]
+                    modem_fw_filename = possible_firmwares[0][1].general['modem_fw']
+                    modem_fw_file = os.path.join(binary_path,modem_fw_filename)
+                    if exists(modem_fw_file):
+                        copyfile(modem_fw_file, os.path.join(args.output_path, 'modem_fw.cbor'))
 
             if args.unlocked:
                 print_unprotected_bootloader()

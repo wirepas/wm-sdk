@@ -68,13 +68,6 @@ void __attribute__((__interrupt__))     TIMER1_IRQHandler(void);
 bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
 {
     bool ret;
-    //uart_tx_pin
-    nrf_gpio_cfg_default(BOARD_USART_TX_PIN);
-    nrf_gpio_pin_set(BOARD_USART_TX_PIN);
-
-    //uart_rx_pin
-    nrf_gpio_cfg_default(BOARD_USART_RX_PIN);
-    nrf_gpio_pin_set(BOARD_USART_RX_PIN);
 
     /* Module variables */
     m_enabled = 0;
@@ -82,6 +75,11 @@ bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     m_rx_callback = NULL;
 
     /* GPIO init */
+    nrf_gpio_cfg_default(BOARD_USART_TX_PIN);
+    nrf_gpio_pin_set(BOARD_USART_TX_PIN);
+    nrf_gpio_cfg_default(BOARD_USART_RX_PIN);
+    nrf_gpio_pin_set(BOARD_USART_RX_PIN);
+
     NRF_UARTE0->PSEL.TXD = BOARD_USART_TX_PIN;
     NRF_UARTE0->PSEL.RXD = BOARD_USART_RX_PIN;
     NRF_UARTE0->TASKS_STOPTX = 1;
@@ -89,14 +87,10 @@ bool Usart_init(uint32_t baudrate, uart_flow_control_e flow_control)
     NRF_UARTE0->ENABLE = UARTE_ENABLE_ENABLE_Disabled;
 
 #if defined(BOARD_USART_CTS_PIN) && defined (BOARD_USART_RTS_PIN)
-    //uart_cts_pin
     nrf_gpio_cfg_default(BOARD_USART_CTS_PIN);
     nrf_gpio_pin_set(BOARD_USART_CTS_PIN);
-
-    //uart_rts_pin
     nrf_gpio_cfg_default(BOARD_USART_RTS_PIN);
     nrf_gpio_pin_set(BOARD_USART_RTS_PIN);
-
     /* Set flow control */
     set_flow_control(flow_control == UART_FLOW_CONTROL_HW);
 #endif
@@ -281,7 +275,6 @@ void Usart_enableReceiver(serial_rx_callback_f rx_callback)
     m_rx_callback = rx_callback;
     if (m_rx_callback)
     {
-        /* Enable interrupt */
         // Enable RX input
         nrf_gpio_cfg(BOARD_USART_RX_PIN,
                      NRF_GPIO_PIN_DIR_INPUT,
@@ -289,12 +282,9 @@ void Usart_enableReceiver(serial_rx_callback_f rx_callback)
                      NRF_GPIO_PIN_NOPULL,
                      NRF_GPIO_PIN_S0S1,
                      NRF_GPIO_PIN_SENSE_LOW);
-
-
     }
     else
     {
-        /* Disable interrupt */
         // Disable RX input: note autopowering uart will not work either
         nrf_gpio_cfg_default(BOARD_USART_RX_PIN);
     }
@@ -435,9 +425,8 @@ static void set_flow_control(bool hw)
         /* No parity, no HW flow control */
         NRF_UARTE0->CONFIG = 0;
 
-        // Deactivate HAL_USART_CTS_PIN
+        // Deactivate CTS & RTS pins
         nrf_gpio_cfg_default(BOARD_USART_CTS_PIN);
-        // Deactivate HAL_USART_RTS_PIN
         nrf_gpio_cfg_default(BOARD_USART_RTS_PIN);
     }
 }

@@ -56,12 +56,12 @@ endif
 
 #Button support
 ifeq ($(button_enabled),yes)
-SRCS += $(SRCS_PATH)gpio_nrf52.c
+HAL_BUTTON=yes
 CFLAGS += -DBUTTON_ENABLED
 endif
 
 APP_SCHEDULER=yes
-APP_SCHEDULER_TASKS=4
+APP_SCHEDULER_TASKS=5
 
 # App need it to register for stop stack event
 STACK_STATE_LIB=yes
@@ -71,5 +71,4 @@ STACK_STATE_CBS=1
 ifneq ($(motion_sensor),)
 INCLUDES += -I$(SRCS_PATH)/motion/
 include $(SRCS_PATH)/motion/makefile_motion.mk
-endif 
-
+endif

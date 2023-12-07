@@ -9,9 +9,13 @@ board_hw_crystal_32k=yes
 ## Is DCDC used on this board.
 board_hw_dcdc=yes
 
-# Uncomment, and set path to custom power table here, if set, the custom power
+# Set path to custom power table here, if set, the custom power
 # table will be set during application startup, and the stack will use that
-# instead of the default
+# instead of the default.
 # For convenience, an example of a +4dBm power table is provided, uncomment the
-# line below to use that instead of the default +8dBm power table
+# line below or use radio_power_table=4 setting as make argument to use that
+# instead of the default +8dBm power table.
 #RADIO_CUSTOM_POWER_TABLE=mcu/nrf/nrf52/hal/radio/radio_power_table_nrf52840_4dBm.h
+ifneq ("$(radio_power_table)", "")
+    RADIO_CUSTOM_POWER_TABLE=mcu/nrf/nrf52/hal/radio/radio_power_table_nrf52840_$(radio_power_table)dBm.h
+endif

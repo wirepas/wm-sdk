@@ -79,7 +79,7 @@ typedef struct __attribute__ ((__packed__))
     ep_t        dst_endpoint;
     uint8_t     qos;
     uint8_t     tx_opts;
-    uint32_t    travel_time;
+    uint32_t    reserved;
     uint8_t     apdu_len;
     uint8_t     apdu[APDU_MAX_SIZE];
 } dsap_data_tx_tt_req_t;
@@ -95,7 +95,7 @@ typedef struct __attribute__ ((__packed__))
     ep_t        dst_endpoint;
     uint8_t     qos;
     uint8_t     tx_opts;
-    uint32_t    travel_time;
+    uint32_t    reserved;
     uint16_t    full_packet_id : 12;
     // Fragment offset + flag
     uint16_t    fragment_offset_flag;

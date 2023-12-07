@@ -1,4 +1,10 @@
 
+ifeq ($(RTC), yes)
+SRCS += $(WP_LIB_PATH)rtc/rtc.c
+INCLUDES += -I$(WP_LIB_PATH)rtc
+CFLAGS += -DRTC_MAX_CB=$(RTC_CBS)
+endif
+
 ifeq ($(SHARED_DATA), yes)
 SRCS += $(WP_LIB_PATH)shared_data/shared_data.c
 INCLUDES += -I$(WP_LIB_PATH)shared_data
@@ -7,7 +13,7 @@ endif
 ifeq ($(SHARED_APP_CONFIG), yes)
 SRCS += $(WP_LIB_PATH)shared_appconfig/shared_appconfig.c
 INCLUDES += -I$(WP_LIB_PATH)shared_appconfig
-INCLUDES += -DSHARED_APP_CONFIG_MAX_FILTER=$(shell expr $(app_config_filters))
+CFLAGS += -DSHARED_APP_CONFIG_MAX_FILTER=$(shell expr $(app_config_filters))
 endif
 
 ifeq ($(LOCAL_PROVISIONING), yes)
@@ -40,7 +46,7 @@ endif
 ifeq ($(SHARED_NEIGHBORS), yes)
 SRCS += $(WP_LIB_PATH)shared_neighbors/shared_neighbors.c
 INCLUDES += -I$(WP_LIB_PATH)shared_neighbors
-INCLUDES += -DSHARED_NEIGHBORS_MAX_CB=$(shell expr $(shared_neighbors_cbs))
+CFLAGS += -DSHARED_NEIGHBORS_MAX_CB=$(shell expr $(shared_neighbors_cbs))
 endif
 
 ifeq ($(SHARED_BEACON), yes)
@@ -70,20 +76,20 @@ endif
 ifeq ($(SHARED_OFFLINE), yes)
 SRCS += $(WP_LIB_PATH)shared_offline/shared_offline.c
 INCLUDES += -I$(WP_LIB_PATH)shared_offline
-INCLUDES += -DSHARED_OFFLINE_MAX_MODULES=$(shell expr $(shared_offline_modules))
+CFLAGS += -DSHARED_OFFLINE_MAX_MODULES=$(shell expr $(shared_offline_modules))
 endif
 
 ifeq ($(STACK_STATE_LIB), yes)
 SRCS += $(WP_LIB_PATH)stack_state/stack_state.c
 INCLUDES += -I$(WP_LIB_PATH)stack_state
-INCLUDES += -DSTACK_STATE_CB=$(shell expr $(stack_state_cbs))
+CFLAGS += -DSTACK_STATE_CB=$(shell expr $(stack_state_cbs))
 endif
 
 ifeq ($(APP_SCHEDULER), yes)
 SRCS += $(WP_LIB_PATH)scheduler/app_scheduler.c
 INCLUDES += -I$(WP_LIB_PATH)scheduler
 # Set number of Library tasks
-INCLUDES += -DAPP_SCHEDULER_ALL_TASKS=$(shell expr $(scheduler_tasks))
+CFLAGS += -DAPP_SCHEDULER_ALL_TASKS=$(shell expr $(scheduler_tasks))
 endif
 
 ifeq ($(DUALMCU_LIB), yes)

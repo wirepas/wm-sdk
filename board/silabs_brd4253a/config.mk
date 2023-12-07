@@ -15,10 +15,14 @@ board_hw_hfxo_ctune=322
 board_hw_lfxo_ctune=68
 board_hw_lfxo_gain=2
 
-# Uncomment, and set path to custom power table here, if set, the custom power
+# Set path to custom power table here, if set, the custom power
 # table will be set during application startup, and the stack will use that
-# instead of the default
+# instead of the default.
 # For convenience, an example of a +19dBm power table is provided, uncomment the
-# line below to use that instead of the default +10dBm power table
+# line below or use radio_power_table=19 setting as make argument to use that
+# instead of the default +8dBm power table.
 # NOTE! +19 dBm power level is usable only where US FCC regulation applies
 #RADIO_CUSTOM_POWER_TABLE=mcu/efr/efr32/hal/radio/radio_power_table_efr32xg12_19dBm.h
+ifneq ("$(radio_power_table)", "")
+    RADIO_CUSTOM_POWER_TABLE=mcu/efr/efr32/hal/radio/radio_power_table_efr32xg12_$(radio_power_table)dbm.h
+endif

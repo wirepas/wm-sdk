@@ -151,7 +151,7 @@ uint8_t PosLibMeas_getBeaconNum(void);
  */
 void PosLibMeas_stop(void);
 
-bool PosLibMeas_getPayload(uint8_t * bytes, uint8_t max_len, uint8_t sequence,
+bool PosLibMeas_getPayload(uint8_t * bytes, uint8_t max_len, uint16_t sequence,
                                 poslib_measurements_e meas_type, bool add_voltage, 
                                 poslib_meas_record_node_info_t * node_info,
                                 uint8_t * bytes_len, uint8_t * num_meas);

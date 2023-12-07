@@ -113,9 +113,9 @@ typedef app_firmware_version_t (*app_get_stack_firmware_version_f)(void);
  * This is the most important function of the Single-MCU API. All other
  * functions are in libraries, opened using the this function. Parameters are
  * the name and version of the library. The name is actually a 32-bit value,
- * which is defined in each library header as a macro: \ref
- * APP_LIB_LIBRARY_NAME. The library version is also a macro defined in the same
- * library header: \ref APP_LIB_LIBRARY_VERSION.
+ * which is defined in each library header as a macro: 
+ * \c APP_LIB_LIBRARY_NAME. The library version is also a macro defined in the same
+ * library header: \c APP_LIB_LIBRARY_VERSION.
  *
  * Example of opening a library:
  *
@@ -223,7 +223,7 @@ typedef enum
 /**
  * Node address. Each node must have a unique address in the network. There are
  * special addresses that can be used as destination addresses, see \ref
- * app_special_addr_e. For various addressing modes, see @ref addressing.
+ * app_special_addr_e. For various addressing modes, see @c addressing.
  */
 typedef uint32_t app_addr_t;
 

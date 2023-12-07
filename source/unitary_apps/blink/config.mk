@@ -1,5 +1,5 @@
 # Boards compatible with this app 
-TARGET_BOARDS := pca10059 pca10056 pca10100 pca10040 promistel_rpi_hat ruuvitag silabs_brd4254a tbsense2 silabs_brd4180b silabs_brd4184a silabs_brd4181b bgm220-ek4314a silabs_brd4210a silabs_brd4312a 
+TARGET_BOARDS := pca10040 pca10059 pca10100 pca10056 ruuvitag promistel_rpi_hat silabs_brd4254a tbsense2 silabs_brd4312a bgm220-ek4314a silabs_brd4181b silabs_brd4180b silabs_brd4184a silabs_brd4210a silabs_brd2601b silabs_brd2703a silabs_brd4187c silabs_brd4158a 
 #
 # Network default settings configuration
 #

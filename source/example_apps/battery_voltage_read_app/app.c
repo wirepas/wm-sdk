@@ -131,7 +131,6 @@ static app_lib_data_send_res_e send_voltage_to_wnt(void)
         .bytes = &m_tx_buf[0],
         .num_bytes = cbor_encoder_get_buffer_size(&m_encoder, &m_tx_buf[0]),
         .dest_address = APP_ADDR_ANYSINK,
-        .delay = 0,
         .tracking_id = APP_LIB_DATA_NO_TRACKING_ID,
         .qos = APP_LIB_DATA_QOS_NORMAL,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,

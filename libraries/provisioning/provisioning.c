@@ -215,7 +215,6 @@ static uint32_t send_ack_packet(void)
         .bytes = (uint8_t *)&ack_data,
         .num_bytes = sizeof(pdu_prov_data_ack_t),
         .dest_address = get_dest_address(),
-        .delay = 0,
         .qos = APP_LIB_DATA_QOS_HIGH,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,
         .src_endpoint = PROV_UPLINK_EP,
@@ -229,17 +228,19 @@ static uint32_t send_ack_packet(void)
     if (res != APP_LIB_DATA_SEND_RES_SUCCESS)
     {
         LOG(LVL_WARNING, "State WAIT_DATA : Error sending ACK (res:%d).", res);
+        /* Explicitly set the timeout flag as packet_sent_cb will never be called*/
+        m_events.timeout = 1;
         return APP_SCHEDULER_SCHEDULE_ASAP;
     }
     else
     {
         /* Set a timeout in case the packets takes to much time
-            * to be sent.
-            */
+         * to be sent.
+         */
         m_timeout_ms = m_conf.timeout_s * 1000;
         if (App_Scheduler_addTask_execTime(timeout_task,
-                                    m_timeout_ms,
-                                    500) != APP_SCHEDULER_RES_OK)
+                                           m_timeout_ms,
+                                           500) != APP_SCHEDULER_RES_OK)
         {
             reset_provisioning();
             m_conf.end_cb(PROV_RES_ERROR_INTERNAL);
@@ -499,7 +500,6 @@ static uint32_t state_start(void)
                      m_conf.uid_len +
                      AES_128_KEY_BLOCK_SIZE,
         .dest_address = get_dest_address(),
-        .delay = 0,
         .qos = APP_LIB_DATA_QOS_HIGH,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,
         .src_endpoint = PROV_UPLINK_EP,
@@ -639,7 +639,7 @@ static uint32_t state_wait_data(void)
 
 /**
  * \brief   The Wait ack sent state function.
- * \return  Time in ms to schedule tthe state machine again.
+ * \return  Time in ms to schedule the state machine again.
  */
 static uint32_t state_wait_ack_sent(void)
 {

@@ -8,6 +8,9 @@ LDSCRIPT := bootloader_test/linker/$(MCU)/gcc_bl_test_$(MCU)$(MCU_SUB)$(MCU_MEM_
 
 BOOTLOADER_TEST_ELF := $(BUILDPREFIX_TEST_BOOTLOADER)bootloader_test.elf
 
+# Include HAL drivers code (needed to build power.c (DCDC))
+-include $(HAL_API_PATH)makefile
+
 # Include bootloader test makefile
 -include bootloader_test/makefile
 

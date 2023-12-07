@@ -10,7 +10,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "io.h"
+#include "indication_signal.h"
 #include "usart.h"
 #include "crc.h"
 #include "waps/waps_buffer_sizes.h"
@@ -119,8 +119,8 @@ void Waps_uart_powerReset(void)
     }
 
     // Initialize UART IRQ pin
-    Io_enableUartIrq();
-    Io_clearUartIrq();
+    IndicationSignal_enable();
+    IndicationSignal_clear();
 }
 
 bool Waps_uart_send(const void * buffer, uint32_t size)
@@ -160,12 +160,12 @@ void Waps_uart_setIrq(bool state)
    if(state)
    {
        // Assert IRQ pin
-       Io_setUartIrq();
+       IndicationSignal_set();
    }
    else
    {
        // De-assert IRQ pin
-       Io_clearUartIrq();
+       IndicationSignal_clear();
    }
 }
 
@@ -178,6 +178,7 @@ static void frame_completed(void)
 {
     uint32_t pld_size;
     crc_t crc_1, crc_2;
+    uint8_t error = 0;
     /* Step 1: see if frame makes any sense */
     if(m_rx_buffer_idx >= sizeof(crc_t))
     {
@@ -206,26 +207,41 @@ static void frame_completed(void)
                     (void)m_frame_cb((void *)m_rx_buffer, pld_size);
                 }
             }
-#if defined WAPS_DIAGNOSTICS
             else
             {
-                m_waps_diagnostics.crc_error++;
-            }
-#endif /* WAPS_DIAGNOSTICS */
-        }
+                error = 1;
 #if defined WAPS_DIAGNOSTICS
+                m_waps_diagnostics.crc_error++;
+#endif /* WAPS_DIAGNOSTICS */
+            }
+        }
         else
         {
-            m_waps_diagnostics.frame_size_out_of_bounds_error++;
-        }
-#endif /* WAPS_DIAGNOSTICS */
-    }
+            error = 2;
 #if defined WAPS_DIAGNOSTICS
+            m_waps_diagnostics.frame_size_out_of_bounds_error++;
+#endif /* WAPS_DIAGNOSTICS */
+        }
+    }
     else
     {
+        error = 3;
+#if defined WAPS_DIAGNOSTICS
         m_waps_diagnostics.way_too_short_frame_error++;
-    }
 #endif /* WAPS_DIAGNOSTICS */
+    }
+
+    if ( error != 0)
+    {
+        // Error in reception from host, so no answer will be provided.
+        // In order to avoid host waiting for timeout
+        // return back the error by generating ourself a dummy response
+        // containing a CRC error (CRC being 0xFFFF, it cannot be valid)
+        // (payload size must be at least 4)
+        /* Dummy message containing a CRC error (So host can interpret it as a propagated CRC error) */
+        uint8_t dummy_invalid_crc_message[] = {SLIP_END, error, m_rx_buffer_idx & 0xFF, (m_rx_buffer_idx >> 8) & 0xFF, 0xFF, 0xFF, SLIP_END};
+        Usart_sendBuffer(&dummy_invalid_crc_message, sizeof(dummy_invalid_crc_message));
+    }
     reset_rx_buffer();
 }
 
@@ -290,6 +306,10 @@ static void waps_uart_receive(uint8_t * chars, size_t n)
 
 static bool is_autopower_in_use(void)
 {
+#if BOARD_HW_CRYSTAL_32K == 0
+    // Auto power mechanism cannot be used without 32kHz crystal.
+    return false;
+#else
     app_lib_settings_role_t node_role;
     if (m_baudrate > MAX_BAUDRATE_FOR_AUTOPOWER)
     {
@@ -325,6 +345,7 @@ static bool is_autopower_in_use(void)
 
     // Enable it in all other cases
     return true;
+#endif
 }
 
 __STATIC_INLINE void write_tx_buffer(uint8_t ch)

@@ -20,24 +20,31 @@
 #define BOARD_SPI_MOSI_PIN  25
 #define BOARD_SPI_MISO_PIN  28
 
-// SPI Chip Select for various sensor
-#define BOARD_SPI_LIS2DH12_CS_PIN 8
-#define BOARD_SPI_BME280_CS_PIN   3
+// List of GPIO pins
+#define BOARD_GPIO_PIN_LIST            {17, /* P0.17 */\
+                                        19, /* P0.19 */\
+                                        13, /* P0.13 */\
+                                        2,  /* P0.02. LIS2DH12 INT1 pin. can be replaced by P0.06 if you want to use the LIS2DH12 INT2 pin instead */\
+                                        8,  /* P0.08. SPI CS pin for the LIS2DH12 accelerometer */\
+                                        3}  /* P0.03. SPI CS pin for the BME280 pressure/humidity/temperature sensor */
 
-// INT pins
-#define BOARD_LIS2DH12_INT1_PIN 2
-//#define BOARD_LIS2DH12_INT2_PIN 6
+// User friendly name for GPIOs (IDs mapped to the BOARD_GPIO_PIN_LIST table)
+#define BOARD_GPIO_ID_LED1              0  // mapped to pin P0.17
+#define BOARD_GPIO_ID_LED2              1  // mapped to pin P0.19
+#define BOARD_GPIO_ID_BUTTON1           2  // mapped to pin P0.13
+#define BOARD_GPIO_ID_LIS2DX12_INT1     3  // mapped to pin P0.02
+//#define BOARD_GPIO_ID_LIS2DX12_INT2   3  // mapped to pin P0.06
+#define BOARD_GPIO_ID_LIS2DX12_SPI_CS   4  // mapped to pin P0.08
+#define BOARD_GPIO_ID_BME280_SPI_CS     5  // mapped to pin P0.03
 
-
-
-// List of GPIO pins for the LEDs on the board: LED1, LED2
-#define BOARD_LED_PIN_LIST              {17, 19}
+// List of LED IDs
+#define BOARD_LED_ID_LIST               {BOARD_GPIO_ID_LED1,   BOARD_GPIO_ID_LED2}
 
 // Active low polarity for LEDs
 #define BOARD_LED_ACTIVE_LOW            true
 
-// List of GPIO pins for buttons on the board: Button1
-#define BOARD_BUTTON_PIN_LIST           {13}
+// List of button IDs
+#define BOARD_BUTTON_ID_LIST           {BOARD_GPIO_ID_BUTTON1}
 
 // Active low polarity for buttons
 #define BOARD_BUTTON_ACTIVE_LOW         true

@@ -30,10 +30,10 @@ typedef enum
 /** Monitoring variables */
 static bool m_mon_enabled = false;
 static posapp_motion_mon_settings_t m_mon_cfg = {
-    .threshold_mg = 0, 
+    .threshold_mg = 0,
     .duration_ms = 0,
     .cb = NULL};
-    
+
 /** Acceletometer data sampling variables */
 static bool m_acc_init = false;
 static bool m_acc_sampling = false;
@@ -55,7 +55,7 @@ static uint32_t set_motion_static()
     return APP_SCHEDULER_STOP_TASK;
 }
 
-static void acc_event_cb(uint8_t pin, gpio_event_e event)
+static void acc_event_cb(gpio_id_t id, gpio_in_event_e event)
 {
     if (m_mon_enabled && m_mon_cfg.cb != NULL)
     {
@@ -91,7 +91,7 @@ static uint32_t accelerometer_task(void)
             }
             break;
         }
-      
+
         case ACC_READ:
         {
             if (ACC_readMeasurement(&m_meas))
@@ -102,18 +102,18 @@ static uint32_t accelerometer_task(void)
             else
             {
                 LOG(LVL_ERROR, "Accelerometer measurement error");
-                m_acc_cb(NULL);   
+                m_acc_cb(NULL);
             }
 
             m_acc_sampling = false;
-            return APP_SCHEDULER_STOP_TASK;  
+            return APP_SCHEDULER_STOP_TASK;
             break;
         }
-    
+
         default:
         {
             m_acc_sampling = false;
-            return APP_SCHEDULER_STOP_TASK; 
+            return APP_SCHEDULER_STOP_TASK;
         }
         break;
     }
@@ -121,13 +121,20 @@ static uint32_t accelerometer_task(void)
 }
 
 static posapp_motion_ret_e enable_monitoring(void)
-{ 
+{
+    gpio_res_e gpio_res;
+    const gpio_in_cfg_t motion_mon_int_cfg =
+    {
+        .event_cb = acc_event_cb,
+        .event_cfg = GPIO_IN_EVENT_RISING_EDGE,
+        .in_mode_cfg = GPIO_IN_PULL_NONE
+    };
 
     if (!m_acc_init)
     {
         LOG(LVL_ERROR, "Accelerometer not initialised");
         m_mon_enabled = false;
-        return POSAPP_MOTION_RET_ACC_INIT_ERROR;  
+        return POSAPP_MOTION_RET_ACC_INIT_ERROR;
     }
 
     if (!ACC_enableMonitoring(m_mon_cfg.threshold_mg, m_mon_cfg.duration_ms))
@@ -136,13 +143,12 @@ static posapp_motion_ret_e enable_monitoring(void)
         m_mon_enabled = false;
         return POSAPP_MOTION_RET_ACC_INIT_ERROR;
     }
-    
+
     //FixME: to determing through testing if we need debounce (i.e. limit acc. irq fireing)
-    if (GPIO_register_for_event(MOTION_MON_INT_PIN, 
-                            GPIO_NOPULL,
-                            GPIO_EVENT_LH,
-                            0,              
-                            acc_event_cb) != GPIO_RES_OK)
+
+    gpio_res = Gpio_inputSetCfg(MOTION_MON_INT_GPIO_ID, &motion_mon_int_cfg);
+
+    if (gpio_res != GPIO_RES_OK)
     {
 
         LOG(LVL_ERROR, "Cannot enable acc. interrupt pin");
@@ -151,7 +157,7 @@ static posapp_motion_ret_e enable_monitoring(void)
     }
     else
     {
-        LOG(LVL_DEBUG, "Acc pin %u registered", MOTION_MON_INT_PIN);
+        LOG(LVL_DEBUG, "Acc pin %u registered", MOTION_MON_INT_GPIO_ID);
     }
 
     m_mon_enabled = true;
@@ -162,21 +168,27 @@ static posapp_motion_ret_e enable_monitoring(void)
 static posapp_motion_ret_e disable_monitoring(void)
 {
     bool ret;
+    const gpio_in_cfg_t motion_mon_int_cfg =
+    {
+        .event_cb = NULL,
+        .event_cfg = GPIO_IN_EVENT_NONE,
+        .in_mode_cfg = GPIO_IN_DISABLED
+    };
 
     if (!m_mon_enabled)
     {
         return POSAPP_MOTION_RET_ERROR;
     }
 
-    ret = (GPIO_deregister_for_event(MOTION_MON_INT_PIN) != GPIO_RES_OK);
-    
-    return ret ? POSAPP_MOTION_RET_OK : POSAPP_MOTION_RET_ERROR;     
+    ret = (Gpio_inputSetCfg(MOTION_MON_INT_GPIO_ID, &motion_mon_int_cfg) != GPIO_RES_OK);
+
+    return ret ? POSAPP_MOTION_RET_OK : POSAPP_MOTION_RET_ERROR;
 }
 
 
 posapp_motion_ret_e PosAppMotion_startMonitoring(posapp_motion_mon_settings_t * cfg)
 {
-    
+
     if (!m_acc_init)
     {
         LOG(LVL_ERROR, "Aceelerometer not initialized");
@@ -206,12 +218,12 @@ posapp_motion_ret_e PosAppMotion_startMonitoring(posapp_motion_mon_settings_t * 
     if (cfg->cb == NULL)
     {
         LOG(LVL_ERROR, "Monitoring callback is NULL");
-        return POSAPP_MOTION_RET_INVALID_PARAMETER;     
+        return POSAPP_MOTION_RET_INVALID_PARAMETER;
     }
 
     m_mon_cfg = *cfg;
     return enable_monitoring();
-    
+
 }
 
 posapp_motion_ret_e PosAppMotion_stopMonitoring()
@@ -257,7 +269,7 @@ posapp_motion_ret_e PosAppMotion_getAcceleration(posapp_motion_acc_callback_f cb
 
     m_acc_state = ACC_START;
     App_Scheduler_addTask_execTime(accelerometer_task, APP_SCHEDULER_SCHEDULE_ASAP, 500);
-    
+
     return POSAPP_MOTION_RET_OK;
 }
 
@@ -268,7 +280,7 @@ posapp_motion_ret_e PosAppMotion_init()
         LOG(LVL_ERROR, "Cannot initialize the accelerometer");
         m_acc_init = false;
         return POSAPP_MOTION_RET_ACC_INIT_ERROR;
-    } 
+    }
 
     m_acc_init = true;
     LOG(LVL_DEBUG, "Accelerometer intitialised");

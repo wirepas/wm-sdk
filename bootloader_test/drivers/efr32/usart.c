@@ -76,10 +76,10 @@ void Usart_init(uint32_t baudrate)
     CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_GPIO;
 
     /* Configure Uart Tx pin */
-    hal_gpio_set_mode(BOARD_USART_GPIO_PORT,
+    hal_gpio_set_mode(BOARD_USART_TX_PORT,
                       BOARD_USART_TX_PIN,
                       GPIO_MODE_OUT_PP);
-    hal_gpio_clear(BOARD_USART_GPIO_PORT, BOARD_USART_TX_PIN);
+    hal_gpio_clear(BOARD_USART_TX_PORT, BOARD_USART_TX_PIN);
 
     /* Must enable clock for configuration period */
     CMU->HFPERCLKEN0 |= BOARD_USART_CMU_BIT;

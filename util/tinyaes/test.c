@@ -37,8 +37,8 @@ int main(void)
 #endif
 
     exit = test_encrypt_cbc() + test_decrypt_cbc() +
-	test_encrypt_ctr() + test_decrypt_ctr() +
-	test_decrypt_ecb() + test_encrypt_ecb();
+        test_encrypt_ctr() + test_decrypt_ctr() +
+        test_decrypt_ecb() + test_encrypt_ecb();
     test_encrypt_ecb_verbose();
 
     return exit;
@@ -130,10 +130,10 @@ static int test_encrypt_ecb(void)
 
     if (0 == memcmp((char*) out, (char*) in, 16)) {
         printf("SUCCESS!\n");
-	return(0);
+        return(0);
     } else {
         printf("FAILURE!\n");
-	return(1);
+        return(1);
     }
 }
 
@@ -175,10 +175,10 @@ static int test_decrypt_cbc(void)
 
     if (0 == memcmp((char*) out, (char*) in, 64)) {
         printf("SUCCESS!\n");
-	return(0);
+        return(0);
     } else {
         printf("FAILURE!\n");
-	return(1);
+        return(1);
     }
 }
 
@@ -218,10 +218,10 @@ static int test_encrypt_cbc(void)
 
     if (0 == memcmp((char*) out, (char*) in, 64)) {
         printf("SUCCESS!\n");
-	return(0);
+        return(0);
     } else {
         printf("FAILURE!\n");
-	return(1);
+        return(1);
     }
 }
 
@@ -273,10 +273,10 @@ static int test_xcrypt_ctr(const char* xcrypt)
   
     if (0 == memcmp((char *) out, (char *) in, 64)) {
         printf("SUCCESS!\n");
-	return(0);
+        return(0);
     } else {
         printf("FAILURE!\n");
-	return(1);
+        return(1);
     }
 }
 
@@ -306,10 +306,10 @@ static int test_decrypt_ecb(void)
 
     if (0 == memcmp((char*) out, (char*) in, 16)) {
         printf("SUCCESS!\n");
-	return(0);
+        return(0);
     } else {
         printf("FAILURE!\n");
-	return(1);
+        return(1);
     }
 }
 

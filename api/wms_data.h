@@ -29,7 +29,7 @@
 #define APP_LIB_DATA_NAME 0x0003f161 //!< "DATA"
 
 /** \brief Maximum supported library version */
-#define APP_LIB_DATA_VERSION    0x20B
+#define APP_LIB_DATA_VERSION    0x20E
 
 /**
  * @brief Type of tracking ID for data packets
@@ -162,7 +162,7 @@ typedef enum
     APP_LIB_DATA_SEND_RES_OUT_OF_TRACKING_IDS = 7,
     /** Tracking ID already in use or invalid ID */
     APP_LIB_DATA_SEND_RES_INVALID_TRACKING_ID = 8,
-    /** Error: one of the @ref endpoint "endpoints" is invalid, reserved for
+    /** Error: one of the @c endpoint "endpoints" is invalid, reserved for
      * stack internal use */
     APP_LIB_DATA_SEND_RES_RESERVED_ENDPOINT = 9,
     /** Error: data sending is forbidden, either:
@@ -222,6 +222,8 @@ typedef enum
     APP_LIB_DATA_APP_CONFIG_RES_INVALID_INTERVAL     = 4,
     /** Error: invalid NULL pointer parameter */
     APP_LIB_DATA_APP_CONFIG_RES_INVALID_NULL_POINTER = 5,
+    /** Error: out of memory */
+    APP_LIB_DATA_APP_CONFIG_RES_OUT_OF_MEMORY        = 6,
 } app_lib_data_app_config_res_e;
 
 /**
@@ -294,9 +296,9 @@ typedef struct
     uint32_t delay;
     /** Packet quality of service class, see @ref app_lib_data_qos_e */
     app_lib_data_qos_e qos;
-    /** Source @ref endpoint "endpoint" of packet */
+    /** Source @c endpoint "endpoint" of packet */
     uint8_t src_endpoint;
-    /** Destination @ref endpoint "endpoint" of packet */
+    /** Destination @c endpoint "endpoint" of packet */
     uint8_t dest_endpoint;
     /** Amount of hops that were used when routing packet to the destination */
     uint8_t hops;
@@ -336,10 +338,6 @@ typedef struct
     size_t num_bytes;
     /** Destination address of packet */
     app_addr_t dest_address;
-    /** Initial end-to-end transmission delay, in 1 / 128 seconds. This could
-     *  be used, for example, to represent actual measurement time if done
-     *  earlier but generated for transmission on later time moment. */
-    uint32_t delay;
     /**
      * Packet tracking ID
      */
@@ -348,9 +346,9 @@ typedef struct
     app_lib_data_qos_e qos;
     /** Send flags, see @ref app_lib_data_send_flags_e */
     uint8_t flags;
-    /** Source @ref endpoint "endpoint" of packet */
+    /** Source @c endpoint "endpoint" of packet */
     uint8_t src_endpoint;
-    /** Destination @ref endpoint "endpoint" of packet */
+    /** Destination @c endpoint "endpoint" of packet */
     uint8_t dest_endpoint;
     /** Maximum amount of hops allowed for transmission. Requires also flag
      * @ref APP_LIB_DATA_SEND_SET_HOP_LIMITING to be set in flags field in order
@@ -381,9 +379,9 @@ typedef struct
     /**
      * Packet tracking ID to distinguish which packet was sent */
     app_lib_data_tracking_id_t tracking_id;
-    /** Source @ref endpoint "endpoint" of packet */
+    /** Source @c endpoint "endpoint" of packet */
     uint8_t src_endpoint;
-    /** Destination @ref endpoint "endpoint" of packet */
+    /** Destination @c endpoint "endpoint" of packet */
     uint8_t dest_endpoint;
     /** True if packet was sent, false if packet was discarded */
     bool success;
@@ -447,7 +445,7 @@ typedef void (*app_lib_data_new_app_config_cb_f)(const uint8_t * bytes,
  * (unicast, multicast or broadcast)).
  * If NULL is passed, the callback is disabled.
  *
- * Example on use. Application handles destination @ref endpoint "endpoint" of
+ * Example on use. Application handles destination @c endpoint "endpoint" of
  * 12 as incoming data and triggers temperature measurement.
  * @code
  *
@@ -514,10 +512,10 @@ typedef app_res_e
     (*app_lib_data_set_data_sent_cb_f)(app_lib_data_data_sent_cb_f cb);
 
 /**
- * @brief   Set the callback function to be called when new @ref appconfig
+ * @brief   Set the callback function to be called when new @c appconfig
  *          "app config data" is received.
  *
- * Example: see example application @ref appconfig_app/app.c "appconfig_app"
+ * Example: see example application @c appconfig_app/app.c "appconfig_app"
  *
  * \param   cb
  *          The function to be executed, or NULL to unset
@@ -613,7 +611,7 @@ typedef app_res_e
  * The packet to send is represented as @ref app_lib_data_to_send_t
  * struct.
  *
- * Example: See example application @ref custom_app/app.c "custom_app"
+ * Example: See example application @c custom_app/app.c "custom_app"
  *
  * \param   data
  *          Data to send
@@ -652,7 +650,7 @@ typedef void
     (*app_lib_data_allow_reception_f)(bool allow);
 
 /**
- * \brief   Read @ref appconfig "app config"
+ * \brief   Read @c appconfig "app config"
  * \param   bytes
  *          Pointer to a buffer for app config data
  * \param   seq
@@ -679,7 +677,7 @@ typedef app_lib_data_app_config_res_e
                                       uint16_t * interval);
 
 /**
- * \brief   Get size of @ref appconfig "app config"
+ * \brief   Get size of @c appconfig "app config"
  * \return  App config size in bytes
  *
  * Example of use:
@@ -692,57 +690,7 @@ typedef size_t
 
 
 /**
- * \brief   Set maximum queuing time for messages
- * \param   priority
- *          Message priority which queuing time to be set
- * \param   time
- *          Queuing time in seconds. Accepted range: 2 - 65534s.
- *          Select queuing time carefully, too short value might cause
- *          unnecessary message drops and too big value filling up message
- *          queues. For consistent performance it is recommended to use the
- *          same queuing time in the whole network.
- *
- * \note    Minimum queuing time shall be bigger than access cycle
- *          interval in time-slotted mode networks. It is recommended to use
- *          multiples of access cycle interval (+ extra) to give time for
- *          message repetitions, higher priority messages taking over the access
- *          slot etc. Access cycle is not limiting the minimum value in
- *          CSMA-CA networks.
- * \return  Result code, @ref APP_RES_OK if successful
- *          @ref APP_RES_INVALID_VALUE if unsupported message priority or time
- *
- * Example:
- * @code
- * // Set queueing time for low priority to 5 seconds
- * lib_data->setMaxMsgQueuingTime(APP_LIB_DATA_QOS_NORMAL, 5);
- * @endcode
- */
-typedef app_res_e
-    (*app_lib_data_set_max_msg_queuing_time_f)(app_lib_data_qos_e priority,
-                                               uint16_t time);
-
-/**
- * \brief   Get maximum queuing time of messages
- * \param   priority
- *          Message priority which queuing time to be read
- * \param   time_p
- *          Pointer where to store maximum queuing time
- * \return  Result code, @ref APP_RES_OK if ok,
- *          @ref APP_RES_INVALID_VALUE if unsupported message priority,
- *          @ref APP_RES_INVALID_NULL_POINTER if @p time_p is null
- *
- * Example:
- * @code
- * uint16_t qos_normal_qt;
- * lib_data->getMaxMsgQueuingTime(APP_LIB_DATA_QOS_NORMAL, &qos_normal_qt);
- * @endcode
- */
-typedef app_res_e
-    (*app_lib_data_get_max_msg_queuing_time_f)(app_lib_data_qos_e priority,
-                                               uint16_t * time_p);
-
-/**
- * \brief   Write @ref appconfig "app config DATA"
+ * \brief   Write @c appconfig "app config DATA"
  * \param   bytes
  *          Pointer to app config data to write. The format can be decided by
  *          the application.
@@ -769,7 +717,7 @@ typedef app_lib_data_app_config_res_e
     (*app_lib_data_write_app_config_data_f)(const uint8_t * bytes);
 
 /**
- * \brief   Write @ref appconfig "Diagnostic interval"
+ * \brief   Write @c appconfig "Diagnostic interval"
  * \param   interval
  *          Diagnostic data transmission interval in seconds, i.e. how often
  *          the nodes on the network should send diagnostic PDUs. If the value
@@ -858,8 +806,6 @@ typedef struct
     app_lib_data_allow_reception_f allowReception;
     app_lib_data_read_app_config_f readAppConfig;
     app_lib_data_get_app_config_num_bytes_f getAppConfigNumBytes;
-    app_lib_data_set_max_msg_queuing_time_f  setMaxMsgQueuingTime;
-    app_lib_data_get_max_msg_queuing_time_f  getMaxMsgQueuingTime;
     app_lib_data_write_app_config_data_f writeAppConfigData;
     app_lib_data_write_diagnostic_interval_f writeDiagnosticInterval;
     app_lib_data_set_local_mc_f setLocalMulticastInfo;

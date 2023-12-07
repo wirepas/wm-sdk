@@ -6,15 +6,13 @@
 #ifndef RADIO_POWER_TABLE_EFR32XG23_16DBM_H_
 #define RADIO_POWER_TABLE_EFR32XG23_16DBM_H_
 
-#include "rail_chip_specific.h"
-
 /**
  * Power table for efr32xg23 +16dBm.
  * */
 const app_lib_radio_cfg_power_t power_table_efr32xg23_16dBm =
 {
     .rx_current     = 69, // 6.9 mA RX current
-    .rx_gain_dbm    = 0,  // 0 dBm RX gain
+    .rx_gain_db     = 0,  // 0 dB RX gain
     .power_count    = 8,  // 8 power levels
     .powers =
     {

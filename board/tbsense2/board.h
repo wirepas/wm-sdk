@@ -15,19 +15,33 @@
 
 // Waps usart defines
 #if defined USE_FTDI
+
+// Serial port
 #define BOARD_USART_ID                  1
-#define BOARD_USART_GPIO_PORT           GPIOF
+#define BOARD_USART_TX_PORT             GPIOF
 #define BOARD_USART_TX_PIN              3
+#define BOARD_USART_RX_PORT             GPIOF
 #define BOARD_USART_RX_PIN              4
+
 // ROUTELOC are dependent on GPIO defined above and mapping
 // can be founded chip datasheet from Silabs
 #define BOARD_USART_ROUTELOC_RXLOC      USART_ROUTELOC0_RXLOC_LOC27
 #define BOARD_USART_ROUTELOC_TXLOC      USART_ROUTELOC0_TXLOC_LOC27
 
+// List of GPIO pins
+#define BOARD_GPIO_PIN_LIST            {{GPIOD, 8},  /* PD08 */\
+                                        {GPIOD, 9},  /* PD09 */\
+                                        {GPIOD, 14}, /* PD14 */\
+                                        {GPIOD, 15}, /* PD15 */\
+                                        {GPIOF, 4},  /* PF04. required by the dual_mcu app. usart wakeup pin (= BOARD_USART_RX) */\
+                                        {GPIOF, 6}}  /* PF06. required by the dual_mcu app (indication signal) */
 #else
+
+// Serial port
 #define BOARD_USART_ID                  0
-#define BOARD_USART_GPIO_PORT           GPIOA
+#define BOARD_USART_TX_PORT             GPIOA
 #define BOARD_USART_TX_PIN              0
+#define BOARD_USART_RX_PORT             GPIOA
 #define BOARD_USART_RX_PIN              1
 
 // VCOM port only supports 115200 baudrate
@@ -38,11 +52,23 @@
 // can be founded chip datasheet from Silabs
 #define BOARD_USART_ROUTELOC_RXLOC      USART_ROUTELOC0_RXLOC_LOC0
 #define BOARD_USART_ROUTELOC_TXLOC      USART_ROUTELOC0_TXLOC_LOC0
+
+// List of GPIO pins
+#define BOARD_GPIO_PIN_LIST            {{GPIOD, 8},  /* PD08 */\
+                                        {GPIOD, 9},  /* PD09 */\
+                                        {GPIOD, 14}, /* PD14 */\
+                                        {GPIOD, 15}, /* PD15 */\
+                                        {GPIOA, 1},  /* PA01. required by the dual_mcu app. usart wakeup pin (= BOARD_USART_RX) */\
+                                        {GPIOF, 6}}  /* PF06. required by the dual_mcu app (indication signal) */
 #endif
 
-// Interrupt pin for dual mcu app, unread indication
-#define BOARD_UART_INT_PIN              6
-#define BOARD_UART_INT_PORT             GPIOF
+// User friendly name for GPIOs (IDs mapped to the BOARD_GPIO_PIN_LIST table)
+#define BOARD_GPIO_ID_LED_R             0  // mapped to pin PD08
+#define BOARD_GPIO_ID_LED_G             1  // mapped to pin PD09
+#define BOARD_GPIO_ID_BUTTON0           2  // mapped to pin PD14
+#define BOARD_GPIO_ID_BUTTON1           3  // mapped to pin PD15
+#define BOARD_GPIO_ID_USART_WAKEUP      4  // mapped to BOARD_USART_RX_PIN
+#define BOARD_GPIO_ID_UART_IRQ          5  // mapped to pin PF06
 
 // I2C configuration: SDA on PC4, SCL on PC5 (ENV_I2C on Thunderboard Sense 2)
 #define USE_I2C1
@@ -52,23 +78,20 @@
 #define BOARD_I2C_ROUTELOC_SDALOC I2C_ROUTELOC0_SDALOC_LOC17
 #define BOARD_I2C_ROUTELOC_SCLLOC I2C_ROUTELOC0_SCLLOC_LOC17
 
-// List of GPIO ports and pins for the LEDs on the board: red LED, green LED
-#define BOARD_LED_PIN_LIST              {{GPIOD, 8}, {GPIOD, 9}}
+// List of LED IDs
+#define BOARD_LED_ID_LIST               {BOARD_GPIO_ID_LED_R, BOARD_GPIO_ID_LED_G}
 
 // Active high polarity for LEDs
 #define BOARD_LED_ACTIVE_LOW            false
 
-// List of ext. ints, GPIO ports and pins for buttons on the board: BTN0, BTN1
-#define BOARD_BUTTON_PIN_LIST           {{12, GPIOD, 14}, {14, GPIOD, 15}}
+// List of button IDs
+#define BOARD_BUTTON_ID_LIST            {BOARD_GPIO_ID_BUTTON0, BOARD_GPIO_ID_BUTTON1}
 
 // Active low polarity for buttons
 #define BOARD_BUTTON_ACTIVE_LOW         true
 
 // Board has external pull-up for buttons
 #define BOARD_BUTTON_INTERNAL_PULL false
-
-// Buttons use even external interrupts
-#define BOARD_BUTTON_USE_EVEN_INT       true
 
 
 #endif /* BOARD_TBSENSE2_BOARD_H_ */

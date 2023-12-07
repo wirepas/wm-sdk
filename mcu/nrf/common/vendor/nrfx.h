@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 - 2021, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2023, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -38,6 +38,7 @@
 #include <drivers/nrfx_common.h>
 #include <nrfx_glue.h>
 #include <hal/nrf_common.h>
+#include <haly/nrfy_common.h>
 #include <drivers/nrfx_errors.h>
 
 #endif // NRFX_H__
