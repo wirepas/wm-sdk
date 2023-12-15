@@ -13,7 +13,7 @@
  * handle.
  *
  * For examples on how to use these services, check out
- * @ref diradv_example/app.c "example application"
+ * @c diradv_example/app.c "example application"
  */
 #ifndef APP_LIB_ADVERTISER_H_
 #define APP_LIB_ADVERTISER_H_
@@ -124,7 +124,7 @@ typedef bool (*app_llhead_acklistener_f)(const ack_gen_input_t * in,
  *              the network).
  * \param       callback
  *              Callback function to be used. NULL to disable
- * \note        Device must have @ref APP_LIB_SETTINGS_ROLE_FLAG_LL in device
+ * \note        Device must have @c APP_LIB_SETTINGS_ROLE_FLAG_LL in device
  *              role (service @ref app_lib_settings_set_node_role_f
  *              "lib_settings->setNodeRole()" in order for callback to be
  *              active.
@@ -141,13 +141,9 @@ typedef void (*app_lib_advertiser_ackdatacb_f)
  *          APP_RES_INVALID_CONFIGURATION if device is not configured as
  *          @ref APP_LIB_SETTINGS_ROLE_ADVERTISER
  *
- * Operation @ref app_lib_data_set_max_msg_queuing_time_f
- * "lib_data->setMaxMsgQueuingTime()" only allows setting the TTL value
- * in second precision. In CSMA-CA networks, the granularity of that service is
- * not enough. By using this service, advertiser can set the higher-precision
+ * By using this service, advertiser can set the higher-precision
  * TTL and when advertiser sends data to CSMA-CA device, this TTL is also
- * checked (in addition to normal, second-granularity TTL set by @ref
- * app_lib_data_set_max_msg_queuing_time_f "lib_data->setMaxMsgQueuingTime()").
+ * checked.
  * For time-slotted mode networks, this value has no impact due to nature of the
  * time-slotted mode transmission. Neither this service has impact if device is
  * not advertiser.

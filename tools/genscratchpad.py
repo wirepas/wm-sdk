@@ -11,20 +11,21 @@
 
 import sys
 import os
-import re
 import zlib
 import struct
 import argparse
 import textwrap
 import hextool
 
-from Crypto.Hash import CMAC
+from Crypto.Hash import CMAC, SHA256
 from Crypto.Cipher import AES
+from Crypto.PublicKey import ECC
+from Crypto.Signature import DSS
 from Crypto.Util import Counter
 from Crypto.Random import get_random_bytes
 
 
-from bootloader_config import BootloaderConfig
+from bootloader_config import BootloaderConfig, KeyDesc
 from socket import htonl
 
 # Python 2 and Python 3 support
@@ -59,17 +60,22 @@ class InFile(object):
     BLOCK_LENGTH = 16
 
     def __init__(self, file_spec = None, data = None,
-                 version = (0, 0, 0, 0)):
+                 version = (0, 0, 0, 0), area_id = 0x00000000,
+                 compressible = None, encryptable = None):
         if file_spec == None and data == None:
             raise ValueError("no data given")
         elif file_spec != None and data != None:
             raise ValueError("file_spec and data are mutually exclusive")
 
         # Set default values.
-        self.area_id = 0x00000000
+        self.area_id = area_id
         self.version = version
+        self.compressible = compressible
+        self.encryptable = encryptable
+        self.filename = None
         self.compressed = False
         self.encrypted = False
+        self.special_pad_field = False  # Must be False for bootloader to work
 
         if data:
             # Data given, make a copy of it.
@@ -79,21 +85,41 @@ class InFile(object):
             # File specification given, parse it.
             version, self.area_id, filename = self.parse_file_spec(file_spec)
             self.version = self.parse_version(version)
+            self.filename = filename
 
-            # Read data from file.
-            memory = hextool.Memory()
-            hextool.load_intel_hex(memory, filename = filename)
+            # determine what to do based on the file extension
+            filename_base, filename_ext = os.path.splitext(filename)
+            if filename_ext == '.hex':
+                # Read data from file.
+                memory = hextool.Memory()
+                hextool.load_intel_hex(memory, filename = filename)
 
-            if memory.num_ranges == 0:
-                # No data found in file.
-                raise ValueError("file contains no data: '%s'" % filename)
-            elif (memory.max_address -
-                  memory.min_address > self.MAX_NUM_BYTES_PER_FILE):
-                raise ValueError("file too big: '%s'" % filename)
+                if memory.num_ranges == 0:
+                    # No data found in file.
+                    raise ValueError("file contains no data: '%s'" % filename)
+                elif (memory.max_address -
+                    memory.min_address > self.MAX_NUM_BYTES_PER_FILE):
+                    raise ValueError("file too big: '%s'" % filename)
 
-            # Convert Memory object to a flat bytearray.
-            self.data = memory[memory.min_address:memory.max_address]
-            self.raw_data = memory[memory.min_address:memory.max_address]
+                # Convert Memory object to a flat bytearray.
+                self.data = memory[memory.min_address:memory.max_address]
+                self.raw_data = memory[memory.min_address:memory.max_address]
+                if self.compressible is None:
+                    self.compressible = True
+                if self.encryptable is None:
+                    self.encryptable = True
+            elif filename_ext == '.cbor':
+                memory = hextool.Memory()
+                hextool.load_binary(memory, filename = filename)
+                self.data = memory[0:memory.num_bytes]
+                self.raw_data = memory[0:memory.num_bytes]
+                if self.compressible is None:
+                    self.compressible = False
+                if self.encryptable is None:
+                    self.encryptable = False
+                self.special_pad_field = True  # Scratchpad is not for bootloader
+            else:
+                raise ValueError("unsupported file extension: '%s'" % filename)
 
         # Create a file header for uncompressed, unencrypted data.
         self.header = self.make_file_header(self.area_id, len(self.data),
@@ -103,40 +129,73 @@ class InFile(object):
         if self.compressed:
             raise ValueError("data already compressed")
 
-        # OPTIMIZE: Avoid extra conversions between bytearrays and bytes.
-        # Compress data. zlib.compress() does not accept
-        # bytearrays, so convert bytearray to bytes.
-        compressed_data = bytearray(zlib.compress(bytes(self.data), 9))
+        if self.compressible:
+            # OPTIMIZE: Avoid extra conversions between bytearrays and bytes.
+            # Compress data. zlib.compress() does not accept
+            # bytearrays, so convert bytearray to bytes.
+            compressed_data = bytearray(zlib.compress(bytes(self.data), 9))
 
-        # Determine compressed data length without
-        # zlib header and Adler-32 checksum.
-        comp_data_len = len(compressed_data) - 2 - 4
+            # Determine compressed data length without
+            # zlib header and Adler-32 checksum.
+            comp_data_len = len(compressed_data) - 2 - 4
 
-        # Pad size to a multiple of block length.
-        num_blocks = (comp_data_len + self.BLOCK_LENGTH - 1) // \
-                                                            self.BLOCK_LENGTH
+            # Pad size to a multiple of block length.
+            num_blocks = (
+                comp_data_len + self.BLOCK_LENGTH - 1) // self.BLOCK_LENGTH
+
+            # Create a bytearray object for compressed data.
+            self.data = bytearray(num_blocks * self.BLOCK_LENGTH)
+
+            # Copy compressed data to bytearray, but leave
+            # out zlib header and Adler-32 checksum.
+            self.data[:comp_data_len] = compressed_data[2:-4]
+            data_length = len(self.data)
+            pad = data_length - comp_data_len
+        else:
+            # Do not compress, but pad size to a multiple of block length.
+            data_pld_len = len(self.data)
+            num_blocks = (
+                data_pld_len + self.BLOCK_LENGTH - 1) // self.BLOCK_LENGTH
+            fill_zeros = num_blocks * self.BLOCK_LENGTH - data_pld_len
+            self.data.extend(bytearray(b"\x00" * fill_zeros))
+            data_length = len(self.data)
+            pad = data_length - data_pld_len
+
+        if not self.special_pad_field:
+            # Pad can only be zero for scratchpads that are
+            # to be processed by the bootloader
+            pad = 0x00000000
+        else:
+            # Scratchpad is not for the bootloader and the
+            # pad field has special meaning
+            pass
+
+        # Update the file header now that data length has changed.
+        self.header = self.make_file_header(self.area_id, data_length,
+                                            *self.version, pad)
 
         # Mark data as compressed.
         self.compressed = True
 
-        # Create a bytearray object for compressed data.
-        self.data = bytearray(num_blocks * InFile.BLOCK_LENGTH)
-
-        # Copy compressed data to bytearray, but leave
-        # out zlib header and Adler-32 checksum.
-        self.data[:comp_data_len] = compressed_data[2:-4]
-
-        # Update the file header now that data length has changed.
-        self.header = self.make_file_header(self.area_id, len(self.data),
-                                            *self.version)
-
     def encrypt(self, cipher):
+        '''Ecrypt file data
+
+        cipher  Initialized cipher object
+        '''
+
         if self.encrypted:
             raise ValueError("data already encrypted")
 
-        # OPTIMIZE: Avoid extra conversions between bytearrays and bytes.
-        # Cipher does not accept bytearrays, so convert to bytes.
-        self.data = bytearray(cipher.encrypt(bytes(self.data)))
+        # Encrypt data and update counter.
+        enc_data = cipher.encrypt(bytes(self.data))
+
+        if self.encryptable:
+            # OPTIMIZE: Avoid extra conversions between bytearrays and bytes.
+            # Cipher does not accept bytearrays, so convert to bytes.
+            self.data = bytearray(enc_data)
+        else:
+            # File is not to be encrypted, only update counter.
+            pass
 
         # Mark data as encrypted.
         self.encrypted = True
@@ -160,7 +219,7 @@ class InFile(object):
                 area_id, filename = fields
             else:
                 raise ValueError("invalid input file specification: "
-                             "'%s'" % file_spec)
+                                 "'%s'" % file_spec)
 
             if version.endswith(".conf"):
                 # conf file provided, version must be read inside
@@ -176,7 +235,7 @@ class InFile(object):
                             extracted_version = cp.get(section, option)
                 if extracted_version is None:
                     raise ValueError("invalid configuration file format, "
-                                     "cannot find version:'%s'" % version)
+                                     "cannot find version: '%s'" % version)
 
                 # Override version
                 version = extracted_version
@@ -211,7 +270,8 @@ class InFile(object):
 
     @staticmethod
     def make_file_header(areaid, length,
-                         ver_major, ver_minor, ver_maint, ver_devel):
+                         ver_major, ver_minor, ver_maint, ver_devel,
+                         pad = 0x00000000):
         '''
         From bootloader.h:
 
@@ -229,7 +289,7 @@ class InFile(object):
             uint8_t maint;
             /** Firmware development version number component */
             uint8_t devel;
-            /** Padding, reserved for future use, must be 0 */
+            /** Padding, reserved for future use, must be < 16 */
             uint32_t pad;
         };
         '''
@@ -237,10 +297,121 @@ class InFile(object):
         if areaid < 0 or areaid > 4294967295:
             raise ValueError("memory area ID not 0 .. 4294967295")
 
-        pad = 0x00000000
-
         return struct.pack("<2L4BL", areaid, length,
-                        ver_major, ver_minor, ver_maint, ver_devel, pad)
+                           ver_major, ver_minor, ver_maint, ver_devel, pad)
+
+
+class SignatureTLVFile(object):
+    '''A signature file with TLV records inside'''
+
+    # Area ID of public key signature
+    AREA_ID = 0x027C362F  # “PKSIG” in DEC Radix-50 encoding
+
+    # Signature file format version: 1.0.0.0
+    FILE_FORMAT_VERSION = (1, 0, 0, 0)
+
+    # The only supported authentication algorithm
+    AUTH_ALGO_SHA256_ECDSA_P256 = 0
+
+    # The only supported encryption algorithm
+    ENCRYPT_ALGO_AES128CTR = 0
+
+    # Size of ECDSA P-256 signature, in bytes
+    ECDSA_P256_SIGNATURE_SIZE = 64  # R and S in big-endian order
+
+    # Supported signature file record types
+    REC_TYPE_END_OF_FILE = 0x00
+    REC_TYPE_HEADER = 0x01
+    REC_TYPE_AUTH_ALGO = 0x02
+    # PKSIG_REC_TYPE_AUTH_ALGO_PARAMS = 0x03
+    REC_TYPE_ENCRYPT_ALGO = 0x04
+    # PKSIG_REC_TYPE_ENCRYPT_ALGO_PARAMS = 0x05
+    REC_TYPE_SIGNATURE = 0x06
+
+    def __init__(self):
+        self.records = []
+        self.header = b""
+        self.data = b""
+        self.infile = None
+
+    def add_auth_algo(self, algo):
+        if algo != self.AUTH_ALGO_SHA256_ECDSA_P256:
+            raise ValueError("invalid authentication algorithm")
+        elif self.infile is not None:
+            raise ValueError("data already compressed")
+
+        # Add authentication algorithm record
+        auth_algo_id = b"ES256"  # ECDSA P-256 authentication with SHA-256 hash
+        auth_algo_rec = (
+            struct.pack("<BB", self.REC_TYPE_AUTH_ALGO,
+                        len(auth_algo_id)) + auth_algo_id)
+        self.records.append(auth_algo_rec)
+
+
+    def add_encrypt_algo(self, algo):
+        if algo != self.ENCRYPT_ALGO_AES128CTR:
+            raise ValueError("invalid encryption algorithm")
+        elif self.infile is not None:
+            raise ValueError("data already compressed")
+
+        # Add encryption algorithm record
+        encrypt_algo_id = b"AES128CTR"  # AES-128 in counter mode (CTR)
+        encrypt_algo_rec = (
+            struct.pack("<BB", self.REC_TYPE_ENCRYPT_ALGO,
+                        len(encrypt_algo_id)) + encrypt_algo_id)
+        self.records.append(encrypt_algo_rec)
+
+    def add_signature(self, signature = None):
+        if signature is None:
+            # No signature given, use zeros
+            signature = b"\x00" * self.ECDSA_P256_SIGNATURE_SIZE
+        elif len(signature) != self.ECDSA_P256_SIGNATURE_SIZE:
+            raise ValueError("invalid signature size")
+
+        if self.infile is not None:
+            raise ValueError("data already compressed")
+
+        # Add signature record
+        signature_rec = (
+            struct.pack("<BB", self.REC_TYPE_SIGNATURE,
+                        len(signature)) + signature)
+        self.records.append(signature_rec)
+
+    def compress(self):
+        '''Combine records and add padding
+
+        No actual compression happens. This just mimics the InFile() API.'''
+
+        if self.infile is not None:
+            raise ValueError("data already compressed")
+
+        # Combine records.
+        pksig_file_data = b"".join(self.records)
+
+        # Create an InFile temporarily, so we can extract the header and data.
+        self.infile = InFile(data = pksig_file_data,
+                             version = self.FILE_FORMAT_VERSION,
+                             area_id = self.AREA_ID,
+                             compressible = False,
+                             encryptable = False)
+
+        # Just do padding.
+        self.infile.compress()
+
+    def encrypt(self, cipher):
+        '''Update cipher counter and extract file header and data
+
+        No actual encryption happens. This just mimics the InFile() API.'''
+
+        if self.infile is None:
+            raise ValueError("data not compressed yet")
+
+        # Just update cipher counter.
+        self.infile.encrypt(cipher)
+
+        # Allow header and data to be read.
+        self.data = self.infile.data
+        self.header = self.infile.header
 
 
 class Scratchpad(object):
@@ -248,8 +419,10 @@ class Scratchpad(object):
 
     # Offset from start of area for \ref bl_info_header_t, in bytes.
     BL_INFO_HEADER_OFFSET = 16
+
     # Size of \ref bl_scratchpad_header_t, in bytes.
     BL_INFO_HEADER_SIZE = 16
+
     # Size of message authentication code, in bytes.
     CMAC_SIZE = 16
 
@@ -260,13 +433,27 @@ class Scratchpad(object):
         self.key = key
         self.platform = platform
         self.cmac = bytearray(self.CMAC_SIZE)
-        self.data = []    # List of scratchpad data blocks
+        self.data = []    # List of scratchpad file header and data blocks
 
         self.secure_header = get_random_bytes(16)
-        self.data.append(self.secure_header)
         self.cipher = self.create_cipher()
 
+        # Appending files is allowed until get_otap() is called
+        self.can_append = True
+
+        if key.key_type == KeyDesc.KEY_TYPE_SHA256_ECDSA_P256_AES128CTR:
+            # Update cipher counter with dummy data when using ECDSA P-256
+            # authentication, so that old bootloaders can properly decrypt
+            # files after the ECDSA signature file.
+            pksig = SignatureTLVFile()
+            pksig.add_auth_algo(SignatureTLVFile.AUTH_ALGO_SHA256_ECDSA_P256)
+            pksig.add_encrypt_algo(SignatureTLVFile.ENCRYPT_ALGO_AES128CTR)
+            pksig.add_signature(None)  # Dummy signature
+            self.append(pksig)
+
     def append(self, infile):
+        if not self.can_append:
+            raise ValueError("cannot append any more files")
         infile.compress()
         infile.encrypt(self.cipher)
         self.data.append(infile.header)
@@ -288,7 +475,6 @@ class Scratchpad(object):
 
         return crc
 
-
     def create_cipher(self):
         '''
         Create an AES-128 Counter (CTR) mode cipher
@@ -300,7 +486,8 @@ class Scratchpad(object):
 
         # Create a fast counter for AES cipher.
         icb0, icb1, icb2, icb3 = struct.unpack("<4L", self.secure_header)
-        # Arrange AES nonce (IV) according to target's aes endian
+
+        # Arrange AES nonce (IV) according to target's AES endianness.
         if self.platform.aes_little_endian == False:
             initctr =   htonl(icb3)       | \
                         htonl(icb2) << 32 | \
@@ -308,9 +495,10 @@ class Scratchpad(object):
                         htonl(icb0) << 96
         else:
             initctr = (icb3 << 96) | (icb2 << 64) | (icb1 << 32) | icb0
+
         ctr = Counter.new(128, little_endian = self.platform.aes_little_endian,
-                        allow_wraparound = True,
-                        initial_value = initctr)
+                          allow_wraparound = True,
+                          initial_value = initctr)
 
         # Create an AES Counter (CTR) mode cipher.
         return AES.new(cipher_key, AES.MODE_CTR, counter = ctr)
@@ -324,13 +512,46 @@ class Scratchpad(object):
         # Create a CMAC / OMAC1 object.
         cobj = CMAC.new(auth_key, ciphermod = AES)
 
+        # OPTIMIZE: Avoid extra conversions between bytearrays and bytes.
+        # CMAC object does not accept bytearrays, so convert to bytes.
+        cobj.update(bytes(self.secure_header))
         for data in self.data:
-            # OPTIMIZE: Avoid extra conversions between bytearrays and bytes.
-            # CMAC object does not accept bytearrays, so convert to bytes.
             cobj.update(bytes(data))
 
         # Calculate digest and return it as bytearray.
         self.cmac = bytearray(cobj.digest())
+
+    def calculate_ecdsa_p256_with_sha256(self):
+        '''Calculate ECDSA P-256 signature for SHA-256 hash of data.'''
+
+        # Calculate SHA-256 hash over file headers and data.
+        hobj = SHA256.new()
+        for d in self.data[2:]:  # Skip over the signature file itself + header
+            hobj.update(d)
+
+        # Read ECDSA P-256 private key.
+        key = ECC.import_key(self.key.authentication)
+        if key.curve not in ("NIST P-256", "p256", "P-256", "prime256v1", "secp256r1"):
+            raise ValueError("unsupported ECC curve: '%s'" % key.curve)
+        elif not key.has_private():
+            raise ValueError("no private key given")
+
+        # Calculate ECDSA P-256 over the SHA-256 hash.
+        signer = DSS.new(key, mode = "fips-186-3", encoding = "binary")
+        signature = signer.sign(hobj)
+
+        # Create a file containing ECDSA P-256 signature.
+        pksig = SignatureTLVFile()
+        pksig.add_auth_algo(SignatureTLVFile.AUTH_ALGO_SHA256_ECDSA_P256)
+        pksig.add_encrypt_algo(SignatureTLVFile.ENCRYPT_ALGO_AES128CTR)
+        pksig.add_signature(signature)
+        pksig.compress()
+        pksig.encrypt(self.cipher)  # This will unfortunately
+                                    # invalidate the cipher counter.
+
+        # Replace first file (the dummy signature file) header and data.
+        self.data[0] = pksig.header
+        self.data[1] = pksig.data
 
     def make_header(self):
         '''
@@ -348,7 +569,7 @@ class Scratchpad(object):
             uint8_t pad;
             /** Scratchpad type information for bootloader: bl_header_type_e */
             uint32_t type;
-            /** Status code from bootloader: bl_header_status_e */
+            /** Status code from bootloader: bl_scratchpad_status_e */
             uint32_t status;
         };
 
@@ -368,13 +589,15 @@ class Scratchpad(object):
         '''
 
         # Calculate length of scratchpad contents.
-        length = sum(map(len, self.data)) + self.CMAC_SIZE
+        length = (self.CMAC_SIZE + len(self.secure_header) +
+                  sum(map(len, self.data)))
 
         if length % 16 != 0:
             raise ValueError("data length not multiple of 16")
 
         # Calculate CRC of scratchpad contents.
         crc = self.crc16_ccitt(self.cmac)
+        crc = self.crc16_ccitt(self.secure_header, crc)
         for data in self.data:
             crc = self.crc16_ccitt(data, crc)
 
@@ -390,22 +613,41 @@ class Scratchpad(object):
 
     def get_otap(self):
         '''
-        Get a memory image containnig a scratchpad for .otap file generation.
+        Get a memory image containing a scratchpad for .otap file generation.
         '''
-        self.calculate_cmac()
-        otap = self.SCRATCHPAD_V1_TAG
-        otap += self.make_header()
-        otap += self.cmac
-        for d in self.data:
-            otap += d
-        return otap
+
+        # Use authentication scheme selected by key type.
+        if self.key.key_type == KeyDesc.KEY_TYPE_OMAC1_AES128CTR:
+            # OMAC1 / CMAC authentication
+            self.calculate_cmac()
+        elif self.key.key_type == KeyDesc.KEY_TYPE_SHA256_ECDSA_P256_AES128CTR:
+            # ECDSA P-256 authentication with SHA-256 hash
+            self.calculate_ecdsa_p256_with_sha256()
+
+            # Clear CMAC bytes, as they are not used when ECDSA P-256
+            # authentication is used.
+            self.cmac = bytearray(self.CMAC_SIZE)
+
+        # Collect all data in a list
+        otap = [self.SCRATCHPAD_V1_TAG]
+        otap.append(self.make_header())
+        otap.append(self.cmac)
+        otap.append(self.secure_header)
+        otap.extend(self.data)
+
+        # Cipher counter is invalid now, so cannot append any more files.
+        self.can_append = False
+
+        # Return a valid scratchpad
+        return b"".join(otap)
 
 
 # Functions
 
 def ini_file(string_file):
     if not string_file.endswith(".ini"):
-        raise argparse.ArgumentTypeError("invalid ini file extension %s" % string_file)
+        raise argparse.ArgumentTypeError("invalid ini file extension '%s'" %
+                                         string_file)
     return string_file
 
 def create_argument_parser(pgmname):
@@ -433,8 +675,8 @@ def create_argument_parser(pgmname):
             "  file.conf     a configuration file containing metadatas"
             " associated to the filename")
     parser.add_argument("--configfile", "-c",
-        type=ini_file, action='append', metavar = "FILE", required=True,
-        help = "a configuration file with keys")
+        type = ini_file, action = "append", metavar = "FILE", required = True,
+        help = "one or more configuration files with keys")
     parser.add_argument("--keyname", "-k",
         metavar = "NAME", default = "default",
         help = "name of key to use for encryption and authentication "
@@ -468,6 +710,12 @@ def main():
             chosenkey = config.keys[args.keyname]
         except KeyError:
             raise ValueError("key not found: '%s'" % args.keyname)
+
+        # Check that key type is supported
+        if chosenkey.key_type not in (KeyDesc.KEY_TYPE_OMAC1_AES128CTR,
+                                      KeyDesc.KEY_TYPE_SHA256_ECDSA_P256_AES128CTR):
+            raise ValueError("key type '%s' not supported" %
+                             KeyDesc.type_to_string(chosenkey.key_type))
 
     except (ValueError, IOError, OSError, configparser.Error) as exc:
         sys.stdout.write("%s: %s\n" % (pgmname, exc))

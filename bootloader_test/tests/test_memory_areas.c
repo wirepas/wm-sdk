@@ -241,8 +241,8 @@ bool Tests_areas(bl_interface_t * interface)
 {
     // Test areas one by one
     bl_interface_res_e bl_res;
-    bl_memory_area_id_t areas[BL_MEMORY_AREA_MAX_AREAS];
-    uint8_t num_areas = BL_MEMORY_AREA_MAX_AREAS;
+    bl_memory_area_id_t areas[MAX_TESTED_MEMORY_AREAS];
+    uint8_t num_areas = MAX_TESTED_MEMORY_AREAS;
     bool res = true;
 
     /* Store the pointer globally. */

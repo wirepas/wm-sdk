@@ -32,6 +32,19 @@
 /** @brief Maximum amount of configurable power levels */
 #define APP_LIB_RADIO_CFG_POWER_MAX_CNT     10
 
+/** @brief Minimum configured radio current (10 x mA) */
+#define APP_LIB_RADIO_CFG_CURRENT_MIN       1
+
+/**
+ * @brief Maximum configured radio current (10 x mA) 
+ *
+ * FCC allow maximum power for 2.4GHz to be roughly 600mA, so to be sure that
+ * we don't block the users from doing what they want, but also have some
+ * reasonable limit to root out obviously invalid values, we set the upper
+ * limit for current to be 10A.
+ */
+#define APP_LIB_RADIO_CFG_CURRENT_MAX       1000
+
 /**
  * @brief  FEM control command from firmware to application
  *
@@ -41,7 +54,7 @@
  * often possible to use lazy strategies.
  *
  * Example: If power consumption is irrelevant, FEM may be kept in RX
- * state by default, and in TX state only when @ref APP_LIB_RADIO_FEM_TX_ON
+ * state by default, and in TX state only when @ref APP_LIB_RADIO_CFG_FEM_TX_ON
  * is asked.
  *
  * Example: FEM may not have true power off / power on states but
@@ -147,7 +160,7 @@ typedef struct
     app_lib_radio_cfg_fem_set_power_cb_f    setPower;
     /** Callback from firmware to application */
     app_lib_radio_cfg_fem_cmd_cb_f          femCmd;
-    /** FEM timings for stack, @ref app_lib_radio_cfg_femtimings_t */
+    /** FEM timings for stack, @ref app_lib_radio_cfg_fem_timings_t */
     app_lib_radio_cfg_fem_timings_t         femTimings;
 } app_lib_radio_cfg_fem_t;
 
@@ -186,7 +199,7 @@ typedef struct
     /** RX state current, unit [mA x 10] */
     uint16_t                        rx_current;
     /** RX LNA gain or 0 [dB] */
-    int8_t                          rx_gain_dbm;
+    int8_t                          rx_gain_db;
     /** Amount of power levels configured */
     uint8_t                         power_count;
     /** TX power level configuration / table.

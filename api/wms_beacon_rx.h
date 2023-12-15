@@ -136,7 +136,7 @@ typedef app_res_e
 /**
  * @brief   Check if BLE advertisement scanner is running
  *
- * Example on use. When device receives a packet to destination @ref endpoint
+ * Example on use. When device receives a packet to destination @c endpoint
  * "endpoint" 10, it checks whether BLE scanner is active. If not, it will
  * start it.
  *

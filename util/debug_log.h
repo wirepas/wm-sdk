@@ -128,6 +128,9 @@
 #ifdef DEBUG_LOG_PRINT_TIME_HP
 #    define S_TIME_PREFIX "[%09u]"
 #    define S_TIME_SUFFIX , lib_time->getTimestampHp()
+#elif defined(DEBUG_LOG_PRINT_TIME_MS)
+#    define S_TIME_PREFIX "[%09u]"
+#    define S_TIME_SUFFIX , (lib_time->getTimestampCoarse() * 125) >> 4
 #elif defined(DEBUG_LOG_PRINT_TIME)
 #    define S_TIME_PREFIX "[%09u]"
 #    define S_TIME_SUFFIX , lib_time->getTimestampCoarse()

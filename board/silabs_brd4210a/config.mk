@@ -34,3 +34,4 @@ board_hw_lfxo_gain=2
 ifneq ("$(radio_power_table)", "")
     RADIO_CUSTOM_POWER_TABLE=mcu/efr/efr32/hal/radio/radio_power_table_efr32xg23_$(radio_power_table)dbm.h
 endif
+

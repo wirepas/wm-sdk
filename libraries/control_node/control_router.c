@@ -67,7 +67,6 @@ app_lib_data_receive_res_e data_received (const shared_data_item_t * item,
     {
         .bytes = (const uint8_t *) &diag,
         .num_bytes = sizeof(control_fwd_diag_t),
-        .delay = 0,
         .tracking_id = APP_LIB_DATA_NO_TRACKING_ID,
         .qos = APP_LIB_DATA_QOS_NORMAL,
         .flags = APP_LIB_DATA_SEND_FLAG_NONE,

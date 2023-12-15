@@ -35,29 +35,55 @@
 #define BOARD_USART_RTS_PIN             5
 
 /**
- * @brief Interrupt pin for dual mcu app, unread indication
+ * @brief   GPIO definitions
  *
- * This only used in @ref source/dualmcu_app.c "dualmcu_app" application to
- * announce with GPIO pin that there is incoming indication to be read from
- * device.
+ * If board needs GPIOs, they are defined here. If not defined, a dummy
+ * GPIO driver is compiled, so that applications can use the GPIO driver
+ * unconditionally.
  *
- * It is optional definition. If not present, no irq pin is present
+ * For Nordic nRF52 family, GPIOs are defined as list of GPIO pin numbers
+ *
+ * @note in order for application to use GPIOs, see @ref source_makefile_hal_gpio
+ * "here".
  */
-#define BOARD_UART_IRQ_PIN              11
+#define BOARD_GPIO_PIN_LIST            {17, /* P0.17 */\
+                                        18, /* P0.18 */\
+                                        19, /* P0.19 */\
+                                        20, /* P0.20 */\
+                                        13, /* P0.13 */\
+                                        14, /* P0.14 */\
+                                        15, /* P0.15 */\
+                                        16, /* P0.16 */\
+                                        8,  /* P0.08. required by the dual_mcu app. usart wakeup pin (= BOARD_USART_RX) */\
+                                        11} /* P0.11. required by the dual_mcu app (indication signal) */
 
+/**
+ * @brief   GPIO IDs
+ *
+ * User friendly name for GPIOs (IDs mapped to the BOARD_GPIO_PIN_LIST table)
+ *
+ */
+#define BOARD_GPIO_ID_LED0              0  // mapped to pin P0.17
+#define BOARD_GPIO_ID_LED1              1  // mapped to pin P0.18
+#define BOARD_GPIO_ID_LED2              2  // mapped to pin P0.19
+#define BOARD_GPIO_ID_LED3              3  // mapped to pin P0.20
+#define BOARD_GPIO_ID_BUTTON0           4  // mapped to pin P0.13
+#define BOARD_GPIO_ID_BUTTON1           5  // mapped to pin P0.14
+#define BOARD_GPIO_ID_BUTTON2           6  // mapped to pin P0.15
+#define BOARD_GPIO_ID_BUTTON3           7  // mapped to pin P0.16
+#define BOARD_GPIO_ID_USART_WAKEUP      8  // mapped to P0.08
+#define BOARD_GPIO_ID_UART_IRQ          9  // mapped to P0.11
 /**
  * @brief   LED definitions
  *
- * If board contains LEDs, they are defined here. If not defined, a dummy
- * LED driver is compiled, so that applications can use the LED driver
+ * If board contains LEDs, The LED IDs list is defined here. The LED IDs are mapped to GPIO IDs.
+ * If not defined, a dummy LED driver is compiled, so that applications can use the LED driver
  * unconditionally.
- *
- * For Nordic nRF52 family, LEDs are defined as list of GPIO pin numbers
  *
  * @note in order for application to use LEDs, see @ref source_makefile_hal_led
  * "here".
  */
-#define BOARD_LED_PIN_LIST {17, 18, 19, 20}
+#define BOARD_LED_ID_LIST               {BOARD_GPIO_ID_LED0, BOARD_GPIO_ID_LED1, BOARD_GPIO_ID_LED2, BOARD_GPIO_ID_LED3}
 
 /**
  * @brief   LED GPIO polarity
@@ -67,21 +93,19 @@
  * Otherwise, if a LED is lit when the the GPIO pin is driven high, this
  * setting should be set to false.
  */
-#define BOARD_LED_ACTIVE_LOW true
+#define BOARD_LED_ACTIVE_LOW            true
 
 /**
- * @brief Button definitions
+ * @brief   Button definitions
  *
- * Any buttons present on the board are defined here. If not defined, a dummy
- * button driver is compiled, so that applications can use the button driver
+ * If board contains buttons, The button IDs list is defined here. The button IDs are mapped to GPIO IDs.
+ * If not defined, a dummy button driver is compiled, so that applications can use the button driver
  * unconditionally.
-*
- * For Nordic nRF52 family, buttons are defined simply by the GPIO numbers.
  *
  * @note in order for application to use buttons, see @ref
  * source_makefile_hal_button "here".
  */
-#define BOARD_BUTTON_PIN_LIST {13, 14, 15, 16}
+#define BOARD_BUTTON_ID_LIST           {BOARD_GPIO_ID_BUTTON0, BOARD_GPIO_ID_BUTTON1, BOARD_GPIO_ID_BUTTON2, BOARD_GPIO_ID_BUTTON3}
 
 /**
  * @brief   Button GPIO polarity
@@ -90,7 +114,7 @@
  * case for many nRF52 boards, such as the PCA10040 and PCA10056. Otherwise, if
  * a button press pulls the GPIO pin high, this setting should be set to false.
  */
-#define BOARD_BUTTON_ACTIVE_LOW true
+#define BOARD_BUTTON_ACTIVE_LOW         true
 
 /**
  * @brief   Button GPIO internal pull up/down
@@ -100,6 +124,6 @@
  * \ref BOARD_BUTTON_INTERNAL_PULL to true to enable internal pull-up(down).
  * Pull-up(down) is enabled when \ref BOARD_BUTTON_ACTIVE_LOW is true(false).
  */
-#define BOARD_BUTTON_INTERNAL_PULL true
+#define BOARD_BUTTON_INTERNAL_PULL      true
 
 #endif /* _BOARD_NRF52_TEMPLATE_BOARD_H_ */

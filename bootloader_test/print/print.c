@@ -20,7 +20,7 @@ static uint8_t          m_buffer[BUFFER_SIZE];
 void Print_init(void)
 {
     /* Initialize the hardware module */
-    Usart_init(115200);
+    Usart_init(115200, UART_FLOW_CONTROL_NONE );
 }
 
 int Print_printf(const char * fmt, ...)

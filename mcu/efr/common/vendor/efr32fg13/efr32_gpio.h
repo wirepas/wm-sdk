@@ -1,7 +1,7 @@
-#ifndef EFR32FG13_GPIO_H_
-#define EFR32FG13_GPIO_H_
+#ifndef EFR32_GPIO_H_
+#define EFR32_GPIO_H_
 
-#include "../../../efr32/vendor/em_device.h"
+#include "vendor/em_device.h"
 
 /** GPIO ports identificator. */
 typedef enum
@@ -19,7 +19,7 @@ typedef enum
   GPIOK = 10 /**< Port K */
 } hal_gpio_port_e;
 
-/** Pin mode. For more details on each mode, please refer to the EFR32XG13
+/** Pin mode. For more details on each mode, please refer to the EFR32xG13
  * reference manual. */
 typedef enum
 {
@@ -83,4 +83,4 @@ __STATIC_INLINE void hal_gpio_set_mode(hal_gpio_port_e port,
     }
 }
 
-#endif /* EFR32FG13_GPIO_H_ */
+#endif /* EFR32_GPIO_H_ */

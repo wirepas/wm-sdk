@@ -26,7 +26,7 @@
  *  (Profiles over ~13.5dBm TX power need PA voltage 3V3, DCDC is not enough).
  */
 
-#if defined(_SILICON_LABS_32B_SERIES_1)
+#if (_SILICON_LABS_32B_SERIES_1_CONFIG == 3)
 #define EMU_DCDCINIT                                                                        \
 {                                                                                           \
   emuPowerConfig_DcdcToDvdd,     /* DCDC to DVDD */                                         \
@@ -34,13 +34,27 @@
   1800,                          /* Nominal output voltage for DVDD mode, 1.8V  */          \
   15,                            /* Nominal EM0/1 load current of less than 15mA */         \
   10,                            /* Nominal EM2/3/4 load current less than 10uA  */         \
-  200,                           /* Maximum average current of 200mA
+  200,                           /* Maximum peak current of 200mA
+                                 (assume strong battery or other power source) */           \
+  emuDcdcAnaPeripheralPower_DCDC,/* Select DCDC as analog power supply (lower power) */     \
+  emuDcdcLnHighEfficiency,       /* Use Low Noice DCM mode */                               \
+  emuDcdcLnCompCtrl_4u7F,        /* 4.7uF DCDC capacitor */                                 \
+}
+#elif (_SILICON_LABS_32B_SERIES == 1)
+#define EMU_DCDCINIT                                                                        \
+{                                                                                           \
+  emuPowerConfig_DcdcToDvdd,     /* DCDC to DVDD */                                         \
+  emuDcdcMode_LowNoise,          /* Low-noise mode in EM0 */                                \
+  1800,                          /* Nominal output voltage for DVDD mode, 1.8V  */          \
+  15,                            /* Nominal EM0/1 load current of less than 15mA */         \
+  10,                            /* Nominal EM2/3/4 load current less than 10uA  */         \
+  200,                           /* Maximum peak current of 200mA
                                  (assume strong battery or other power source) */           \
   emuDcdcAnaPeripheralPower_DCDC,/* Select DCDC as analog power supply (lower power) */     \
   160,                           /* Maximum reverse current of 160mA */                     \
   emuDcdcLnCompCtrl_4u7F,        /* 4.7uF DCDC capacitor */                                 \
 }
-#elif defined(_SILICON_LABS_32B_SERIES_2_CONFIG_3)
+#elif (_SILICON_LABS_32B_SERIES_2_CONFIG == 3)
 #define EMU_DCDCINIT                                                         \
 {                                                                            \
     emuDcdcMode_Regulation,        /**< DCDC regulator on. */                \
@@ -51,6 +65,18 @@
     emuDcdcPeakCurrent_Load36mA,   /**< Default peak current in EM0/1. */    \
     emuDcdcPeakCurrent_Load36mA    /**< Default peak current in EM2/3. */    \
 }
+#elif (_SILICON_LABS_32B_SERIES_2_CONFIG == 4 || _SILICON_LABS_32B_SERIES_2_CONFIG == 5)
+#define EMU_DCDCINIT                                                         \
+  {                                                                          \
+    emuDcdcMode_Regulation,        /**< DCDC regulator on. */                \
+    emuVreginCmpThreshold_2v3,     /**< 2.3V VREGIN comparator threshold. */ \
+    emuDcdcTonMaxTimeout_1P19us,   /**< Ton max is 1.19us. */                \
+    emuDcdcDriveSpeed_Default,     /**< Default efficiency in EM0/1. */      \
+    emuDcdcDriveSpeed_Default,     /**< Default efficiency in EM2/3. */      \
+    emuDcdcPeakCurrent_Load60mA,   /**< Default peak current in EM0/1. */    \
+    emuDcdcPeakCurrent_Load36mA    /**< Default peak current in EM2/3. */    \
+  }
+
 #else //other  _SILICON_LABS_32B_SERIES_2 device
 #define EMU_DCDCINIT                                                        \
 {                                                                           \

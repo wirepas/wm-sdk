@@ -46,7 +46,7 @@
 #define DEFAULT_PERIOD_MS   (DEFAULT_PERIOD_S*1000u)
 
 /** The application will register for this type of app_config, corresponding to the measurement rate. */
-#define CUSTOM_PERIOD_TYPE 0xC3 
+#define CUSTOM_PERIOD_TYPE 0xC3
 
 /** Time needed to execute the periodic work, in us. */
 #define PERIODIC_WORK_EXECUTION_TIME_US (250u)
@@ -204,7 +204,7 @@ typedef struct __attribute__((packed))
 } msg_t;
 
 /** Application periodic message fixed data pattern. */
-static const uint8_t m_periodic_data_pattern[PERIODIC_MSG_DATA_PATTERN_LEN] = 
+static const uint8_t m_periodic_data_pattern[PERIODIC_MSG_DATA_PATTERN_LEN] =
                                             {0x0A,0x0B,0x0B,0x0A,0x0A,0x0C,0x0D,0x0C};
 
 /** Button ID which was pressed */
@@ -312,7 +312,6 @@ static app_lib_data_send_res_e send_uplink_msg(message_id_e id,
     data_to_send.src_endpoint = DATA_EP;
     data_to_send.dest_endpoint = DATA_EP;
     data_to_send.qos = APP_LIB_DATA_QOS_HIGH;
-    data_to_send.delay = 0;
     data_to_send.flags = APP_LIB_DATA_SEND_FLAG_NONE;
     data_to_send.tracking_id = APP_LIB_DATA_NO_TRACKING_ID;
 
@@ -625,7 +624,7 @@ static app_lib_data_receive_res_e unicast_broadcast_data_received_cb(
  * @brief Period change callback
  * This function is called when an app config message concerning period change has been received
  */
-static void appConfigPeriodReceivedCb(uint16_t type, 
+static void appConfigPeriodReceivedCb(uint16_t type,
                                       uint8_t length,
                                       uint8_t * value_p)
 {
@@ -698,11 +697,7 @@ void App_init(const app_global_functions_t * functions)
 #ifdef ENABLE_LOW_LATENCY_MODE
     lib_settings->setNodeRole(APP_LIB_SETTINGS_ROLE_AUTOROLE_LL);
 #endif
-    /* Set up LED. */
-    Led_init();
 
-    /* Set up buttons. */
-    Button_init();
     num_buttons = Button_get_number();
 
     for (uint8_t button_id = 0; button_id < num_buttons; button_id++)

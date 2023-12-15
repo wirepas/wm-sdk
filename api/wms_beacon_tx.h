@@ -21,7 +21,7 @@
  * handle.
  *
  * For examples on how to use these services, check out example application
- * @ref ble_beacon/app.c "ble_beacon".
+ * @c ble_beacon/app.c "ble_beacon".
  */
 #ifndef APP_LIB_BEACON_TX_H_
 #define APP_LIB_BEACON_TX_H_

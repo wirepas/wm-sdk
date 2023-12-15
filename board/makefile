@@ -37,3 +37,8 @@ endif
 ifdef board_hw_lfxo_gain
     CFLAGS += -DBOARD_HW_LFXO_GAIN=$(board_hw_lfxo_gain)
 endif
+
+# FTDI enabled for serial communication
+ifeq ("$(board_use_ftdi)","yes")
+    CFLAGS += -DUSE_FTDI
+endif

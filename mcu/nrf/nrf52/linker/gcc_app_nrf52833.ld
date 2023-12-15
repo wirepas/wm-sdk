@@ -1,112 +1,35 @@
-/* Copyright 2018 Wirepas Ltd. All Rights Reserved.
+/* Copyright 2023 Wirepas Ltd. All Rights Reserved.
  *
  * See file LICENSE.txt for full license details.
  *
  */
 
-SEARCH_DIR(.)
-
-/* nRF52833 is 512kB FLASH, 128kB RAM
- *   - 50 kB of Flash is reserved by default for the application. But it is
- *     not a hard limit and could be increased. As application and scratchpad area
- *     are shared by default, if the application is too big, OTAP may be affected.
- *     Please see the Wirepas documentation about OTAP for more details
- *   - 72 kB (minus 8 bytes) of RAM can be used by the app
+/* Linker script for Wirepas Mesh application on nRF52833
+ *
+ * This file is for the 512 kB Flash, 128 kB RAM variant
+ *
+ * Flash memory areas:
+ *  - Application executable code (FLASH)
+ *      - By default, 50 kB of Flash memory is allocated for the application
+ *      - It's possible to allocate more space for the application, but this
+ *        will reduce the available space for the stored scratchpad
+ *      - The scratchpad is typically stored in the internal Flash memory and
+ *        occupies the same memory area as the application
+ *      - If the application is too large, there may not be sufficient
+ *        space for Over-The-Air Programming (OTAP)
+ *      - For more details, refer to the OTAP documentation
+ *
+ * RAM memory areas:
+ *  - RAM for application static variables (RAM)
+ *      - The application is allocated 72 kB of RAM, minus 8 bytes
  */
+
 MEMORY
 {
-  FLASH (rx)      : ORIGIN = 0x00040000, LENGTH = 50K /* See above note before changing length */
+  /* See the note above, before changing FLASH length */
+  FLASH (rx)      : ORIGIN = 0x00040000, LENGTH = 50K
   RAM (rwx)       : ORIGIN = 0x2000D000, LENGTH = 72K - 8
   INVALID (rwx)   : ORIGIN = 0xFFFFFFFF, LENGTH = 0 /* Sanity check */
 }
 
-SECTIONS
-{
-    .text :
-    {
-        __text_start__ = .;
-        KEEP(*(.entrypoint))
-        KEEP(*(.app_header))
-        *(.text.*)
-        *(.text)
-        *(.glue_7)
-        *(.glue_7t)
-        *(.vfp11_veneer)
-        *(.v4_bx)
-        *(.rodata.*)
-        *(.rodata)
-        *(.rodata1)
-        . = ALIGN(8);
-        __text_end__ = .;
-    } >FLASH
-
-    __data_src_start__ = .;
-
-    .rtt (NOLOAD):
-    {
-        /* Force placing _SEGGER_RTT control block here, if RTT tracing is on */
-        *(.rtt_cb_section)
-        . = ALIGN(8);
-    } >RAM
-
-    .data :
-    {
-        __data_start__ = .;
-        *(.ramtext)
-        *(.data.*)
-        *(.data)
-        *(.data1)
-        . = ALIGN(8);
-        __data_end__ = .;
-    } >RAM AT >FLASH
-
-    __rom_end__ = __data_src_start__ + SIZEOF(.data);
-
-    /* Total size includes persistent data, when implemented */
-    __total_size_bytes__ = __rom_end__ - __text_start__;
-
-    .bss :
-    {
-        __bss_start__ = .;
-        *(.bss.*)
-        *(.bss)
-        *(COMMON)
-        . = ALIGN(8);
-        __bss_end__ = .;
-    } >RAM
-
-    /* Symbols for the RAM */
-    __ram_start__ = ORIGIN(RAM);
-    __ram_end__ = ORIGIN(RAM) + LENGTH(RAM);
-
-.invalid :
-    {
-        *(.init)
-        *(.fini)
-        *(.preinit_array)
-        *(.init_array)
-        *(.fini_array)
-        *(.ctors)
-        *(.dtors)
-        *(.jcr)
-        *(.eh_frame)
-        *(.eh_frame_hdr)
-        *(.heap*)
-        *(.tbss)
-        *(.tdata)
-        *(.tdata1)
-        *(.got)
-        *(.got.plt)
-        *(.igot.plt)
-        *(.iplt)
-        *(.rel.dyn)
-        *(.rel.iplt)
-    } >INVALID  /* Linking fails if any of these sections have contents. */
-
-    /* C++ exception unwinding information is silently discarded. */
-    /DISCARD/ :
-    {
-        *(.ARM.extab)
-        *(.ARM.exidx)
-    }
-}
+INCLUDE gcc_app_common.ld

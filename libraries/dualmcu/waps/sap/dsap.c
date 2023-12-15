@@ -92,7 +92,6 @@ bool Dsap_handleFrame(waps_item_t * item)
             .num_bytes = req->apdu_len,
             .bytes = req->apdu,
             .tracking_id = req->apdu_id,
-            .delay = lib_time->getTimestampCoarse() - item->time, // No initial travel time
             .hop_limit = get_single_mcu_hop_limit_from_dualmcu_tx_option(req->tx_opts),
         };
     }
@@ -118,7 +117,6 @@ bool Dsap_handleFrame(waps_item_t * item)
             .num_bytes = req->apdu_len,
             .bytes = req->apdu,
             .tracking_id = req->apdu_id,
-            .delay = lib_time->getTimestampCoarse() + req->travel_time - item->time,
             .hop_limit = get_single_mcu_hop_limit_from_dualmcu_tx_option(req->tx_opts),
         };
     }
@@ -149,7 +147,6 @@ bool Dsap_handleFrame(waps_item_t * item)
             .num_bytes = req->apdu_len,
             .bytes = req->apdu,
             .tracking_id = req->apdu_id,
-            .delay = lib_time->getTimestampCoarse() + req->travel_time - item->time,
             .hop_limit = get_single_mcu_hop_limit_from_dualmcu_tx_option(req->tx_opts),
             .fragment_info = {
                 .fragment_offset = fragment_offset,
@@ -297,7 +294,7 @@ static void update_packet_delay(waps_item_t * item)
         {
             item->frame.dsap.data_rx_ind.delay += local_delay;
         }
-        else if (item->frame.sfunc == WAPS_FUNC_DSAP_DATA_RX_IND)
+        else if (item->frame.sfunc == WAPS_FUNC_DSAP_DATA_RX_FRAG_IND)
         {
             item->frame.dsap.data_rx_frag_ind.delay += local_delay;
         }
