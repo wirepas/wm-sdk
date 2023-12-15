@@ -11,7 +11,6 @@ const versions = [
 'v1.5.0',
 'v1.4.2',
 'v1.5.1',
-'Idiawi4',
 'latest'
 ];
 
